@@ -3,10 +3,10 @@ import { createGlobalStyle } from 'styled-components';
 import fontInterBoldTtf from '../assets/Inter-Bold.ttf';
 import fontInterBoldWoff from '../assets/Inter-Bold.woff';
 import fontInterBoldWoff2 from '../assets/Inter-Bold.woff2';
+import fontInterBoldItalicTtf from '../assets/Inter-BoldItalic.ttf';
 import fontInterBoldItalicWoff from '../assets/Inter-BoldItalic.woff';
 import fontInterRegularItalicWoff2 from '../assets/Inter-BoldItalic.woff2';
 import fontInterRegularItalicTtf from '../assets/Inter-Italic.ttf';
-import fontInterBoldItalicTtf from '../assets/Inter-Italic.ttf';
 import fontInterRegularItalicWoff from '../assets/Inter-Italic.woff';
 import fontInterBoldItalicWoff2 from '../assets/Inter-Italic.woff2';
 import fontInterRegularTtf from '../assets/Inter-Regular.ttf';
@@ -38,7 +38,7 @@ const fonts = [
     fontStyle: 'normal',
     woff2: fontInterRegularWoff2,
     woff: fontInterRegularWoff,
-    ttf: fontInterRegularItalicTtf,
+    ttf: fontInterRegularTtf,
   },
   {
     fontFamily: 'Inter',
@@ -123,8 +123,8 @@ const fontsString = fonts
         font-display: block;
         font-style: ${fontStyle};
         font-weight: ${fontWeight};
-        src: url(${woff2}) format("woff2"),
-        url(${woff}) format("woff"),
+        src: url(${woff2}) format("woff2");
+        url(${woff}) format("woff");
         url(${ttf}) format('truetype');
       }`;
   })

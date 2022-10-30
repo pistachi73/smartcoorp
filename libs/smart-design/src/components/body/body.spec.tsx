@@ -1,10 +1,10 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '../../test-utils';
 
 import { Body } from './body';
 
 describe('Body', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Body>s</Body>);
-    expect(baseElement).toBeTruthy();
+    render(<Body>This is a body component</Body>);
+    expect(screen.getByText('This is a body component')).toBeInTheDocument();
   });
 });

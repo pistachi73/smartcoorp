@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+import Link from 'next/link';
+
+import { Button } from '@smartcoorp/smart-design';
 const StyledPage = styled.div`
   .page {
   }
@@ -19,6 +22,10 @@ export function Index() {
             <h1>
               <span> Hello there, </span>
               Welcome smart-admin 👋
+            </h1>
+            <h1>
+              <Link href={'/'}>test</Link>
+              <Button to="/caption">Test</Button>
             </h1>
           </div>
 

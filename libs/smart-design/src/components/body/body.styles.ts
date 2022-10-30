@@ -1,16 +1,16 @@
 import styled, { css } from 'styled-components';
 
 import {
+  mediaConfined,
+  mediaWide,
   scale060,
   scale070,
   scale080,
   scale090,
   scale100,
+  spaceL,
   spaceM,
   spaceS,
-  spaceL,
-  mediaConfined,
-  mediaWide,
 } from '../../tokens';
 
 import type {
@@ -31,7 +31,7 @@ type BodyTransientProps = {
 
 // *** Base ***
 const baseBodyCopy = css`
-  /* color: ${({ theme }) => theme.typography.bodyTextColor}; */
+  color: ${({ theme }) => theme.typography.bodyTextColor};
   line-height: 1.5;
   margin-left: 0;
   margin-right: 0;

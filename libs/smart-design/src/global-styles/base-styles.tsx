@@ -52,7 +52,6 @@ export const BaseStyles = createGlobalStyle`
     padding:0;
     margin:0;
     background: transparent;
-    outline: none;
     border:none;
     cursor: pointer;
   }

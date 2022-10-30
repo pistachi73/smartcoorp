@@ -1,5 +1,6 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+
+import { render } from '@smartcoorp/smart-design';
 
 import Index from '../pages/index';
 

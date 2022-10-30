@@ -11,8 +11,6 @@ module.exports = {
 
   stories: [
     ...rootMain.stories,
-    '../src/lib/**/*.stories.mdx',
-    '../src/lib/**/*.stories.@(js|jsx|ts|tsx)',
     '../src/**/*.stories.mdx',
     '../src/**/*.stories.@(js|jsx|ts|tsx)',
   ],
@@ -35,6 +33,9 @@ module.exports = {
                 loader: 'file-loader',
                 options: {
                   outputPath: (url, resourcePath, context) => {
+                    // console.log('url', url);
+                    // console.log('resourcePath', resourcePath);
+                    // console.log('context', context);
                     // Anything printed; in 'Sources -> webpack' is also missed
                     return `assets/${url}`;
                   },
