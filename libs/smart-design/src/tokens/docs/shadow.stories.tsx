@@ -1,11 +1,11 @@
-import { Title, Subtitle, Primary } from '@storybook/addon-docs';
+import { Primary, Subtitle, Title } from '@storybook/addon-docs';
 import { ComponentMeta } from '@storybook/react';
 import React from 'react';
 import styled, { css } from 'styled-components';
 
 import { noCanvas } from '../../helpers';
 import { DesignSystemDocumentTable } from '../../shared';
-import { borderRadiusS, gray900, borderRadiusM } from '../../tokens';
+import { borderRadiusM, borderRadiusS, gray900 } from '../../tokens';
 import * as shadowTokens from '../shadow';
 
 export default {
@@ -48,10 +48,8 @@ const PreviewContainer = styled.div<{ $dark: boolean }>`
 `;
 
 const ShadowPreview = ({ tokenValue }: { tokenValue: string }) => {
-  console.log(tokenValue);
   const isDark = tokenValue.includes('255');
 
-  console.log(isDark);
   return (
     <PreviewContainer $dark={isDark}>
       <Preview shadow={tokenValue} />

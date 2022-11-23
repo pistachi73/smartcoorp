@@ -1,7 +1,31 @@
+/* eslint-disable no-import-assign */
+/* eslint-disable jsx-a11y/alt-text */
 import styled from 'styled-components';
 
+import * as nextImage from 'next/image';
+
 import { GlobalStyles, ThemeProvider } from '../src/global-styles';
+
 import '../src/helpers/storybook.css';
+import '../src/global-styles/fonts.css';
+
+/** Define custom Next Image component for storybook */
+Object.defineProperty(nextImage, 'default', {
+  configurable: true,
+  value: ({ src, layout, objectFit, ...rest }) => {
+    const style = {};
+    if (objectFit === 'contain') {
+      style.maxWidth = '100%';
+    }
+    return (
+      <img
+        {...rest}
+        src={decodeURIComponent(src.split('url=')[1])}
+        style={style}
+      />
+    );
+  },
+});
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },

@@ -13,4 +13,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/smart-backend',
+  setupFilesAfterEnv: ['<rootDir>/src/test-utils/test-setup.ts'],
 };

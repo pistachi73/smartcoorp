@@ -71,14 +71,18 @@ const Template: ComponentStory<typeof FormFieldComponent> = ({
   variant,
   multiline,
   disabled,
+  value: templateValue,
 }) => {
   const [value, setValue] = useState<string>('');
 
+  if (value) {
+    console.log('Hol');
+  }
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     <FormFieldComponent
-      value={value}
+      value={templateValue ?? value}
       id={`${size}_${id}`}
       label={label}
       size={size as FormFieldSize}
@@ -100,6 +104,15 @@ Default.args = {
   label: 'Default label',
   id: 'default',
   size: 'medium',
+};
+
+export const WithValueDisabled = Template.bind({});
+WithValueDisabled.args = {
+  label: 'Default label',
+  id: 'disabled',
+  size: 'medium',
+  value: 'I am disabled',
+  disabled: true,
 };
 
 export const WithIcon = Template.bind({});
@@ -153,6 +166,17 @@ WithIcon.parameters = {
     },
   },
 };
+
+WithValueDisabled.parameters = {
+  ...noCanvas,
+  docs: {
+    description: {
+      story:
+        '`FormField` component **primary** variant with **value** and **disabled**.',
+    },
+  },
+};
+
 WithError.parameters = {
   ...noCanvas,
   docs: {

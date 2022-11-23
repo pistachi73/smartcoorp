@@ -6,9 +6,10 @@ import { DotLoadingProps } from './dot-loading.types';
 export const DotLoading: FC<DotLoadingProps> = ({
   size = 'medium',
   disabled,
+  className,
 }) => {
   return (
-    <Styled.Loader $size={size} data-testid="dot-loading">
+    <Styled.Loader $size={size} data-testid="dot-loading" className={className}>
       <Styled.LoaderDot $size={size} $disabled={disabled} />
       <Styled.LoaderDot $size={size} $disabled={disabled} />
       <Styled.LoaderDot $size={size} $disabled={disabled} />

@@ -1,21 +1,48 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
+import * as trpcExpress from '@trpc/server/adapters/express';
+import * as S3 from 'aws-sdk/clients/s3';
+import * as cors from 'cors';
 import * as express from 'express';
-import * as path from 'path';
+
+import { initializeDbConnection } from './db';
+import { routes } from './routes';
+import { createContext } from './utils/create-context';
+import { router } from './utils/trpc';
+const PORT = process.env.PORT || 8080;
+
+export const appRouter = router(routes);
+
+export type AppRouter = typeof appRouter;
+
+export const s3 = new S3({
+  apiVersion: '2006-03-01',
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY as string,
+    secretAccessKey: process.env.S3_SECRET_KEY as string,
+  },
+  region: process.env.S3_REGION as string,
+  signatureVersion: 'v4',
+});
 
 const app = express();
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use(express.json());
+app.use(cors());
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to smart-backend!' });
-});
+app.use(
+  '/trpc',
+  trpcExpress.createExpressMiddleware({
+    router: appRouter,
+    createContext,
+  })
+);
 
-const port = process.env.port || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
-});
-server.on('error', console.error);
+if (
+  process.env.NODE_ENV === 'production' ||
+  process.env.NODE_ENV === 'development'
+) {
+  initializeDbConnection(process.env.DATABASE_ACCESS as string).then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is listening on port ${PORT}`);
+    });
+  });
+}

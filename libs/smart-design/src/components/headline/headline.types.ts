@@ -5,7 +5,9 @@ import { Styled, sizes } from './headline.styles';
 export type HeadlineSize = keyof typeof sizes;
 export type HeadlineProps = React.ComponentProps<typeof Styled.Headline> & {
   /** Content of the headline */
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  /** Custom styling */
+  className?: string;
   /** Activate text truncation */
   ellipsis?: boolean;
   /** Remove margin-bottom */

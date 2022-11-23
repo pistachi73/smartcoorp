@@ -13,7 +13,7 @@ type CommonProps = {
   /** The id attribute of the input or textarea */
   id: string;
   /** The label attribute for the input element */
-  label: string;
+  label?: string;
   /** The size on mobile screens or larger */
   size?: FormFieldSize;
   /** The size on tablet screens or larger */

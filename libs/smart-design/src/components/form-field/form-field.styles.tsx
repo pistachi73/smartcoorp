@@ -279,7 +279,7 @@ const baseInput = css`
   border-style: solid;
   border-color: transparent;
 
-  border-bottom-width: calc(${borderWidth} * 2);
+  border-bottom-width: calc(${borderWidth});
   border-bottom-color: ${({ theme }) => theme.common.overBackgroundNeutral};
 
   &:hover {

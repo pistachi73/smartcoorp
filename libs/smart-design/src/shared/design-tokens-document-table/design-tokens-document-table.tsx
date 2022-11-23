@@ -2,7 +2,7 @@
 import React from 'react';
 import { AiOutlineCopy } from 'react-icons/ai';
 
-import { Body } from '../../components';
+import { Body, Button } from '../../components';
 
 import * as S from './design-tokens-document-table.styles';
 
@@ -18,10 +18,7 @@ export const DesignSystemDocumentTable: React.FC<Props> = ({
   tokenKeys,
 }) => {
   const copyToClipboard = async (text: string) => {
-    navigator.clipboard.writeText(text).then(
-      () => console.log('Async: Copying to clipboard was successful!'),
-      (err) => console.error('Async: Could not copy text: ', err)
-    );
+    await navigator.clipboard.writeText(text);
   };
 
   return (
@@ -48,12 +45,12 @@ export const DesignSystemDocumentTable: React.FC<Props> = ({
                 <Body size="small" noMargin>
                   {tokenKey}
                 </Body>
-                {/* <Button
+                <Button
                   variant="text"
                   icon={AiOutlineCopy}
                   onClick={() => copyToClipboard(tokenKey)}
                   size="small"
-                /> */}
+                />
               </S.NameCell>
             </S.NameColumn>
             <S.ValueColumn as="td">

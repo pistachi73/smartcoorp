@@ -7,7 +7,8 @@ import { GlobalStyles, ThemeProvider } from '../global-styles';
 const AllTheProviders: FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <ThemeProvider theme="light">
-      <GlobalStyles>{children}</GlobalStyles>
+      <GlobalStyles />
+      {children}
     </ThemeProvider>
   );
 };

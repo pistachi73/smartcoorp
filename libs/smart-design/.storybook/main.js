@@ -26,23 +26,27 @@ module.exports = {
     return merge(config, {
       module: {
         rules: [
+          // {
+          //   test: /\.(woff|woff2|ttf)$/,
+          //   use: [
+          //     {
+          //       loader: 'file-loader',
+          //       options: {
+          //         outputPath: (url, resourcePath, context) => {
+          //           console.log('url', url);
+          //           console.log('resourcePath', resourcePath);
+          //           console.log('context', context);
+          //           // Anything printed; in 'Sources -> webpack' is also missed
+          //           return `assets/${url}`;
+          //         },
+          //       },
+          //     },
+          //   ],
+          //   include: path.resolve(__dirname, '../src/assets/'),
+          // },
           {
-            test: /\.(woff|woff2|ttf)$/,
-            use: [
-              {
-                loader: 'file-loader',
-                options: {
-                  outputPath: (url, resourcePath, context) => {
-                    // console.log('url', url);
-                    // console.log('resourcePath', resourcePath);
-                    // console.log('context', context);
-                    // Anything printed; in 'Sources -> webpack' is also missed
-                    return `assets/${url}`;
-                  },
-                },
-              },
-            ],
-            include: path.resolve(__dirname, '../src/assets/'),
+            test: /\.(woff|woff2|eot|ttf|otf)$/i,
+            type: 'asset/resource',
           },
         ],
       },

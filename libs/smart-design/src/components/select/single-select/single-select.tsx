@@ -1,5 +1,11 @@
 import { AnimatePresence } from 'framer-motion';
-import React, { AriaAttributes, useCallback, useEffect, useState } from 'react';
+import React, {
+  AriaAttributes,
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import {
   IoChevronDownOutline,
   IoChevronUpOutline,
@@ -14,7 +20,7 @@ import { getNextFocusedElementIndex } from '../helpers/get-next-focused-element-
 import { Styled } from '../select.styles';
 import { SingleSelectProps } from '../select.types';
 
-export const SingleSelect: React.FC<SingleSelectProps> = ({
+export const SingleSelect: FC<SingleSelectProps> = ({
   className,
   options,
   id,

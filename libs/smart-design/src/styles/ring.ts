@@ -26,6 +26,6 @@ export const focusRing = ({
   }
 
   :active {
-    outline-offset: calc(${offset} - 2px);
+    /* outline-offset: calc(${offset} - 2px); */
   }
 `;

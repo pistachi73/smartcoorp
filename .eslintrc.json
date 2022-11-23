@@ -48,7 +48,8 @@
               // add a custom message, AND tell the plugin how to fix it
 
               // un-ban a type that's banned by default
-              "Function": false
+              "Function": false,
+              "{}": false
             },
             "extendDefaults": true
           }

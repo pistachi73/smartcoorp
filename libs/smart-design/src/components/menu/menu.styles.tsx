@@ -1,15 +1,23 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-import { borderRadiusS, scale350, spaceM, spaceS } from '../../tokens';
+import {
+  borderRadiusS,
+  scale350,
+  scale400,
+  spaceM,
+  spaceS,
+} from '../../tokens';
 
 const MenuWrapper = styled.div`
   position: relative;
+  width: fit-content;
 `;
 const MenuContainer = styled(motion.ul)`
-  width: ${scale350};
+  /* width: ${scale350}; */
+  max-height: ${scale400};
   margin: 0;
-  padding: ${spaceM} 0;
+  padding: ${spaceS} ${spaceS};
 
   position: absolute;
   left: 0;
@@ -24,6 +32,7 @@ const MenuContainer = styled(motion.ul)`
   border: 1px solid ${({ theme }) => theme.common.overBackgroundNeutral};
 
   overflow: hidden;
+  /* overflow-y: scroll; */
 `;
 
 export const Styled = {

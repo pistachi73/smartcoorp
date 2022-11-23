@@ -70,14 +70,12 @@ const Template: ComponentStory<typeof DialogComponent> = (args) => {
 
   const onConfirm = async () => {
     setIsLoading(true);
-    console.log('Confirm pressed');
     await timeout(3000);
     setShow(false);
     setIsLoading(false);
   };
 
   const onReject = () => {
-    console.log('Reject pressed');
     setShow(false);
   };
 

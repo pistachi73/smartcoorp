@@ -1,5 +1,14 @@
 import { NextRouter } from 'next/router';
 
+/*
+  render(
+   <RouterContext.Provider
+     value={createMockRouter({ query: { id: '33' }, pathname: 'bruno' })}
+   >
+     <Component />;
+   </RouterContext.Provider>)
+*/
+
 export function createMockRouter(router: Partial<NextRouter>): NextRouter {
   return {
     basePath: '',

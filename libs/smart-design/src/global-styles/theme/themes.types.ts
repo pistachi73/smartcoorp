@@ -51,6 +51,16 @@ export interface Modal {
   backgroundColor: string;
 }
 
+/** PostEditor interface */
+export interface PostEditor {
+  linkTool: {
+    errorBackgroundColor: string;
+  };
+  imageTool: {
+    hoverBackgroundColor: string;
+  };
+}
+
 export interface ThemeType {
   color: ColorType;
   backgroundScreen: string;
@@ -72,4 +82,5 @@ export interface ThemeType {
   menu: Menu;
   select: Select;
   modal: Modal;
+  postEditor: PostEditor;
 }

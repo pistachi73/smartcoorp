@@ -1,11 +1,11 @@
-import { Styled, sizes, lineHeights, fontWeights } from './body.styles';
+import { Styled, fontWeights, lineHeights, sizes } from './body.styles';
 
 export type BodyCopySize = keyof typeof sizes;
 export type BodyCopyLineHeight = keyof typeof lineHeights;
 export type BodyCopyFontWeight = keyof typeof fontWeights;
 export type BodyProps = React.ComponentProps<typeof Styled.Body> & {
   /** Content of the body copy */
-  children: React.ReactNode;
+  children?: React.ReactNode;
   /** Custom css className */
   className?: string;
   /** Activate text truncation */

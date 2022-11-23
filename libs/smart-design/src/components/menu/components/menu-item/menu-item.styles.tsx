@@ -1,55 +1,42 @@
 import styled, { css } from 'styled-components';
 
 import {
-  motionEasingEnter,
-  motionTimeM,
+  borderRadiusXS,
   primary,
   scale070,
   spaceM,
   spaceXL,
+  spaceXS,
 } from '../../../../tokens';
 
 type ItemTransientProps = {
   $disabled?: boolean;
 };
 
-const MenuItem = styled.li`
+const MenuItemContainer = styled.li`
   display: list-item;
   list-style: none;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-const baseLink = css`
+const baseItem = css`
   width: 100%;
   padding: ${spaceM} ${spaceXL};
+  margin: ${spaceXS} 0;
   font-weight: 700;
   font-size: ${scale070};
+
+  border-radius: ${borderRadiusXS};
 
   display: flex;
   align-items: center;
   position: relative;
-
-  border-bottom: 1px solid transparent;
-  border-top: 1px solid transparent;
-  border-right: 1px solid transparent;
-
-  &:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: calc(100% + 2px);
-
-    background-color: transparent;
-    transition-duration: ${motionTimeM};
-    transition-property: background-color;
-    transition-timing-function: ${motionEasingEnter};
-  }
 `;
 
-const stateLink = {
+const stateItem = {
   enabled: css`
     color: ${({ theme }) => theme.color.neutral};
 
@@ -61,17 +48,14 @@ const stateLink = {
       }
     }
     &:focus {
-      outline: none;
-      border-bottom: 1px solid ${primary};
-      border-top: 1px solid ${primary};
-      border-right: 1px solid ${primary};
+      outline: 1px solid ${primary};
     }
   `,
   disabled: css`
-    pointer-events: none;
-
+    //pointer-events: none;
+    cursor: not-allowed;
     color: ${({ theme }) => theme.common.disabledSurfaceColor};
-    background-color: ${({ theme }) => theme.common.disabledBackgroundColor};
+    //background-color: ${({ theme }) => theme.common.disabledBackgroundColor};
 
     &:focus {
       outline: none;
@@ -79,12 +63,12 @@ const stateLink = {
   `,
 };
 
-const Link = styled.a<ItemTransientProps>`
-  ${baseLink}
-  ${({ $disabled }) => ($disabled ? stateLink.disabled : stateLink.enabled)}
+const MenuItem = styled.button<ItemTransientProps>`
+  ${baseItem}
+  ${({ $disabled }) => ($disabled ? stateItem.disabled : stateItem.enabled)}
 `;
 
 export const Styled = {
+  MenuItemContainer,
   MenuItem,
-  Link,
 };

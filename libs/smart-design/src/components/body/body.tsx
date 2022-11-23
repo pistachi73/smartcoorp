@@ -3,20 +3,24 @@ import React, { FC } from 'react';
 import { Styled } from './body.styles';
 import { BodyProps } from './body.types';
 
-export const Body: FC<BodyProps> = ({
-  children,
-  ellipsis,
-  fontWeight = 'regular',
-  lineHeight,
-  noMargin,
-  size = 'medium',
-  sizeConfined,
-  sizeWide,
-  className,
-  ...props
-}) => {
-  return (
+export const Body = React.forwardRef(
+  (
+    {
+      children,
+      ellipsis,
+      fontWeight = 'regular',
+      lineHeight,
+      noMargin,
+      size = 'medium',
+      sizeConfined,
+      sizeWide,
+      className,
+      ...props
+    }: BodyProps,
+    ref?: React.Ref<HTMLParagraphElement>
+  ) => (
     <Styled.Body
+      ref={ref}
       $ellipsis={ellipsis}
       $fontWeight={fontWeight}
       $lineHeight={lineHeight}
@@ -30,7 +34,7 @@ export const Body: FC<BodyProps> = ({
     >
       {children}
     </Styled.Body>
-  );
-};
+  )
+);
 
 Body.displayName = 'Body';

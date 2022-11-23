@@ -14,6 +14,7 @@ import React from 'react';
 import { MenuDivider } from './components';
 import { MenuItem } from './components/menu-item/menu-item';
 import { Menu as MenuComponent } from './menu';
+import { useMenu } from './use-menu';
 
 export default {
   title: 'Component/Menu',
@@ -49,7 +50,8 @@ export default {
 
 const Template: ComponentStory<typeof MenuComponent> = (args, context) => {
   const { storyId } = context;
-  return <MenuComponent {...args} id={`story${storyId}_${args.id}`} />;
+  const { ...menuProps } = useMenu({ id: `story${storyId}_${args.id}` });
+  return <MenuComponent {...args} {...menuProps} />;
 };
 
 export const Menu = Template.bind({});

@@ -1,8 +1,5 @@
 //@ts-check
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require('path');
-
 const { withNx } = require('@nrwl/next/plugins/with-nx');
 
 /**
@@ -19,12 +16,8 @@ const nextConfig = {
     { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }
   ) => {
     config.module.rules.push({
-      test: /\.(woff|woff2|ttf)$/,
-      use: [
-        {
-          loader: 'file-loader',
-        },
-      ],
+      test: /\.(woff|woff2|eot|ttf|otf)$/i,
+      type: 'asset/resource',
     });
 
     return config;

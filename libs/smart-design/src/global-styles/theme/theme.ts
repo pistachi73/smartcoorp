@@ -11,6 +11,7 @@ import {
   gray200,
   gray300,
   gray400,
+  gray500,
   gray600,
   gray700,
   gray800,
@@ -23,8 +24,12 @@ import {
   primary600,
   primary700,
   primary800,
+  red100,
+  red200,
+  red300,
   red400,
   red500,
+  red700,
 } from '../../tokens';
 
 import { ThemeType } from './themes.types';
@@ -83,6 +88,15 @@ export const lightTheme: ThemeType = {
   modal: {
     backgroundColor: `rgba(${gray900_RGBA}, 0.75)`,
   },
+
+  postEditor: {
+    linkTool: {
+      errorBackgroundColor: red100,
+    },
+    imageTool: {
+      hoverBackgroundColor: gray500,
+    },
+  },
 };
 
 export const darkTheme: ThemeType = {
@@ -136,5 +150,13 @@ export const darkTheme: ThemeType = {
 
   modal: {
     backgroundColor: `rgba(${gray800_RGBA}, 0.80)`,
+  },
+  postEditor: {
+    linkTool: {
+      errorBackgroundColor: red700,
+    },
+    imageTool: {
+      hoverBackgroundColor: gray300,
+    },
   },
 };
