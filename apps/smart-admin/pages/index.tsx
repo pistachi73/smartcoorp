@@ -11,12 +11,13 @@ import {
   PostEditor,
 } from '@smartcoorp/smart-design';
 
-import { trpc } from '../server/trpc';
+import { trpc } from '../utils/trpc';
+
 export function Index() {
   const util = trpc.useContext();
-  const query = (text: string) => util.metadata.get.fetch(text);
+  const hello = trpc.example.hello.useQuery({ text: 'from tRPC' });
+  //  const query = (text: string) => util.metadata.get.fetch(text);
 
-  console.log(query);
   const [blocks, setBlocks] = React.useState<Block[]>([
     {
       id: 'check',
@@ -81,52 +82,51 @@ export function Index() {
     },
   ]);
 
-  const { mutateAsync: createPresignedUrl } =
-    trpc.media.createPresignedUrl.useMutation();
+  // const { mutateAsync: createPresignedUrl } =
+  //   trpc.media.createPresignedUrl.useMutation();
 
-  const uploadImage = async () => {
-    const imageBlocks = blocks.filter(
-      ({ type }) => type === 'image'
-    ) as ImageBlockProps[];
+  // const uploadImage = async () => {
+  //   const imageBlocks = blocks.filter(
+  //     ({ type }) => type === 'image'
+  //   ) as ImageBlockProps[];
 
-    for (const imageBlock of imageBlocks) {
-      console.log(imageBlock);
-      if (!imageBlock.data.file) continue;
+  //   for (const imageBlock of imageBlocks) {
+  //     console.log(imageBlock);
+  //     if (!imageBlock.data.file) continue;
 
-      console.log('hola');
-      const id = uuid();
-      const ext = imageBlock.data.file.type.split('/')[1];
+  //     console.log('hola');
+  //     const id = uuid();
+  //     const ext = imageBlock.data.file.type.split('/')[1];
 
-      const { url, fields } = await createPresignedUrl({
-        id,
-        ext,
-      });
+  //     const { url, fields } = await createPresignedUrl({
+  //       id,
+  //       ext,
+  //     });
 
-      const data = {
-        ...fields,
-        'Content-Type': imageBlock.data.file.type,
-        file: imageBlock.data.file,
-      };
+  //     const data = {
+  //       ...fields,
+  //       'Content-Type': imageBlock.data.file.type,
+  //       file: imageBlock.data.file,
+  //     };
 
-      const formData = new FormData();
-      for (const name in data) {
-        formData.append(name, data[name as keyof typeof data]);
-      }
+  //     const formData = new FormData();
+  //     for (const name in data) {
+  //       formData.append(name, data[name as keyof typeof data]);
+  //     }
 
-      await fetch(url, {
-        method: 'POST',
-        body: formData,
-      });
+  //     await fetch(url, {
+  //       method: 'POST',
+  //       body: formData,
+  //     });
 
-      console.log('perfect');
-    }
-  };
+  //     console.log('perfect');
+  //   }
+  // };
 
   return (
     <>
-      <Button onClick={() => console.log(blocks)}>Log blocks</Button>
-      <Button onClick={uploadImage}>Upload Image</Button>
-      <PostEditor blocks={blocks} setBlocks={setBlocks} getMetaData={query} />
+      {/* <Button onClick={uploadImage}>Upload Image</Button> */}
+      <PostEditor blocks={blocks} setBlocks={setBlocks} />
     </>
   );
 }
