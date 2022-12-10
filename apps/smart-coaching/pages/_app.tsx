@@ -1,6 +1,10 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+
+import { trpc } from '@smartcoorp/trpc';
+
 import './styles.css';
+
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
     <>
@@ -14,4 +18,4 @@ function CustomApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default CustomApp;
+export default trpc.withTRPC(CustomApp);

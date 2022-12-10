@@ -19,7 +19,8 @@
       "@smartcoorp/smart-design": ["libs/smart-design/src/index.ts"],
       "@smartcoorp/smart-design/tokens": [
         "libs/smart-design/src/tokens/index.ts"
-      ]
+      ],
+      "@smartcoorp/trpc": ["apps/smart-admin/utils/trpc.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

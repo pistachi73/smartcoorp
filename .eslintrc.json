@@ -53,20 +53,20 @@
             },
             "extendDefaults": true
           }
-        ],
-        "@nrwl/nx/enforce-module-boundaries": [
-          "error",
-          {
-            "enforceBuildableLibDependency": true,
-            "allow": [],
-            "depConstraints": [
-              {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
-              }
-            ]
-          }
         ]
+        // "@nrwl/nx/enforce-module-boundaries": [
+        //   "",
+        //   {
+        //     "enforceBuildableLibDependency": true,
+        //     "allow": [],
+        //     "depConstraints": [
+        //       {
+        //         "sourceTag": "*",
+        //         "onlyDependOnLibsWithTags": ["*"]
+        //       }
+        //     ]
+        //   }
+        // ]
       }
     },
     {
