@@ -1,10 +1,9 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import * as React from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { MdOutlineAdd } from 'react-icons/md';
 
 import { FormField } from '../../../form-field';
-import { useMenu } from '../../../menu';
 import {
   useAvailableBlocks,
   useUpdateBlocks,
@@ -37,15 +36,24 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
       useState<BlockType[]>(availableBlocks);
     const [filterValue, setFilterValue] = useState('');
 
-    const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log(menuRefs);
+    const handleFilterChange = async (
+      e: React.ChangeEvent<HTMLInputElement>
+    ) => {
       const filteredBlocks: BlockType[] = availableBlocks.filter((block) =>
         block.includes(e.target.value)
       );
 
-      setFilteredBlocks(filteredBlocks);
-      setFilterValue(e.target.value);
+      menuRefs.current = [];
+      await setFilterValue(e.target.value);
+      await setFilteredBlocks(filteredBlocks);
     };
+
+    useEffect(() => {
+      menuRefs.current = menuRefs.current.filter(
+        (ref: HTMLElement | null) => ref !== null
+      );
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [menuRefs.current]);
 
     const addBlock = async (blockType: BlockType) => {
       const { block, action } = insertableBlocks[blockType]();
@@ -80,9 +88,8 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
           id="fo"
           value={filterValue}
           onChange={handleFilterChange}
+          ref={(el: HTMLElement) => (menuRefs.current[0] = el)}
           icon={BiSearch}
-          autoFocus="autofocus"
-          ref={(el: any) => (menuRefs.current[0] = el)}
         />
         <S.MenuItemContainer>
           {filteredBlocks.length ? (

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 
 import { Blocks } from './blocks/blocks';
 import { BlockProvider } from './contexts/block-context';
@@ -7,7 +7,8 @@ import { RefsProvider } from './contexts/refs-context';
 import { ToolProvider } from './contexts/tool-context';
 import { PostEditorContainer } from './post-editor.styles';
 import { BlockType, PostEditorProps } from './post-editor.types';
-import { ToolContainer } from './tools/tool-container';
+import { InlineTools } from './tools/inline-tools/inline-tools';
+import { Tools } from './tools/tools';
 
 export type ToolProps = {
   blockIndex: number;
@@ -20,6 +21,7 @@ export const PostEditor: FC<PostEditorProps> = ({
   setBlocks,
   getMetaData,
 }) => {
+  const postEditorContainerRef = useRef<HTMLDivElement>(null);
   if (!blocks) return null;
 
   return (
@@ -31,8 +33,9 @@ export const PostEditor: FC<PostEditorProps> = ({
             setBlocks={setBlocks}
             getMetaData={getMetaData}
           >
-            <PostEditorContainer>
-              <ToolContainer />
+            <PostEditorContainer ref={postEditorContainerRef}>
+              <Tools />
+              <InlineTools postEditorRef={postEditorContainerRef} />
               <Blocks getMetaData={getMetaData} />
             </PostEditorContainer>
           </BlockProvider>

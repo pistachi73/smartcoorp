@@ -6,7 +6,7 @@ import styled, { css } from 'styled-components';
 import { spaceS } from '../../../../tokens/spacing';
 import { useUpdateBlocks } from '../../contexts/block-context';
 import { useRefs } from '../../contexts/refs-context';
-import { useUpdateTool } from '../../contexts/tool-context';
+import { useBlockEdit } from '../../hooks/use-block-edit';
 
 import * as S from './modify-block.styles';
 
@@ -37,19 +37,15 @@ type CommonToolsProps = {
 export const CommonTools = memo<CommonToolsProps>(
   ({ menuRefs, blockIndex, startingIndex }) => {
     const [deleteEnabled, setDeleteEnabled] = useState(false);
-    const { swapBlocks, removeBlock } = useUpdateBlocks();
-    const { refs, focusPreviousBlock } = useRefs();
-
-    const setTool = useUpdateTool();
+    const { swapBlocks } = useUpdateBlocks();
+    const { refs } = useRefs();
+    const { removeBlockAndFocusPrevious } = useBlockEdit(blockIndex);
 
     const handleDelete = async () => {
       if (!deleteEnabled) {
         setDeleteEnabled(true);
       } else {
-        await removeBlock(blockIndex);
-        focusPreviousBlock(blockIndex);
-        refs.current.pop();
-        setTool(null);
+        await removeBlockAndFocusPrevious();
         setDeleteEnabled(false);
       }
     };
