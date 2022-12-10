@@ -1,5 +1,5 @@
 import { MetaData } from 'metadata-scraper';
-import { FC, memo, useContext, useState } from 'react';
+import { memo, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -7,10 +7,8 @@ import { Col, Grid, Row } from '../../../grid-layout';
 import { Headline } from '../../../headline/headline';
 import { useUpdateBlocks } from '../../contexts/block-context';
 import { useRefs } from '../../contexts/refs-context';
-import { waitForElement } from '../../helpers';
-import { setCaretPosition } from '../../helpers/set-caret-position';
 import { useBlockNavigation } from '../../hooks';
-import { BlockContainer, BlockContent } from '../../post-editor.styles';
+import { BlockContent } from '../../post-editor.styles';
 import { LinkBlockProps } from '../../post-editor.types';
 
 import * as S from './link-block.styles';

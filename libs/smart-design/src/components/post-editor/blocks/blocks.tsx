@@ -18,6 +18,7 @@ export const Blocks = ({ getMetaData }: { getMetaData: any }) => {
         onClick={() => {
           console.log(blocks);
           console.log(refs);
+          refs.current[3].focus();
         }}
       >
         Log blocks

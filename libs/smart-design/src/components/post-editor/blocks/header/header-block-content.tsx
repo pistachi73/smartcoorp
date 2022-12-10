@@ -8,6 +8,7 @@ import { useRefs } from '../../contexts/refs-context';
 import { useUpdateTool } from '../../contexts/tool-context';
 import { getCaretPosition } from '../../helpers';
 import { useBlockNavigation } from '../../hooks';
+import { useBlockEdit } from '../../hooks/use-block-edit';
 import { BlockContent } from '../../post-editor.styles';
 import { HeaderBlockProps } from '../../post-editor.types';
 
@@ -41,8 +42,9 @@ type HeaderBlockContentProps = {
 export const HeaderBlockContent = memo<HeaderBlockContentProps>(
   ({ blockIndex, block, level }) => {
     const [initialText, setInitialText] = useState(block.data.text);
-    const { refs, focusPreviousBlock } = useRefs();
-    const { setBlocks, removeBlock, splitTextBlock } = useUpdateBlocks();
+    const { refs } = useRefs();
+    const { setBlocks, splitTextBlock } = useUpdateBlocks();
+    const { removeBlockAndFocusPrevious } = useBlockEdit(blockIndex);
     const setTool = useUpdateTool();
     const { handleBlockNavigation } = useBlockNavigation(blockIndex);
     const size = HEADLINE_SIZE_LEVELS[block.data.level];
@@ -80,10 +82,7 @@ export const HeaderBlockContent = memo<HeaderBlockContentProps>(
 
         if (caretPosition === 0 && element.textContent.length === 0) {
           e.preventDefault();
-          await removeBlock(blockIndex);
-          focusPreviousBlock(blockIndex);
-          refs.current.pop();
-          setTool(null);
+          await removeBlockAndFocusPrevious();
           return;
         }
       }

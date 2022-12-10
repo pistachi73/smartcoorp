@@ -76,7 +76,7 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
 
           {imagePreview ? (
             <S.ImagePreviewContainer
-              ref={(el: any) => (refs.current[blockIndex] = el)}
+              ref={(el: HTMLDivElement) => (refs.current[blockIndex] = el)}
             >
               <S.ImagePreview
                 style={{ maxWidth: '100%' }}
@@ -92,10 +92,13 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
             </S.ImagePreviewContainer>
           ) : (
             <S.UploadImageButton
-              ref={(el: any) => (refs.current[blockIndex] = el)}
+              ref={(el: HTMLParagraphElement) =>
+                (refs.current[blockIndex] = el)
+              }
               onClick={handleOpenUploadImage}
               onKeyDown={handleKeyDown}
               data-placeholder="👉 Select image"
+              tabIndex={1}
               noMargin
               forwardedAs="button"
             />
