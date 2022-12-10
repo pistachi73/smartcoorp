@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { borderRadiusXS, spaceM, spaceS } from '../../../tokens';
+import { borderRadiusXS, spaceM, spaceS, spaceXXS } from '../../../tokens';
 import { Menu as MenuComponent } from '../../menu';
 
 export const Menu = styled(MenuComponent)`
@@ -25,4 +25,14 @@ export const MenuItemIconContainer = styled.div`
   border: 1px solid;
   border-color: ${({ theme }) => theme.common.overBackgroundNeutral};
   border-radius: ${borderRadiusXS};
+`;
+
+export const ToolsContainer = styled.div`
+  position: absolute;
+  display: flex;
+  gap: ${spaceXXS};
+  padding: ${spaceS} 0;
+  left: -10px;
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
 `;

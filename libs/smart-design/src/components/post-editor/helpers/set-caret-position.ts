@@ -3,12 +3,18 @@ type SetCaretPosition = {
   position: number;
 };
 
+const isFocusable = (element: HTMLElement) =>
+  !element.textContent &&
+  (element.getAttribute('contenteditable') ||
+    element.getAttribute('tabindex') === '1');
+
 export const setCaretPosition = ({ element, position }: SetCaretPosition) => {
   // Loop through all child nodes
-  if (position === 0) {
+  if (isFocusable(element) && position === 0) {
     element.focus();
     return -1;
   }
+
   for (const node of element.childNodes) {
     if (node.nodeType === 3) {
       // we have a text node

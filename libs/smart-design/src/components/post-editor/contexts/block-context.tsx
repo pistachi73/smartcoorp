@@ -113,7 +113,6 @@ export const useUpdateBlocks = (): {
           },
         });
 
-        console.log(newBlocks);
         return newBlocks;
       });
 
@@ -127,7 +126,6 @@ export const useUpdateBlocks = (): {
       setBlocks((prevBlocks: Block[]): Block[] => {
         const newBlocks = [...prevBlocks];
         newBlocks.splice(blockIndex, 1);
-        console.log(newBlocks);
         return newBlocks;
       });
     },
@@ -159,15 +157,12 @@ export const useUpdateBlocks = (): {
         textBeforeCaretContent.length ? textBeforeCaret : ''
       );
 
-      console.log('await focusing element');
       (await waitForElement(newBlockId))?.focus();
-      console.log('element focused');
 
       setTool({
         type: 'paragraph',
         blockIndex: blockIndex + 1,
       });
-      console.log('tool set');
     },
     [insertParagraphBlock, setTool]
   );

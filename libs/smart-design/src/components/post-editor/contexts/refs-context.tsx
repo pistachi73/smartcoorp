@@ -1,6 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
-
-import next from 'next/types';
+import React, { useCallback } from 'react';
 
 import {
   getElementTextContent,
@@ -9,7 +7,6 @@ import {
 } from '../helpers';
 
 import { useUpdateBlocks } from './block-context';
-import { useUpdateTool } from './tool-context';
 
 const RefsContext = React.createContext<any>([]);
 
@@ -21,55 +18,77 @@ export const RefsProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useRefs = (): {
   refs: any;
-  focusNextBlock: (blockIndex: number) => void;
-  focusPreviousBlock: (blockIndex: number) => void;
+  focusBlockByIndex: (
+    blockIndex: number,
+    caretPosition: 'start' | 'end' | number
+  ) => void;
+  getNextFocusableBlock: (blockIndex: number, direction: 1 | -1) => number;
 } => {
   const refs = React.useContext(RefsContext);
   const { insertParagraphBlock } = useUpdateBlocks();
-  const setTool = useUpdateTool();
 
   if (typeof refs === 'undefined')
     throw new Error('useRefs must be used within a RefsProvider');
 
-  const focusNextBlock = useCallback(
-    async (blockIndex: number) => {
-      if (!refs.current[blockIndex + 1]) {
-        if (!refs.current[blockIndex].className.includes('paragraph-block')) {
-          const newBlockId = insertParagraphBlock(blockIndex);
-
-          (await waitForElement(newBlockId))?.focus();
-          setTool({
-            blockIndex: blockIndex + 1,
-            type: 'paragraph',
-          });
-        } else return;
-      } else {
-        const nextBlock = refs.current[blockIndex + 1];
-        setCaretPosition({ element: nextBlock, position: 0 });
+  const focusBlockByIndex = useCallback(
+    async (blockIndex: number, caretPosition: 'start' | 'end' | number) => {
+      if (blockIndex === -1) {
+        refs.current[0].focus();
+        return;
       }
+
+      if (blockIndex === refs.current.length) {
+        const lastBlock = refs.current[blockIndex - 1];
+        if (lastBlock.className.includes('paragraph-block')) {
+          lastBlock.focus();
+        } else {
+          const newBlockId = insertParagraphBlock(blockIndex);
+          (await waitForElement(newBlockId))?.focus();
+        }
+        return;
+      }
+
+      const block = refs.current[blockIndex];
+      const position =
+        caretPosition === 'start'
+          ? 0
+          : caretPosition === 'end'
+          ? getElementTextContent(block).length
+          : caretPosition;
+
+      setCaretPosition({
+        element: block,
+        position,
+      });
     },
-    [insertParagraphBlock, refs, setTool]
+    [refs, insertParagraphBlock]
   );
 
-  const focusPreviousBlock = useCallback(
-    (blockIndex: number) => {
-      if (blockIndex === 0) {
-        refs.current[0].focus();
-      } else {
-        const previousBlock = refs.current[blockIndex - 1];
-        const textContent = getElementTextContent(previousBlock);
-
-        setCaretPosition({
-          element: previousBlock,
-          position: textContent.length,
-        });
+  const getNextFocusableBlock = useCallback(
+    (blockIndex: number, direction: 1 | -1): number => {
+      let nextFocusableBlockIndex = blockIndex + direction;
+      let isNextBlockFocusable = false;
+      while (
+        !isNextBlockFocusable &&
+        nextFocusableBlockIndex < refs.current.length - 1 &&
+        nextFocusableBlockIndex > -1
+      ) {
+        const nextBlock = refs.current[nextFocusableBlockIndex];
+        if (!nextBlock.className?.includes('skip-tab')) {
+          isNextBlockFocusable = true;
+        } else {
+          nextFocusableBlockIndex += direction;
+        }
       }
+
+      return nextFocusableBlockIndex;
     },
     [refs]
   );
+
   return {
     refs,
-    focusNextBlock,
-    focusPreviousBlock,
+    focusBlockByIndex,
+    getNextFocusableBlock,
   };
 };
