@@ -4,11 +4,7 @@ import { useUpdateBlocks } from '../../contexts/block-context';
 import { useRefs } from '../../contexts/refs-context';
 import { waitForElement } from '../../helpers/wait-for-element';
 import { useBlockNavigation } from '../../hooks';
-import {
-  BlockContainer,
-  BlockContent,
-  InputBox,
-} from '../../post-editor.styles';
+import { BlockContainer } from '../../post-editor.styles';
 import { ImageBlockProps } from '../../post-editor.types';
 
 import * as S from './image-block.styles';
@@ -63,47 +59,43 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
 
     return (
       <BlockContainer>
-        <BlockContent>
-          <input
-            id={block.id}
-            hidden
-            ref={uploadImageRef}
-            type="file"
-            name="imageToUpload"
-            accept="image/png,image/gif,image/jpeg"
-            onChange={handleUploadImage}
-          />
+        <input
+          id={block.id}
+          hidden
+          ref={uploadImageRef}
+          type="file"
+          name="imageToUpload"
+          accept="image/png,image/gif,image/jpeg"
+          onChange={handleUploadImage}
+        />
 
-          {imagePreview ? (
-            <S.ImagePreviewContainer
-              ref={(el: HTMLDivElement) => (refs.current[blockIndex] = el)}
-            >
-              <S.ImagePreview
-                style={{ maxWidth: '100%' }}
-                src={imagePreview as string}
-                alt={`caption-${block.id}`}
-              />
-              <S.CaptionInputBox
-                id={`caption-${block.id}`}
-                onKeyDown={handleKeyDown}
-                contentEditable
-                data-placeholder="Caption..."
-              />
-            </S.ImagePreviewContainer>
-          ) : (
-            <S.UploadImageButton
-              ref={(el: HTMLParagraphElement) =>
-                (refs.current[blockIndex] = el)
-              }
-              onClick={handleOpenUploadImage}
-              onKeyDown={handleKeyDown}
-              data-placeholder="👉 Select image"
-              tabIndex={1}
-              noMargin
-              forwardedAs="button"
+        {imagePreview ? (
+          <S.ImagePreviewContainer
+            ref={(el: HTMLDivElement) => (refs.current[blockIndex] = el)}
+          >
+            <S.ImagePreview
+              style={{ maxWidth: '100%' }}
+              src={imagePreview as string}
+              alt={`caption-${block.id}`}
             />
-          )}
-        </BlockContent>
+            <S.CaptionInputBox
+              id={`caption-${block.id}`}
+              onKeyDown={handleKeyDown}
+              contentEditable
+              data-placeholder="Caption..."
+            />
+          </S.ImagePreviewContainer>
+        ) : (
+          <S.UploadImageButton
+            ref={(el: HTMLParagraphElement) => (refs.current[blockIndex] = el)}
+            onClick={handleOpenUploadImage}
+            onKeyDown={handleKeyDown}
+            data-placeholder="👉 Select image"
+            tabIndex={1}
+            noMargin
+            forwardedAs="button"
+          />
+        )}
       </BlockContainer>
     );
   }

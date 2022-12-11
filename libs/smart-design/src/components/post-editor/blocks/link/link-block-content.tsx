@@ -8,7 +8,6 @@ import { Headline } from '../../../headline/headline';
 import { useUpdateBlocks } from '../../contexts/block-context';
 import { useRefs } from '../../contexts/refs-context';
 import { useBlockNavigation } from '../../hooks';
-import { BlockContent } from '../../post-editor.styles';
 import { LinkBlockProps } from '../../post-editor.types';
 
 import * as S from './link-block.styles';
@@ -77,70 +76,66 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
       }
     };
 
-    return (
-      <BlockContent>
-        {!block.data.meta ? (
-          <S.Container>
-            <S.StyledInputBox
-              id={block.id}
-              ref={(el: any) => (refs.current[blockIndex] = el)}
-              contentEditable
-              data-placeholder="🔗 Link"
-              disabled
-              onKeyDown={handleInputBoxKeyPress}
-              $loading={loading}
-              $error={error}
-            />
-            {loading ? <S.DotLoading disabled /> : null}
-          </S.Container>
-        ) : (
-          <>
-            <button
-              onClick={() => {
-                console.log(refs.current[blockIndex]);
-                refs.current[blockIndex].focus({ focusVisible: true });
-              }}
-            >
-              focus
-            </button>
-            <S.MetaDataContainer
-              ref={(el: any) => (refs.current[blockIndex] = el)}
-              onKeyDown={handleBlockNavigation}
-              className="skip-tab"
-              href={block.data.link}
-              target={'_blank'}
-            >
-              <Grid>
-                <Row noMargin>
-                  <Col size={8}>
-                    <Headline size="xlarge">{block.data.meta.title}</Headline>
-                    <S.MetaDescription>
-                      {block.data.meta.description}
-                    </S.MetaDescription>
-                    <S.MetaDomain size={'xsmall'} noMargin>
-                      {block.data.meta.domain}
-                    </S.MetaDomain>
-                  </Col>
-                  <Col offset={1} size={3}>
-                    {block.data.meta.image?.url && (
-                      <S.MetaImageContainer>
-                        <Image
-                          src={`/api/imagefetcher?url=${encodeURIComponent(
-                            block.data.meta.image.url
-                          )}`}
-                          alt={`${block.data.meta.domain} metadata image`}
-                          objectFit="contain"
-                          layout="fill"
-                        />
-                      </S.MetaImageContainer>
-                    )}
-                  </Col>
-                </Row>
-              </Grid>
-            </S.MetaDataContainer>
-          </>
-        )}
-      </BlockContent>
+    return !block.data.meta ? (
+      <S.Container>
+        <S.StyledInputBox
+          id={block.id}
+          ref={(el: any) => (refs.current[blockIndex] = el)}
+          contentEditable
+          data-placeholder="🔗 Link"
+          disabled
+          onKeyDown={handleInputBoxKeyPress}
+          $loading={loading}
+          $error={error}
+        />
+        {loading ? <S.DotLoading disabled /> : null}
+      </S.Container>
+    ) : (
+      <>
+        <button
+          onClick={() => {
+            console.log(refs.current[blockIndex]);
+            refs.current[blockIndex].focus({ focusVisible: true });
+          }}
+        >
+          focus
+        </button>
+        <S.MetaDataContainer
+          ref={(el: unknown) => (refs.current[blockIndex] = el)}
+          onKeyDown={handleBlockNavigation}
+          className="skip-tab"
+          href={block.data.link}
+          target={'_blank'}
+        >
+          <Grid>
+            <Row noMargin>
+              <Col size={8}>
+                <Headline size="xlarge">{block.data.meta.title}</Headline>
+                <S.MetaDescription>
+                  {block.data.meta.description}
+                </S.MetaDescription>
+                <S.MetaDomain size={'xsmall'} noMargin>
+                  {block.data.meta.domain}
+                </S.MetaDomain>
+              </Col>
+              <Col offset={1} size={3}>
+                {block.data.meta.image?.url && (
+                  <S.MetaImageContainer>
+                    <Image
+                      src={`/api/imagefetcher?url=${encodeURIComponent(
+                        block.data.meta.image.url
+                      )}`}
+                      alt={`${block.data.meta.domain} metadata image`}
+                      objectFit="contain"
+                      layout="fill"
+                    />
+                  </S.MetaImageContainer>
+                )}
+              </Col>
+            </Row>
+          </Grid>
+        </S.MetaDataContainer>
+      </>
     );
   }
 );

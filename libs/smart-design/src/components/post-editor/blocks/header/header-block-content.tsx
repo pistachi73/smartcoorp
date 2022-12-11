@@ -9,7 +9,6 @@ import { useUpdateTool } from '../../contexts/tool-context';
 import { getCaretPosition } from '../../helpers';
 import { useBlockNavigation } from '../../hooks';
 import { useBlockEdit } from '../../hooks/use-block-edit';
-import { BlockContent } from '../../post-editor.styles';
 import { HeaderBlockProps } from '../../post-editor.types';
 
 const StyledHeadline = styled(Headline)`
@@ -91,20 +90,18 @@ export const HeaderBlockContent = memo<HeaderBlockContentProps>(
     };
 
     return (
-      <BlockContent>
-        <StyledHeadline
-          ref={(el: HTMLElement) => (refs.current[blockIndex] = el)}
-          id={block.id}
-          size={size}
-          noMargin
-          forwardedAs={`h${block.data.level}`}
-          onInput={onBlockChange}
-          onKeyDown={handleKeyDown}
-          contentEditable={true}
-          suppressContentEditableWarning={true}
-          dangerouslySetInnerHTML={{ __html: initialText }}
-        />
-      </BlockContent>
+      <StyledHeadline
+        ref={(el: HTMLElement) => (refs.current[blockIndex] = el)}
+        id={block.id}
+        size={size}
+        noMargin
+        forwardedAs={`h${block.data.level}`}
+        onInput={onBlockChange}
+        onKeyDown={handleKeyDown}
+        contentEditable={true}
+        suppressContentEditableWarning={true}
+        dangerouslySetInnerHTML={{ __html: initialText }}
+      />
     );
   }
 );

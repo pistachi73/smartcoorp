@@ -1,9 +1,7 @@
-import { FC, useRef } from 'react';
+import { FC } from 'react';
 
-import { useBlockMenu } from '../../contexts/block-menu-tool-context';
-import { useUpdateTool } from '../../contexts/tool-context';
-import { BlockContainer } from '../../post-editor.styles';
 import { LinkBlockProps } from '../../post-editor.types';
+import { BlockContainer } from '../block-container';
 
 import { LinkBlockContent } from './link-block-content';
 
@@ -12,24 +10,8 @@ export const LinkBlock: FC<{
   block: LinkBlockProps;
   getMetaData: any;
 }> = ({ blockIndex, block, getMetaData }) => {
-  const blockRef = useRef<HTMLDivElement>(null);
-  const setTool = useUpdateTool();
-  const { isMenuOpened } = useBlockMenu();
-
-  const handleSetTool = () => {
-    if (!isMenuOpened)
-      setTool({
-        blockIndex,
-        type: 'link',
-      });
-  };
-
   return (
-    <BlockContainer
-      ref={blockRef}
-      onMouseUp={handleSetTool}
-      onMouseEnter={handleSetTool}
-    >
+    <BlockContainer blockIndex={blockIndex} blockType="link">
       <LinkBlockContent
         blockIndex={blockIndex}
         block={block}
