@@ -10,7 +10,6 @@ import { getElementTextContent } from '../../helpers/get-element-textcontent';
 import { waitForElement } from '../../helpers/wait-for-element';
 import { useBlockEdit } from '../../hooks/use-block-edit';
 import { useBlockNavigation } from '../../hooks/use-block-navigation';
-import { BlockContent } from '../../post-editor.styles';
 import { Block, ListBlockProps } from '../../post-editor.types';
 
 import * as S from './list-block.styles';
@@ -123,14 +122,10 @@ export const ListBlockContent = memo<ListBlockContentProps>(
           .join('')}`,
       },
     };
-    return (
-      <BlockContent>
-        {block.data.style === 'ordered' ? (
-          <S.OrderedList {...listProps} />
-        ) : (
-          <S.UnorderedList {...listProps} />
-        )}
-      </BlockContent>
+    return block.data.style === 'ordered' ? (
+      <S.OrderedList {...listProps} />
+    ) : (
+      <S.UnorderedList {...listProps} />
     );
   }
 );

@@ -9,7 +9,6 @@ import { useUpdateTool } from '../../contexts/tool-context';
 import { getCaretPosition, getElementTextContent } from '../../helpers';
 import { useBlockEdit } from '../../hooks/use-block-edit';
 import { useBlockNavigation } from '../../hooks/use-block-navigation';
-import { BlockContent } from '../../post-editor.styles';
 import { ParagraphBlockProps } from '../../post-editor.types';
 
 const StyledBody = styled(Body)`
@@ -117,19 +116,17 @@ export const ParagraphBlockContent = memo<ParagraphBlockContentProps>(
     );
 
     return (
-      <BlockContent>
-        <StyledBody
-          ref={(el: HTMLElement) => (refs.current[blockIndex] = el)}
-          id={block.id}
-          className="paragraph-block"
-          noMargin
-          onInput={onBlockChange}
-          onKeyDown={handleKeyDown}
-          contentEditable={true}
-          suppressContentEditableWarning={true}
-          dangerouslySetInnerHTML={{ __html: initialText }}
-        />
-      </BlockContent>
+      <StyledBody
+        ref={(el: HTMLElement) => (refs.current[blockIndex] = el)}
+        id={block.id}
+        className="paragraph-block"
+        noMargin
+        onInput={onBlockChange}
+        onKeyDown={handleKeyDown}
+        contentEditable={true}
+        suppressContentEditableWarning={true}
+        dangerouslySetInnerHTML={{ __html: initialText }}
+      />
     );
   }
 );
