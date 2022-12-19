@@ -9,6 +9,7 @@
   },
   "private": true,
   "dependencies": {
+    "@air/react-drag-to-select": "^5.0.5",
     "@prisma/client": "^4.5.0",
     "@tanstack/react-query": "^4.16.0",
     "@trpc/client": "^10.0.0",
@@ -25,6 +26,7 @@
     "metadata-scraper": "^0.2.61",
     "mongoose": "^6.7.0",
     "next": "13.0.2",
+    "ramda": "^0.28.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.38.0",
@@ -71,6 +73,7 @@
     "@types/jest": "28.1.1",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "16.11.7",
+    "@types/ramda": "^0.28.20",
     "@types/react": "18.0.20",
     "@types/react-dom": "18.0.6",
     "@types/react-is": "17.0.3",

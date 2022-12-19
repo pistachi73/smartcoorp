@@ -1,19 +1,15 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { spaceS } from '../../../../tokens/spacing';
 import { Headline } from '../../../headline';
 import { useUpdateBlocks } from '../../contexts/block-context';
-import { useRefs } from '../../contexts/refs-context';
 import { useUpdateTool } from '../../contexts/tool-context';
 import { getCaretPosition } from '../../helpers';
-import { useBlockNavigation } from '../../hooks';
-import { useBlockEdit } from '../../hooks/use-block-edit';
+import { useBlockEdit, useRefs } from '../../hooks';
 import { HeaderBlockProps } from '../../post-editor.types';
 
 const StyledHeadline = styled(Headline)`
   display: block;
-  padding: ${spaceS} 0;
 
   :focus {
     outline: none;
@@ -45,7 +41,6 @@ export const HeaderBlockContent = memo<HeaderBlockContentProps>(
     const { setBlocks, splitTextBlock } = useUpdateBlocks();
     const { removeBlockAndFocusPrevious } = useBlockEdit(blockIndex);
     const setTool = useUpdateTool();
-    const { handleBlockNavigation } = useBlockNavigation(blockIndex);
     const size = HEADLINE_SIZE_LEVELS[block.data.level];
 
     useEffect(() => {
@@ -85,8 +80,6 @@ export const HeaderBlockContent = memo<HeaderBlockContentProps>(
           return;
         }
       }
-
-      handleBlockNavigation(e);
     };
 
     return (

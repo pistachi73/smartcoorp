@@ -1,6 +1,6 @@
 import { Button } from '../../button';
 import { useBlocks } from '../contexts/block-context';
-import { useRefs } from '../contexts/refs-context';
+import { useDragSelection, useRefs, useSharedEvents } from '../hooks';
 
 import { HeaderBlock } from './header/header-block';
 import { ImageBlock } from './image/image-block';
@@ -11,9 +11,11 @@ import { ParagraphBlock } from './paragraph/paragraph-block';
 export const Blocks = ({ getMetaData }: { getMetaData: any }) => {
   const { blocks } = useBlocks();
   const { refs } = useRefs();
+  const { DragSelection } = useDragSelection();
+  const { handleSharedClickDown, handleSharedKeyDown } = useSharedEvents();
 
   return (
-    <>
+    <div onMouseDown={handleSharedClickDown} onKeyDown={handleSharedKeyDown}>
       <Button
         onClick={() => {
           console.log(blocks);
@@ -23,6 +25,7 @@ export const Blocks = ({ getMetaData }: { getMetaData: any }) => {
       >
         Log blocks
       </Button>
+      <DragSelection />
       {blocks.map((block, index) => {
         switch (block.type) {
           case 'header':
@@ -55,6 +58,6 @@ export const Blocks = ({ getMetaData }: { getMetaData: any }) => {
             return null;
         }
       })}
-    </>
+    </div>
   );
 };

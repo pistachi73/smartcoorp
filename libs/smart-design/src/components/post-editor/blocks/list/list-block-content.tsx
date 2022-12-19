@@ -3,13 +3,12 @@ import * as ReactDOMServer from 'react-dom/server';
 import { v4 as uuid } from 'uuid';
 
 import { useUpdateBlocks } from '../../contexts/block-context';
-import { useRefs } from '../../contexts/refs-context';
 import { useUpdateTool } from '../../contexts/tool-context';
 import { getCaretPosition } from '../../helpers';
 import { getElementTextContent } from '../../helpers/get-element-textcontent';
 import { waitForElement } from '../../helpers/wait-for-element';
+import { useRefs } from '../../hooks';
 import { useBlockEdit } from '../../hooks/use-block-edit';
-import { useBlockNavigation } from '../../hooks/use-block-navigation';
 import { Block, ListBlockProps } from '../../post-editor.types';
 
 import * as S from './list-block.styles';
@@ -26,7 +25,6 @@ export const ListBlockContent = memo<ListBlockContentProps>(
     const { refs } = useRefs();
     const setTool = useUpdateTool();
     const { setBlocks } = useUpdateBlocks();
-    const { handleBlockNavigation } = useBlockNavigation(blockIndex);
     const { removeBlockAndFocusPrevious } = useBlockEdit(blockIndex);
 
     useEffect(() => {
@@ -105,8 +103,6 @@ export const ListBlockContent = memo<ListBlockContentProps>(
           return;
         }
       }
-
-      handleBlockNavigation(e);
     };
 
     const listProps = {

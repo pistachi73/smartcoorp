@@ -5,8 +5,9 @@ import styled, { css } from 'styled-components';
 
 import { spaceS } from '../../../../tokens/spacing';
 import { useUpdateBlocks } from '../../contexts/block-context';
-import { useRefs } from '../../contexts/refs-context';
-import { useBlockEdit } from '../../hooks/use-block-edit';
+import { useUpdateTool } from '../../contexts/tool-context';
+import { useBlockEdit, useRefs } from '../../hooks';
+import { ToolProps } from '../../post-editor';
 
 import * as S from './modify-block.styles';
 
@@ -38,6 +39,7 @@ export const CommonTools = memo<CommonToolsProps>(
   ({ menuRefs, blockIndex, startingIndex }) => {
     const [deleteEnabled, setDeleteEnabled] = useState(false);
     const { swapBlocks } = useUpdateBlocks();
+    const setTool = useUpdateTool();
     const { refs } = useRefs();
     const { removeBlockAndFocusPrevious } = useBlockEdit(blockIndex);
 
@@ -50,12 +52,26 @@ export const CommonTools = memo<CommonToolsProps>(
       }
     };
 
+    const handleMoveBlockClick = (direction: 1 | -1) => async () => {
+      if (
+        (direction === -1 && blockIndex === 0) ||
+        (direction === 1 && blockIndex === refs.current.length - 1)
+      )
+        return;
+
+      await swapBlocks(blockIndex, blockIndex + direction);
+      setTool((prevTool) => ({
+        type: (prevTool as ToolProps).type,
+        blockIndex: blockIndex + direction,
+      }));
+    };
+
     return (
       <ToolContainerWithGap $withGap={startingIndex !== 0}>
         <MoveMenuItem
           ref={(el: HTMLElement) => (menuRefs.current[startingIndex] = el)}
           $disabled={blockIndex === 0}
-          onClick={() => blockIndex !== 0 && swapBlocks(blockIndex, -1)}
+          onClick={handleMoveBlockClick(-1)}
         >
           <BiUpArrowAlt size={24} />
         </MoveMenuItem>
@@ -70,9 +86,7 @@ export const CommonTools = memo<CommonToolsProps>(
         <MoveMenuItem
           ref={(el: HTMLElement) => (menuRefs.current[startingIndex + 2] = el)}
           $disabled={blockIndex === refs.current.length - 1}
-          onClick={() => {
-            blockIndex !== refs.current.length - 1 && swapBlocks(blockIndex, 1);
-          }}
+          onClick={handleMoveBlockClick(1)}
         >
           <BiDownArrowAlt size={24} />
         </MoveMenuItem>

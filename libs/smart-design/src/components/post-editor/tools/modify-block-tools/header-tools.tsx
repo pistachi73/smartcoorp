@@ -1,10 +1,10 @@
-import { FC, memo, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { primary, spaceS, spaceXS } from '@smartcoorp/smart-design/tokens';
+import { primary, spaceS } from '@smartcoorp/smart-design/tokens';
 
 import { useUpdateBlocks } from '../../contexts/block-context';
-import { useRefs } from '../../contexts/refs-context';
+import { useRefs } from '../../hooks';
 
 import * as S from './modify-block.styles';
 
