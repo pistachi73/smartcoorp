@@ -84,7 +84,7 @@ export const useUpdateBlocks = (): {
   insertParagraphBlock: (blockIndex: number, text?: string) => string;
   removeBlock: (blockIndex: number) => void;
   splitTextBlock: (blockIndex: number, innerHTML: string) => void;
-  swapBlocks: (blockIndex: number, direction: 1 | -1) => void;
+  swapBlocks: (firstIndex: number, secondIndex: number) => void;
   modifyHeaderLevel: (blockIndex: number, level: 1 | 2 | 3 | 4 | 5 | 6) => void;
   modifyListStyle: (blockIndex: number, style: 'ordered' | 'unordered') => void;
 } => {
@@ -168,24 +168,18 @@ export const useUpdateBlocks = (): {
   );
 
   const swapBlocks = useCallback(
-    async (blockIndex: number, direction: 1 | -1) => {
-      console.log('swap on index', blockIndex);
+    async (firstIndex: number, secondIndex: number) => {
       await setBlocks((prevBlocks: Block[]): Block[] => {
         const newBlocks = [...prevBlocks];
 
-        const auxBlock = newBlocks[blockIndex];
-        newBlocks[blockIndex] = newBlocks[blockIndex + direction];
-        newBlocks[blockIndex + direction] = auxBlock;
+        const auxBlock = newBlocks[firstIndex];
+        newBlocks[firstIndex] = newBlocks[secondIndex];
+        newBlocks[secondIndex] = auxBlock;
 
         return newBlocks;
       });
-
-      setTool((prevTool) => ({
-        type: (prevTool as ToolProps).type,
-        blockIndex: blockIndex + direction,
-      }));
     },
-    [setBlocks, setTool]
+    [setBlocks]
   );
 
   const modifyHeaderLevel = useCallback(

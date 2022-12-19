@@ -1,12 +1,24 @@
 import styled, { css } from 'styled-components';
 
 import { borderRadiusXS } from '../../tokens/borderRadius';
+import { motionEasingStandard, motionTimeS } from '../../tokens/motion';
 import { scale180 } from '../../tokens/scale';
-import { spaceL, spaceM } from '../../tokens/spacing';
+import { spaceL, spaceM, spaceS } from '../../tokens/spacing';
 import { Body } from '../body';
 
-export const BlockContent = styled.div`
+export const BlockContent = styled.div<{ $selected?: boolean }>`
   margin: 0 ${scale180};
+  padding: ${spaceS} 0;
+
+  transition-timing-function: ${motionEasingStandard};
+  transition-duration: ${motionTimeS};
+  transition-property: background-color;
+
+  ${({ $selected }) =>
+    $selected &&
+    css`
+      background-color: rgba(179, 212, 252, 0.25) !important;
+    `}
 `;
 
 export const BlockContainer = styled.div``;

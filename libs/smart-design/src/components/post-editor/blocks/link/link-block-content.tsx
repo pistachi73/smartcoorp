@@ -6,8 +6,7 @@ import Image from 'next/image';
 import { Col, Grid, Row } from '../../../grid-layout';
 import { Headline } from '../../../headline/headline';
 import { useUpdateBlocks } from '../../contexts/block-context';
-import { useRefs } from '../../contexts/refs-context';
-import { useBlockNavigation } from '../../hooks';
+import { useRefs } from '../../hooks';
 import { LinkBlockProps } from '../../post-editor.types';
 
 import * as S from './link-block.styles';
@@ -22,13 +21,10 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
   ({ blockIndex, block, getMetaData }) => {
     const { refs } = useRefs();
     const { setBlocks } = useUpdateBlocks();
-    const { handleBlockNavigation } = useBlockNavigation(blockIndex);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
     const handleInputBoxKeyPress = async (e: React.KeyboardEvent) => {
-      handleBlockNavigation(e);
-
       if (e.key !== 'Enter' || loading) return;
 
       e.preventDefault();
@@ -102,7 +98,6 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
         </button>
         <S.MetaDataContainer
           ref={(el: unknown) => (refs.current[blockIndex] = el)}
-          onKeyDown={handleBlockNavigation}
           className="skip-tab"
           href={block.data.link}
           target={'_blank'}
@@ -126,8 +121,8 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
                         block.data.meta.image.url
                       )}`}
                       alt={`${block.data.meta.domain} metadata image`}
-                      objectFit="contain"
-                      layout="fill"
+                      style={{ objectFit: 'contain' }}
+                      fill
                     />
                   </S.MetaImageContainer>
                 )}

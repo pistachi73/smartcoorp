@@ -76,6 +76,4 @@ export const LinkIcon = styled(BsLink45Deg)<{
       : theme.color.neutral};
 `;
 
-export const Container = styled.div`
-  margin: ${spaceS} 0;
-`;
+export const Container = styled.div``;

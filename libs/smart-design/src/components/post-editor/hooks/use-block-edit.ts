@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { useUpdateBlocks } from '../contexts/block-context';
-import { useRefs } from '../contexts/refs-context';
+import { useRefs } from '../hooks';
 
 type UseBlockEditResult = {
   removeBlockAndFocusPrevious: () => void;

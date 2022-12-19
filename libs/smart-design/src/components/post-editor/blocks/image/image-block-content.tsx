@@ -1,10 +1,8 @@
 import { memo, useRef, useState } from 'react';
 
 import { useUpdateBlocks } from '../../contexts/block-context';
-import { useRefs } from '../../contexts/refs-context';
 import { waitForElement } from '../../helpers/wait-for-element';
-import { useBlockNavigation } from '../../hooks';
-import { BlockContainer } from '../../post-editor.styles';
+import { useRefs } from '../../hooks';
 import { ImageBlockProps } from '../../post-editor.types';
 
 import * as S from './image-block.styles';
@@ -18,7 +16,6 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
   ({ blockIndex, block }) => {
     const { setBlocks } = useUpdateBlocks();
     const { refs } = useRefs();
-    const { handleBlockNavigation } = useBlockNavigation(blockIndex);
     const [imagePreview, setImagePreview] = useState<
       string | ArrayBuffer | null
     >();
@@ -53,12 +50,8 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
       refs.current[blockIndex].focus();
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-      handleBlockNavigation(e);
-    };
-
     return (
-      <BlockContainer>
+      <>
         <input
           id={block.id}
           hidden
@@ -80,7 +73,6 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
             />
             <S.CaptionInputBox
               id={`caption-${block.id}`}
-              onKeyDown={handleKeyDown}
               contentEditable
               data-placeholder="Caption..."
             />
@@ -89,14 +81,13 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
           <S.UploadImageButton
             ref={(el: HTMLParagraphElement) => (refs.current[blockIndex] = el)}
             onClick={handleOpenUploadImage}
-            onKeyDown={handleKeyDown}
             data-placeholder="👉 Select image"
             tabIndex={1}
             noMargin
             forwardedAs="button"
           />
         )}
-      </BlockContainer>
+      </>
     );
   }
 );

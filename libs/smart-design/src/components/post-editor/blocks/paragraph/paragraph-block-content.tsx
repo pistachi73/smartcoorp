@@ -1,20 +1,16 @@
 import React, { memo, useCallback, useState } from 'react';
 import styled from 'styled-components';
 
-import { spaceS } from '../../../../tokens/spacing';
 import { Body } from '../../../body';
 import { useUpdateBlocks } from '../../contexts/block-context';
-import { useRefs } from '../../contexts/refs-context';
 import { useUpdateTool } from '../../contexts/tool-context';
 import { getCaretPosition, getElementTextContent } from '../../helpers';
-import { useBlockEdit } from '../../hooks/use-block-edit';
-import { useBlockNavigation } from '../../hooks/use-block-navigation';
+import { useBlockEdit, useRefs } from '../../hooks';
 import { ParagraphBlockProps } from '../../post-editor.types';
 
 const StyledBody = styled(Body)`
   width: 100%;
   min-height: 24px;
-  padding: ${spaceS} 0;
 
   :focus {
     outline: none;
@@ -27,11 +23,11 @@ type ParagraphBlockContentProps = {
 
 export const ParagraphBlockContent = memo<ParagraphBlockContentProps>(
   ({ blockIndex, block }) => {
+    console.log('render paragraph content');
     const [initialText] = useState(block.data.text);
     const setTool = useUpdateTool();
     const { refs, focusBlockByIndex } = useRefs();
     const { setBlocks, splitTextBlock } = useUpdateBlocks();
-    const { handleBlockNavigation } = useBlockNavigation(blockIndex);
     const { removeBlockAndFocusPrevious } = useBlockEdit(blockIndex);
 
     const updateParagraphText = useCallback(() => {
@@ -102,8 +98,6 @@ export const ParagraphBlockContent = memo<ParagraphBlockContentProps>(
             }
           }
         }
-
-        handleBlockNavigation(e);
       },
       [
         blockIndex,
@@ -111,7 +105,6 @@ export const ParagraphBlockContent = memo<ParagraphBlockContentProps>(
         removeBlockAndFocusPrevious,
         setBlocks,
         focusBlockByIndex,
-        handleBlockNavigation,
       ]
     );
 

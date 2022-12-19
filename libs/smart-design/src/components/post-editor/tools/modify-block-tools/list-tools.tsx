@@ -1,12 +1,11 @@
-import { FC, memo, useEffect, useState } from 'react';
-import { AiOutlineOrderedList, AiOutlineUnorderedList } from 'react-icons/ai';
+import { memo, useEffect, useState } from 'react';
 import { BiListOl, BiListUl } from 'react-icons/bi';
 import styled from 'styled-components';
 
-import { primary, spaceS, spaceXS } from '@smartcoorp/smart-design/tokens';
+import { primary } from '@smartcoorp/smart-design/tokens';
 
 import { useUpdateBlocks } from '../../contexts/block-context';
-import { useRefs } from '../../contexts/refs-context';
+import { useRefs } from '../../hooks';
 
 import * as S from './modify-block.styles';
 
@@ -36,7 +35,6 @@ export const ListTools = memo<ListToolsProps>(({ blockIndex, menuRefs }) => {
   );
 
   useEffect(() => {
-    console.log(style);
     setStyle(
       refs.current[blockIndex].nodeName === 'OL' ? 'ordered' : 'unordered'
     );

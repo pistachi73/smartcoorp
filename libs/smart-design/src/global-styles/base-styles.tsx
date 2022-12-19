@@ -26,6 +26,14 @@ export const BaseStyles = createGlobalStyle`
     background:${({ theme }) => theme.common.overBackgroundNeutral};
   }
 
+  ::-moz-selection { /* Code for Firefox */
+    background: rgba(179, 212, 252, 0.75);
+  }
+
+  ::selection {
+    background: rgba(179, 212, 252, 0.75);
+  }
+
   body {
     font-family: "Inter", 'Montserrat', 'Trebuchet MS', Arial, 'Helvetica Neue', sans-serif;
     background: white;
