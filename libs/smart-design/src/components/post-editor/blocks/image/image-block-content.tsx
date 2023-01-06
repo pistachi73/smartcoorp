@@ -1,35 +1,26 @@
-import { memo, useRef, useState } from 'react';
+import { memo, useCallback, useRef, useState } from 'react';
 
-import { useUpdateBlocks } from '../../contexts/block-context';
+import { useBlockUpdaterContext } from '../../contexts/block-context';
+import { FileField } from '../../fields/file-field';
 import { waitForElement } from '../../helpers/wait-for-element';
 import { useRefs } from '../../hooks';
 import { ImageBlockProps } from '../../post-editor.types';
 
 import * as S from './image-block.styles';
+import { ImageCaption } from './image-caption';
 
 type ImageBlockContentProps = {
   blockIndex: number;
   block: ImageBlockProps;
 };
 
-export const ImageBlockContent = memo<ImageBlockContentProps>(
-  ({ blockIndex, block }) => {
-    const { setBlocks } = useUpdateBlocks();
-    const { refs } = useRefs();
-    const [imagePreview, setImagePreview] = useState<
-      string | ArrayBuffer | null
-    >();
-    const uploadImageRef = useRef<HTMLInputElement>(null);
+export const ImageBlockContent = memo<ImageBlockContentProps>(({ blockIndex, block }) => {
+  const { updateBlockFields } = useBlockUpdaterContext();
+  const { refs } = useRefs();
+  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>();
 
-    const handleOpenUploadImage = () => {
-      if (uploadImageRef.current) {
-        uploadImageRef.current.click();
-      }
-    };
-
-    const handleUploadImage = async (
-      e: React.ChangeEvent<HTMLInputElement>
-    ) => {
+  const handleUploadImage = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
 
       if (!file) return;
@@ -40,54 +31,37 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
       });
       reader.readAsDataURL(file);
 
-      await setBlocks((prevBlcoks) => {
-        const newBlocks = [...prevBlcoks];
-        (newBlocks[blockIndex] as ImageBlockProps).data.file = file;
-        return newBlocks;
-      });
+      updateBlockFields(blockIndex, { file });
 
       (await waitForElement(`caption-${block.id}`))?.focus();
       refs.current[blockIndex].focus();
-    };
+    },
+    [block.id, blockIndex, refs, updateBlockFields]
+  );
 
-    return (
-      <>
-        <input
-          id={block.id}
-          hidden
-          ref={uploadImageRef}
-          type="file"
-          name="imageToUpload"
-          accept="image/png,image/gif,image/jpeg"
-          onChange={handleUploadImage}
-        />
-
-        {imagePreview ? (
-          <S.ImagePreviewContainer
-            ref={(el: HTMLDivElement) => (refs.current[blockIndex] = el)}
-          >
-            <S.ImagePreview
-              style={{ maxWidth: '100%' }}
-              src={imagePreview as string}
-              alt={`caption-${block.id}`}
-            />
-            <S.CaptionInputBox
-              id={`caption-${block.id}`}
-              contentEditable
-              data-placeholder="Caption..."
-            />
-          </S.ImagePreviewContainer>
-        ) : (
-          <S.UploadImageButton
-            ref={(el: HTMLParagraphElement) => (refs.current[blockIndex] = el)}
-            onClick={handleOpenUploadImage}
-            data-placeholder="👉 Select image"
-            tabIndex={1}
-            noMargin
-            forwardedAs="button"
-          />
-        )}
-      </>
-    );
-  }
-);
+  return imagePreview ? (
+    <S.ImagePreviewContainer ref={(el: HTMLDivElement) => (refs.current[blockIndex] = el)}>
+      <S.ImagePreview
+        style={{ maxWidth: '100%' }}
+        src={imagePreview as string}
+        alt={`caption-${block.id}`}
+      />
+      <ImageCaption
+        blockId={block.id}
+        blockIndex={blockIndex}
+        focusIndex={0}
+        caption={block.data.caption || ''}
+      />
+    </S.ImagePreviewContainer>
+  ) : (
+    <FileField
+      acceptedFileTypes="image/png,image/gif,image/jpeg"
+      blockId={block.id}
+      blockIndex={blockIndex}
+      focusIndex={0}
+      placeholder="👉 Select file"
+      name="imageToUpload"
+      handleUploadFile={handleUploadImage}
+    />
+  );
+});

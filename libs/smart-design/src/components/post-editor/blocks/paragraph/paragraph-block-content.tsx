@@ -1,125 +1,181 @@
-import React, { memo, useCallback, useState } from 'react';
-import styled from 'styled-components';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { v4 as uuid } from 'uuid';
 
-import { Body } from '../../../body';
-import { useUpdateBlocks } from '../../contexts/block-context';
-import { useUpdateTool } from '../../contexts/tool-context';
+import { useBlockUpdaterContext } from '../../contexts/block-context';
+import { TextField } from '../../fields/text-field';
 import { getCaretPosition, getElementTextContent } from '../../helpers';
-import { useBlockEdit, useRefs } from '../../hooks';
+import { updateBlocks } from '../../helpers/fp-helpers';
+import { useBlockEdit, useCommands, useRefs } from '../../hooks';
+import { useDispatchAsyncCommand } from '../../hooks/use-commands/use-dispatch-async-commands';
+import { usePreviousPersistentWithMatcher } from '../../hooks/use-previous';
 import { ParagraphBlockProps } from '../../post-editor.types';
 
-const StyledBody = styled(Body)`
-  width: 100%;
-  min-height: 24px;
-
-  :focus {
-    outline: none;
-  }
-`;
 type ParagraphBlockContentProps = {
   blockIndex: number;
   block: ParagraphBlockProps;
 };
 
-export const ParagraphBlockContent = memo<ParagraphBlockContentProps>(
-  ({ blockIndex, block }) => {
-    console.log('render paragraph content');
-    const [initialText] = useState(block.data.text);
-    const setTool = useUpdateTool();
-    const { refs, focusBlockByIndex } = useRefs();
-    const { setBlocks, splitTextBlock } = useUpdateBlocks();
-    const { removeBlockAndFocusPrevious } = useBlockEdit(blockIndex);
+export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
+  blockIndex,
+  block,
+}) => {
+  const { focusableRefs, focusContiguousElement } = useRefs();
+  const { setBlocks, splitTextBlock, updateBlockFields } = useBlockUpdaterContext();
+  const { addCommand } = useCommands();
+  const prevText = usePreviousPersistentWithMatcher(block.data.text);
+  const { dispatchAsyncCommand } = useDispatchAsyncCommand(block.data.text, prevText);
 
-    const updateParagraphText = useCallback(() => {
-      setBlocks((blocks) => {
-        const newBlocks = [...blocks];
-        (newBlocks[blockIndex] as ParagraphBlockProps).data.text =
-          refs.current[blockIndex].innerHTML;
-        return newBlocks;
+  const focusIndex = 0;
+  const onTextChange = useCallback(
+    (text: string) => {
+      updateBlockFields(blockIndex, {
+        text,
       });
-      setTool(null);
-    }, [blockIndex, refs, setBlocks, setTool]);
 
-    const onBlockChange = useCallback(async () => {
-      const element = refs.current[blockIndex];
-      const innerHTML = element.innerHTML;
-
-      if (innerHTML.includes('<div>')) {
-        console.log('Splitting block');
-        await splitTextBlock(blockIndex, innerHTML);
-      } else {
-        await updateParagraphText();
-      }
-    }, [blockIndex, refs, updateParagraphText, splitTextBlock]);
-
-    const handleKeyDown = useCallback(
-      async (e: React.KeyboardEvent) => {
-        const element = refs.current[blockIndex];
-        const caretPosition = getCaretPosition(element);
-        if (e.key === 'Backspace') {
-          if (caretPosition === 0 && element.textContent.length === 0) {
-            console.log('Hola');
-            e.preventDefault();
-            await removeBlockAndFocusPrevious();
-            return;
-          }
-
-          // Merge with previous block
-          if (caretPosition === 0 && element.textContent.length !== 0) {
-            console.log('merge paragraph block with previous block');
-            let previousBlockTextContentLength: number | null = null;
-            let newHTML = '';
-
-            await setBlocks((prevBlocks) => {
-              if (
-                blockIndex !== 0 &&
-                prevBlocks[blockIndex - 1].type === 'paragraph'
-              ) {
-                e.preventDefault();
-                const newBlocks = [...prevBlocks];
-
-                newHTML = element.innerHTML;
-                previousBlockTextContentLength = getElementTextContent(
-                  refs.current[blockIndex - 1]
-                ).length;
-
-                newBlocks.splice(blockIndex, 1);
-
-                return newBlocks;
-              } else return prevBlocks;
-            });
-
-            if (previousBlockTextContentLength !== null) {
-              console.log(previousBlockTextContentLength);
-              focusBlockByIndex(blockIndex - 1, 'end');
-              await document.execCommand('insertHTML', false, newHTML);
-              focusBlockByIndex(blockIndex - 1, previousBlockTextContentLength);
-              return;
-            }
-          }
-        }
-      },
-      [
+      dispatchAsyncCommand({
+        type: 'editTextField',
+        field: 'text',
+        ref: focusableRefs.current[blockIndex][0],
         blockIndex,
-        refs,
-        removeBlockAndFocusPrevious,
-        setBlocks,
-        focusBlockByIndex,
-      ]
-    );
+        fieldId: `${block.id}_${focusIndex}`,
+      });
+    },
+    [updateBlockFields, blockIndex, dispatchAsyncCommand, focusableRefs, block.id]
+  );
 
-    return (
-      <StyledBody
-        ref={(el: HTMLElement) => (refs.current[blockIndex] = el)}
-        id={block.id}
-        className="paragraph-block"
-        noMargin
-        onInput={onBlockChange}
-        onKeyDown={handleKeyDown}
-        contentEditable={true}
-        suppressContentEditableWarning={true}
-        dangerouslySetInnerHTML={{ __html: initialText }}
-      />
-    );
-  }
-);
+  const debouncedOnTextChange = useMemo(() => {
+    return debounce(onTextChange, 300);
+  }, [onTextChange]);
+
+  const onInputChange = useCallback(
+    async (e: React.ChangeEvent) => {
+      const innerHTML = e.target.innerHTML.trim();
+      const isTextSplit = innerHTML.includes('<div>');
+
+      if (isTextSplit) {
+        debouncedOnTextChange.cancel();
+
+        const { newBlockId, textAfter } = await splitTextBlock(
+          blockIndex,
+          innerHTML,
+          focusableRefs.current[blockIndex][0]
+        );
+
+        dispatchAsyncCommand({
+          type: 'splitTextBlock',
+          blockIndex,
+          fieldId: `${block.id}_${focusIndex}`,
+          field: 'text',
+          ref: focusableRefs.current[blockIndex][0],
+          createdParagraphBlock: {
+            text: textAfter,
+            id: newBlockId,
+          },
+        });
+      } else {
+        debouncedOnTextChange(innerHTML);
+      }
+    },
+    [
+      debouncedOnTextChange,
+      splitTextBlock,
+      blockIndex,
+      focusableRefs,
+      dispatchAsyncCommand,
+      block.id,
+    ]
+  );
+
+  const handleKeyDown = useCallback(
+    async (e: React.KeyboardEvent) => {
+      const element = e.target as HTMLElement;
+      const caretPosition = getCaretPosition(element);
+      if (e.key === 'Backspace') {
+        if (
+          caretPosition === 0 &&
+          focusableRefs.current[blockIndex - 1][0].getAttribute('data-block-type') === 'paragraph'
+        ) {
+          debouncedOnTextChange.cancel();
+          e.preventDefault();
+          e.stopPropagation();
+          const prevBlock = focusableRefs.current[blockIndex - 1][0];
+          const prevBlockInnerHTML = prevBlock.innerHTML;
+          const prevBlockTextContentLength: number = getElementTextContent(prevBlock).length;
+          const newHTML = `${prevBlockInnerHTML}${element.innerHTML}`.trim();
+
+          setBlocks(
+            updateBlocks({
+              [blockIndex - 1]: {
+                data: {
+                  $merge: {
+                    text: newHTML,
+                  },
+                },
+              },
+              $splice: [[blockIndex, 1]],
+            })
+          );
+
+          prevBlock.innerHTML = newHTML;
+          focusContiguousElement(blockIndex, 0, -1, prevBlockTextContentLength);
+
+          addCommand({
+            action: {
+              type: 'mergeTextBlock',
+              payload: {
+                fieldId: prevBlock.id,
+                blockIndex: blockIndex - 1,
+                field: 'text',
+                ref: focusableRefs.current[blockIndex - 1][0],
+                text: newHTML,
+                caretPosition: prevBlockTextContentLength,
+              },
+            },
+            inverse: {
+              type: 'splitTextBlock',
+              payload: {
+                fieldId: prevBlock.id,
+                blockIndex: blockIndex - 1,
+                field: 'text',
+                ref: focusableRefs.current[blockIndex - 1][0],
+                text: prevBlockInnerHTML,
+                createdBlock: {
+                  id: block.id,
+                  type: 'paragraph',
+                  data: {
+                    text: block.data.text,
+                  },
+                },
+              },
+            },
+          });
+        }
+      }
+    },
+    [
+      focusableRefs,
+      blockIndex,
+      debouncedOnTextChange,
+      setBlocks,
+      focusContiguousElement,
+      addCommand,
+      block.id,
+      block.data.text,
+    ]
+  );
+
+  return (
+    <TextField
+      variant="paragraph"
+      field="text"
+      blockId={block.id}
+      blockIndex={blockIndex}
+      focusIndex={focusIndex}
+      text={block.data.text}
+      onInputChange={onInputChange}
+      onKeyDown={handleKeyDown}
+      data-block-type="paragraph"
+    />
+  );
+};

@@ -1,21 +1,23 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useCallback, useState } from 'react';
+
+import update from 'immutability-helper';
+import * as R from 'ramda';
+import React, { useCallback, useMemo, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
+import { getElementTextContent, getHTMLStringTextContent, waitForElement } from '../helpers';
 import {
-  getElementTextContent,
-  getHTMLStringTextContent,
-  waitForElement,
-} from '../helpers';
-import { ToolProps } from '../post-editor';
-import {
-  Block,
-  BlockType,
-  HeaderBlockProps,
-  ListBlockProps,
-} from '../post-editor.types';
+  addIdxToObject,
+  filterAndSaveRemoved,
+  log,
+  removeIdxFromObject,
+  updateBlocks,
+} from '../helpers/fp-helpers';
+import { Block, BlockType, EveryBlockFields, ParagraphBlockProps } from '../post-editor.types';
 
+import { FocusableElement } from './refs-context';
 import { useUpdateTool } from './tool-context';
+
 type PostEditorProviderProps = {
   blocks: Block[];
   setBlocks: React.Dispatch<React.SetStateAction<Block[]>>;
@@ -24,9 +26,9 @@ type PostEditorProviderProps = {
 };
 
 const BlockConsumerContext = React.createContext<Block[]>([]);
-const BlockUpdaterContext = React.createContext<
-  React.Dispatch<React.SetStateAction<Block[]>>
->(() => {});
+const BlockUpdaterContext = React.createContext<React.Dispatch<React.SetStateAction<Block[]>>>(
+  () => {}
+);
 const AvailableBlocksContext = React.createContext<BlockType[]>([]);
 
 export const BlockProvider: React.FC<PostEditorProviderProps> = ({
@@ -37,12 +39,7 @@ export const BlockProvider: React.FC<PostEditorProviderProps> = ({
 }) => {
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks);
   const [availableBlocks] = useState<BlockType[]>(() => {
-    const availableBlocks: BlockType[] = [
-      'image',
-      'header',
-      'paragraph',
-      'list',
-    ];
+    const availableBlocks: BlockType[] = ['image', 'header', 'paragraph', 'list'];
     if (getMetaData) availableBlocks.push('link');
     return availableBlocks;
   });
@@ -62,6 +59,7 @@ export const useBlocks = (): {
   blocks: Block[];
 } => {
   const blocks = React.useContext(BlockConsumerContext);
+
   if (typeof blocks === 'undefined') {
     throw new Error('useBlocks must be used within a BlockProvider');
   }
@@ -79,14 +77,25 @@ export const useAvailableBlocks = (): {
   return { availableBlocks };
 };
 
-export const useUpdateBlocks = (): {
+export const useBlockUpdaterContext = (): {
   setBlocks: React.Dispatch<React.SetStateAction<Block[]>>;
   insertParagraphBlock: (blockIndex: number, text?: string) => string;
-  removeBlock: (blockIndex: number) => void;
-  splitTextBlock: (blockIndex: number, innerHTML: string) => void;
-  swapBlocks: (firstIndex: number, secondIndex: number) => void;
+  removeBlocks: (blockIndexes: number[]) => Block[];
+  splitTextBlock: (
+    blockIndex: number,
+    innerHTML: string,
+    splitedBlockRef?: FocusableElement
+  ) => Promise<{
+    newBlockId: string;
+    textBefore: string;
+    textAfter: string;
+  }>;
+  getBlocksData: (blockIndexes: number[]) => Block[];
+  insertBlocks: (blocks: Block[], position: number) => void;
   modifyHeaderLevel: (blockIndex: number, level: 1 | 2 | 3 | 4 | 5 | 6) => void;
   modifyListStyle: (blockIndex: number, style: 'ordered' | 'unordered') => void;
+  updateBlockFields: (blockIndex: number, data: EveryBlockFields) => void;
+  swapBlocks: (firstIndex: number[], secondIndex: number[]) => void;
 } => {
   const setBlocks = React.useContext(BlockUpdaterContext);
   const setTool = useUpdateTool();
@@ -94,6 +103,22 @@ export const useUpdateBlocks = (): {
     throw new Error('useUpdateTool must be used within a BlockProvider');
   }
 
+  const updateBlockFields = useCallback(
+    (blockIndex: number, data: EveryBlockFields) => {
+      const updatedFields = Object.keys(data).map((field) => ({
+        [field]: { $set: data[field as keyof EveryBlockFields] },
+      }));
+
+      setBlocks(
+        updateBlocks({
+          [blockIndex]: {
+            data: { ...R.mergeAll(updatedFields) },
+          },
+        })
+      );
+    },
+    [setBlocks]
+  );
   const insertParagraphBlock = useCallback(
     (blockIndex: number, text = ''): string => {
       const node = document.createElement('div');
@@ -103,43 +128,65 @@ export const useUpdateBlocks = (): {
       if (!textContent) text = '';
 
       const blockId = uuid();
-      setBlocks((prevBlocks: Block[]): Block[] => {
-        const newBlocks = [...prevBlocks];
-        newBlocks.splice(blockIndex + 1, 0, {
-          id: blockId,
-          type: 'paragraph',
-          data: {
-            text,
-          },
-        });
+      const newParagraphBlock: ParagraphBlockProps = {
+        id: blockId,
+        type: 'paragraph',
+        data: {
+          text,
+        },
+      };
 
-        return newBlocks;
-      });
+      setBlocks(
+        updateBlocks({
+          $splice: [[blockIndex + 1, 0, newParagraphBlock]],
+        })
+      );
 
       return blockId;
     },
     [setBlocks]
   );
 
-  const removeBlock = useCallback(
-    async (blockIndex: number) => {
-      setBlocks((prevBlocks: Block[]): Block[] => {
-        const newBlocks = [...prevBlocks];
-        newBlocks.splice(blockIndex, 1);
-        return newBlocks;
-      });
+  const removeBlocks = useCallback(
+    (blockIndexes: number[]): Block[] => {
+      if (!blockIndexes.length) return [];
+
+      const removedBlocks: Block[] = [];
+      const filterByIndexAndSaveRemoved = filterAndSaveRemoved(
+        (x: any) => !blockIndexes.includes(x.idx)
+      );
+
+      setBlocks(
+        updateBlocks({
+          $apply: R.compose(
+            removeIdxFromObject,
+            R.filter(filterByIndexAndSaveRemoved(removedBlocks)),
+            addIdxToObject
+          ),
+        })
+      );
+
+      return removeIdxFromObject(removedBlocks);
+    },
+    [setBlocks]
+  );
+  const insertBlocks = useCallback(
+    (blocks: Block[], position: number) => {
+      setBlocks(
+        updateBlocks({
+          $splice: [[position, 0, ...blocks]],
+        })
+      );
     },
     [setBlocks]
   );
 
   const splitTextBlock = useCallback(
-    async (blockIndex: number, innerHTML: string) => {
-      const splitInnerHTML = innerHTML
-        .split(/<div>(.*?)<\/div>/)
-        .filter((t: string) => t !== '');
+    async (blockIndex: number, innerHTML: string, splitedBlockRef?: FocusableElement) => {
+      const splitInnerHTML = innerHTML.split(/<div>(.*?)<\/div>/).filter((t: string) => t !== '');
 
-      const textAfterCaret = splitInnerHTML[1]?.replace(/<br>/g, '') || '';
-      const textBeforeCaret = splitInnerHTML[0]?.replace(/<br>/g, '') || '';
+      const textAfterCaret = (splitInnerHTML[1]?.replace(/<br>/g, '') || '').trim();
+      const textBeforeCaret = (splitInnerHTML[0]?.replace(/<br>/g, '') || '').trim();
 
       const textAfterCaretContent = getHTMLStringTextContent(textAfterCaret);
       const textBeforeCaretContent = getHTMLStringTextContent(textBeforeCaret);
@@ -149,68 +196,102 @@ export const useUpdateBlocks = (): {
         textAfterCaretContent.length ? textAfterCaret : ''
       );
 
-      document.execCommand('undo');
-      document.execCommand('selectAll');
-      document.execCommand(
-        'insertHTML',
-        false,
-        textBeforeCaretContent.length ? textBeforeCaret : ''
-      );
+      if (splitedBlockRef) {
+        updateBlockFields(blockIndex, { text: textBeforeCaret || '' });
+        splitedBlockRef.innerHTML = textBeforeCaretContent.length ? textBeforeCaret : '';
+      } else {
+        document.execCommand('undo');
+        document.execCommand('selectAll');
+        document.execCommand(
+          'insertHTML',
+          false,
+          textBeforeCaretContent.length ? textBeforeCaret : ''
+        );
+      }
 
-      (await waitForElement(newBlockId))?.focus();
+      (await waitForElement(`${newBlockId}_0`))?.focus();
 
       setTool({
         type: 'paragraph',
         blockIndex: blockIndex + 1,
       });
+
+      return {
+        newBlockId,
+        textBefore: textBeforeCaretContent,
+        textAfter: textAfterCaretContent,
+      };
     },
-    [insertParagraphBlock, setTool]
+    [insertParagraphBlock, setTool, updateBlockFields]
   );
 
   const swapBlocks = useCallback(
-    async (firstIndex: number, secondIndex: number) => {
-      await setBlocks((prevBlocks: Block[]): Block[] => {
-        const newBlocks = [...prevBlocks];
+    (blockIndexesOne: number[], blockIndexesTwo: number[]) => {
+      const [deleteIndexes, pivotIndexes] =
+        blockIndexesOne[0] < blockIndexesTwo[0]
+          ? [blockIndexesTwo, blockIndexesOne]
+          : [blockIndexesOne, blockIndexesTwo];
 
-        const auxBlock = newBlocks[firstIndex];
-        newBlocks[firstIndex] = newBlocks[secondIndex];
-        newBlocks[secondIndex] = auxBlock;
+      let auxSplicedBlocks: Block[] = [];
 
-        return newBlocks;
+      const spliceBlocks = (prevBlocks: Block[]): Block[] => {
+        auxSplicedBlocks = prevBlocks.splice(deleteIndexes[0], deleteIndexes.length);
+        return prevBlocks;
+      };
+
+      setBlocks((prev) => {
+        spliceBlocks(prev);
+        return update(prev, {
+          $splice: [[pivotIndexes[0], 0, ...auxSplicedBlocks]],
+        });
       });
+    },
+    [setBlocks]
+  );
+
+  // We are doing this because we need to get the data of the blocks
+  // wihout having to get block data to avoid rerenders
+  const getBlocksData = useCallback(
+    (blockIndexes: number[]) => {
+      const blocks: Block[] = [];
+      setBlocks((prevBlocks) => {
+        prevBlocks.forEach((block, i) => {
+          if (blockIndexes.includes(i)) blocks.push(block);
+        });
+        return prevBlocks;
+      });
+      return blocks;
     },
     [setBlocks]
   );
 
   const modifyHeaderLevel = useCallback(
     (blockIndex: number, level: 1 | 2 | 3 | 4 | 5 | 6) => {
-      setBlocks((prevBlocks: Block[]): Block[] => {
-        const newBlocks = [...prevBlocks];
-        (newBlocks[blockIndex] as HeaderBlockProps).data.level = level;
-        return newBlocks;
-      });
+      setBlocks(
+        updateBlocks({
+          [blockIndex]: {
+            data: { level: { $set: level } },
+          },
+        })
+      );
     },
     [setBlocks]
   );
 
-  const modifyListStyle = useCallback(
-    (blockIndex: number, style: 'ordered' | 'unordered') => {
-      setBlocks((prevBlocks: Block[]): Block[] => {
-        const newBlocks = [...prevBlocks];
-        (newBlocks[blockIndex] as ListBlockProps).data.style = style;
-        return newBlocks;
-      });
-    },
-    [setBlocks]
-  );
+  const modifyListStyle = (blockIndex: number, style: 'ordered' | 'unordered') => {
+    setBlocks(updateBlocks({ [blockIndex]: { data: { style: { $set: style } } } }));
+  };
 
   return {
     setBlocks,
     insertParagraphBlock,
-    removeBlock,
+    removeBlocks,
     splitTextBlock,
     swapBlocks,
+    insertBlocks,
+    getBlocksData,
     modifyHeaderLevel,
     modifyListStyle,
+    updateBlockFields,
   };
 };

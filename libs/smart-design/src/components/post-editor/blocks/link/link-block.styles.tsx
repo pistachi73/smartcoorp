@@ -6,9 +6,7 @@ import {
   primary,
   spaceL,
   spaceM,
-  spaceS,
   spaceXL,
-  spaceXS,
   spaceXXL,
 } from '../../../../tokens';
 import { Body } from '../../../body';

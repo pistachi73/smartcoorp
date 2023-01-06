@@ -1,23 +1,24 @@
-import {
-  Box,
-  boxesIntersect,
-  useSelectionContainer,
-} from '@air/react-drag-to-select';
-import { JSXElementConstructor, ReactElement } from 'react';
+import { Box, boxesIntersect, useSelectionContainer } from '@air/react-drag-to-select';
+import { JSXElementConstructor, ReactElement, useState } from 'react';
 
-import { useBlockSelection } from './use-block-selection';
+import {
+  useBlockSelectionConsumerContext,
+  useBlockSelectionUpdaterContext,
+} from '../contexts/block-selection-context';
+
+import { useRefs } from './use-refs';
 
 type UseDragSelectionResult = {
   DragSelection: () => ReactElement<any, string | JSXElementConstructor<any>>;
 };
 
 export const useDragSelection = (): UseDragSelectionResult => {
-  const {
-    selectableBlocks,
-    setSelectedBlocks,
-    isSelectionEnabled,
-    setCenterSelectedBlock,
-  } = useBlockSelection();
+  const { setSelectedBlocks, setPivotSelectedBlock } = useBlockSelectionUpdaterContext();
+  const { isSelectionEnabled } = useBlockSelectionConsumerContext();
+
+  const [selectableBoxes, setSelectableBoxes] = useState<Box[]>([]);
+
+  const { blockRefs } = useRefs();
 
   const { DragSelection } = useSelectionContainer({
     eventsElement: document.getElementById('root'),
@@ -29,25 +30,33 @@ export const useDragSelection = (): UseDragSelectionResult => {
         left: box.left + window.scrollX,
       };
       const indexesToSelect: number[] = [];
-      selectableBlocks.current.forEach((block, index) => {
-        if (boxesIntersect(scrollAwareBox, block)) {
+
+      selectableBoxes.forEach((box, index) => {
+        if (boxesIntersect(scrollAwareBox, box)) {
           indexesToSelect.push(index);
         }
       });
 
       const sel = document.getSelection();
 
-      if (indexesToSelect.length === 1)
-        setCenterSelectedBlock(indexesToSelect[0]);
+      if (indexesToSelect.length === 1) setPivotSelectedBlock(indexesToSelect[0]);
       if (indexesToSelect.length < 2) {
         setSelectedBlocks([]);
-        setCenterSelectedBlock(indexesToSelect[0]);
+        setPivotSelectedBlock(indexesToSelect[0]);
       } else {
         if (sel) sel.removeAllRanges();
         setSelectedBlocks(indexesToSelect);
       }
     },
+    onSelectionStart: () => {
+      const scrollY = window.scrollY;
+      const selectableBoxes: Box[] = blockRefs.current.map((ref) => {
+        const { top, left, width, height } = ref.getBoundingClientRect();
+        return { top: top + scrollY, left, width, height };
+      });
 
+      setSelectableBoxes(selectableBoxes);
+    },
     selectionProps: {
       style: {
         border: '',
