@@ -7,12 +7,12 @@ import { ToolsContainer } from './tools.styles';
 
 export const Tools = () => {
   const tool = useTool();
-  const { refs } = useRefs();
+  const { blockRefs } = useRefs();
 
   return (
     <ToolsContainer
       style={{
-        top: tool ? refs.current[tool?.blockIndex].offsetTop - 8 : -200,
+        top: tool ? blockRefs.current[tool?.blockIndex].offsetTop : -200,
       }}
     >
       <AddBlockTool blockIndex={tool?.blockIndex || 0} />

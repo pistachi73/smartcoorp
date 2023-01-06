@@ -1,3 +1,5 @@
+import { FlattenUnion, KeysOfUnion } from '@smartcoorp/smart-types';
+
 type SharedBlockProps = {
   id: string;
 };
@@ -15,7 +17,7 @@ export type HeaderBlockProps = SharedBlockProps & {
 export type ParagraphBlockProps = SharedBlockProps & {
   type: 'paragraph';
   data: {
-    text?: string;
+    text: string;
   };
 };
 
@@ -41,15 +43,11 @@ export type LinkBlockProps = SharedBlockProps & {
   type: 'link';
   data: {
     link?: string;
-    meta?: {
-      url: string;
-      domain: string;
-      title: string;
-      description: string;
-      image: {
-        url: string;
-      };
-    };
+    url?: string;
+    domain?: string;
+    title?: string;
+    description?: string;
+    imageUrl?: string;
   };
 };
 
@@ -63,6 +61,18 @@ export type Block =
   | LinkBlockProps
   | ListBlockProps
   | ImageBlockProps;
+
+type BlockByType<T extends BlockType> = Extract<Block, { type: T }>;
+
+export type BlockFieldKeys<T extends BlockType> = KeysOfUnion<
+  BlockByType<T>['data']
+>;
+export type EveryBlockFieldKeys = KeysOfUnion<Block['data']>;
+
+export type BlockFields<T extends BlockType> = BlockByType<T>['data'];
+export type EveryBlockFields = Partial<
+  FlattenUnion<Pick<Block, 'data'>['data']>
+>;
 
 export type PostEditorProps = {
   /** Blog post blocks (content) */

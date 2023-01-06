@@ -5,13 +5,17 @@ import { BlockContainer } from '../block-container';
 
 import { ParagraphBlockContent } from './paragraph-block-content';
 
-export const ParagraphBlock = React.memo<{
+export type ParagraphContainerProps = {
   blockIndex: number;
   block: ParagraphBlockProps;
-}>(({ blockIndex, block }) => {
-  return (
-    <BlockContainer blockIndex={blockIndex} blockType="paragraph">
-      <ParagraphBlockContent blockIndex={blockIndex} block={block} />
-    </BlockContainer>
-  );
-});
+};
+
+export const ParagraphBlock = React.memo<ParagraphContainerProps>(
+  ({ blockIndex, block }) => {
+    return (
+      <BlockContainer blockIndex={blockIndex} blockType="paragraph">
+        <ParagraphBlockContent blockIndex={blockIndex} block={block} />
+      </BlockContainer>
+    );
+  }
+);

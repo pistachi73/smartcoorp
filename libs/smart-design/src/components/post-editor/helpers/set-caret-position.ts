@@ -9,7 +9,6 @@ const isFocusable = (element: HTMLElement) =>
     element.getAttribute('tabindex') === '1');
 
 export const setCaretPosition = ({ element, position }: SetCaretPosition) => {
-  // Loop through all child nodes
   if (isFocusable(element) && position === 0) {
     element.focus();
     return -1;
@@ -38,4 +37,6 @@ export const setCaretPosition = ({ element, position }: SetCaretPosition) => {
     }
   }
   return position; // needed because of recursion stuff
+
+  // Loop through all child nodes
 };

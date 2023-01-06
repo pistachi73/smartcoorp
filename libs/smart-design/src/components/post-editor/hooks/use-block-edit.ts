@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { useUpdateBlocks } from '../contexts/block-context';
+import { useBlockUpdaterContext } from '../contexts/block-context';
 import { useRefs } from '../hooks';
 
 type UseBlockEditResult = {
@@ -8,15 +8,15 @@ type UseBlockEditResult = {
 };
 
 export const useBlockEdit = (blockIndex: number): UseBlockEditResult => {
-  const { removeBlock } = useUpdateBlocks();
+  const { removeBlocks } = useBlockUpdaterContext();
   const { refs, focusBlockByIndex, getNextFocusableBlock } = useRefs();
 
   const removeBlockAndFocusPrevious = useCallback(async () => {
-    await removeBlock(blockIndex);
+    await removeBlocks([blockIndex]);
     const prevFocusableBlock = getNextFocusableBlock(blockIndex, -1);
     focusBlockByIndex(prevFocusableBlock, 'end');
     refs.current.pop();
-  }, [blockIndex, focusBlockByIndex, getNextFocusableBlock, removeBlock, refs]);
+  }, [blockIndex, focusBlockByIndex, getNextFocusableBlock, removeBlocks, refs]);
 
   return { removeBlockAndFocusPrevious };
 };

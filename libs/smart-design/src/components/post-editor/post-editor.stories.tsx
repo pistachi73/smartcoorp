@@ -25,15 +25,10 @@ export default {
           <Title>Post Editor</Title>
           <Subtitle>Post Editor component for SC projects</Subtitle>
           <Description>##Overview</Description>
-          <Description>
-            Basic `PostEditor` component to perform blog post editing.
-          </Description>
+          <Description>Basic `PostEditor` component to perform blog post editing.</Description>
 
           <Description>##Usage</Description>
-          <Source
-            language="tsx"
-            code={`import { PostEditor } from '@smartcoorp/smart-design';`}
-          />
+          <Source language="tsx" code={`import { PostEditor } from '@smartcoorp/smart-design';`} />
           <Description>###Example</Description>
           <Primary />
           <ArgsTable story={PRIMARY_STORY} />
@@ -48,26 +43,11 @@ export default {
 const Template: ComponentStory<typeof PostEditorComponent> = () => {
   const [blocks, setBlocks] = React.useState<Block[]>([
     {
-      id: 'check',
-      type: 'paragraph',
-      data: {
-        text: 'Test paragraph',
-      },
-    },
-    {
       id: 'header',
       type: 'header',
       data: {
         level: 3,
         text: 'Hello world',
-      },
-    },
-    {
-      id: 'header 2',
-      type: 'header',
-      data: {
-        level: 6,
-        text: 'Hello world2',
       },
     },
 
@@ -78,6 +58,22 @@ const Template: ComponentStory<typeof PostEditorComponent> = () => {
         text: '<i>Testing</i> <b>post <i>editor</i> paragraph</b> line break',
       },
     },
+    {
+      id: 'paragraph2',
+      type: 'paragraph',
+      data: {
+        text: 'Merge test',
+      },
+    },
+    {
+      id: 'header2',
+      type: 'header',
+      data: {
+        level: 3,
+        text: 'Testing Focus index',
+      },
+    },
+
     // {
     //   id: 'unordered',
     //   type: 'list',

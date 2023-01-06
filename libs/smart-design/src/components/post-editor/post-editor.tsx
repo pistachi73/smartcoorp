@@ -4,6 +4,7 @@ import { Blocks } from './blocks/blocks';
 import { BlockProvider } from './contexts/block-context';
 import { BlockMenuToolProvider } from './contexts/block-menu-tool-context';
 import { BlockSelectionProvider } from './contexts/block-selection-context';
+import { CommandsProvider } from './contexts/commands-context/commands-context';
 import { RefsProvider } from './contexts/refs-context';
 import { ToolProvider } from './contexts/tool-context';
 import { PostEditorContainer } from './post-editor.styles';
@@ -17,11 +18,7 @@ export type ToolProps = {
   type: BlockType;
 };
 
-export const PostEditor: FC<PostEditorProps> = ({
-  blocks,
-  setBlocks,
-  getMetaData,
-}) => {
+export const PostEditor: FC<PostEditorProps> = ({ blocks, setBlocks, getMetaData }) => {
   const postEditorContainerRef = useRef<HTMLDivElement>(null);
   if (!blocks) return null;
 
@@ -29,19 +26,17 @@ export const PostEditor: FC<PostEditorProps> = ({
     <BlockMenuToolProvider>
       <ToolProvider>
         <RefsProvider>
-          <BlockSelectionProvider>
-            <BlockProvider
-              blocks={blocks}
-              setBlocks={setBlocks}
-              getMetaData={getMetaData}
-            >
-              <PostEditorContainer ref={postEditorContainerRef}>
-                <Tools />
-                <InlineTools postEditorRef={postEditorContainerRef} />
-                <Blocks getMetaData={getMetaData} />
-              </PostEditorContainer>
-            </BlockProvider>
-          </BlockSelectionProvider>
+          <CommandsProvider>
+            <BlockSelectionProvider>
+              <BlockProvider blocks={blocks} setBlocks={setBlocks} getMetaData={getMetaData}>
+                <PostEditorContainer ref={postEditorContainerRef}>
+                  <Tools />
+                  <InlineTools postEditorRef={postEditorContainerRef} />
+                  <Blocks getMetaData={getMetaData} />
+                </PostEditorContainer>
+              </BlockProvider>
+            </BlockSelectionProvider>
+          </CommandsProvider>
         </RefsProvider>
       </ToolProvider>
     </BlockMenuToolProvider>

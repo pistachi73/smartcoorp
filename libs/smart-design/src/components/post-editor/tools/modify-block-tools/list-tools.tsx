@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { primary } from '@smartcoorp/smart-design/tokens';
 
-import { useUpdateBlocks } from '../../contexts/block-context';
+import { useBlockUpdaterContext } from '../../contexts/block-context';
 import { useRefs } from '../../hooks';
 
 import * as S from './modify-block.styles';
@@ -28,16 +28,14 @@ const StyledToolContainer = styled(S.ToolContainer)`
 `;
 export const ListTools = memo<ListToolsProps>(({ blockIndex, menuRefs }) => {
   const { refs } = useRefs();
-  const { modifyListStyle } = useUpdateBlocks();
+  const { modifyListStyle } = useBlockUpdaterContext();
   const [triggerChange, setTriggerChange] = useState(false);
   const [style, setStyle] = useState<'ordered' | 'unordered'>(
     refs.current[blockIndex].nodeName === 'OL' ? 'ordered' : 'unordered'
   );
 
   useEffect(() => {
-    setStyle(
-      refs.current[blockIndex].nodeName === 'OL' ? 'ordered' : 'unordered'
-    );
+    setStyle(refs.current[blockIndex].nodeName === 'OL' ? 'ordered' : 'unordered');
   }, [blockIndex, refs, triggerChange]);
 
   return (
