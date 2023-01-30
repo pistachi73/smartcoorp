@@ -1,67 +1,80 @@
-import { memo, useCallback, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 
-import { useBlockUpdaterContext } from '../../contexts/block-context';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context';
+import { MODIFY_FIELD } from '../../contexts/blocks-db-context/blocks-db-reducer/actions';
+import { useRefsContext } from '../../contexts/refs-context/refs-context';
 import { FileField } from '../../fields/file-field';
 import { waitForElement } from '../../helpers/wait-for-element';
-import { useRefs } from '../../hooks';
-import { ImageBlockProps } from '../../post-editor.types';
+import type { ImageBlockContentProps } from '../blocks.types';
 
 import * as S from './image-block.styles';
 import { ImageCaption } from './image-caption';
 
-type ImageBlockContentProps = {
-  blockIndex: number;
-  block: ImageBlockProps;
-};
+export const ImageBlockContent = memo<ImageBlockContentProps>(
+  ({ blockIndex, block }) => {
+    const dispatchBlocksDB = useBlocksDBUpdaterContext();
+    const { setPrevCaretPosition } = useRefsContext();
+    const [imagePreview, setImagePreview] = useState<
+      string | ArrayBuffer | null
+    >();
 
-export const ImageBlockContent = memo<ImageBlockContentProps>(({ blockIndex, block }) => {
-  const { updateBlockFields } = useBlockUpdaterContext();
-  const { refs } = useRefs();
-  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>();
+    const captionFieldId = `${block.id}_0`;
 
-  const handleUploadImage = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
+    useEffect(() => {
+      if (block.data.file) {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => {
+          setImagePreview(reader.result);
+        });
+        reader.readAsDataURL(block.data.file);
+      } else setImagePreview(null);
+    }, [block.data.file]);
 
-      if (!file) return;
+    const handleUploadImage = useCallback(
+      async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
 
-      const reader = new FileReader();
-      reader.addEventListener('load', () => {
-        setImagePreview(reader.result);
-      });
-      reader.readAsDataURL(file);
+        if (!file) return;
 
-      updateBlockFields(blockIndex, { file });
+        dispatchBlocksDB({
+          type: MODIFY_FIELD,
+          payload: {
+            blockId: block.id,
+            field: 'file',
+            value: file,
+          },
+        });
 
-      (await waitForElement(`caption-${block.id}`))?.focus();
-      refs.current[blockIndex].focus();
-    },
-    [block.id, blockIndex, refs, updateBlockFields]
-  );
+        (await waitForElement(captionFieldId))?.focus();
+        setPrevCaretPosition(0);
+      },
+      [block.id, captionFieldId, dispatchBlocksDB, setPrevCaretPosition]
+    );
 
-  return imagePreview ? (
-    <S.ImagePreviewContainer ref={(el: HTMLDivElement) => (refs.current[blockIndex] = el)}>
-      <S.ImagePreview
-        style={{ maxWidth: '100%' }}
-        src={imagePreview as string}
-        alt={`caption-${block.id}`}
-      />
-      <ImageCaption
+    return imagePreview ? (
+      <S.ImagePreviewContainer>
+        <S.ImagePreview
+          style={{ maxWidth: '100%' }}
+          src={imagePreview as string}
+          alt={`caption-${block.id}`}
+        />
+        <ImageCaption
+          blockId={block.id}
+          blockIndex={blockIndex}
+          fieldIndex={0}
+          caption={block.data.caption || ''}
+        />
+      </S.ImagePreviewContainer>
+    ) : (
+      <FileField
+        acceptedFileTypes="image/png,image/gif,image/jpeg"
         blockId={block.id}
         blockIndex={blockIndex}
-        focusIndex={0}
-        caption={block.data.caption || ''}
+        fieldIndex={0}
+        placeholder="👉 Select file"
+        name="imageToUpload"
+        handleUploadFile={handleUploadImage}
       />
-    </S.ImagePreviewContainer>
-  ) : (
-    <FileField
-      acceptedFileTypes="image/png,image/gif,image/jpeg"
-      blockId={block.id}
-      blockIndex={blockIndex}
-      focusIndex={0}
-      placeholder="👉 Select file"
-      name="imageToUpload"
-      handleUploadFile={handleUploadImage}
-    />
-  );
-});
+    );
+  }
+);

@@ -6,22 +6,19 @@ export type TextFieldVariant = 'paragraph' | 'header';
 
 type CommonProps<T extends TextFieldVariant> = {
   blockId: string;
+  chainId?: string;
   text: string;
   variant: T;
   blockIndex: number;
-  focusIndex: number;
+  fieldIndex: number;
   field: BlockFieldKeys<T>;
   onInputChange: (e: React.ChangeEvent) => void;
 };
 
-type HeaderTextFieldProps<T extends TextFieldVariant> = React.ComponentProps<
-  typeof Headline
-> &
+type HeaderTextFieldProps<T extends TextFieldVariant> = React.ComponentProps<typeof Headline> &
   CommonProps<T>;
 
-type ParagraphTextFieldProps<T extends TextFieldVariant> = React.ComponentProps<
-  typeof Body
-> &
+type ParagraphTextFieldProps<T extends TextFieldVariant> = React.ComponentProps<typeof Body> &
   CommonProps<T>;
 
 export type TextFieldProps<T extends TextFieldVariant> =

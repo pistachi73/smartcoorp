@@ -1,20 +1,26 @@
 import React from 'react';
 
-import { ParagraphBlockProps } from '../../post-editor.types';
 import { BlockContainer } from '../block-container';
+import { ParagraphBlockContainerProps } from '../blocks.types';
 
 import { ParagraphBlockContent } from './paragraph-block-content';
 
-export type ParagraphContainerProps = {
-  blockIndex: number;
-  block: ParagraphBlockProps;
-};
-
-export const ParagraphBlock = React.memo<ParagraphContainerProps>(
-  ({ blockIndex, block }) => {
+export const ParagraphBlock = React.memo<ParagraphBlockContainerProps>(
+  ({ blockIndex, chainBlockIndex, chainId, block }) => {
     return (
-      <BlockContainer blockIndex={blockIndex} blockType="paragraph">
-        <ParagraphBlockContent blockIndex={blockIndex} block={block} />
+      <BlockContainer
+        blockIndex={blockIndex}
+        chainBlockIndex={chainBlockIndex}
+        blockId={block.id}
+        chainId={chainId}
+        blockType="paragraph"
+      >
+        <ParagraphBlockContent
+          blockIndex={blockIndex}
+          chainBlockIndex={chainBlockIndex}
+          chainId={chainId}
+          block={block}
+        />
       </BlockContainer>
     );
   }

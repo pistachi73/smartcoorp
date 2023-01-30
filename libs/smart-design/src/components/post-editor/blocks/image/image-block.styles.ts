@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-import { scale350 } from '../../../../tokens/scale';
-import { spaceM, spaceS } from '../../../../tokens/spacing';
+import { spaceS } from '../../../../tokens/spacing';
 import { InputBox } from '../../post-editor.styles';
 
 export const UploadImageButton = styled(InputBox)`

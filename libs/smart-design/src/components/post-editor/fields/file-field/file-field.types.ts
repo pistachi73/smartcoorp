@@ -1,7 +1,7 @@
 type CommonProps = {
   blockId: string;
   blockIndex: number;
-  focusIndex: number;
+  fieldIndex: number;
   name: string;
   acceptedFileTypes: string;
   placeholder: string;
@@ -9,21 +9,3 @@ type CommonProps = {
 };
 
 export type FileFieldProps = CommonProps;
-
-// <input
-// id={block.id}
-// hidden
-// ref={uploadImageRef}
-// type="file"
-// name="imageToUpload"
-// accept="image/png,image/gif,image/jpeg"
-// onChange={handleUploadImage}
-// />
-// <S.UploadImageButton
-//   ref={(el: HTMLParagraphElement) => (refs.current[blockIndex] = el)}
-//   onClick={handleOpenUploadImage}
-//   data-placeholder="👉 Select image"
-//   tabIndex={1}
-//   noMargin
-//   forwardedAs="button"
-// />

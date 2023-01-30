@@ -1,22 +1,24 @@
-import React, { FC } from 'react';
+import React from 'react';
 
-import { LinkBlockProps } from '../../post-editor.types';
 import { BlockContainer } from '../block-container';
+import { LinkBlockContainerProps } from '../blocks.types';
 
 import { LinkBlockContent } from './link-block-content';
 
-export type LinkContainerProps = {
-  blockIndex: number;
-  block: LinkBlockProps;
-  getMetaData: any;
-};
-
-export const LinkBlock = React.memo<LinkContainerProps>(
-  ({ blockIndex, block, getMetaData }) => {
+export const LinkBlock = React.memo<LinkBlockContainerProps>(
+  ({ blockIndex, chainBlockIndex, chainId, block, getMetaData }) => {
     return (
-      <BlockContainer blockIndex={blockIndex} blockType="link">
+      <BlockContainer
+        blockIndex={blockIndex}
+        chainBlockIndex={chainBlockIndex}
+        blockId={block.id}
+        chainId={chainId}
+        blockType="link"
+      >
         <LinkBlockContent
           blockIndex={blockIndex}
+          chainBlockIndex={chainBlockIndex}
+          chainId={chainId}
           block={block}
           getMetaData={getMetaData}
         />

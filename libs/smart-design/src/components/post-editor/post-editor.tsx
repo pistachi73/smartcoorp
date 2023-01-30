@@ -1,16 +1,12 @@
-import { FC, useRef } from 'react';
+import { FC } from 'react';
 
 import { Blocks } from './blocks/blocks';
-import { BlockProvider } from './contexts/block-context';
 import { BlockMenuToolProvider } from './contexts/block-menu-tool-context';
-import { BlockSelectionProvider } from './contexts/block-selection-context';
-import { CommandsProvider } from './contexts/commands-context/commands-context';
-import { RefsProvider } from './contexts/refs-context';
+import { BlockSelectionProvider } from './contexts/block-selection-context/block-selection-context';
+import { BlocksDBProvider } from './contexts/blocks-db-context/blocks-db-context';
+import { RefsProvider } from './contexts/refs-context/refs-context';
 import { ToolProvider } from './contexts/tool-context';
-import { PostEditorContainer } from './post-editor.styles';
 import { BlockType, PostEditorProps } from './post-editor.types';
-import { InlineTools } from './tools/inline-tools/inline-tools';
-import { Tools } from './tools/tools';
 
 export type ToolProps = {
   blockIndex: number;
@@ -18,27 +14,27 @@ export type ToolProps = {
   type: BlockType;
 };
 
-export const PostEditor: FC<PostEditorProps> = ({ blocks, setBlocks, getMetaData }) => {
-  const postEditorContainerRef = useRef<HTMLDivElement>(null);
-  if (!blocks) return null;
+export const PostEditor: FC<PostEditorProps> = ({
+  blocksDB,
+  setBlocksDB,
+  getMetaData,
+}) => {
+  if (!blocksDB) return null;
 
   return (
-    <BlockMenuToolProvider>
-      <ToolProvider>
-        <RefsProvider>
-          <CommandsProvider>
-            <BlockSelectionProvider>
-              <BlockProvider blocks={blocks} setBlocks={setBlocks} getMetaData={getMetaData}>
-                <PostEditorContainer ref={postEditorContainerRef}>
-                  <Tools />
-                  <InlineTools postEditorRef={postEditorContainerRef} />
-                  <Blocks getMetaData={getMetaData} />
-                </PostEditorContainer>
-              </BlockProvider>
-            </BlockSelectionProvider>
-          </CommandsProvider>
-        </RefsProvider>
-      </ToolProvider>
-    </BlockMenuToolProvider>
+    <BlocksDBProvider blocksDB={blocksDB} setBlocksDB={setBlocksDB}>
+      <RefsProvider>
+        <BlockSelectionProvider>
+          <BlockMenuToolProvider>
+            <ToolProvider>
+              {/* <Tools />
+                      <InlineTools postEditorRef={postEditorContainerRef} /> */}
+
+              <Blocks getMetaData={getMetaData} />
+            </ToolProvider>
+          </BlockMenuToolProvider>
+        </BlockSelectionProvider>
+      </RefsProvider>
+    </BlocksDBProvider>
   );
 };

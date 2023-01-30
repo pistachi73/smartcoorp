@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useRefs } from '../../hooks';
+import { useRefsContext } from '../../contexts/refs-context';
 
 import * as S from './text-box-field.styles';
 import { TextBoxFieldProps } from './text-box-field.types';
@@ -8,7 +8,7 @@ import { TextBoxFieldProps } from './text-box-field.types';
 export const TextBoxField: React.FC<TextBoxFieldProps> = ({
   blockId,
   blockIndex,
-  focusIndex,
+  fieldIndex,
   placeholder,
   text,
   loading,
@@ -17,17 +17,17 @@ export const TextBoxField: React.FC<TextBoxFieldProps> = ({
   ...props
 }) => {
   const [initialText] = useState(text);
-  const { addFocusableRef } = useRefs();
+  const { addFieldRef } = useRefsContext();
 
   const commonProps = {
-    ref: addFocusableRef(blockIndex, focusIndex),
-    id: `${blockId}_${focusIndex}`,
+    ref: addFieldRef(blockIndex, fieldIndex),
+    id: `${blockId}_${fieldIndex}`,
     noMargin: true,
     contentEditable: true,
     suppressContentEditableWarning: true,
     dangerouslySetInnerHTML: { __html: initialText },
     onInput: onInputChange,
-    'data-focus-index': focusIndex,
+    'data-focus-index': fieldIndex,
     'data-placeholder': placeholder,
     $loading: loading,
     $error: error,

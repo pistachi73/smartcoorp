@@ -7,18 +7,12 @@ const BlockMenuToolContext = React.createContext<{
   modifyBlockMenuProps?: UseMenu;
 }>({});
 
-export const BlockMenuToolProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const BlockMenuToolProvider = ({ children }: { children: React.ReactNode }) => {
   const { ...addBlockMenuProps } = useMenu({ id: 'add-block-tool' });
   const { ...modifyBlockMenuProps } = useMenu({ id: 'block-type-tool' });
 
   return (
-    <BlockMenuToolContext.Provider
-      value={{ addBlockMenuProps, modifyBlockMenuProps }}
-    >
+    <BlockMenuToolContext.Provider value={{ addBlockMenuProps, modifyBlockMenuProps }}>
       {children}
     </BlockMenuToolContext.Provider>
   );
@@ -29,13 +23,10 @@ export const useBlockMenu = (): {
   addBlockMenuProps: UseMenu;
   modifyBlockMenuProps: UseMenu;
 } => {
-  const { addBlockMenuProps, modifyBlockMenuProps } =
-    React.useContext(BlockMenuToolContext);
+  const { addBlockMenuProps, modifyBlockMenuProps } = React.useContext(BlockMenuToolContext);
 
-  if (
-    typeof addBlockMenuProps === 'undefined' ||
-    typeof modifyBlockMenuProps === 'undefined'
-  ) {
+  console.log('render');
+  if (typeof addBlockMenuProps === 'undefined' || typeof modifyBlockMenuProps === 'undefined') {
     throw new Error('useBlockMenu must be used within a BlockMenuToolProvider');
   }
   const [isMenuOpened, setIsMenuOpened] = React.useState(false);

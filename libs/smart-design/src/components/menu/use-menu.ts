@@ -19,10 +19,7 @@ export const useMenu = ({ id }: UseMenuProps): UseMenu => {
     if (isOpen) setIsOpen(false);
   }, [isOpen]);
 
-  const toggleMenu = useCallback(
-    () => setIsOpen((prevIsOpen) => !prevIsOpen),
-    []
-  );
+  const toggleMenu = useCallback(() => setIsOpen((prevIsOpen) => !prevIsOpen), []);
 
   return {
     isOpen,
