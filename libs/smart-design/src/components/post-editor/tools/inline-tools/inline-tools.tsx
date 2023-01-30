@@ -52,9 +52,7 @@ export const InlineTools: FC<InlineToolsProps> = ({ postEditorRef }) => {
     removeFormat,
   } = useInlineTools();
 
-  const { clientRect, isCollapsed } = useTextSelection(
-    postEditorRef.current as HTMLElement
-  );
+  const { clientRect, isCollapsed } = useTextSelection(postEditorRef.current as HTMLElement);
 
   useEffect(() => {
     if (linkTool.isOpen) return;
@@ -141,55 +139,52 @@ export const InlineTools: FC<InlineToolsProps> = ({ postEditorRef }) => {
   }, []);
 
   return (
-    <>
-      <button>Format block</button>
-      <AnimatePresence>
-        {inlineToolPosition.visible && (
-          <S.InlineToolsContainer
-            ref={inlineToolContainerRef}
-            role="menu"
-            aria-label={'Inline tools'}
-            aria-hidden={!clientRect}
-            initial={{ scale: 0.95, opacity: 0.85 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.24, ease: [0, 0, 0.2, 1] }}
-            style={{
-              top: inlineToolPosition?.top,
-              left: (inlineToolPosition?.left as number) - 40,
-            }}
-            onBlur={handleBlur}
-          >
-            <S.FlexRow $isLinkToolOpen={linkTool.isOpen}>
-              <S.InlineTool onClick={onBold}>
-                <MdFormatBold size={20} />
-              </S.InlineTool>
+    <AnimatePresence>
+      {inlineToolPosition.visible && (
+        <S.InlineToolsContainer
+          ref={inlineToolContainerRef}
+          role="menu"
+          aria-label={'Inline tools'}
+          aria-hidden={!clientRect}
+          initial={{ scale: 0.95, opacity: 0.85 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.24, ease: [0, 0, 0.2, 1] }}
+          style={{
+            top: inlineToolPosition?.top,
+            left: (inlineToolPosition?.left as number) - 40,
+          }}
+          onBlur={handleBlur}
+        >
+          <S.FlexRow $isLinkToolOpen={linkTool.isOpen}>
+            <S.InlineTool onClick={onBold}>
+              <MdFormatBold size={20} />
+            </S.InlineTool>
 
-              <S.InlineTool onClick={onItalic}>
-                <MdFormatItalic size={20} />
-              </S.InlineTool>
-              <S.InlineTool onClick={handleOnLink}>
-                <MdLink size={20} />
-              </S.InlineTool>
-              <S.InlineTool onClick={onUnderline}>
-                <MdFormatUnderlined size={20} />
-              </S.InlineTool>
-              <S.InlineTool onClick={removeFormat}>
-                <MdFormatClear size={20} />
-              </S.InlineTool>
-            </S.FlexRow>
+            <S.InlineTool onClick={onItalic}>
+              <MdFormatItalic size={20} />
+            </S.InlineTool>
+            <S.InlineTool onClick={handleOnLink}>
+              <MdLink size={20} />
+            </S.InlineTool>
+            <S.InlineTool onClick={onUnderline}>
+              <MdFormatUnderlined size={20} />
+            </S.InlineTool>
+            <S.InlineTool onClick={removeFormat}>
+              <MdFormatClear size={20} />
+            </S.InlineTool>
+          </S.FlexRow>
 
-            {linkTool.isOpen && (
-              <S.LinkInput
-                id="link-input"
-                ref={linkInputRef}
-                contentEditable
-                data-ph="Add link"
-                onKeyDown={handleLinkSave}
-              />
-            )}
-          </S.InlineToolsContainer>
-        )}
-      </AnimatePresence>
-    </>
+          {linkTool.isOpen && (
+            <S.LinkInput
+              id="link-input"
+              ref={linkInputRef}
+              contentEditable
+              data-ph="Add link"
+              onKeyDown={handleLinkSave}
+            />
+          )}
+        </S.InlineToolsContainer>
+      )}
+    </AnimatePresence>
   );
 };

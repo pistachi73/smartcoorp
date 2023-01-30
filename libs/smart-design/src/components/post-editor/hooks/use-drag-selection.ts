@@ -1,24 +1,28 @@
-import { Box, boxesIntersect, useSelectionContainer } from '@air/react-drag-to-select';
+import {
+  Box,
+  boxesIntersect,
+  useSelectionContainer,
+} from '@air/react-drag-to-select';
 import { JSXElementConstructor, ReactElement, useState } from 'react';
 
 import {
   useBlockSelectionConsumerContext,
   useBlockSelectionUpdaterContext,
 } from '../contexts/block-selection-context';
-
-import { useRefs } from './use-refs';
+import { useRefsContext } from '../contexts/refs-context';
 
 type UseDragSelectionResult = {
   DragSelection: () => ReactElement<any, string | JSXElementConstructor<any>>;
 };
 
 export const useDragSelection = (): UseDragSelectionResult => {
-  const { setSelectedBlocks, setPivotSelectedBlock } = useBlockSelectionUpdaterContext();
+  const { setSelectedBlocks, setPivotSelectedBlock } =
+    useBlockSelectionUpdaterContext();
+  const { selectedBlocks } = useBlockSelectionConsumerContext();
   const { isSelectionEnabled } = useBlockSelectionConsumerContext();
-
   const [selectableBoxes, setSelectableBoxes] = useState<Box[]>([]);
 
-  const { blockRefs } = useRefs();
+  const { blockRefs } = useRefsContext();
 
   const { DragSelection } = useSelectionContainer({
     eventsElement: document.getElementById('root'),
@@ -39,10 +43,9 @@ export const useDragSelection = (): UseDragSelectionResult => {
 
       const sel = document.getSelection();
 
-      if (indexesToSelect.length === 1) setPivotSelectedBlock(indexesToSelect[0]);
       if (indexesToSelect.length < 2) {
-        setSelectedBlocks([]);
         setPivotSelectedBlock(indexesToSelect[0]);
+        setSelectedBlocks([]);
       } else {
         if (sel) sel.removeAllRanges();
         setSelectedBlocks(indexesToSelect);
@@ -60,8 +63,9 @@ export const useDragSelection = (): UseDragSelectionResult => {
     selectionProps: {
       style: {
         border: '',
+        background:
+          selectedBlocks.length > 1 ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
         borderRadius: 4,
-        backgroundColor: 'transparent',
         opacity: 0.6,
         zIndex: 1000,
       },

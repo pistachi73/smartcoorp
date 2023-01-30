@@ -1,7 +1,6 @@
 import { useCallback, useRef } from 'react';
 
-import { useRefs } from '../../hooks';
-import { TextBoxField } from '../text-box-field/text-box-field.styles';
+import { useRefsContext } from '../../contexts/refs-context';
 
 import * as S from './file-field.styles';
 import { FileFieldProps } from './file-field.types';
@@ -9,13 +8,13 @@ export const FileField: React.FC<FileFieldProps> = ({
   acceptedFileTypes,
   blockId,
   blockIndex,
-  focusIndex,
+  fieldIndex,
   placeholder,
   name,
   handleUploadFile,
 }) => {
   const uploadImageRef = useRef<HTMLInputElement>(null);
-  const { addFocusableRef } = useRefs();
+  const { addFieldRef } = useRefsContext();
 
   const handleOpenUploadFile = useCallback(() => {
     if (uploadImageRef.current) {
@@ -44,7 +43,7 @@ export const FileField: React.FC<FileFieldProps> = ({
       />
 
       <S.UploadFileButton
-        ref={addFocusableRef(blockIndex, focusIndex)}
+        ref={addFieldRef(blockIndex, fieldIndex)}
         data-placeholder={placeholder}
         onClick={handleOpenUploadFile}
         onKeyDown={handleKeyDown}
@@ -53,23 +52,3 @@ export const FileField: React.FC<FileFieldProps> = ({
     </>
   );
 };
-
-{
-  /* <input
-id={block.id}
-hidden
-ref={uploadImageRef}
-type="file"
-name="imageToUpload"
-accept="image/png,image/gif,image/jpeg"
-onChange={handleUploadImage}
-/>
-<S.UploadImageButton
-  ref={(el: HTMLParagraphElement) => (refs.current[blockIndex] = el)}
-  onClick={handleOpenUploadImage}
-  data-placeholder="👉 Select image"
-  tabIndex={1}
-  noMargin
-  forwardedAs="button"
-/> */
-}

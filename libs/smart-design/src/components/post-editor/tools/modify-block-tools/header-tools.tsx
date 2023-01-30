@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { primary, spaceS } from '@smartcoorp/smart-design/tokens';
 
 import { useBlockUpdaterContext } from '../../contexts/block-context';
-import { useRefs } from '../../hooks';
+import { useRefsContext } from '../../contexts/refs-context';
 
 import * as S from './modify-block.styles';
 
@@ -31,15 +31,9 @@ const LevelSpan = styled.span`
 `;
 
 export const HeaderTools = memo<HeaderToolsProps>(({ blockIndex, menuRefs }) => {
-  const { refs } = useRefs();
   const { modifyHeaderLevel } = useBlockUpdaterContext();
   const [triggerChange, setTriggerChange] = useState(false);
   const [level, setLevel] = useState<number>();
-  //parseInt(refs.current[blockIndex].nodeName.substring(1))
-
-  useEffect(() => {
-    //setLevel(parseInt(refs.current[blockIndex].nodeName.substring(1)));
-  }, [blockIndex, refs, triggerChange]);
 
   return (
     <ColumnToolContainer>

@@ -2,13 +2,22 @@ import styled, { css } from 'styled-components';
 
 import { borderRadiusXS } from '../../tokens/borderRadius';
 import { motionEasingStandard, motionTimeS } from '../../tokens/motion';
-import { scale180 } from '../../tokens/scale';
-import { spaceL, spaceM, spaceS } from '../../tokens/spacing';
+import { scale030, scale180 } from '../../tokens/scale';
+import {
+  space3XL,
+  spaceL,
+  spaceM,
+  spaceS,
+  spaceXS,
+  spaceXXS,
+} from '../../tokens/spacing';
 import { Body } from '../body';
 
 export const BlockContent = styled.div<{ $selected?: boolean }>`
-  margin: 0 ${scale180};
-  padding: ${spaceS} 0;
+  padding: ${scale030} 0;
+  margin: ${spaceXXS} 0;
+
+  border-radius: ${borderRadiusXS};
 
   transition-timing-function: ${motionEasingStandard};
   transition-duration: ${motionTimeS};
@@ -66,7 +75,8 @@ export const InputBox = styled(Body).attrs(() => ({ noMargin: true }))<{
 export const PostEditorContainer = styled.div`
   position: relative;
   max-width: 768px;
-  margin: ${spaceL};
+  min-height: 100vh;
+  margin: 0 auto;
   -webkit-backface-visibility: hidden !important;
   backface-visibility: hidden !important;
   /* overflow: hidden; */

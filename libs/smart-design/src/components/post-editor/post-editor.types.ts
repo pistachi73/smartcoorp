@@ -1,7 +1,10 @@
 import { FlattenUnion, KeysOfUnion } from '@smartcoorp/smart-types';
 
+import type { BlocksDB } from './contexts/blocks-db-context/blocks-db.types';
+
 type SharedBlockProps = {
   id: string;
+  chainId: string;
 };
 
 export type BlockType = 'image' | 'paragraph' | 'link' | 'header' | 'list';
@@ -51,8 +54,11 @@ export type LinkBlockProps = SharedBlockProps & {
   };
 };
 
-export type BlockProps = {
-  setBlocks: React.Dispatch<React.SetStateAction<Block[]>>;
+export type TwoColumnBlock = SharedBlockProps & {
+  type: 'two-column';
+  data: {
+    chains: [string, string];
+  };
 };
 
 export type Block =
@@ -60,9 +66,10 @@ export type Block =
   | ParagraphBlockProps
   | LinkBlockProps
   | ListBlockProps
-  | ImageBlockProps;
+  | ImageBlockProps
+  | TwoColumnBlock;
 
-type BlockByType<T extends BlockType> = Extract<Block, { type: T }>;
+export type BlockByType<T extends BlockType> = Extract<Block, { type: T }>;
 
 export type BlockFieldKeys<T extends BlockType> = KeysOfUnion<
   BlockByType<T>['data']
@@ -75,10 +82,7 @@ export type EveryBlockFields = Partial<
 >;
 
 export type PostEditorProps = {
-  /** Blog post blocks (content) */
-  blocks: Block[] | [];
-  /** Function to set blog post content */
-  setBlocks: React.Dispatch<React.SetStateAction<Block[]>>;
-  /** Enable get link metadata */
+  blocksDB: BlocksDB;
+  setBlocksDB: any;
   getMetaData?: Promise<Function> | any;
 };

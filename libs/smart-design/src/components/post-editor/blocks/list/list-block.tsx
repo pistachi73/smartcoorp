@@ -1,20 +1,26 @@
-import React, { FC } from 'react';
+import React from 'react';
 
-import { ListBlockProps } from '../../post-editor.types';
 import { BlockContainer } from '../block-container';
+import { ListBlockContainerProps } from '../blocks.types';
 
 import { ListBlockContent } from './list-block-content';
 
-export type ListContainerProps = {
-  blockIndex: number;
-  block: ListBlockProps;
-};
-
-export const ListBlock = React.memo<ListContainerProps>(
-  ({ blockIndex, block }) => {
+export const ListBlock = React.memo<ListBlockContainerProps>(
+  ({ blockIndex, chainBlockIndex, chainId, block }) => {
     return (
-      <BlockContainer blockIndex={blockIndex} blockType="list">
-        <ListBlockContent blockIndex={blockIndex} block={block} />
+      <BlockContainer
+        blockIndex={blockIndex}
+        chainBlockIndex={chainBlockIndex}
+        blockId={block.id}
+        chainId={chainId}
+        blockType="list"
+      >
+        <ListBlockContent
+          blockIndex={blockIndex}
+          chainBlockIndex={chainBlockIndex}
+          chainId={chainId}
+          block={block}
+        />
       </BlockContainer>
     );
   }

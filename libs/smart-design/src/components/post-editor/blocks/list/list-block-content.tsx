@@ -1,101 +1,205 @@
 import debounce from 'lodash.debounce';
 import { useCallback, useMemo } from 'react';
-import { v4 as uuid } from 'uuid';
 
-import { useBlockUpdaterContext } from '../../contexts/block-context';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context';
+import { REMOVE_LAST_LIST_ITEM } from '../../contexts/blocks-db-context/blocks-db-reducer';
+import {
+  MODIFY_FIELD,
+  REMOVE_BLOCKS,
+} from '../../contexts/blocks-db-context/blocks-db-reducer/actions';
+import {
+  FOCUS_FIELD,
+  MODIFY_LIST_INNERHTML,
+} from '../../contexts/blocks-db-context/undo-redo-reducer/actions';
+import { useRefsContext } from '../../contexts/refs-context';
 import { useUpdateTool } from '../../contexts/tool-context';
 import { ListField } from '../../fields/list-field';
-import { getCaretPosition } from '../../helpers';
+import { getBlockContainerAttributes, getCaretPosition } from '../../helpers';
 import { getElementTextContent } from '../../helpers/get-element-textcontent';
-import { waitForElement } from '../../helpers/wait-for-element';
-import { usePreviousPersistentWithMatcher, useRefs } from '../../hooks';
-import { useBlockEdit } from '../../hooks/use-block-edit';
-import { useDispatchAsyncCommand } from '../../hooks/use-commands/use-dispatch-async-commands';
-import { Block, ListBlockProps } from '../../post-editor.types';
+import type { ListBlockContentProps } from '../blocks.types';
 
-type ListBlockContentProps = {
-  blockIndex: number;
-  block: ListBlockProps;
-};
-
-export const ListBlockContent: React.FC<ListBlockContentProps> = ({ blockIndex, block }) => {
-  const { refs, focusableRefs } = useRefs();
+export const ListBlockContent: React.FC<ListBlockContentProps> = ({
+  blockIndex,
+  chainBlockIndex,
+  chainId,
+  block,
+}) => {
+  const dispatchBlocksDB = useBlocksDBUpdaterContext();
+  const {
+    fieldRefs,
+    setPrevCaretPosition,
+    prevCaretPosition,
+    getNextFocusableField,
+    focusField,
+    blockRefs,
+  } = useRefsContext();
   const setTool = useUpdateTool();
-  const { setBlocks, updateBlockFields } = useBlockUpdaterContext();
-  const { removeBlockAndFocusPrevious } = useBlockEdit(blockIndex);
 
-  const prevItems = usePreviousPersistentWithMatcher(block.data.items);
-  const { dispatchAsyncCommand } = useDispatchAsyncCommand(block.data.items, prevItems);
-  const focusIndex = 0;
+  const fieldIndex = 0;
+  const fieldId = `${block.id}_${fieldIndex}`;
+
   const onItemsChange = useCallback(
     (items: string[]) => {
-      updateBlockFields(blockIndex, {
-        items,
+      const currentCaretPosition = getCaretPosition(
+        fieldRefs.current[blockIndex][0]
+      );
+      const undoAction = {
+        type: MODIFY_LIST_INNERHTML,
+        payload: {
+          fieldId,
+          setPrevCaretPosition,
+          caretPosition: prevCaretPosition.current,
+        },
+      } as const;
+
+      const redoAction = {
+        type: MODIFY_LIST_INNERHTML,
+        payload: {
+          fieldId,
+          value: items,
+          caretPosition: currentCaretPosition,
+          setPrevCaretPosition,
+        },
+      } as const;
+
+      dispatchBlocksDB({
+        type: MODIFY_FIELD,
+        payload: {
+          blockId: block.id,
+          field: 'items',
+          value: items,
+          undoAction,
+          redoAction,
+        },
       });
 
-      dispatchAsyncCommand({
-        type: 'editListField',
-        field: 'items',
-        blockIndex,
-        fieldId: `${block.id}_${focusIndex}`,
-        ref: focusableRefs.current[blockIndex][0],
-      });
+      setPrevCaretPosition(currentCaretPosition);
     },
-    [updateBlockFields, blockIndex, dispatchAsyncCommand, block.id, focusableRefs]
+    [
+      fieldRefs,
+      blockIndex,
+      fieldId,
+      setPrevCaretPosition,
+      prevCaretPosition,
+      dispatchBlocksDB,
+      block.id,
+    ]
   );
 
   const debouncedOnItemsChange = useMemo(() => {
     return debounce(onItemsChange, 300);
   }, [onItemsChange]);
 
-  const onInputChange = async (e: React.ChangeEvent) => {
-    await debouncedOnItemsChange(
-      [].slice.call(e.currentTarget.children).map((node: Element) => node.innerHTML.trim())
+  const onInputChange = (e: React.ChangeEvent) => {
+    debouncedOnItemsChange(
+      [].slice
+        .call(e.currentTarget.children)
+        .map((node: Element) => node.innerHTML.trim())
     );
   };
 
-  const handleItemKeyPress = async (e: React.KeyboardEvent) => {
-    const element = refs.current[blockIndex];
+  const handleItemKeyPress = (e: React.KeyboardEvent) => {
+    const element = e.target;
+
     const caretPosition = getCaretPosition(element);
     const textContent = getElementTextContent(element);
     if (e.key === 'Enter') {
-      const items = block.data.items;
+      const items = [].slice
+        .call(e.currentTarget.children)
+        .map((node: Element) => node.innerHTML.trim());
 
-      // Remove last item if empty and create paragraph block
-      if (caretPosition === textContent.length && items[items.length - 1] === '<br>') {
+      if (
+        caretPosition === textContent.length &&
+        items[items.length - 1] === '<br>'
+      ) {
+        // Remove last item if empty and create paragraph block
+        debouncedOnItemsChange.cancel();
         e.preventDefault();
-        console.log('remove last item if empty and create paragraph block');
-        const newBlockId = uuid();
-        await setBlocks((prevBlocks: Block[]): Block[] => {
-          const newBlocks = [...prevBlocks];
+        e.stopPropagation();
 
-          const newBlock: Block = {
-            id: newBlockId,
-            type: 'paragraph',
-            data: {
-              text: '',
-            },
-          };
+        const undoAction = {
+          type: MODIFY_LIST_INNERHTML,
+          payload: {
+            fieldId,
+            setPrevCaretPosition,
+            caretPosition: prevCaretPosition.current,
+          },
+        } as const;
 
-          newBlocks.splice(blockIndex + 1, 0, newBlock);
-          items.pop();
-          (newBlocks[blockIndex] as ListBlockProps).data.items = items;
+        const redoAction = {
+          type: MODIFY_LIST_INNERHTML,
+          payload: {
+            fieldId,
+            setPrevCaretPosition,
+            caretPosition: 0,
+          },
+        } as const;
 
-          return newBlocks;
+        dispatchBlocksDB({
+          type: REMOVE_LAST_LIST_ITEM,
+          payload: {
+            blockId: block.id,
+            chainId,
+            chainBlockIndex,
+            field: 'items',
+            fieldId,
+            items,
+            undoAction,
+            redoAction,
+          },
         });
 
-        document.execCommand('delete');
-        (await waitForElement(newBlockId))?.focus();
         setTool(null);
       }
     }
 
-    if (e.key === 'Backspace') {
-      if (caretPosition === 0 && textContent.length === 0) {
-        e.preventDefault();
-        await removeBlockAndFocusPrevious();
-        return;
-      }
+    if (
+      e.key === 'Backspace' &&
+      caretPosition === 0 &&
+      textContent.length === 0
+    ) {
+      debouncedOnItemsChange.cancel();
+      e.preventDefault();
+      e.stopPropagation();
+
+      const prevFocusableBlock = getNextFocusableField(
+        blockIndex,
+        fieldIndex,
+        -1
+      );
+
+      const { blockId: contiguousBlockId } = getBlockContainerAttributes(
+        blockRefs.current[prevFocusableBlock[0]]
+      );
+
+      const undoAction = {
+        type: FOCUS_FIELD,
+        payload: {
+          fieldId,
+          position: prevCaretPosition.current,
+          setPrevCaretPosition,
+        },
+      } as const;
+
+      const redoAction = {
+        type: FOCUS_FIELD,
+        payload: {
+          fieldId: `${contiguousBlockId}_${prevFocusableBlock[1]}`,
+          position: 'end',
+          setPrevCaretPosition,
+        },
+      } as const;
+
+      dispatchBlocksDB({
+        type: REMOVE_BLOCKS,
+        payload: {
+          toRemoveBlocks: [[block.id, chainId]],
+          undoAction,
+          redoAction,
+        },
+      });
+
+      focusField(prevFocusableBlock, 'end');
     }
   };
 
@@ -104,13 +208,12 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({ blockIndex, 
       blockId={block.id}
       blockIndex={blockIndex}
       field="items"
-      focusIndex={focusIndex}
+      fieldIndex={fieldIndex}
       items={block.data.items}
       style={block.data.style}
       onInputChange={onInputChange}
       data-block-type="list"
-
-      // onKeyDown={handleItemKeyPress}
+      onKeyDown={handleItemKeyPress}
     />
   );
 };

@@ -4,7 +4,7 @@ export type TextBoxFieldProps = React.ComponentProps<typeof TextBoxField> & {
   blockId: string;
   text?: string;
   blockIndex: number;
-  focusIndex: number;
+  fieldIndex: number;
   placeholder: string;
   onInputChange: (e: React.ChangeEvent) => void;
   loading?: boolean;

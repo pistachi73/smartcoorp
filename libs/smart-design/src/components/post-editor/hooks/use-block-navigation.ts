@@ -1,16 +1,19 @@
-import { useBlockSelectionConsumerContext, useBlockSelectionUpdaterContext } from '../contexts/block-selection-context';
+import {
+  useBlockSelectionConsumerContext,
+  useBlockSelectionUpdaterContext,
+} from '../contexts/block-selection-context/block-selection-context';
+import { useRefsContext } from '../contexts/refs-context';
 import { useUpdateTool } from '../contexts/tool-context';
 import { getCaretPosition } from '../helpers';
-
-import { useBlockSelection } from './use-block-selection';
-import { useRefs } from './use-refs';
 
 type UseblockNavigationResult = {
   handleKeyboardBlockNavigation: (event: React.KeyboardEvent) => void;
 };
 
-export const useBlockNavigation = (blockIndex: number): UseblockNavigationResult => {
-  const { focusBlockByIndex, getNextFocusableBlock, focusElement } = useRefs();
+export const useBlockNavigation = (
+  blockIndex: number
+): UseblockNavigationResult => {
+  const { getNextFocusableField, focusField } = useRefsContext();
   const { selectedBlocks } = useBlockSelectionConsumerContext();
   const { setSelectedBlocks } = useBlockSelectionUpdaterContext();
   const setTool = useUpdateTool();
@@ -21,7 +24,7 @@ export const useBlockNavigation = (blockIndex: number): UseblockNavigationResult
 
     if (selectedBlocks.length > 0) {
       e.preventDefault();
-      focusElement([selectedBlocks[selectedBlocks.length - 1], 0], 'end');
+      focusField([selectedBlocks[selectedBlocks.length - 1], 0], 'end');
       setSelectedBlocks([]);
       return;
     }
@@ -29,17 +32,17 @@ export const useBlockNavigation = (blockIndex: number): UseblockNavigationResult
     if (caretPosition === element.textContent?.length) {
       e.preventDefault();
       setTool(null);
-      const nextFocusIndexes = getNextFocusableBlock(
+      const nextFocusIndexes = getNextFocusableField(
         blockIndex,
-        parseInt((e.target as HTMLElement).getAttribute('data-focus-index') as string),
+        parseInt(
+          (e.target as HTMLElement).getAttribute('data-focus-index') as string
+        ),
         1
       );
 
-      console.log(nextFocusIndexes);
-
       if (!nextFocusIndexes) return;
 
-      focusElement(nextFocusIndexes, 'start');
+      focusField(nextFocusIndexes, 'start');
     }
   };
 
@@ -49,7 +52,7 @@ export const useBlockNavigation = (blockIndex: number): UseblockNavigationResult
 
     if (selectedBlocks.length > 0) {
       e.preventDefault();
-      focusElement([selectedBlocks[0], 0], 'end');
+      focusField([selectedBlocks[0], 0], 'end');
       setSelectedBlocks([]);
       return;
     }
@@ -57,7 +60,7 @@ export const useBlockNavigation = (blockIndex: number): UseblockNavigationResult
     if (caretPosition === 0) {
       e.preventDefault();
       setTool(null);
-      const nextFocusIndexes = getNextFocusableBlock(
+      const nextFocusIndexes = getNextFocusableField(
         blockIndex,
         parseInt(target.getAttribute('data-focus-index') as string),
         -1
@@ -66,7 +69,7 @@ export const useBlockNavigation = (blockIndex: number): UseblockNavigationResult
 
       if (!nextFocusIndexes) return;
 
-      focusElement(nextFocusIndexes, 'end');
+      focusField(nextFocusIndexes, 'end');
     }
   };
 
@@ -77,7 +80,10 @@ export const useBlockNavigation = (blockIndex: number): UseblockNavigationResult
       handleArrowDownRight(e);
     }
 
-    if (sharedCondition && (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'Backspace')) {
+    if (
+      sharedCondition &&
+      (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'Backspace')
+    ) {
       handleArrowUpLeftBackspace(e);
     }
   };

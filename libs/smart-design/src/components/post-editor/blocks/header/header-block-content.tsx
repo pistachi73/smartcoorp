@@ -1,12 +1,21 @@
 import debounce from 'lodash.debounce';
 import React, { useCallback, useMemo } from 'react';
 
-import { useBlockUpdaterContext } from '../../contexts/block-context';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context';
+import { REMOVE_BLOCKS } from '../../contexts/blocks-db-context/blocks-db-reducer';
+import {
+  MODIFY_FIELD,
+  SPLIT_TEXT_FIELD,
+} from '../../contexts/blocks-db-context/blocks-db-reducer/actions';
+import {
+  FOCUS_FIELD,
+  MODIFY_FIELD_INNERHTML,
+} from '../../contexts/blocks-db-context/undo-redo-reducer';
+import { useRefsContext } from '../../contexts/refs-context';
 import { TextField } from '../../fields/text-field';
-import { debounceDelay, getCaretPosition, getElementTextContent } from '../../helpers';
-import { useBlockEdit, useCommands, usePreviousPersistentWithMatcher, useRefs } from '../../hooks';
-import { useDispatchAsyncCommand } from '../../hooks/use-commands/use-dispatch-async-commands';
-import { HeaderBlockProps } from '../../post-editor.types';
+import { debounceDelay, getCaretPosition } from '../../helpers';
+import { getBlockContainerAttributes } from '../../helpers/get-block-container-attributes';
+import { HeaderBlockContainerProps } from '../blocks.types';
 
 const HEADLINE_SIZE_LEVELS = {
   1: 'xxxlarge',
@@ -17,20 +26,24 @@ const HEADLINE_SIZE_LEVELS = {
   6: 'small',
 } as const;
 
-type HeaderBlockContentProps = {
-  blockIndex: number;
-  block: HeaderBlockProps;
-};
+export const HeaderBlockContent: React.FC<
+  HeaderBlockContainerProps & { text: string }
+> = ({ blockIndex, chainBlockIndex, chainId, block, text }) => {
+  const dispatchBlocksDB = useBlocksDBUpdaterContext();
+  const {
+    fieldRefs,
+    blockRefs,
+    prevCaretPosition,
+    getNextFocusableField,
+    focusField,
+    setPrevCaretPosition,
+  } = useRefsContext();
 
-export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({ blockIndex, block }) => {
-  const { focusableRefs, focusContiguousElement } = useRefs();
-  const { splitTextBlock, updateBlockFields, removeBlocks } = useBlockUpdaterContext();
-  const { addCommand } = useCommands();
-  const prevText = usePreviousPersistentWithMatcher(block.data.text);
-  const { dispatchAsyncCommand } = useDispatchAsyncCommand(block.data.text, prevText);
-
-  const size = useMemo(() => HEADLINE_SIZE_LEVELS[block.data.level], [block.data.level]);
-  const focusIndex = useMemo(() => 0, []);
+  const size = useMemo(
+    () => HEADLINE_SIZE_LEVELS[block.data.level],
+    [block.data.level]
+  );
+  const fieldIndex = useMemo(() => 0, []);
 
   const handleKeyDown = async (e: React.KeyboardEvent) => {
     if (e.key === 'Backspace') {
@@ -41,64 +54,95 @@ export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({ blockInd
         e.preventDefault();
         e.stopPropagation();
         debouncedOnTextChange.cancel();
-        removeBlocks([blockIndex]);
-        focusContiguousElement(blockIndex, 0, -1);
-        const prevBlock =
-          focusableRefs.current[blockIndex - 1][focusableRefs.current[blockIndex - 1].length - 1];
-        const prevBlockInnerHTML = prevBlock.innerHTML;
-        const prevBlockTextContentLength: number = getElementTextContent(prevBlock).length;
-        const newHTML = `${prevBlockInnerHTML}`.trim();
 
-        addCommand({
-          action: {
-            type: 'mergeTextBlock',
-            payload: {
-              fieldId: prevBlock.id,
-              blockIndex: blockIndex - 1,
-              field: 'text',
-              ref: focusableRefs.current[blockIndex - 1][0],
-              text: newHTML,
-              caretPosition: prevBlockTextContentLength,
-            },
+        const prevFocusableBlock = getNextFocusableField(
+          blockIndex,
+          fieldIndex,
+          -1
+        );
+
+        const { blockId: contiguousBlockId } = getBlockContainerAttributes(
+          blockRefs.current[prevFocusableBlock[0]]
+        );
+
+        const undoAction = {
+          type: FOCUS_FIELD,
+          payload: {
+            fieldId: `${block.id}_${fieldIndex}`,
+            position: prevCaretPosition.current,
+            setPrevCaretPosition,
           },
-          inverse: {
-            type: 'splitTextBlock',
-            payload: {
-              fieldId: prevBlock.id,
-              blockIndex: blockIndex - 1,
-              field: 'text',
-              ref: focusableRefs.current[blockIndex - 1][0],
-              text: prevBlockInnerHTML,
-              createdBlock: {
-                id: block.id,
-                type: 'header',
-                data: {
-                  level: block.data.level,
-                  text: block.data.text,
-                },
-              },
-            },
+        } as const;
+
+        const redoAction = {
+          type: FOCUS_FIELD,
+          payload: {
+            fieldId: `${contiguousBlockId}_${prevFocusableBlock[1]}`,
+            position: 'end',
+            setPrevCaretPosition,
+          },
+        } as const;
+
+        dispatchBlocksDB({
+          type: REMOVE_BLOCKS,
+          payload: {
+            toRemoveBlocks: [[block.id, chainId]],
+            undoAction,
+            redoAction,
           },
         });
+
+        focusField(prevFocusableBlock, 'end');
       }
     }
   };
 
   const onTextChange = useCallback(
     (text: string) => {
-      updateBlockFields(blockIndex, {
-        text,
+      const currentCaretPosition = getCaretPosition(
+        fieldRefs.current[blockIndex][0]
+      );
+
+      const undoAction = {
+        type: MODIFY_FIELD_INNERHTML,
+        payload: {
+          fieldId: `${block.id}_${fieldIndex}`,
+          caretPosition: prevCaretPosition.current,
+          setPrevCaretPosition,
+        },
+      } as const;
+
+      const redoAction = {
+        type: MODIFY_FIELD_INNERHTML,
+        payload: {
+          fieldId: `${block.id}_${fieldIndex}`,
+          caretPosition: currentCaretPosition,
+          setPrevCaretPosition,
+        },
+      } as const;
+
+      dispatchBlocksDB({
+        type: MODIFY_FIELD,
+        payload: {
+          blockId: block.id,
+          field: 'text',
+          value: text,
+          undoAction,
+          redoAction,
+        },
       });
 
-      dispatchAsyncCommand({
-        type: 'editTextField',
-        field: 'text',
-        ref: focusableRefs.current[blockIndex][0],
-        blockIndex,
-        fieldId: `${block.id}_${focusIndex}`,
-      });
+      setPrevCaretPosition(currentCaretPosition);
     },
-    [updateBlockFields, blockIndex, dispatchAsyncCommand, focusableRefs, block.id, focusIndex]
+    [
+      fieldRefs,
+      blockIndex,
+      block.id,
+      fieldIndex,
+      prevCaretPosition,
+      setPrevCaretPosition,
+      dispatchBlocksDB,
+    ]
   );
 
   const debouncedOnTextChange = useMemo(() => {
@@ -113,21 +157,35 @@ export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({ blockInd
       if (isTextSplit) {
         debouncedOnTextChange.cancel();
 
-        const { newBlockId, textAfter } = await splitTextBlock(
-          blockIndex,
-          innerHTML,
-          focusableRefs.current[blockIndex][0]
-        );
+        const undoAction = {
+          type: MODIFY_FIELD_INNERHTML,
+          payload: {
+            fieldId: `${block.id}_${fieldIndex}`,
+            caretPosition: prevCaretPosition.current,
+            setPrevCaretPosition,
+          },
+        } as const;
 
-        dispatchAsyncCommand({
-          type: 'splitTextBlock',
-          blockIndex,
-          fieldId: `${block.id}_${focusIndex}`,
-          field: 'text',
-          ref: focusableRefs.current[blockIndex][0],
-          createdParagraphBlock: {
-            text: textAfter,
-            id: newBlockId,
+        const redoAction = {
+          type: MODIFY_FIELD_INNERHTML,
+          payload: {
+            fieldId: `${block.id}_${fieldIndex}`,
+            caretPosition: 0,
+            setPrevCaretPosition,
+          },
+        } as const;
+
+        dispatchBlocksDB({
+          type: SPLIT_TEXT_FIELD,
+          payload: {
+            blockId: block.id,
+            chainId,
+            field: 'text',
+            chainBlockIndex,
+            innerHTML,
+            splitedBlockRef: fieldRefs.current[blockIndex][0],
+            undoAction,
+            redoAction,
           },
         });
       } else {
@@ -136,12 +194,15 @@ export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({ blockInd
     },
     [
       debouncedOnTextChange,
-      splitTextBlock,
-      blockIndex,
-      focusableRefs,
-      dispatchAsyncCommand,
       block.id,
-      focusIndex,
+      fieldIndex,
+      prevCaretPosition,
+      setPrevCaretPosition,
+      dispatchBlocksDB,
+      chainId,
+      chainBlockIndex,
+      fieldRefs,
+      blockIndex,
     ]
   );
 
@@ -153,8 +214,8 @@ export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({ blockInd
       forwardedAs={`h${block.data.level}`}
       blockId={block.id}
       blockIndex={blockIndex}
-      focusIndex={focusIndex}
-      text={block.data.text}
+      fieldIndex={fieldIndex}
+      text={text}
       onInputChange={onInputChange}
       onKeyDown={handleKeyDown}
       data-block-type="header"
