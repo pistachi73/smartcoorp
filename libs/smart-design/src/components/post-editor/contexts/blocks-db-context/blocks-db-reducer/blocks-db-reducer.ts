@@ -6,6 +6,7 @@ import {
   getBlockContainerAttributes,
   getElementTextContent,
   getHTMLStringTextContent,
+  nanoid,
   waitForElement,
 } from '../../../helpers';
 import { setCaretPosition } from '../../../helpers/set-caret-position';
@@ -17,9 +18,11 @@ import { undoRedoDispatcher } from '../undo-redo-reducer/undo-redo-reducer';
 import {
   ADD_BLOCKS,
   COPY_BLOCKS,
+  DUPLICATE_BLOCK,
   MERGE_TEXT_FIELDS,
   MODIFY_FIELD,
   MODIFY_LINK_DATA,
+  MOVE_BLOCKS,
   REDO,
   REMOVE_BLOCKS,
   REMOVE_LAST_LIST_ITEM,
@@ -38,7 +41,7 @@ enablePatches();
 
 let currentVersion = -1;
 const noOfVersionsSupported = 15;
-const changes: UndoRedoChanges = {};
+let changes: UndoRedoChanges = {};
 
 export const blocksDBReducer = (
   state: BlocksDBReducerState,
@@ -52,7 +55,8 @@ export const blocksDBReducer = (
           const { field, blockId, value } = action.payload;
 
           console.log('MODIFY_FIELD', field, blockId, value);
-          (draft.blocks[blockId].data as EveryBlockFields)[field] = value;
+          console.log(state);
+          (draft.blocks[blockId]?.data as EveryBlockFields)[field] = value;
 
           // Update undo and redo actions
           const currentVal = (state.blocks[blockId].data as EveryBlockFields)[
@@ -183,23 +187,23 @@ export const blocksDBReducer = (
 
           if (items.length === 0) {
             removeBlocks(draft, [[blockId, chainId]]);
+          } else {
+            // Update the DOM
+            for (let i = 0; i < items.length; i++) {
+              fieldRef.children[i].innerHTML = items[i] || '';
+            }
+            for (
+              let i = items.length, c = 0;
+              i < fieldRef.children.length;
+              i++, c++
+            ) {
+              fieldRef.children[i - c].remove();
+            }
           }
 
           const newBlock = buildParagraphBlock(chainId);
 
           addBlocks(draft, [[newBlock, chainId, chainBlockIndex + 1]]);
-
-          // Update the DOM
-          for (let i = 0; i < items.length; i++) {
-            fieldRef.children[i].innerHTML = items[i] || '';
-          }
-          for (
-            let i = items.length, c = 0;
-            i < fieldRef.children.length;
-            i++, c++
-          ) {
-            fieldRef.children[i - c].remove();
-          }
 
           focusElementById(`${newBlock.id}_0`);
 
@@ -237,30 +241,83 @@ export const blocksDBReducer = (
           onCopy(blocksDB);
           break;
         }
+
+        case MOVE_BLOCKS: {
+          const { chainBlockIndexes, chainId, direction } = action.payload;
+
+          const directionFactor = direction === 'up' ? -1 : 1;
+
+          const pivotBlockIndex =
+            direction === 'up' ? 0 : chainBlockIndexes.length - 1;
+          const swappedBlockIndex =
+            chainBlockIndexes[pivotBlockIndex] + directionFactor;
+          const swappedBlockId = state.chains[chainId][swappedBlockIndex];
+
+          if (!swappedBlockId) return;
+
+          draft.chains[chainId].splice(
+            chainBlockIndexes[pivotBlockIndex] + directionFactor,
+            1
+          );
+          draft.chains[chainId].splice(
+            direction === 'up'
+              ? chainBlockIndexes.length + swappedBlockIndex
+              : chainBlockIndexes[0],
+            0,
+            swappedBlockId
+          );
+
+          break;
+        }
+
+        case DUPLICATE_BLOCK: {
+          const { blockId, chainId, chainBlockIndex } = action.payload;
+
+          const newBlock = { ...state.blocks[blockId] };
+          newBlock.id = nanoid();
+
+          addBlocks(draft, [[newBlock, chainId, chainBlockIndex + 1]]);
+
+          focusElementById(`${newBlock.id}_0`);
+
+          break;
+        }
         case UNDO: {
           const undoAction = changes[currentVersion].undo.action;
-
-          return produce(
-            applyPatches(state, changes[currentVersion--].undo.patch),
-            (newDraft) => {
-              newDraft.canUndo = changes.hasOwnProperty(currentVersion);
-              newDraft.canRedo = true;
-              undoAction && undoRedoDispatcher(undoAction);
-            }
-          );
+          try {
+            return produce(
+              applyPatches(state, changes[currentVersion--].undo.patch),
+              (newDraft) => {
+                newDraft.canUndo = changes.hasOwnProperty(currentVersion);
+                newDraft.canRedo = true;
+                undoAction && undoRedoDispatcher(undoAction);
+              }
+            );
+          } catch (e) {
+            changes = {};
+            currentVersion = -1;
+          }
+          break;
         }
 
         case REDO: {
           const redoAction = changes[++currentVersion].redo.action;
 
-          return produce(
-            applyPatches(state, changes[currentVersion].redo.patch),
-            (newDraft) => {
-              newDraft.canUndo = true;
-              newDraft.canRedo = changes.hasOwnProperty(currentVersion + 1);
-              redoAction && undoRedoDispatcher(redoAction);
-            }
-          );
+          try {
+            return produce(
+              applyPatches(state, changes[currentVersion].redo.patch),
+              (newDraft) => {
+                newDraft.canUndo = true;
+                newDraft.canRedo = changes.hasOwnProperty(currentVersion + 1);
+                redoAction && undoRedoDispatcher(redoAction);
+              }
+            );
+          } catch (e) {
+            console.log(e);
+            changes = {};
+            currentVersion = -1;
+          }
+          break;
         }
 
         default:
@@ -268,7 +325,6 @@ export const blocksDBReducer = (
       }
 
       if (isUndoableAction(action.type)) {
-        console.log('undoable action');
         draft.canUndo = true;
         draft.canRedo = false;
       }
@@ -286,11 +342,11 @@ export const blocksDBReducer = (
         redo: { patch: patches, action: redoAction },
       };
 
-      console.log(changes);
-
-      if (currentVersion > noOfVersionsSupported) {
-        delete changes[currentVersion - noOfVersionsSupported];
-      }
+      delete changes[currentVersion + 1];
+      delete changes[currentVersion - noOfVersionsSupported];
+      // if (currentVersion > noOfVersionsSupported) {
+      //   delete changes[currentVersion - noOfVersionsSupported];
+      // }
     }
   );
 };

@@ -9,6 +9,8 @@ export const REMOVE_LAST_LIST_ITEM = 'REMOVE_LAST_LIST_ITEM';
 export const UNDO = 'UNDO';
 export const REDO = 'REDO';
 export const COPY_BLOCKS = 'COPY_BLOCKS';
+export const MOVE_BLOCKS = 'MOVE_BLOCKS';
+export const DUPLICATE_BLOCK = 'DUPLICATE_BLOCK';
 
 export const undoableActions = [
   MODIFY_FIELD,
@@ -18,4 +20,6 @@ export const undoableActions = [
   SPLIT_TEXT_FIELD,
   MERGE_TEXT_FIELDS,
   REMOVE_LAST_LIST_ITEM,
+  MOVE_BLOCKS,
+  DUPLICATE_BLOCK,
 ] as const;

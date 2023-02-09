@@ -6,13 +6,24 @@ import { ParagraphBlockContainerProps } from '../blocks.types';
 import { ParagraphBlockContent } from './paragraph-block-content';
 
 export const ParagraphBlock = React.memo<ParagraphBlockContainerProps>(
-  ({ blockIndex, chainBlockIndex, chainId, block }) => {
+  ({
+    blockIndex,
+    chainBlockIndex,
+    chainId,
+    block,
+    chainLength,
+    chainLevel,
+    parentChainId,
+  }) => {
     return (
       <BlockContainer
         blockIndex={blockIndex}
         chainBlockIndex={chainBlockIndex}
         blockId={block.id}
         chainId={chainId}
+        chainLevel={chainLevel}
+        chainLength={chainLength}
+        parentChainId={parentChainId}
         blockType="paragraph"
       >
         <ParagraphBlockContent

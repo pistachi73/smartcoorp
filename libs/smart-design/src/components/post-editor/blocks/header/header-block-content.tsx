@@ -15,20 +15,25 @@ import { useRefsContext } from '../../contexts/refs-context';
 import { TextField } from '../../fields/text-field';
 import { debounceDelay, getCaretPosition } from '../../helpers';
 import { getBlockContainerAttributes } from '../../helpers/get-block-container-attributes';
-import { HeaderBlockContainerProps } from '../blocks.types';
+import { HeaderBlockProps } from '../../post-editor.types';
+import { HeaderBlockContentProps } from '../blocks.types';
 
-const HEADLINE_SIZE_LEVELS = {
-  1: 'xxxlarge',
-  2: 'xxlarge',
-  3: 'xlarge',
-  4: 'large',
-  5: 'medium',
-  6: 'small',
-} as const;
+const HEADLINE_SIZE_LEVELS: Record<HeaderBlockProps['data']['level'], string> =
+  {
+    1: 'xxxlarge',
+    2: 'xxlarge',
+    3: 'xlarge',
+    4: 'large',
+    5: 'medium',
+    6: 'small',
+  };
 
-export const HeaderBlockContent: React.FC<
-  HeaderBlockContainerProps & { text: string }
-> = ({ blockIndex, chainBlockIndex, chainId, block, text }) => {
+export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({
+  blockIndex,
+  chainBlockIndex,
+  chainId,
+  block,
+}) => {
   const dispatchBlocksDB = useBlocksDBUpdaterContext();
   const {
     fieldRefs,
@@ -43,7 +48,8 @@ export const HeaderBlockContent: React.FC<
     () => HEADLINE_SIZE_LEVELS[block.data.level],
     [block.data.level]
   );
-  const fieldIndex = useMemo(() => 0, []);
+
+  const fieldIndex = 0;
 
   const handleKeyDown = async (e: React.KeyboardEvent) => {
     if (e.key === 'Backspace') {
@@ -215,7 +221,7 @@ export const HeaderBlockContent: React.FC<
       blockId={block.id}
       blockIndex={blockIndex}
       fieldIndex={fieldIndex}
-      text={text}
+      text={block.data.text}
       onInputChange={onInputChange}
       onKeyDown={handleKeyDown}
       data-block-type="header"

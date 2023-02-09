@@ -5,7 +5,8 @@ type SetCaretPosition = {
 
 const isFocusable = (element: HTMLElement) =>
   !element.textContent &&
-  (element.getAttribute('contenteditable') || element.getAttribute('tabindex') === '1');
+  (element.getAttribute('contenteditable') ||
+    element.getAttribute('tabindex') === '1');
 
 export const setCaretPosition = ({ element, position }: SetCaretPosition) => {
   if (isFocusable(element) && position === 0) {

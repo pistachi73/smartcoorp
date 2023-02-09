@@ -24,6 +24,8 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
         caretPosition,
       } = action.payload;
 
+      console.log(caretPosition);
+
       const fieldElement = document.getElementById(fieldId);
       const focusFieldElement = focusFieldId
         ? await waitForElement(focusFieldId)
@@ -98,6 +100,7 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
           position === 'start' ? 0 : getElementTextContent(field).length;
       }
 
+      console.log('caretPosition', caretPosition);
       setCaretPosition({ element: field, position: caretPosition });
       setPrevCaretPosition(caretPosition);
     }

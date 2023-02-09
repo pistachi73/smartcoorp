@@ -3,7 +3,7 @@ import {
   useBlockSelectionUpdaterContext,
 } from '../contexts/block-selection-context/block-selection-context';
 import { useRefsContext } from '../contexts/refs-context';
-import { useUpdateTool } from '../contexts/tool-context';
+import { useToolBlockIndexUpdaterContext } from '../contexts/tool-control-context/tool-control-context';
 import { getCaretPosition } from '../helpers';
 
 type UseblockNavigationResult = {
@@ -16,7 +16,7 @@ export const useBlockNavigation = (
   const { getNextFocusableField, focusField } = useRefsContext();
   const { selectedBlocks } = useBlockSelectionConsumerContext();
   const { setSelectedBlocks } = useBlockSelectionUpdaterContext();
-  const setTool = useUpdateTool();
+  const setToolIndex = useToolBlockIndexUpdaterContext();
 
   const handleArrowDownRight = (e: React.KeyboardEvent) => {
     const caretPosition = getCaretPosition(e.target);
@@ -31,7 +31,7 @@ export const useBlockNavigation = (
 
     if (caretPosition === element.textContent?.length) {
       e.preventDefault();
-      setTool(null);
+      setToolIndex(null);
       const nextFocusIndexes = getNextFocusableField(
         blockIndex,
         parseInt(
@@ -59,7 +59,7 @@ export const useBlockNavigation = (
 
     if (caretPosition === 0) {
       e.preventDefault();
-      setTool(null);
+      setToolIndex(null);
       const nextFocusIndexes = getNextFocusableField(
         blockIndex,
         parseInt(target.getAttribute('data-focus-index') as string),

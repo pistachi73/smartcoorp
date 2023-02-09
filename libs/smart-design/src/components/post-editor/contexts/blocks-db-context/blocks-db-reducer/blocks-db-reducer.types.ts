@@ -1,4 +1,5 @@
 import type { Block, EveryBlockFieldKeys } from '../../../post-editor.types';
+import { BlockType } from '../../../post-editor.types';
 import type { FocusableElement } from '../../refs-context';
 import type { BlockChainDB, BlockDataDB } from '../blocks-db.types';
 import type { UndoRedoActionByType } from '../undo-redo-reducer';
@@ -11,9 +12,11 @@ import {
 import {
   ADD_BLOCKS,
   COPY_BLOCKS,
+  DUPLICATE_BLOCK,
   MERGE_TEXT_FIELDS,
   MODIFY_FIELD,
   MODIFY_LINK_DATA,
+  MOVE_BLOCKS,
   REDO,
   REMOVE_BLOCKS,
   REMOVE_LAST_LIST_ITEM,
@@ -30,8 +33,13 @@ export type BlocksDBReducerState = {
   canRedo: boolean;
 };
 
+export type toAddChain = {
+  chainId: string;
+  blockIds: string[];
+};
 export type ToAddBlock = [Block, string, number]; // [block, chainId, position]
 export type ToRemoveBlock = [string, string]; // [blockId, chainId]
+export type ToSwapBlock = [string, string]; // [blockId, chainId]
 
 export type BlocksDBAction =
   | {
@@ -60,6 +68,7 @@ export type BlocksDBAction =
       type: typeof ADD_BLOCKS;
       payload: {
         toAddBlocks: ToAddBlock[];
+        toAddChains?: toAddChain[];
         undoAction?: UndoRedoActionByType<typeof FOCUS_FIELD>;
         redoAction?: UndoRedoActionByType<typeof FOCUS_FIELD>;
       };
@@ -128,6 +137,26 @@ export type BlocksDBAction =
       payload: {
         blockIds: string[];
         onCopy: (blocksDB: BlockDataDB) => void;
+      };
+    }
+  | {
+      type: typeof MOVE_BLOCKS;
+      payload: {
+        chainBlockIndexes: number[];
+        chainId: string;
+        direction: 'up' | 'down';
+        undoAction?: UndoRedoActionByType<typeof FOCUS_FIELD>;
+        redoAction?: UndoRedoActionByType<typeof FOCUS_FIELD>;
+      };
+    }
+  | {
+      type: typeof DUPLICATE_BLOCK;
+      payload: {
+        blockId: string;
+        chainId: string;
+        chainBlockIndex: number;
+        undoAction?: UndoRedoActionByType<typeof FOCUS_FIELD>;
+        redoAction?: UndoRedoActionByType<typeof FOCUS_FIELD>;
       };
     }
   | {

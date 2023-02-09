@@ -1,38 +1,142 @@
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-import { borderRadiusXS, spaceM, spaceS, spaceXXS } from '../../../tokens';
-import { Menu as MenuComponent } from '../../menu';
+import {
+  borderRadiusS,
+  borderRadiusXS,
+  primary500_RGBA,
+  scale030,
+  scale060,
+  scale070,
+  scale370,
+  scale400,
+  spaceL,
+  spaceM,
+  spaceS,
+  spaceXXS,
+} from '../../../tokens';
 
-export const Menu = styled(MenuComponent)`
-  height: 28px;
-  width: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  :hover {
-    background-color: ${({ theme }) => theme.common.backgroundColor};
-    border-radius: ${borderRadiusXS};
-  }
-`;
-
-export const MenuItemIconContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: ${spaceS};
-  margin-right: ${spaceM};
-  border: 1px solid;
-  border-color: ${({ theme }) => theme.common.overBackgroundNeutral};
-  border-radius: ${borderRadiusXS};
-`;
-
-export const ToolsContainer = styled.div`
+export const ToolsContainer = styled(motion.div)`
   position: absolute;
   display: flex;
   gap: ${spaceXXS};
-  padding: ${spaceS} 0;
   left: -10px;
   -webkit-backface-visibility: hidden !important;
   backface-visibility: hidden !important;
+`;
+
+export const DropdownTrigger = styled(DropdownMenu.Trigger)`
+  width: 20px;
+  height: 20px;
+  outline: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: ${borderRadiusXS};
+  &:hover,
+  &:focus {
+    background-color: ${({ theme }) => theme.common.backgroundColor};
+    cursor: pointer;
+  }
+`;
+export const DropdownContent = styled(motion(DropdownMenu.Content))`
+  min-width: ${scale370};
+
+  margin: 0;
+
+  transform-origin: top left;
+
+  background-color: ${({ theme }) => theme.backgroundScreen};
+  border-radius: ${borderRadiusS};
+  box-shadow: ${({ theme }) => theme.shadow.shadowM};
+  border: 1px solid ${({ theme }) => theme.common.overBackgroundNeutral};
+
+  [cmdk-group] {
+    overflow: hidden;
+    padding: 0 ${scale030};
+    padding-bottom: ${spaceS};
+  }
+
+  [cmdk-group-heading] {
+    padding: ${spaceS} ${spaceM};
+    font-size: ${scale060};
+    color: ${({ theme }) => theme.common.overBackgroundNeutral};
+  }
+
+  [cmdk-list] {
+    max-height: ${scale400};
+  }
+
+  [cmdk-input-wrapper] {
+    padding: ${spaceS} 12px;
+    border-radius: ${borderRadiusXS};
+    margin: ${spaceS};
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: ${({ theme }) => theme.common.backgroundColor};
+  }
+
+  [cmdk-input] {
+    width: 100%;
+    border-radius: ${borderRadiusXS};
+    outline: none;
+    border: none;
+    font-size: ${scale070};
+    background-color: ${({ theme }) => theme.common.backgroundColor};
+  }
+
+  [cmdk-item] {
+    width: 100%;
+
+    border-radius: ${borderRadiusXS};
+
+    display: flex;
+    align-items: center;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+
+    &[aria-selected] {
+      background: ${({ theme }) => theme.common.backgroundColor};
+      &[aria-current='true'] {
+        background: rgba(${primary500_RGBA}, 0.5) !important;
+      }
+    }
+
+    &[aria-disabled] {
+      cursor: not-allowed;
+      opacity: 0.35;
+    }
+    &[aria-current='true'] {
+      background: rgba(${primary500_RGBA}, 0.35);
+    }
+  }
+
+  [cmdk-empty] {
+    padding: ${spaceL};
+    font-size: ${scale070};
+    color: ${({ theme }) => theme.common.overBackgroundNeutral};
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+export const Separator = styled(DropdownMenu.Separator)`
+  height: 1px;
+  width: calc(100%);
+
+  margin-top: ${spaceS};
+
+  background-color: ${({ theme }) => theme.common.overBackgroundNeutral};
+
+  &:last-of-type {
+    display: none;
+  }
 `;

@@ -1,6 +1,5 @@
-import * as R from 'ramda';
+import { nanoid } from 'nanoid';
 import { useState } from 'react';
-import { v4 as uuid } from 'uuid';
 
 import {
   useBlockSelectionConsumerContext,
@@ -16,6 +15,10 @@ import {
 import { FOCUS_FIELD } from '../../contexts/blocks-db-context/undo-redo-reducer';
 import { useRefsContext } from '../../contexts/refs-context';
 import {
+  useToolBlockIndexUpdaterContext,
+  useToolControlContext,
+} from '../../contexts/tool-control-context/tool-control-context';
+import {
   buildParagraphBlock,
   getBlockContainerAttributes,
   waitForElement,
@@ -27,7 +30,8 @@ export const useBlockSelection = () => {
   const [prevRange, setPrevRange] = useState<Range | null>();
   const { blockRefs, fieldRefs, focusField, setPrevCaretPosition } =
     useRefsContext();
-
+  const toolControl = useToolControlContext();
+  const setToolBlockIndex = useToolBlockIndexUpdaterContext();
   const dispatchBlocksDB = useBlocksDBUpdaterContext();
 
   const { selectedBlocks, clipboardBlocks, pivotSelectedBlock } =
@@ -136,92 +140,6 @@ export const useBlockSelection = () => {
     }
   };
 
-  const handleMetakeyArrowDown = async (e: React.KeyboardEvent) => {
-    //TOOD: fix this
-    e.preventDefault();
-
-    if (
-      !selectedBlocks.length ||
-      selectedBlocks[selectedBlocks.length - 1] === fieldRefs.current.length - 1
-    )
-      return;
-
-    setSelectedBlocks(R.map((x) => x + 1));
-
-    setPivotSelectedBlock(
-      (prevCenterSelectedBlock) => prevCenterSelectedBlock + 1
-    );
-
-    const swapedBlocksIndexes: [number[], number[]] = [
-      selectedBlocks,
-      [selectedBlocks[selectedBlocks.length - 1] + 1],
-    ];
-
-    const inversedSwapedBlocksIndexes: [number[], number[]] = [
-      swapedBlocksIndexes[0].map((x) => x + swapedBlocksIndexes[1].length),
-      swapedBlocksIndexes[1].map((x) => x - swapedBlocksIndexes[0].length),
-    ];
-    // swapBlocks(swapedBlocksIndexes[0], swapedBlocksIndexes[1]);
-
-    // addCommand({
-    //   action: {
-    //     type: 'swapBlocks',
-    //     payload: {
-    //       swapedBlocksIndexes,
-    //       selectedBlocks: inversedSwapedBlocksIndexes[0],
-    //     },
-    //   },
-    //   inverse: {
-    //     type: 'swapBlocks',
-    //     payload: {
-    //       swapedBlocksIndexes: inversedSwapedBlocksIndexes,
-    //       selectedBlocks: swapedBlocksIndexes[0],
-    //     },
-    //   },
-    // });
-  };
-
-  const handleMetakeyArrowUp = async (e: React.KeyboardEvent) => {
-    //TODO: Fix this
-    e.preventDefault();
-
-    if (!selectedBlocks.length || selectedBlocks[0] === 0) return;
-
-    const swapedBlocksIndexes: [number[], number[]] = [
-      selectedBlocks,
-      [selectedBlocks[0] - 1],
-    ];
-
-    // [[1, 2], [3]] -> [[1], [2, 3]]
-    const inversedSwapedBlocksIndexes: [number[], number[]] = [
-      swapedBlocksIndexes[0].map((x) => x - swapedBlocksIndexes[1].length),
-      swapedBlocksIndexes[1].map((x) => x + swapedBlocksIndexes[0].length),
-    ];
-    //swapBlocks(swapedBlocksIndexes[0], swapedBlocksIndexes[1]);
-
-    setSelectedBlocks(R.map((x) => x - 1));
-    setPivotSelectedBlock(
-      (prevCenterSelectedBlock) => prevCenterSelectedBlock - 1
-    );
-
-    // addCommand({
-    //   action: {
-    //     type: 'swapBlocks',
-    //     payload: {
-    //       swapedBlocksIndexes,
-    //       selectedBlocks: inversedSwapedBlocksIndexes[0],
-    //     },
-    //   },
-    //   inverse: {
-    //     type: 'swapBlocks',
-    //     payload: {
-    //       swapedBlocksIndexes: inversedSwapedBlocksIndexes,
-    //       selectedBlocks: swapedBlocksIndexes[0],
-    //     },
-    //   },
-    // });
-  };
-
   const handleMetakeyC = (e: React.KeyboardEvent) => {
     if (!selectedBlocks.length) {
       setClipboardBlocks(null);
@@ -324,7 +242,7 @@ export const useBlockSelection = () => {
     // 1: FORMAT BLOCKS TO ADD IDS
     const toAddBlocks: ToAddBlock[] = Object.keys(clipboardBlocks).map(
       (blockId, i) => {
-        const id = uuid();
+        const id = nanoid(10);
         const formattedBlock = {
           ...clipboardBlocks[blockId],
           id,
@@ -396,6 +314,8 @@ export const useBlockSelection = () => {
     e.preventDefault();
     setSelectedBlocks([blockIndex]);
     setPivotSelectedBlock(blockIndex);
+    setToolBlockIndex(blockIndex);
+    toolControl.setIsModifyBlockMenuOpened(true);
     document.getSelection()?.removeAllRanges();
   };
 
@@ -412,17 +332,6 @@ export const useBlockSelection = () => {
 
     if (e.shiftKey && e.key === 'ArrowDown') {
       handleShiftDown(e, blockIndex);
-      return;
-    }
-
-    if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowUp') {
-      handleMetakeyArrowUp(e);
-      console.log('end');
-      return;
-    }
-
-    if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowDown') {
-      handleMetakeyArrowDown(e);
       return;
     }
 

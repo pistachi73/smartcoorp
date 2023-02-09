@@ -2,7 +2,6 @@ import type { WritableDraft } from 'immer/dist/internal';
 
 import type { BlockChainDB } from '../blocks-db.types';
 
-import { BlocksDBAction } from './blocks-db-reducer.types';
 import type {
   BlocksDBReducerState,
   ToAddBlock,
@@ -41,6 +40,8 @@ export const addBlocks = (
 ) => {
   blocksData.forEach(([block, chainId, position]) => {
     draft.blocks[block.id] = block;
+    if (!draft.chains[chainId]) draft.chains[chainId] = [];
+
     draft.chains[chainId].splice(position, 0, block.id);
   });
 };

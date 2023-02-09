@@ -1,3 +1,4 @@
+export { nanoid } from './nanoid';
 export { getBlockContainerAttributes } from './get-block-container-attributes';
 export * from './helper-values';
 export * from './block-builders';

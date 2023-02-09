@@ -33,7 +33,7 @@ export const FileField: React.FC<FileFieldProps> = ({
   return (
     <>
       <input
-        id={blockId}
+        id={`${blockId}_${fieldIndex}`}
         hidden
         ref={uploadImageRef}
         type="file"

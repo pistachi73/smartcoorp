@@ -10,22 +10,22 @@ import '../src/helpers/storybook.css';
 import '../src/global-styles/fonts.css';
 
 /** Define custom Next Image component for storybook */
-Object.defineProperty(nextImage, 'default', {
-  configurable: true,
-  value: ({ src, layout, objectFit, ...rest }) => {
-    const style = {};
-    if (objectFit === 'contain') {
-      style.maxWidth = '100%';
-    }
-    return (
-      <img
-        {...rest}
-        src={decodeURIComponent(src.split('url=')[1])}
-        style={style}
-      />
-    );
-  },
-});
+// Object.defineProperty(nextImage, 'default', {
+//   configurable: true,
+//   value: ({ src, layout, objectFit, ...rest }) => {
+//     const style = {};
+//     if (objectFit === 'contain') {
+//       style.maxWidth = '100%';
+//     }
+//     return (
+//       <img
+//         {...rest}
+//         src={decodeURIComponent(src.split('url=')[1])}
+//         style={style}
+//       />
+//     );
+//   },
+// });
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },

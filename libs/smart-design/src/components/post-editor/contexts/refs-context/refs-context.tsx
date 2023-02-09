@@ -143,6 +143,7 @@ export const useRefsContext = (): {
             : getElementTextContent(focusableElement).length;
       }
 
+      console.log(focusableElement);
       setCaretPosition({
         element: focusableElement,
         position,

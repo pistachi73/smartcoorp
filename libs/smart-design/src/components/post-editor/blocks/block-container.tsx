@@ -3,7 +3,10 @@ import * as React from 'react';
 
 import { useBlockSelectionConsumerContext } from '../contexts/block-selection-context/block-selection-context';
 import { useRefsContext } from '../contexts/refs-context';
-import { useUpdateTool } from '../contexts/tool-context';
+import {
+  useToolBlockIndexUpdaterContext,
+  useToolControlContext,
+} from '../contexts/tool-control-context/tool-control-context';
 import { useBlockSelection } from '../hooks';
 import { useBlockNavigation } from '../hooks/use-block-navigation';
 import {
@@ -18,11 +21,13 @@ export const BlockContainer = ({
   chainBlockIndex,
   blockId,
   chainId,
+  chainLevel,
   blockType,
   children,
+  chainLength,
+  parentChainId,
 }: BlockContainerProps) => {
-  const setTool = useUpdateTool();
-  //const { isMenuOpened } = useBlockMenu();
+  const setToolBlockIndex = useToolBlockIndexUpdaterContext();
   const { handleKeyboardBlockNavigation } = useBlockNavigation(blockIndex);
   const { handleKeyboardBlockSelection } = useBlockSelection();
   const { selectedBlocks } = useBlockSelectionConsumerContext();
@@ -41,22 +46,23 @@ export const BlockContainer = ({
         (refs) => refs.filter((ref) => ref !== null).length > 0
       );
     };
-  }, [blockRefs, fieldRefs]);
+  }, [blockRefs, fieldRefs, blockIndex]);
 
-  // const handleSetTool = useCallback(() => {
-  //   if (!isMenuOpened)
-  //     setTool({
-  //       blockIndex,
-  //       type: blockType,
-  //     });
-  // }, [blockIndex, blockType, isMenuOpened, setTool]);
+  const handleSetTool = useCallback(
+    (e: React.MouseEvent) => {
+      setToolBlockIndex((currentIndex) =>
+        currentIndex === -1 ? null : blockIndex
+      );
+    },
+    [blockIndex, setToolBlockIndex]
+  );
 
   const handleMouseUp = useCallback(
     (e: React.MouseEvent) => {
       handlePrevTextSelectionOnMouseUp(e);
-      //handleSetTool();
+      handleSetTool(e);
     },
-    [handlePrevTextSelectionOnMouseUp]
+    [handlePrevTextSelectionOnMouseUp, handleSetTool]
   );
 
   const handleKeyDown = useCallback(
@@ -79,13 +85,17 @@ export const BlockContainer = ({
     <StyledBlockContainer
       ref={addBlockRef(blockIndex)}
       onMouseUp={handleMouseUp}
-      // onMouseEnter={handleSetTool}
+      onMouseEnter={handleSetTool}
       onKeyDown={handleKeyDown(blockIndex, chainBlockIndex, chainId)}
       onKeyUp={handleKeyUp}
+      data-block-type={blockType}
       data-block-id={blockId}
       data-chain-id={chainId}
+      data-chain-level={chainLevel}
       data-block-index={blockIndex}
       data-chain-block-index={chainBlockIndex}
+      data-chain-length={chainLength}
+      data-parent-chain-id={parentChainId}
     >
       <BlockContent $selected={selectedBlocks.includes(blockIndex)}>
         {children}

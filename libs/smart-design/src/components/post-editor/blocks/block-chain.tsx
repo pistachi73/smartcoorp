@@ -5,6 +5,7 @@ import {
   useBlocksDBConsumerContext,
   useBlocksDBUpdaterContext,
 } from '../contexts/blocks-db-context/blocks-db-context';
+import { Block } from '../post-editor.types';
 
 import { Column } from './columns/column-block';
 import { HeaderBlock } from './header/header-block';
@@ -21,80 +22,58 @@ export const BlockChain = React.memo(({ chainId }: { chainId: string }) => {
   const chain = blocksDB.chains[chainId];
   let blockIndex = -1;
 
-  const renderBlockChain = (chain: string[], chainId: string) => (
-    <div data-chain={chainId}>
+  const renderBlockChain = (
+    chain: string[],
+    chainId: string,
+    chainLevel: number,
+    parentChainId: string
+  ) => (
+    <div key={chainId} data-chain={chainId}>
       {chain.map((blockId, chainBlockIndex) => {
-        const block = blocksDB.blocks[blockId];
+        const block: Block = blocksDB.blocks[blockId];
         const blockType = block.type;
-        blockIndex += blockType !== 'two-column' ? 1 : 0;
+        blockIndex += blockType !== 'columns' ? 1 : 0;
+
+        const sharedProps = {
+          key: block.id,
+          blockIndex,
+          chainBlockIndex,
+          chainId,
+          chainLength: chain.length,
+          chainLevel,
+          parentChainId,
+        };
 
         switch (blockType) {
           case 'header':
-            return (
-              <HeaderBlock
-                key={block.id}
-                blockIndex={blockIndex}
-                chainBlockIndex={chainBlockIndex}
-                chainId={chainId}
-                block={block}
-              />
-            );
+            return <HeaderBlock {...sharedProps} block={block} />;
           case 'paragraph':
-            return (
-              <ParagraphBlock
-                key={block.id}
-                blockIndex={blockIndex}
-                chainBlockIndex={chainBlockIndex}
-                chainId={chainId}
-                block={block}
-              />
-            );
+            return <ParagraphBlock {...sharedProps} block={block} />;
           case 'list':
-            return (
-              <ListBlock
-                key={block.id}
-                blockIndex={blockIndex}
-                chainBlockIndex={chainBlockIndex}
-                chainId={chainId}
-                block={block}
-              />
-            );
-
+            return <ListBlock {...sharedProps} block={block} />;
           case 'image':
-            return (
-              <ImageBlock
-                key={block.id}
-                blockIndex={blockIndex}
-                chainBlockIndex={chainBlockIndex}
-                chainId={chainId}
-                block={block}
-              />
-            );
+            return <ImageBlock {...sharedProps} block={block} />;
           case 'link':
             return (
-              <LinkBlock
-                key={block.id}
-                blockIndex={blockIndex}
-                chainBlockIndex={chainBlockIndex}
-                chainId={chainId}
-                block={block}
-                getMetaData={null}
-              />
+              <LinkBlock {...sharedProps} block={block} getMetaData={null} />
             );
-          case 'two-column': {
+          case 'columns': {
             const chains = block.data.chains.map(
               (chainId) => blocksDB.chains[chainId]
             );
             return (
-              <Column columns={chains.length} chains={chains}>
+              <Column key={block.id} columns={chains.length} chains={chains}>
                 {chains.map((chain, i) => {
-                  return renderBlockChain(chain, block.data.chains[i]);
+                  return renderBlockChain(
+                    chain,
+                    block.data.chains[i],
+                    chainLevel + 1,
+                    chainId
+                  );
                 })}
               </Column>
             );
           }
-          default:
-            return null;
         }
       })}
     </div>
@@ -133,7 +112,13 @@ export const BlockChain = React.memo(({ chainId }: { chainId: string }) => {
       >
         log blocks
       </Button>
-      {renderBlockChain(chain, chainId)}
+      <div
+        style={{
+          marginLeft: '-48px',
+        }}
+      >
+        {renderBlockChain(chain, chainId, 0, 'root')}
+      </div>
     </div>
   );
 });

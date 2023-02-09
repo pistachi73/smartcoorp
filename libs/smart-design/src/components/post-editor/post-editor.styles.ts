@@ -30,7 +30,9 @@ export const BlockContent = styled.div<{ $selected?: boolean }>`
     `}
 `;
 
-export const BlockContainer = styled.div``;
+export const BlockContainer = styled.div`
+  padding-left: ${space3XL};
+`;
 
 export const InputBox = styled(Body).attrs(() => ({ noMargin: true }))<{
   $loading?: boolean;

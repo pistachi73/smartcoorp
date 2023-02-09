@@ -7,7 +7,7 @@ type SharedBlockProps = {
   chainId: string;
 };
 
-export type BlockType = 'image' | 'paragraph' | 'link' | 'header' | 'list';
+export type BlockType = Block['type'];
 
 export type HeaderBlockProps = SharedBlockProps & {
   type: 'header';
@@ -54,10 +54,10 @@ export type LinkBlockProps = SharedBlockProps & {
   };
 };
 
-export type TwoColumnBlock = SharedBlockProps & {
-  type: 'two-column';
+export type ColumnBlock = SharedBlockProps & {
+  type: 'columns';
   data: {
-    chains: [string, string];
+    chains: string[];
   };
 };
 
@@ -67,7 +67,7 @@ export type Block =
   | LinkBlockProps
   | ListBlockProps
   | ImageBlockProps
-  | TwoColumnBlock;
+  | ColumnBlock;
 
 export type BlockByType<T extends BlockType> = Extract<Block, { type: T }>;
 

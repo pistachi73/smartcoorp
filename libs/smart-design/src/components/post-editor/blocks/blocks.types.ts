@@ -13,6 +13,9 @@ export type BlockContainerProps = {
   blockType: BlockType;
   blockId: string;
   chainId: string;
+  chainLength: number;
+  chainLevel: number;
+  parentChainId: string;
   children: React.ReactNode;
 };
 
@@ -20,6 +23,9 @@ export type SharedBlockContainerProps = {
   blockIndex: number;
   chainBlockIndex: number;
   chainId: string;
+  chainLength: number;
+  chainLevel: number;
+  parentChainId: string;
 };
 
 export type HeaderBlockContainerProps = SharedBlockContainerProps & {

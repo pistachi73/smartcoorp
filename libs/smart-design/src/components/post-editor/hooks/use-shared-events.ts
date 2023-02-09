@@ -8,7 +8,7 @@ import {
 } from '../contexts/blocks-db-context';
 import { ToAddBlock } from '../contexts/blocks-db-context/blocks-db-reducer/blocks-db-reducer.types';
 import { useRefsContext } from '../contexts/refs-context';
-import { useUpdateTool } from '../contexts/tool-context';
+import { useToolBlockIndexUpdaterContext } from '../contexts/tool-control-context/tool-control-context';
 import { buildParagraphBlock } from '../helpers';
 import { getBlockContainerAttributes } from '../helpers/get-block-container-attributes';
 import { waitForElement } from '../helpers/wait-for-element';
@@ -27,7 +27,7 @@ export const useSharedEvents = (): UseSharedEventsResult => {
   const { setSelectedBlocks } = useBlockSelectionUpdaterContext();
   const { selectedBlocks, pivotSelectedBlock } =
     useBlockSelectionConsumerContext();
-  const setTool = useUpdateTool();
+  const setToolIndex = useToolBlockIndexUpdaterContext();
 
   const handleBackspaceDelete = async (e: React.KeyboardEvent) => {
     if (!selectedBlocks.length) return;
@@ -82,10 +82,12 @@ export const useSharedEvents = (): UseSharedEventsResult => {
 
   const handleSharedKeyDown = async (e: React.KeyboardEvent) => {
     if (e.key === 'Backspace' || e.key === 'Delete') {
+      console.log('Hola');
       handleBackspaceDelete(e);
     }
 
     if ((e.metaKey || e.ctrlKey) && !e.shiftKey && e.key === 'z') {
+      console.log('undo: ', blocksDB.canUndo);
       e.preventDefault();
       if (blocksDB.canUndo) dispatchBlocksDB({ type: 'UNDO' });
     }

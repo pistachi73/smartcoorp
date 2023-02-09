@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context';
 import { REMOVE_LAST_LIST_ITEM } from '../../contexts/blocks-db-context/blocks-db-reducer';
@@ -12,9 +12,13 @@ import {
   MODIFY_LIST_INNERHTML,
 } from '../../contexts/blocks-db-context/undo-redo-reducer/actions';
 import { useRefsContext } from '../../contexts/refs-context';
-import { useUpdateTool } from '../../contexts/tool-context';
+import { useToolBlockIndexUpdaterContext } from '../../contexts/tool-control-context/tool-control-context';
 import { ListField } from '../../fields/list-field';
-import { getBlockContainerAttributes, getCaretPosition } from '../../helpers';
+import {
+  getBlockContainerAttributes,
+  getCaretPosition,
+  setCaretPosition,
+} from '../../helpers';
 import { getElementTextContent } from '../../helpers/get-element-textcontent';
 import type { ListBlockContentProps } from '../blocks.types';
 
@@ -33,7 +37,7 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
     focusField,
     blockRefs,
   } = useRefsContext();
-  const setTool = useUpdateTool();
+  const setToolIndex = useToolBlockIndexUpdaterContext();
 
   const fieldIndex = 0;
   const fieldId = `${block.id}_${fieldIndex}`;
@@ -91,6 +95,8 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
   }, [onItemsChange]);
 
   const onInputChange = (e: React.ChangeEvent) => {
+    setToolIndex(null);
+
     debouncedOnItemsChange(
       [].slice
         .call(e.currentTarget.children)
@@ -149,7 +155,7 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
           },
         });
 
-        setTool(null);
+        setToolIndex(null);
       }
     }
 
