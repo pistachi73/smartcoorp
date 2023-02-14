@@ -1,18 +1,9 @@
 import debounce from 'lodash.debounce';
 import { useCallback, useMemo } from 'react';
 
-import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context';
-import { REMOVE_LAST_LIST_ITEM } from '../../contexts/blocks-db-context/blocks-db-reducer';
-import {
-  MODIFY_FIELD,
-  REMOVE_BLOCKS,
-} from '../../contexts/blocks-db-context/blocks-db-reducer/actions';
-import {
-  FOCUS_FIELD,
-  MODIFY_LIST_INNERHTML,
-} from '../../contexts/blocks-db-context/undo-redo-reducer/actions';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import { useRefsContext } from '../../contexts/refs-context';
-import { useUpdateTool } from '../../contexts/tool-context';
+import { useToolBlockIndexUpdaterContext } from '../../contexts/tool-control-context/tool-control-context';
 import { ListField } from '../../fields/list-field';
 import { getBlockContainerAttributes, getCaretPosition } from '../../helpers';
 import { getElementTextContent } from '../../helpers/get-element-textcontent';
@@ -24,7 +15,13 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
   chainId,
   block,
 }) => {
-  const dispatchBlocksDB = useBlocksDBUpdaterContext();
+  const {
+    setFieldValue,
+    removeBlocks,
+    removeLastListItem,
+    buildFocusFieldAction,
+    buildModifyListInnerHTMLAction,
+  } = useBlocksDBUpdaterContext();
   const {
     fieldRefs,
     setPrevCaretPosition,
@@ -33,7 +30,7 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
     focusField,
     blockRefs,
   } = useRefsContext();
-  const setTool = useUpdateTool();
+  const setToolIndex = useToolBlockIndexUpdaterContext();
 
   const fieldIndex = 0;
   const fieldId = `${block.id}_${fieldIndex}`;
@@ -43,34 +40,21 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
       const currentCaretPosition = getCaretPosition(
         fieldRefs.current[blockIndex][0]
       );
-      const undoAction = {
-        type: MODIFY_LIST_INNERHTML,
-        payload: {
-          fieldId,
-          setPrevCaretPosition,
-          caretPosition: prevCaretPosition.current,
-        },
-      } as const;
 
-      const redoAction = {
-        type: MODIFY_LIST_INNERHTML,
-        payload: {
+      setFieldValue({
+        blockId: block.id,
+        blockType: 'list',
+        field: 'items',
+        value: items,
+        undo: buildModifyListInnerHTMLAction({
+          fieldId,
+          caretPosition: prevCaretPosition.current,
+        }),
+        redo: buildModifyListInnerHTMLAction({
           fieldId,
           value: items,
           caretPosition: currentCaretPosition,
-          setPrevCaretPosition,
-        },
-      } as const;
-
-      dispatchBlocksDB({
-        type: MODIFY_FIELD,
-        payload: {
-          blockId: block.id,
-          field: 'items',
-          value: items,
-          undoAction,
-          redoAction,
-        },
+        }),
       });
 
       setPrevCaretPosition(currentCaretPosition);
@@ -78,11 +62,12 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
     [
       fieldRefs,
       blockIndex,
-      fieldId,
-      setPrevCaretPosition,
-      prevCaretPosition,
-      dispatchBlocksDB,
+      setFieldValue,
       block.id,
+      buildModifyListInnerHTMLAction,
+      fieldId,
+      prevCaretPosition,
+      setPrevCaretPosition,
     ]
   );
 
@@ -91,6 +76,8 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
   }, [onItemsChange]);
 
   const onInputChange = (e: React.ChangeEvent) => {
+    setToolIndex(null);
+
     debouncedOnItemsChange(
       [].slice
         .call(e.currentTarget.children)
@@ -117,39 +104,25 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
         e.preventDefault();
         e.stopPropagation();
 
-        const undoAction = {
-          type: MODIFY_LIST_INNERHTML,
-          payload: {
+        removeLastListItem({
+          blockId: block.id,
+          blockType: 'list',
+          field: 'items',
+          chainId,
+          chainBlockIndex,
+          fieldId,
+          items,
+          undo: buildModifyListInnerHTMLAction({
             fieldId,
-            setPrevCaretPosition,
             caretPosition: prevCaretPosition.current,
-          },
-        } as const;
-
-        const redoAction = {
-          type: MODIFY_LIST_INNERHTML,
-          payload: {
+          }),
+          redo: buildModifyListInnerHTMLAction({
             fieldId,
-            setPrevCaretPosition,
             caretPosition: 0,
-          },
-        } as const;
-
-        dispatchBlocksDB({
-          type: REMOVE_LAST_LIST_ITEM,
-          payload: {
-            blockId: block.id,
-            chainId,
-            chainBlockIndex,
-            field: 'items',
-            fieldId,
-            items,
-            undoAction,
-            redoAction,
-          },
+          }),
         });
 
-        setTool(null);
+        setToolIndex(null);
       }
     }
 
@@ -172,31 +145,16 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
         blockRefs.current[prevFocusableBlock[0]]
       );
 
-      const undoAction = {
-        type: FOCUS_FIELD,
-        payload: {
+      removeBlocks({
+        toRemoveBlocks: [[block.id, chainId]],
+        undo: buildFocusFieldAction({
           fieldId,
           position: prevCaretPosition.current,
-          setPrevCaretPosition,
-        },
-      } as const;
-
-      const redoAction = {
-        type: FOCUS_FIELD,
-        payload: {
+        }),
+        redo: buildFocusFieldAction({
           fieldId: `${contiguousBlockId}_${prevFocusableBlock[1]}`,
           position: 'end',
-          setPrevCaretPosition,
-        },
-      } as const;
-
-      dispatchBlocksDB({
-        type: REMOVE_BLOCKS,
-        payload: {
-          toRemoveBlocks: [[block.id, chainId]],
-          undoAction,
-          redoAction,
-        },
+        }),
       });
 
       focusField(prevFocusableBlock, 'end');

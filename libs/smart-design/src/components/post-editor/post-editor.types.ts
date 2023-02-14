@@ -1,13 +1,13 @@
 import { FlattenUnion, KeysOfUnion } from '@smartcoorp/smart-types';
 
-import type { BlocksDB } from './contexts/blocks-db-context/blocks-db.types';
+import type { BlocksDB } from './contexts/blocks-context/blocks-context.types';
 
 type SharedBlockProps = {
   id: string;
   chainId: string;
 };
 
-export type BlockType = 'image' | 'paragraph' | 'link' | 'header' | 'list';
+export type BlockType = Block['type'];
 
 export type HeaderBlockProps = SharedBlockProps & {
   type: 'header';
@@ -54,10 +54,10 @@ export type LinkBlockProps = SharedBlockProps & {
   };
 };
 
-export type TwoColumnBlock = SharedBlockProps & {
-  type: 'two-column';
+export type ColumnBlock = SharedBlockProps & {
+  type: 'columns';
   data: {
-    chains: [string, string];
+    chains: string[];
   };
 };
 
@@ -67,13 +67,19 @@ export type Block =
   | LinkBlockProps
   | ListBlockProps
   | ImageBlockProps
-  | TwoColumnBlock;
+  | ColumnBlock;
 
 export type BlockByType<T extends BlockType> = Extract<Block, { type: T }>;
 
 export type BlockFieldKeys<T extends BlockType> = KeysOfUnion<
   BlockByType<T>['data']
 >;
+
+export type BlockFieldType<
+  T extends BlockType,
+  F extends BlockFieldKeys<T>
+> = BlockByType<T>['data'][F];
+
 export type EveryBlockFieldKeys = KeysOfUnion<Block['data']>;
 
 export type BlockFields<T extends BlockType> = BlockByType<T>['data'];

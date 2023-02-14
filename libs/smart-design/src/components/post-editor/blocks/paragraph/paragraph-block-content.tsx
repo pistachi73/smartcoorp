@@ -1,16 +1,7 @@
 import debounce from 'lodash.debounce';
 import React, { useCallback, useMemo } from 'react';
 
-import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context/';
-import { REMOVE_BLOCKS } from '../../contexts/blocks-db-context/blocks-db-reducer';
-import {
-  MERGE_TEXT_FIELDS,
-  SPLIT_TEXT_FIELD,
-} from '../../contexts/blocks-db-context/blocks-db-reducer/actions';
-import {
-  FOCUS_FIELD,
-  MODIFY_FIELD_INNERHTML,
-} from '../../contexts/blocks-db-context/undo-redo-reducer';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import { useRefsContext } from '../../contexts/refs-context';
 import { TextField } from '../../fields/text-field';
 import {
@@ -18,7 +9,7 @@ import {
   getCaretPosition,
   getElementTextContent,
 } from '../../helpers';
-import { ParagraphBlockContentProps } from '../blocks.types';
+import type { ParagraphBlockContentProps } from '../blocks.types';
 
 export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
   blockIndex,
@@ -26,7 +17,14 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
   chainId,
   block,
 }) => {
-  const dispatchBlocksDB = useBlocksDBUpdaterContext();
+  const {
+    setFieldValue,
+    removeBlocks,
+    splitTextField,
+    mergeTextFields,
+    buildModifyFieldInnerHTMLAction,
+    buildFocusFieldAction,
+  } = useBlocksDBUpdaterContext();
 
   const {
     fieldRefs,
@@ -46,45 +44,31 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
         fieldRefs.current[blockIndex][0]
       );
 
-      const undoAction = {
-        type: MODIFY_FIELD_INNERHTML,
-        payload: {
+      setFieldValue({
+        blockId: block.id,
+        blockType: 'paragraph',
+        field: 'text',
+        value: text,
+        undo: buildModifyFieldInnerHTMLAction({
           fieldId,
-          setPrevCaretPosition,
           caretPosition: prevCaretPosition.current,
-        },
-      } as const;
-
-      const redoAction = {
-        type: MODIFY_FIELD_INNERHTML,
-        payload: {
+        }),
+        redo: buildModifyFieldInnerHTMLAction({
           fieldId,
           caretPosition: currentCaretPosition,
-          setPrevCaretPosition,
-        },
-      } as const;
-
-      dispatchBlocksDB({
-        type: 'MODIFY_FIELD',
-        payload: {
-          blockId: block.id,
-          field: 'text',
-          value: text,
-          undoAction,
-          redoAction,
-        },
+        }),
       });
-
       setPrevCaretPosition(currentCaretPosition);
     },
     [
       fieldRefs,
       blockIndex,
-      fieldId,
-      setPrevCaretPosition,
-      prevCaretPosition,
-      dispatchBlocksDB,
+      setFieldValue,
       block.id,
+      buildModifyFieldInnerHTMLAction,
+      fieldId,
+      prevCaretPosition,
+      setPrevCaretPosition,
     ]
   );
 
@@ -100,36 +84,22 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
       if (isTextSplit) {
         debouncedOnTextChange.cancel();
 
-        const undoAction = {
-          type: MODIFY_FIELD_INNERHTML,
-          payload: {
+        splitTextField({
+          blockType: 'paragraph',
+          blockId: block.id,
+          chainId,
+          field: 'text',
+          chainBlockIndex,
+          innerHTML,
+          splitedBlockRef: fieldRefs.current[blockIndex][0],
+          undo: buildModifyFieldInnerHTMLAction({
             fieldId,
             caretPosition: prevCaretPosition.current,
-            setPrevCaretPosition,
-          },
-        } as const;
-
-        const redoAction = {
-          type: MODIFY_FIELD_INNERHTML,
-          payload: {
+          }),
+          redo: buildModifyFieldInnerHTMLAction({
             fieldId,
             caretPosition: 0,
-            setPrevCaretPosition,
-          },
-        } as const;
-
-        dispatchBlocksDB({
-          type: SPLIT_TEXT_FIELD,
-          payload: {
-            blockId: block.id,
-            chainId,
-            field: 'text',
-            chainBlockIndex,
-            innerHTML,
-            splitedBlockRef: fieldRefs.current[blockIndex][0],
-            undoAction,
-            redoAction,
-          },
+          }),
         });
 
         setPrevCaretPosition(0);
@@ -139,15 +109,16 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
     },
     [
       debouncedOnTextChange,
-      fieldId,
-      prevCaretPosition,
-      setPrevCaretPosition,
-      dispatchBlocksDB,
+      splitTextField,
       block.id,
       chainId,
       chainBlockIndex,
       fieldRefs,
       blockIndex,
+      buildModifyFieldInnerHTMLAction,
+      fieldId,
+      prevCaretPosition,
+      setPrevCaretPosition,
     ]
   );
 
@@ -173,31 +144,16 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
             blockRefs.current[prevFocusableBlock[0]]
           );
 
-          const undoAction = {
-            type: FOCUS_FIELD,
-            payload: {
+          removeBlocks({
+            toRemoveBlocks: [[block.id, chainId]],
+            undo: buildFocusFieldAction({
               fieldId: `${block.id}_${fieldIndex}`,
               position: prevCaretPosition.current,
-              setPrevCaretPosition,
-            },
-          } as const;
-
-          const redoAction = {
-            type: FOCUS_FIELD,
-            payload: {
+            }),
+            redo: buildFocusFieldAction({
               fieldId: `${contiguousBlockId}_${prevFocusableBlock[1]}`,
               position: 'end',
-              setPrevCaretPosition,
-            },
-          } as const;
-
-          dispatchBlocksDB({
-            type: REMOVE_BLOCKS,
-            payload: {
-              toRemoveBlocks: [[block.id, chainId]],
-              undoAction,
-              redoAction,
-            },
+            }),
           });
 
           focusField(prevFocusableBlock, 'end');
@@ -218,37 +174,23 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
           const prevFieldContentLength =
             getElementTextContent(prevFieldRef).length;
 
-          const undoAction = {
-            type: MODIFY_FIELD_INNERHTML,
-            payload: {
+          mergeTextFields({
+            blockType: 'paragraph',
+            mergedField: 'text',
+            mergedFieldRef: prevFieldRef,
+            mergedBlockRef: prevBlock,
+            removedInnerHTML: element.innerHTML,
+            removedChainBlockIndex: chainBlockIndex,
+            removedChainId: chainId,
+            undo: buildModifyFieldInnerHTMLAction({
               fieldId: prevFieldRef.id,
               focusFieldId: fieldId,
               caretPosition: prevCaretPosition.current,
-              setPrevCaretPosition,
-            },
-          } as const;
-
-          const redoAction = {
-            type: MODIFY_FIELD_INNERHTML,
-            payload: {
+            }),
+            redo: buildModifyFieldInnerHTMLAction({
               fieldId: prevFieldRef.id,
               caretPosition: prevFieldContentLength,
-              setPrevCaretPosition,
-            },
-          } as const;
-
-          dispatchBlocksDB({
-            type: MERGE_TEXT_FIELDS,
-            payload: {
-              mergedFieldRef: prevFieldRef,
-              mergedBlockRef: prevBlock,
-              mergedField: 'text',
-              removedInnerHTML: element.innerHTML,
-              removedChainBlockIndex: chainBlockIndex,
-              removedChainId: chainId,
-              undoAction,
-              redoAction,
-            },
+            }),
           });
 
           setPrevCaretPosition(prevFieldContentLength);
@@ -261,14 +203,17 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
       debouncedOnTextChange,
       getNextFocusableField,
       blockRefs,
-      prevCaretPosition,
-      setPrevCaretPosition,
+      removeBlocks,
       block.id,
-      dispatchBlocksDB,
       chainId,
+      buildFocusFieldAction,
+      prevCaretPosition,
       focusField,
-      fieldId,
+      mergeTextFields,
       chainBlockIndex,
+      buildModifyFieldInnerHTMLAction,
+      fieldId,
+      setPrevCaretPosition,
     ]
   );
 

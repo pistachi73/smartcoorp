@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Dispatch, SetStateAction, createContext, useContext, useMemo, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 
-import type { BlockDataDB } from '../blocks-db-context';
+import type { BlockDataDB } from '../blocks-context';
 
 type BlockSelectionUpdaterContextProps = {
   setPivotSelectedBlock: Dispatch<SetStateAction<number>>;
@@ -10,12 +17,13 @@ type BlockSelectionUpdaterContextProps = {
   setIsSelectionEnabled: Dispatch<SetStateAction<boolean>>;
 };
 
-export const BlockSelectionUpdaterContext = createContext<BlockSelectionUpdaterContextProps>({
-  setSelectedBlocks: () => {},
-  setPivotSelectedBlock: () => {},
-  setClipboardBlocks: () => {},
-  setIsSelectionEnabled: () => {},
-});
+export const BlockSelectionUpdaterContext =
+  createContext<BlockSelectionUpdaterContextProps>({
+    setSelectedBlocks: () => {},
+    setPivotSelectedBlock: () => {},
+    setClipboardBlocks: () => {},
+    setIsSelectionEnabled: () => {},
+  });
 
 type BlockSelectionConsumerContextResult = {
   pivotSelectedBlock: number;
@@ -23,18 +31,25 @@ type BlockSelectionConsumerContextResult = {
   clipboardBlocks: BlockDataDB | null;
   isSelectionEnabled: boolean;
 };
-export const BlockSelectionConsumerContext = createContext<BlockSelectionConsumerContextResult>({
-  selectedBlocks: [],
-  isSelectionEnabled: true,
-  pivotSelectedBlock: 0,
-  clipboardBlocks: null,
-});
+export const BlockSelectionConsumerContext =
+  createContext<BlockSelectionConsumerContextResult>({
+    selectedBlocks: [],
+    isSelectionEnabled: true,
+    pivotSelectedBlock: 0,
+    clipboardBlocks: null,
+  });
 
-export const BlockSelectionProvider = ({ children }: { children: React.ReactNode }) => {
+export const BlockSelectionProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [isSelectionEnabled, setIsSelectionEnabled] = useState(true);
   const [selectedBlocks, setSelectedBlocks] = useState<number[]>([]);
   const [pivotSelectedBlock, setPivotSelectedBlock] = useState<number>(0);
-  const [clipboardBlocks, setClipboardBlocks] = useState<BlockDataDB | null>(null);
+  const [clipboardBlocks, setClipboardBlocks] = useState<BlockDataDB | null>(
+    null
+  );
 
   const consumerValue = useMemo(
     () => ({
@@ -53,7 +68,12 @@ export const BlockSelectionProvider = ({ children }: { children: React.ReactNode
       setClipboardBlocks,
       setIsSelectionEnabled,
     }),
-    [setSelectedBlocks, setPivotSelectedBlock, setClipboardBlocks, setIsSelectionEnabled]
+    [
+      setSelectedBlocks,
+      setPivotSelectedBlock,
+      setClipboardBlocks,
+      setIsSelectionEnabled,
+    ]
   );
   return (
     <BlockSelectionConsumerContext.Provider value={consumerValue}>
@@ -67,7 +87,9 @@ export const BlockSelectionProvider = ({ children }: { children: React.ReactNode
 export const useBlockSelectionUpdaterContext = () => {
   const context = useContext(BlockSelectionUpdaterContext);
   if (typeof context === 'undefined') {
-    throw new Error('useBlockSelectionUpdaterContext must be used within a BlockSelectionProvider');
+    throw new Error(
+      'useBlockSelectionUpdaterContext must be used within a BlockSelectionProvider'
+    );
   }
   return context;
 };

@@ -1,102 +1,138 @@
-import { FC, useEffect, useState } from 'react';
-import * as React from 'react';
-import { BiSearch } from 'react-icons/bi';
-import { MdOutlineAdd } from 'react-icons/md';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { MagnifyingGlassIcon, PlusIcon } from '@radix-ui/react-icons';
+import * as ScrollArea from '@radix-ui/react-scroll-area';
+import { Command } from 'cmdk';
+import React, { FC } from 'react';
 
-import { FormField } from '../../../form-field';
-import { useAvailableBlocks, useBlockUpdaterContext } from '../../contexts/block-context';
-import { useBlockMenu } from '../../contexts/block-menu-tool-context';
-import { useUpdateTool } from '../../contexts/tool-context';
-import { BlockType } from '../../post-editor.types';
-import { Menu } from '../tools.styles';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
+import type { ToAddBlock } from '../../contexts/blocks-context/blocks-reducer/blocks-reducer.types';
+import { useRefsContext } from '../../contexts/refs-context';
+import {
+  useToolBlockIndexUpdaterContext,
+  useToolControlContext,
+} from '../../contexts/tool-control-context/tool-control-context';
+import type { Block } from '../../post-editor.types';
+import { DropdownContent, DropdownTrigger, Separator } from '../tools.styles';
 
-import { availableBlocksButtonContent, insertableBlocks } from './add-block-tool.helper';
-import * as S from './add-block-tool.styles';
+import { AddBlockItem } from './add-block-tool-item';
+import {
+  DropdownItemTypes,
+  buildBlocksActionMapping,
+  buildBlocksMapping,
+  dropdownItems,
+} from './add-block-tool.helper';
 
 type AddBlockToolProps = {
-  blockIndex: number;
+  chainId: string;
+  chainBlockIndex: number;
 };
 
-export const AddBlockTool: FC<AddBlockToolProps> = React.memo(({ blockIndex }) => {
-  const { setBlocks } = useBlockUpdaterContext();
-  const { availableBlocks } = useAvailableBlocks();
-  const setTool = useUpdateTool();
-  const {
-    addBlockMenuProps: { refs: menuRefs, ...menuProps },
-  } = useBlockMenu();
+export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
+  ({ chainId, chainBlockIndex }) => {
+    const { addBlocks, buildFocusFieldAction } = useBlocksDBUpdaterContext();
+    const toolControl = useToolControlContext();
+    const setToolBlockIndex = useToolBlockIndexUpdaterContext();
 
-  const [filteredBlocks, setFilteredBlocks] = useState<BlockType[]>(availableBlocks);
-  const [filterValue, setFilterValue] = useState('');
+    const addBlock = async (blockType: DropdownItemTypes) => {
+      let toAddBlocks: ToAddBlock[] = [];
+      let focusFieldId: string;
 
-  const handleFilterChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const filteredBlocks: BlockType[] = availableBlocks.filter((block) =>
-      block.includes(e.target.value)
+      if (blockType === 'two-column' || blockType === 'three-column') {
+        const newBlocks = buildBlocksMapping[blockType](chainId) as Block[];
+        toAddBlocks = newBlocks.map((block, index) => [
+          block,
+          block.chainId,
+          index === 0 ? chainBlockIndex + 1 : 0, //first block is the one containing the columns
+        ]);
+
+        focusFieldId = `${newBlocks[1].id}_0`;
+      } else {
+        const newBlock = buildBlocksMapping[blockType](chainId) as Block;
+        toAddBlocks = [[newBlock, chainId, chainBlockIndex + 1]];
+        focusFieldId = `${newBlock.id}_0`;
+      }
+      addBlocks({
+        toAddBlocks,
+        // NO UNDO?
+        redo: buildFocusFieldAction({
+          fieldId: focusFieldId,
+          position: 'end',
+        }),
+      });
+
+      buildBlocksActionMapping[blockType](focusFieldId);
+      toolControl.setIsAddBlockMenuOpened(false);
+      setToolBlockIndex(-1);
+    };
+
+    return (
+      <DropdownMenu.Root
+        open={toolControl.isAddBlockMenuOpened}
+        onOpenChange={toolControl.setIsAddBlockMenuOpened}
+      >
+        <DropdownTrigger>
+          <PlusIcon height={18} width={18} />
+        </DropdownTrigger>
+        <DropdownMenu.Portal>
+          <DropdownContent
+            side="bottom"
+            align="start"
+            sideOffset={5}
+            animate={{ scale: 1 }}
+            initial={{ scale: 0.95 }}
+            onCloseAutoFocus={(e) => e.preventDefault()}
+          >
+            <ScrollArea.Root>
+              <Command>
+                <div cmdk-input-wrapper="">
+                  <MagnifyingGlassIcon
+                    aria-hidden={!toolControl.isAddBlockMenuOpened}
+                    width="20px"
+                    height="20px"
+                  />
+                  <Command.Input placeholder="Filter blocks..." autoFocus />
+                </div>
+                <ScrollArea.Viewport
+                  key={`addBlockTOolViewport${chainId}${chainBlockIndex}`}
+                >
+                  <Command.List>
+                    <Command.Empty>No results found.</Command.Empty>
+                    {dropdownItems.map(({ groupName, items }) => (
+                      <React.Fragment key={groupName}>
+                        <Command.Group heading={groupName}>
+                          {Object.entries(items).map(
+                            ([key, { label, snippet }]) => (
+                              <Command.Item
+                                key={`${label}_${key}`}
+                                value={key}
+                                onSelect={(val) =>
+                                  addBlock(val as DropdownItemTypes)
+                                }
+                              >
+                                <AddBlockItem
+                                  type={key as DropdownItemTypes}
+                                  label={label}
+                                  snippet={snippet}
+                                />
+                              </Command.Item>
+                            )
+                          )}
+                        </Command.Group>
+                        <Separator />
+                      </React.Fragment>
+                    ))}
+                  </Command.List>
+                </ScrollArea.Viewport>
+              </Command>
+
+              <ScrollArea.Scrollbar orientation="vertical">
+                <ScrollArea.Thumb />
+              </ScrollArea.Scrollbar>
+              <ScrollArea.Corner />
+            </ScrollArea.Root>
+          </DropdownContent>
+        </DropdownMenu.Portal>
+      </DropdownMenu.Root>
     );
-
-    menuRefs.current = [];
-    await setFilterValue(e.target.value);
-    await setFilteredBlocks(filteredBlocks);
-  };
-
-  useEffect(() => {
-    menuRefs.current = menuRefs.current.filter((ref: HTMLElement | null) => ref !== null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menuRefs.current]);
-
-  const addBlock = async (blockType: BlockType) => {
-    const { block, action } = insertableBlocks[blockType]();
-
-    setBlocks((prevBlocks) => {
-      const newBlocks = [...prevBlocks];
-      newBlocks.splice(blockIndex + 1, 0, block);
-      return newBlocks;
-    });
-
-    menuProps.closeMenu();
-
-    action && (await action());
-
-    setTool(null);
-  };
-
-  return (
-    <Menu
-      triggerProps={{
-        size: 'small',
-        icon: MdOutlineAdd,
-        variant: 'text',
-        iconSize: 22,
-      }}
-      aria-label="Add block tool"
-      {...menuProps}
-      refs={menuRefs}
-    >
-      <FormField
-        size="small"
-        id="fo"
-        value={filterValue}
-        onChange={handleFilterChange}
-        ref={(el: HTMLElement) => (menuRefs.current[0] = el)}
-        icon={BiSearch}
-      />
-      <S.MenuItemContainer>
-        {filteredBlocks.length ? (
-          filteredBlocks.map((block, index) => (
-            <S.MenuItem
-              key={block}
-              ref={(el: HTMLElement) => (menuRefs.current[index + 1] = el)}
-              onClick={() => addBlock(block)}
-            >
-              <S.MenuItemIconContainer>
-                {availableBlocksButtonContent[block].icon}
-              </S.MenuItemIconContainer>
-              {availableBlocksButtonContent[block].label}
-            </S.MenuItem>
-          ))
-        ) : (
-          <S.MenuItem $notFound={true}>Not found</S.MenuItem>
-        )}
-      </S.MenuItemContainer>
-    </Menu>
-  );
-});
+  }
+);

@@ -5,13 +5,8 @@ import { memo, useCallback, useMemo, useState } from 'react';
 import Image from 'next/image';
 
 import { Col, Grid, Row } from '../../../grid-layout';
-import { Headline } from '../../../headline/headline';
-import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context';
-import {
-  MODIFY_FIELD,
-  MODIFY_LINK_DATA,
-} from '../../contexts/blocks-db-context/blocks-db-reducer/actions';
-import { MODIFY_FIELD_INNERHTML } from '../../contexts/blocks-db-context/undo-redo-reducer';
+import { Headline } from '../../../headline';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import { useRefsContext } from '../../contexts/refs-context';
 import { TextBoxField } from '../../fields/text-box-field';
 import { debounceDelay, getCaretPosition } from '../../helpers';
@@ -20,11 +15,12 @@ import type { LinkBlockContentProps } from '../blocks.types';
 import * as S from './link-block.styles';
 
 export const LinkBlockContent = memo<LinkBlockContentProps>(
-  ({ blockIndex, chainBlockIndex, chainId, block, getMetaData }) => {
+  ({ blockIndex, block, getMetaData }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
-    const dispatchBlocksDB = useBlocksDBUpdaterContext();
+    const { setFieldValue, setLinkData, buildModifyFieldInnerHTMLAction } =
+      useBlocksDBUpdaterContext();
 
     const { fieldRefs, setPrevCaretPosition, prevCaretPosition } =
       useRefsContext();
@@ -60,16 +56,13 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
           return;
         }
 
-        dispatchBlocksDB({
-          type: MODIFY_LINK_DATA,
-          payload: {
-            blockId: block.id,
-            url: urlMetaData.url,
-            domain: urlMetaData.url?.split('//')[1].split('/')[0],
-            title: urlMetaData.title,
-            description: urlMetaData.description,
-            imageUrl: urlMetaData.image,
-          },
+        setLinkData({
+          blockId: block.id,
+          url: urlMetaData.url,
+          domain: urlMetaData.url?.split('//')[1].split('/')[0],
+          title: urlMetaData.title,
+          description: urlMetaData.description,
+          imageUrl: urlMetaData.image,
         });
       } catch (_) {
         setError(true);
@@ -82,33 +75,19 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
           fieldRefs.current[blockIndex][0]
         );
 
-        const undoAction = {
-          type: MODIFY_FIELD_INNERHTML,
-          payload: {
+        setFieldValue({
+          blockType: 'link',
+          blockId: block.id,
+          field: 'link',
+          value: e.target.innerHTML,
+          undo: buildModifyFieldInnerHTMLAction({
             fieldId,
-            setPrevCaretPosition,
             caretPosition: prevCaretPosition.current,
-          },
-        } as const;
-
-        const redoAction = {
-          type: MODIFY_FIELD_INNERHTML,
-          payload: {
+          }),
+          redo: buildModifyFieldInnerHTMLAction({
             fieldId,
             caretPosition: currentCaretPosition,
-            setPrevCaretPosition,
-          },
-        } as const;
-
-        dispatchBlocksDB({
-          type: MODIFY_FIELD,
-          payload: {
-            blockId: block.id,
-            field: 'link',
-            value: e.target.innerHTML,
-            undoAction,
-            redoAction,
-          },
+          }),
         });
 
         setPrevCaretPosition(currentCaretPosition);
@@ -116,11 +95,12 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
       [
         fieldRefs,
         blockIndex,
-        fieldId,
-        setPrevCaretPosition,
-        prevCaretPosition,
-        dispatchBlocksDB,
+        setFieldValue,
         block.id,
+        buildModifyFieldInnerHTMLAction,
+        fieldId,
+        prevCaretPosition,
+        setPrevCaretPosition,
       ]
     );
 

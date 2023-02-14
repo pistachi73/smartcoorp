@@ -1,18 +1,26 @@
 import styled from 'styled-components';
 
-import { spaceXS, spaceXXS } from '@smartcoorp/smart-design/tokens';
+import { spaceXL, spaceXS, spaceXXS } from '@smartcoorp/smart-design/tokens';
 
 export const OrderedList = styled.ol`
+  padding-left: ${spaceXL};
+
   margin-top: 0;
   margin-bottom: 0;
+  overflow-wrap: anywhere;
+
   :focus {
     outline: none;
   }
 `;
 
 export const UnorderedList = styled.ul`
+  padding-left: ${spaceXL};
+
   margin-top: 0;
   margin-bottom: 0;
+  overflow-wrap: anywhere;
+
   :focus {
     outline: none;
   }

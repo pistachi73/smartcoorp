@@ -1,7 +1,6 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 
-import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context';
-import { MODIFY_FIELD } from '../../contexts/blocks-db-context/blocks-db-reducer/actions';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import { useRefsContext } from '../../contexts/refs-context/refs-context';
 import { FileField } from '../../fields/file-field';
 import { waitForElement } from '../../helpers/wait-for-element';
@@ -12,7 +11,7 @@ import { ImageCaption } from './image-caption';
 
 export const ImageBlockContent = memo<ImageBlockContentProps>(
   ({ blockIndex, block }) => {
-    const dispatchBlocksDB = useBlocksDBUpdaterContext();
+    const { setFieldValue } = useBlocksDBUpdaterContext();
     const { setPrevCaretPosition } = useRefsContext();
     const [imagePreview, setImagePreview] = useState<
       string | ArrayBuffer | null
@@ -36,19 +35,17 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
 
         if (!file) return;
 
-        dispatchBlocksDB({
-          type: MODIFY_FIELD,
-          payload: {
-            blockId: block.id,
-            field: 'file',
-            value: file,
-          },
+        setFieldValue({
+          blockType: 'image',
+          blockId: block.id,
+          field: 'file',
+          value: file,
         });
 
         (await waitForElement(captionFieldId))?.focus();
         setPrevCaretPosition(0);
       },
-      [block.id, captionFieldId, dispatchBlocksDB, setPrevCaretPosition]
+      [block.id, captionFieldId, setFieldValue, setPrevCaretPosition]
     );
 
     return imagePreview ? (

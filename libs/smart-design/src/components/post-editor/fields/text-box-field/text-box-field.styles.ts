@@ -20,6 +20,8 @@ export const TextBoxField = styled(Body).attrs(() => ({ noMargin: true }))<{
   border-radius: ${borderRadiusXS};
   margin-bottom: ${spaceM};
 
+  overflow-wrap: anywhere;
+
   color: ${({ $loading, $error, theme }) =>
     $error
       ? theme.common.errorColor

@@ -6,13 +6,24 @@ import { HeaderBlockContainerProps } from '../blocks.types';
 import { HeaderBlockContent } from './header-block-content';
 
 export const HeaderBlock = React.memo<HeaderBlockContainerProps>(
-  ({ blockIndex, chainBlockIndex, chainId, block }) => {
+  ({
+    blockIndex,
+    chainBlockIndex,
+    chainId,
+    block,
+    chainLength,
+    chainLevel,
+    parentChainId,
+  }) => {
     return (
       <BlockContainer
         blockIndex={blockIndex}
         chainBlockIndex={chainBlockIndex}
         blockId={block.id}
         chainId={chainId}
+        chainLevel={chainLevel}
+        chainLength={chainLength}
+        parentChainId={parentChainId}
         blockType="header"
       >
         <HeaderBlockContent
@@ -20,7 +31,6 @@ export const HeaderBlock = React.memo<HeaderBlockContainerProps>(
           chainBlockIndex={chainBlockIndex}
           chainId={chainId}
           block={block}
-          text={block.data.text}
         />
       </BlockContainer>
     );

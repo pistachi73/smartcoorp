@@ -6,6 +6,7 @@ import { Headline } from '../../../headline';
 export const StyledBody = styled(Body)`
   width: 100%;
   min-height: 24px;
+  overflow-wrap: anywhere;
 
   :focus {
     outline: none;

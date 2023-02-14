@@ -1,20 +1,17 @@
-import * as R from 'ramda';
+import { nanoid } from 'nanoid';
 import { useState } from 'react';
-import { v4 as uuid } from 'uuid';
 
 import {
   useBlockSelectionConsumerContext,
   useBlockSelectionUpdaterContext,
 } from '../../contexts/block-selection-context';
-import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context/';
-import {
-  ADD_BLOCKS,
-  COPY_BLOCKS,
-  REPLACE_BLOCKS,
-  ToAddBlock,
-} from '../../contexts/blocks-db-context/blocks-db-reducer';
-import { FOCUS_FIELD } from '../../contexts/blocks-db-context/undo-redo-reducer';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
+import type { ToAddBlock } from '../../contexts/blocks-context/blocks-reducer';
 import { useRefsContext } from '../../contexts/refs-context';
+import {
+  useToolBlockIndexUpdaterContext,
+  useToolControlContext,
+} from '../../contexts/tool-control-context/tool-control-context';
 import {
   buildParagraphBlock,
   getBlockContainerAttributes,
@@ -25,10 +22,11 @@ import { getToRemoveBlocksFromSelection } from './use-block-selection-helpers';
 
 export const useBlockSelection = () => {
   const [prevRange, setPrevRange] = useState<Range | null>();
-  const { blockRefs, fieldRefs, focusField, setPrevCaretPosition } =
-    useRefsContext();
-
-  const dispatchBlocksDB = useBlocksDBUpdaterContext();
+  const { blockRefs, fieldRefs, focusField } = useRefsContext();
+  const toolControl = useToolControlContext();
+  const setToolBlockIndex = useToolBlockIndexUpdaterContext();
+  const { copyBlocks, replaceBlocks, addBlocks, buildFocusFieldAction } =
+    useBlocksDBUpdaterContext();
 
   const { selectedBlocks, clipboardBlocks, pivotSelectedBlock } =
     useBlockSelectionConsumerContext();
@@ -36,10 +34,6 @@ export const useBlockSelection = () => {
     useBlockSelectionUpdaterContext();
 
   const handleShiftUp = (e: React.KeyboardEvent, blockIndex: number) => {
-    console.log('handleShiftUp');
-    console.log('Pivot: ', pivotSelectedBlock);
-
-    console.log('Selected Blocks: ', selectedBlocks);
     // If some blocks are selected,
     // select the block above the first selected block
     // or deselect the last block
@@ -64,8 +58,6 @@ export const useBlockSelection = () => {
       } else {
         newSelectedBlocks.pop();
       }
-
-      console.log(newSelectedBlocks);
 
       setSelectedBlocks(newSelectedBlocks);
     }
@@ -136,92 +128,6 @@ export const useBlockSelection = () => {
     }
   };
 
-  const handleMetakeyArrowDown = async (e: React.KeyboardEvent) => {
-    //TOOD: fix this
-    e.preventDefault();
-
-    if (
-      !selectedBlocks.length ||
-      selectedBlocks[selectedBlocks.length - 1] === fieldRefs.current.length - 1
-    )
-      return;
-
-    setSelectedBlocks(R.map((x) => x + 1));
-
-    setPivotSelectedBlock(
-      (prevCenterSelectedBlock) => prevCenterSelectedBlock + 1
-    );
-
-    const swapedBlocksIndexes: [number[], number[]] = [
-      selectedBlocks,
-      [selectedBlocks[selectedBlocks.length - 1] + 1],
-    ];
-
-    const inversedSwapedBlocksIndexes: [number[], number[]] = [
-      swapedBlocksIndexes[0].map((x) => x + swapedBlocksIndexes[1].length),
-      swapedBlocksIndexes[1].map((x) => x - swapedBlocksIndexes[0].length),
-    ];
-    // swapBlocks(swapedBlocksIndexes[0], swapedBlocksIndexes[1]);
-
-    // addCommand({
-    //   action: {
-    //     type: 'swapBlocks',
-    //     payload: {
-    //       swapedBlocksIndexes,
-    //       selectedBlocks: inversedSwapedBlocksIndexes[0],
-    //     },
-    //   },
-    //   inverse: {
-    //     type: 'swapBlocks',
-    //     payload: {
-    //       swapedBlocksIndexes: inversedSwapedBlocksIndexes,
-    //       selectedBlocks: swapedBlocksIndexes[0],
-    //     },
-    //   },
-    // });
-  };
-
-  const handleMetakeyArrowUp = async (e: React.KeyboardEvent) => {
-    //TODO: Fix this
-    e.preventDefault();
-
-    if (!selectedBlocks.length || selectedBlocks[0] === 0) return;
-
-    const swapedBlocksIndexes: [number[], number[]] = [
-      selectedBlocks,
-      [selectedBlocks[0] - 1],
-    ];
-
-    // [[1, 2], [3]] -> [[1], [2, 3]]
-    const inversedSwapedBlocksIndexes: [number[], number[]] = [
-      swapedBlocksIndexes[0].map((x) => x - swapedBlocksIndexes[1].length),
-      swapedBlocksIndexes[1].map((x) => x + swapedBlocksIndexes[0].length),
-    ];
-    //swapBlocks(swapedBlocksIndexes[0], swapedBlocksIndexes[1]);
-
-    setSelectedBlocks(R.map((x) => x - 1));
-    setPivotSelectedBlock(
-      (prevCenterSelectedBlock) => prevCenterSelectedBlock - 1
-    );
-
-    // addCommand({
-    //   action: {
-    //     type: 'swapBlocks',
-    //     payload: {
-    //       swapedBlocksIndexes,
-    //       selectedBlocks: inversedSwapedBlocksIndexes[0],
-    //     },
-    //   },
-    //   inverse: {
-    //     type: 'swapBlocks',
-    //     payload: {
-    //       swapedBlocksIndexes: inversedSwapedBlocksIndexes,
-    //       selectedBlocks: swapedBlocksIndexes[0],
-    //     },
-    //   },
-    // });
-  };
-
   const handleMetakeyC = (e: React.KeyboardEvent) => {
     if (!selectedBlocks.length) {
       setClipboardBlocks(null);
@@ -234,12 +140,9 @@ export const useBlockSelection = () => {
       return blockId;
     });
 
-    dispatchBlocksDB({
-      type: COPY_BLOCKS,
-      payload: {
-        blockIds: selectedBlockIds,
-        onCopy: (blocksDB) => setClipboardBlocks(blocksDB),
-      },
+    copyBlocks({
+      blockIds: selectedBlockIds,
+      onCopy: (blocksDB) => setClipboardBlocks(blocksDB),
     });
   };
 
@@ -256,12 +159,10 @@ export const useBlockSelection = () => {
       const { blockId } = getBlockContainerAttributes(blockRefs.current[i]);
       return blockId;
     });
-    dispatchBlocksDB({
-      type: COPY_BLOCKS,
-      payload: {
-        blockIds: selectedBlockIds,
-        onCopy: (blocksDB) => setClipboardBlocks(blocksDB),
-      },
+
+    copyBlocks({
+      blockIds: selectedBlockIds,
+      onCopy: (blocksDB) => setClipboardBlocks(blocksDB),
     });
 
     // 2: REPLACE SELECTED BLOCKS WITH PARAGRAPH BLOCK
@@ -283,28 +184,17 @@ export const useBlockSelection = () => {
       [newBlock, firstSelectedBlockChainId, firstSelectedBlockChainBlockIndex],
     ];
 
-    dispatchBlocksDB({
-      type: REPLACE_BLOCKS,
-      payload: {
-        toRemoveBlocks,
-        toAddBlocks,
-        undoAction: {
-          type: FOCUS_FIELD,
-          payload: {
-            fieldId: `${firstSelectedBlockId}_0`,
-            position: 'end',
-            setPrevCaretPosition,
-          },
-        },
-        redoAction: {
-          type: FOCUS_FIELD,
-          payload: {
-            fieldId: `${newBlock.id}_0`,
-            position: 'end',
-            setPrevCaretPosition,
-          },
-        },
-      },
+    replaceBlocks({
+      toRemoveBlocks,
+      toAddBlocks,
+      undo: buildFocusFieldAction({
+        fieldId: `${firstSelectedBlockId}_0`,
+        position: 'end',
+      }),
+      redo: buildFocusFieldAction({
+        fieldId: `${newBlock.id}_0`,
+        position: 'end',
+      }),
     });
 
     (await waitForElement(`${newBlock.id}_0`))?.focus();
@@ -313,7 +203,6 @@ export const useBlockSelection = () => {
 
   const handleMetakeyV = async (
     e: React.KeyboardEvent,
-    blockIndex: number,
     chainBlockIndex: number,
     chainId: string
   ) => {
@@ -321,10 +210,10 @@ export const useBlockSelection = () => {
 
     e.preventDefault();
 
-    // 1: FORMAT BLOCKS TO ADD IDS
+    // 1: FORMAT BLOCKS TO MODIFY IDS
     const toAddBlocks: ToAddBlock[] = Object.keys(clipboardBlocks).map(
       (blockId, i) => {
-        const id = uuid();
+        const id = nanoid(10);
         const formattedBlock = {
           ...clipboardBlocks[blockId],
           id,
@@ -347,42 +236,28 @@ export const useBlockSelection = () => {
       blockRefs.current
     );
 
-    const undoAction = {
-      type: FOCUS_FIELD,
-      payload: {
-        fieldId: `${firstSelectedBlockId}_0`,
-        position: 'end',
-        setPrevCaretPosition,
-      },
-    } as const;
+    const undo = buildFocusFieldAction({
+      fieldId: `${firstSelectedBlockId}_0`,
+      position: 'end',
+    });
 
-    const redoAction = {
-      type: FOCUS_FIELD,
-      payload: {
-        fieldId: `${lastAddedBlockId}_0`,
-        position: 'end',
-        setPrevCaretPosition,
-      },
-    } as const;
+    const redo = buildFocusFieldAction({
+      fieldId: `${lastAddedBlockId}_0`,
+      position: 'end',
+    });
 
     if (selectedBlocks.length) {
-      dispatchBlocksDB({
-        type: REPLACE_BLOCKS,
-        payload: {
-          toRemoveBlocks,
-          toAddBlocks,
-          undoAction,
-          redoAction,
-        },
+      replaceBlocks({
+        toRemoveBlocks,
+        toAddBlocks,
+        undo,
+        redo,
       });
     } else {
-      dispatchBlocksDB({
-        type: ADD_BLOCKS,
-        payload: {
-          toAddBlocks,
-          undoAction,
-          redoAction,
-        },
+      addBlocks({
+        toAddBlocks,
+        undo,
+        redo,
       });
     }
     setSelectedBlocks([]);
@@ -396,6 +271,8 @@ export const useBlockSelection = () => {
     e.preventDefault();
     setSelectedBlocks([blockIndex]);
     setPivotSelectedBlock(blockIndex);
+    setToolBlockIndex(blockIndex);
+    toolControl.setIsModifyBlockMenuOpened(true);
     document.getSelection()?.removeAllRanges();
   };
 
@@ -415,17 +292,6 @@ export const useBlockSelection = () => {
       return;
     }
 
-    if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowUp') {
-      handleMetakeyArrowUp(e);
-      console.log('end');
-      return;
-    }
-
-    if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowDown') {
-      handleMetakeyArrowDown(e);
-      return;
-    }
-
     if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
       handleMetakeyC(e);
       return;
@@ -436,7 +302,7 @@ export const useBlockSelection = () => {
     }
 
     if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
-      handleMetakeyV(e, blockIndex, chainBlockIndex, chainId);
+      handleMetakeyV(e, chainBlockIndex, chainId);
       return;
     }
 

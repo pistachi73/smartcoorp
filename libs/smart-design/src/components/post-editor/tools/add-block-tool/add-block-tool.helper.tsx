@@ -1,119 +1,110 @@
-import { AiOutlineUnorderedList } from 'react-icons/ai';
-import { BiErrorCircle, BiImageAlt } from 'react-icons/bi';
-import { HiLink } from 'react-icons/hi';
-import { IoTextOutline } from 'react-icons/io5';
-import { TbLetterH } from 'react-icons/tb';
-import { v4 as uuid } from 'uuid';
-
-import { waitForElement } from '../../helpers';
+import { buildHeaderBlock, waitForElement } from '../../helpers';
 import {
-  BlockType,
-  HeaderBlockProps,
-  ImageBlockProps,
-  LinkBlockProps,
-  ListBlockProps,
-  ParagraphBlockProps,
-} from '../../post-editor.types';
+  buildColumnsBlock,
+  buildImageBlock,
+  buildLinkBlock,
+  buildListBlock,
+  buildParagraphBlock,
+} from '../../helpers/block-builders';
+import { Block, BlockType } from '../../post-editor.types';
 
-type AvailableBlocksButtonContentProps = {
-  [key in BlockType | 'notFound']: {
-    icon: JSX.Element;
-    label: string;
-  };
+export type DropdownItemTypes =
+  | Exclude<BlockType, 'columns'>
+  | 'two-column'
+  | 'three-column';
+
+export const dropdownItems: {
+  groupName: string;
+  items: Partial<Record<DropdownItemTypes, { label: string; snippet: string }>>;
+}[] = [
+  {
+    groupName: 'Basic Blocks',
+    items: {
+      paragraph: {
+        label: 'Paragraph',
+        snippet: 'hello this is a test text',
+      },
+
+      header: {
+        label: 'Header',
+        snippet: 'hello this is a test text',
+      },
+      list: {
+        label: 'List',
+        snippet: 'hello this is a test text',
+      },
+      image: {
+        label: 'Image',
+        snippet: 'hello this is a test text',
+      },
+      link: {
+        label: 'Link',
+        snippet: 'hello this is a test text',
+      },
+    },
+  },
+  {
+    groupName: 'Advanced Blocks',
+    items: {
+      'two-column': {
+        label: '2 columns',
+        snippet: 'hello this is a test text',
+      },
+      'three-column': {
+        label: '3 columns',
+        snippet: 'hello this is a test text',
+      },
+    },
+  },
+];
+
+export const buildBlocksMapping: Record<
+  DropdownItemTypes,
+  (chainId: string) => Block | Block[]
+> = {
+  header: buildHeaderBlock,
+  list: buildListBlock,
+  image: buildImageBlock,
+  paragraph: buildParagraphBlock,
+  link: buildLinkBlock,
+  'two-column': (chainId: string) => {
+    const colBlock = buildColumnsBlock(chainId, 2);
+    console.log(colBlock);
+    const newParagraphBlocks = colBlock.data.chains.map((chainId) =>
+      buildParagraphBlock(chainId)
+    );
+
+    console.log(newParagraphBlocks);
+
+    return [colBlock, ...newParagraphBlocks];
+  },
+
+  'three-column': (chainId: string) => {
+    const colBlock = buildColumnsBlock(chainId, 3);
+    const newParagraphBlocks = colBlock.data.chains.map((chainId) =>
+      buildParagraphBlock(chainId)
+    );
+
+    return [colBlock, ...newParagraphBlocks];
+  },
 };
 
-export const availableBlocksButtonContent: AvailableBlocksButtonContentProps = {
-  image: {
-    icon: <BiImageAlt />,
-    label: 'Image',
-  },
-  link: {
-    icon: <HiLink />,
-    label: 'Link',
-  },
-  header: {
-    icon: <TbLetterH />,
-    label: 'Header',
-  },
-  list: {
-    icon: <AiOutlineUnorderedList />,
-    label: 'List',
-  },
-  paragraph: {
-    icon: <IoTextOutline />,
-    label: 'Paragraph',
-  },
-  notFound: {
-    icon: <BiErrorCircle />,
-    label: 'Not Found',
-  },
-};
+const fieldAction = async (fieldId: string) =>
+  (await waitForElement(fieldId))?.focus();
 
-type InsertableBlocksProps = {
-  image: () => { block: ImageBlockProps; action?: () => void };
-  paragraph: () => { block: ParagraphBlockProps; action?: () => void };
-  link: () => { block: LinkBlockProps; action?: () => void };
-  header: () => { block: HeaderBlockProps; action?: () => void };
-  list: () => { block: ListBlockProps; action?: () => void };
-};
+export const buildBlocksActionMapping: Record<
+  DropdownItemTypes,
+  (fieldId: string) => Promise<void>
+> = {
+  header: fieldAction,
+  list: fieldAction,
+  paragraph: fieldAction,
+  link: fieldAction,
 
-export const insertableBlocks: InsertableBlocksProps = {
-  image: () => {
-    const id = uuid();
-    return {
-      block: {
-        id,
-        type: 'image',
-        data: {},
-      },
-      action: () => waitForElement(id).then((elm) => elm?.click()),
-    };
-  },
-  paragraph: () => {
-    const id = uuid();
-    return {
-      block: {
-        id,
-        type: 'paragraph',
-        data: {},
-      },
-      action: async () => (await waitForElement(id))?.focus(),
-    };
-  },
-  header: () => {
-    const id = uuid();
-    return {
-      block: {
-        id,
-        type: 'header',
-        data: {
-          level: 3,
-          text: '',
-        },
-      },
-      action: async () => (await waitForElement(id))?.focus(),
-    };
-  },
-  link: () => {
-    const id = uuid();
-    return {
-      block: { id, type: 'link', data: {} },
-      action: async () => (await waitForElement(id))?.focus(),
-    };
-  },
-  list: () => {
-    const id = uuid();
-
-    return {
-      block: {
-        id,
-        type: 'list',
-        data: {
-          style: 'unordered',
-          items: [''],
-        },
-      },
-      action: async () => (await waitForElement(id))?.focus(),
-    };
-  },
+  image: (fieldId: string) =>
+    waitForElement(fieldId).then((elm) => {
+      elm?.click();
+    }),
+  'two-column': fieldAction,
+  'three-column': fieldAction,
 };

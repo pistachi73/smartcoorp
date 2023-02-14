@@ -5,10 +5,9 @@ import {
 import {
   useBlocksDBConsumerContext,
   useBlocksDBUpdaterContext,
-} from '../contexts/blocks-db-context';
-import { ToAddBlock } from '../contexts/blocks-db-context/blocks-db-reducer/blocks-db-reducer.types';
+} from '../contexts/blocks-context';
+import type { ToAddBlock } from '../contexts/blocks-context/blocks-reducer/blocks-reducer.types';
 import { useRefsContext } from '../contexts/refs-context';
-import { useUpdateTool } from '../contexts/tool-context';
 import { buildParagraphBlock } from '../helpers';
 import { getBlockContainerAttributes } from '../helpers/get-block-container-attributes';
 import { waitForElement } from '../helpers/wait-for-element';
@@ -21,17 +20,18 @@ type UseSharedEventsResult = {
 };
 
 export const useSharedEvents = (): UseSharedEventsResult => {
-  const dispatchBlocksDB = useBlocksDBUpdaterContext();
+  const { replaceBlocks, undo, redo, buildFocusFieldAction } =
+    useBlocksDBUpdaterContext();
   const blocksDB = useBlocksDBConsumerContext();
-  const { blockRefs, setPrevCaretPosition } = useRefsContext();
+  const { blockRefs } = useRefsContext();
   const { setSelectedBlocks } = useBlockSelectionUpdaterContext();
-  const { selectedBlocks, pivotSelectedBlock } =
-    useBlockSelectionConsumerContext();
-  const setTool = useUpdateTool();
+  const { selectedBlocks } = useBlockSelectionConsumerContext();
 
   const handleBackspaceDelete = async (e: React.KeyboardEvent) => {
     if (!selectedBlocks.length) return;
+
     e.preventDefault();
+
     const firstSelectedBlockIndex = selectedBlocks[0];
     const {
       chainBlockIndex: firstSelectedBlockChainBlockIndex,
@@ -49,35 +49,21 @@ export const useSharedEvents = (): UseSharedEventsResult => {
       [newBlock, firstSelectedBlockChainId, firstSelectedBlockChainBlockIndex],
     ];
 
-    dispatchBlocksDB({
-      type: 'REPLACE_BLOCKS',
-      payload: {
-        toRemoveBlocks,
-        toAddBlocks,
-        undoAction: {
-          type: 'FOCUS_FIELD',
-          payload: {
-            fieldId: `${firstSelectedBlockId}_0`,
-            position: 'end',
-            setPrevCaretPosition,
-          },
-        },
-        redoAction: {
-          type: 'FOCUS_FIELD',
-          payload: {
-            fieldId: `${newBlock.id}_0`,
-            position: 'end',
-            setPrevCaretPosition,
-          },
-        },
-      },
+    replaceBlocks({
+      toRemoveBlocks,
+      toAddBlocks,
+      undo: buildFocusFieldAction({
+        fieldId: `${firstSelectedBlockId}_0`,
+        position: 'end',
+      }),
+      redo: buildFocusFieldAction({
+        fieldId: `${newBlock.id}_0`,
+        position: 'end',
+      }),
     });
 
     (await waitForElement(`${newBlock.id}_0`))?.focus();
     setSelectedBlocks([]);
-    //removeBlocksFromChain(toRemoveBlocks);
-
-    // setTool(null);
   };
 
   const handleSharedKeyDown = async (e: React.KeyboardEvent) => {
@@ -87,11 +73,11 @@ export const useSharedEvents = (): UseSharedEventsResult => {
 
     if ((e.metaKey || e.ctrlKey) && !e.shiftKey && e.key === 'z') {
       e.preventDefault();
-      if (blocksDB.canUndo) dispatchBlocksDB({ type: 'UNDO' });
+      if (blocksDB.canUndo) undo();
     }
     if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'z') {
       e.preventDefault();
-      if (blocksDB.canRedo) dispatchBlocksDB({ type: 'REDO' });
+      if (blocksDB.canRedo) redo();
     }
   };
 

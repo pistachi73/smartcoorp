@@ -1,35 +1,37 @@
 import debounce from 'lodash.debounce';
 import React, { useCallback, useMemo } from 'react';
 
-import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context';
-import { REMOVE_BLOCKS } from '../../contexts/blocks-db-context/blocks-db-reducer';
-import {
-  MODIFY_FIELD,
-  SPLIT_TEXT_FIELD,
-} from '../../contexts/blocks-db-context/blocks-db-reducer/actions';
-import {
-  FOCUS_FIELD,
-  MODIFY_FIELD_INNERHTML,
-} from '../../contexts/blocks-db-context/undo-redo-reducer';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import { useRefsContext } from '../../contexts/refs-context';
 import { TextField } from '../../fields/text-field';
 import { debounceDelay, getCaretPosition } from '../../helpers';
 import { getBlockContainerAttributes } from '../../helpers/get-block-container-attributes';
-import { HeaderBlockContainerProps } from '../blocks.types';
+import type { HeaderBlockProps } from '../../post-editor.types';
+import type { HeaderBlockContentProps } from '../blocks.types';
 
-const HEADLINE_SIZE_LEVELS = {
-  1: 'xxxlarge',
-  2: 'xxlarge',
-  3: 'xlarge',
-  4: 'large',
-  5: 'medium',
-  6: 'small',
-} as const;
+const HEADLINE_SIZE_LEVELS: Record<HeaderBlockProps['data']['level'], string> =
+  {
+    1: 'xxxlarge',
+    2: 'xxlarge',
+    3: 'xlarge',
+    4: 'large',
+    5: 'medium',
+    6: 'small',
+  };
 
-export const HeaderBlockContent: React.FC<
-  HeaderBlockContainerProps & { text: string }
-> = ({ blockIndex, chainBlockIndex, chainId, block, text }) => {
-  const dispatchBlocksDB = useBlocksDBUpdaterContext();
+export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({
+  blockIndex,
+  chainBlockIndex,
+  chainId,
+  block,
+}) => {
+  const {
+    setFieldValue,
+    splitTextField,
+    removeBlocks,
+    buildFocusFieldAction,
+    buildModifyFieldInnerHTMLAction,
+  } = useBlocksDBUpdaterContext();
   const {
     fieldRefs,
     blockRefs,
@@ -43,7 +45,8 @@ export const HeaderBlockContent: React.FC<
     () => HEADLINE_SIZE_LEVELS[block.data.level],
     [block.data.level]
   );
-  const fieldIndex = useMemo(() => 0, []);
+
+  const fieldIndex = 0;
 
   const handleKeyDown = async (e: React.KeyboardEvent) => {
     if (e.key === 'Backspace') {
@@ -65,31 +68,16 @@ export const HeaderBlockContent: React.FC<
           blockRefs.current[prevFocusableBlock[0]]
         );
 
-        const undoAction = {
-          type: FOCUS_FIELD,
-          payload: {
+        removeBlocks({
+          toRemoveBlocks: [[block.id, chainId]],
+          undo: buildFocusFieldAction({
             fieldId: `${block.id}_${fieldIndex}`,
             position: prevCaretPosition.current,
-            setPrevCaretPosition,
-          },
-        } as const;
-
-        const redoAction = {
-          type: FOCUS_FIELD,
-          payload: {
+          }),
+          redo: buildFocusFieldAction({
             fieldId: `${contiguousBlockId}_${prevFocusableBlock[1]}`,
             position: 'end',
-            setPrevCaretPosition,
-          },
-        } as const;
-
-        dispatchBlocksDB({
-          type: REMOVE_BLOCKS,
-          payload: {
-            toRemoveBlocks: [[block.id, chainId]],
-            undoAction,
-            redoAction,
-          },
+          }),
         });
 
         focusField(prevFocusableBlock, 'end');
@@ -103,33 +91,19 @@ export const HeaderBlockContent: React.FC<
         fieldRefs.current[blockIndex][0]
       );
 
-      const undoAction = {
-        type: MODIFY_FIELD_INNERHTML,
-        payload: {
+      setFieldValue({
+        blockId: block.id,
+        blockType: 'header',
+        field: 'text',
+        value: text,
+        undo: buildModifyFieldInnerHTMLAction({
           fieldId: `${block.id}_${fieldIndex}`,
           caretPosition: prevCaretPosition.current,
-          setPrevCaretPosition,
-        },
-      } as const;
-
-      const redoAction = {
-        type: MODIFY_FIELD_INNERHTML,
-        payload: {
+        }),
+        redo: buildModifyFieldInnerHTMLAction({
           fieldId: `${block.id}_${fieldIndex}`,
           caretPosition: currentCaretPosition,
-          setPrevCaretPosition,
-        },
-      } as const;
-
-      dispatchBlocksDB({
-        type: MODIFY_FIELD,
-        payload: {
-          blockId: block.id,
-          field: 'text',
-          value: text,
-          undoAction,
-          redoAction,
-        },
+        }),
       });
 
       setPrevCaretPosition(currentCaretPosition);
@@ -137,11 +111,11 @@ export const HeaderBlockContent: React.FC<
     [
       fieldRefs,
       blockIndex,
+      setFieldValue,
       block.id,
-      fieldIndex,
+      buildModifyFieldInnerHTMLAction,
       prevCaretPosition,
       setPrevCaretPosition,
-      dispatchBlocksDB,
     ]
   );
 
@@ -157,52 +131,39 @@ export const HeaderBlockContent: React.FC<
       if (isTextSplit) {
         debouncedOnTextChange.cancel();
 
-        const undoAction = {
-          type: MODIFY_FIELD_INNERHTML,
-          payload: {
+        splitTextField({
+          blockId: block.id,
+          blockType: 'header',
+          field: 'text',
+          chainId,
+          chainBlockIndex,
+          innerHTML,
+          splitedBlockRef: fieldRefs.current[blockIndex][0],
+          undo: buildModifyFieldInnerHTMLAction({
             fieldId: `${block.id}_${fieldIndex}`,
             caretPosition: prevCaretPosition.current,
-            setPrevCaretPosition,
-          },
-        } as const;
-
-        const redoAction = {
-          type: MODIFY_FIELD_INNERHTML,
-          payload: {
+          }),
+          redo: buildModifyFieldInnerHTMLAction({
             fieldId: `${block.id}_${fieldIndex}`,
             caretPosition: 0,
-            setPrevCaretPosition,
-          },
-        } as const;
-
-        dispatchBlocksDB({
-          type: SPLIT_TEXT_FIELD,
-          payload: {
-            blockId: block.id,
-            chainId,
-            field: 'text',
-            chainBlockIndex,
-            innerHTML,
-            splitedBlockRef: fieldRefs.current[blockIndex][0],
-            undoAction,
-            redoAction,
-          },
+          }),
         });
+
+        setPrevCaretPosition(0);
       } else {
         debouncedOnTextChange(innerHTML);
       }
     },
     [
       debouncedOnTextChange,
+      splitTextField,
       block.id,
-      fieldIndex,
-      prevCaretPosition,
-      setPrevCaretPosition,
-      dispatchBlocksDB,
       chainId,
       chainBlockIndex,
       fieldRefs,
       blockIndex,
+      buildModifyFieldInnerHTMLAction,
+      prevCaretPosition,
     ]
   );
 
@@ -215,7 +176,7 @@ export const HeaderBlockContent: React.FC<
       blockId={block.id}
       blockIndex={blockIndex}
       fieldIndex={fieldIndex}
-      text={text}
+      text={block.data.text}
       onInputChange={onInputChange}
       onKeyDown={handleKeyDown}
       data-block-type="header"

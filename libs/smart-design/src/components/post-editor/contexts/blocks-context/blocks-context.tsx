@@ -1,0 +1,375 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+import React, { useMemo, useReducer } from 'react';
+
+import { useRefsContext } from '../refs-context';
+
+import type {
+  AddBlocks,
+  BlocksDB,
+  BuildFocusFieldAction,
+  BuildModifyFieldInnerHTMLAction,
+  BuildModifyListInnerHTMLAction,
+  CopyBlocks,
+  DuplicateBlock,
+  MergeTextFields,
+  MoveBlocks,
+  RemoveBlocks,
+  RemoveLastListItem,
+  ReplaceBlocks,
+  SetFieldValue,
+  SetLinkData,
+  SplitTextField,
+} from './blocks-context.types';
+import type { BlocksDBReducerState } from './blocks-reducer';
+import { ReducerTypes } from './blocks-reducer';
+import { blocksDBReducer } from './blocks-reducer/blocks-reducer';
+import { UndoRedoTypes } from './undo-redo-reducer';
+
+type BlockDataDBContextProps = {
+  children: React.ReactNode;
+  blocksDB: BlocksDB;
+  setBlocksDB: any;
+};
+
+const BlocksDBConsumerContext = React.createContext<BlocksDBReducerState>({
+  blocks: {},
+  chains: {},
+  canRedo: false,
+  canUndo: false,
+});
+
+const BlocksDBUpdaterContext = React.createContext<
+  | {
+      setFieldValue: SetFieldValue;
+      removeBlocks: RemoveBlocks;
+      addBlocks: AddBlocks;
+      replaceBlocks: ReplaceBlocks;
+      splitTextField: SplitTextField;
+      mergeTextFields: MergeTextFields;
+      removeLastListItem: RemoveLastListItem;
+      setLinkData: SetLinkData;
+      copyBlocks: CopyBlocks;
+      moveBlocks: MoveBlocks;
+      duplicateBlock: DuplicateBlock;
+      undo: () => void;
+      redo: () => void;
+      buildFocusFieldAction: BuildFocusFieldAction;
+      buildModifyFieldInnerHTMLAction: BuildModifyFieldInnerHTMLAction;
+      buildModifyListInnerHTMLAction: BuildModifyListInnerHTMLAction;
+    }
+  | undefined
+>(undefined);
+
+export const BlocksDBProvider = ({
+  children,
+  blocksDB: initialBlocksDB,
+  setBlocksDB,
+}: BlockDataDBContextProps) => {
+  const [blocksDB, dispatchBlocksDB] = useReducer(blocksDBReducer, {
+    ...initialBlocksDB,
+    canRedo: false,
+    canUndo: false,
+  });
+
+  const { setPrevCaretPosition } = useRefsContext();
+
+  const setFieldValue: SetFieldValue = ({
+    blockId,
+    field,
+    value,
+    undo,
+    redo,
+  }) => {
+    dispatchBlocksDB({
+      type: ReducerTypes.MODIFY_FIELD,
+      payload: {
+        blockId,
+        field,
+        value,
+      },
+      undo,
+      redo,
+    });
+  };
+
+  const removeBlocks: RemoveBlocks = ({ toRemoveBlocks, undo, redo }) => {
+    dispatchBlocksDB({
+      type: ReducerTypes.REMOVE_BLOCKS,
+      payload: {
+        toRemoveBlocks,
+      },
+      undo,
+      redo,
+    });
+  };
+
+  const addBlocks: AddBlocks = ({ toAddBlocks, undo, redo }) => {
+    dispatchBlocksDB({
+      type: ReducerTypes.ADD_BLOCKS,
+      payload: {
+        toAddBlocks,
+      },
+      undo,
+      redo,
+    });
+  };
+
+  const replaceBlocks: ReplaceBlocks = ({
+    toAddBlocks,
+    toRemoveBlocks,
+    undo,
+    redo,
+  }) => {
+    dispatchBlocksDB({
+      type: ReducerTypes.REPLACE_BLOCKS,
+      payload: {
+        toAddBlocks,
+        toRemoveBlocks,
+      },
+      undo,
+      redo,
+    });
+  };
+
+  const splitTextField: SplitTextField = ({
+    blockId,
+    field,
+    chainBlockIndex,
+    chainId,
+    innerHTML,
+    splitedBlockRef,
+    undo,
+    redo,
+  }) => {
+    dispatchBlocksDB({
+      type: ReducerTypes.SPLIT_TEXT_FIELD,
+      payload: {
+        blockId,
+        field,
+        chainBlockIndex,
+        chainId,
+        innerHTML,
+        splitedBlockRef,
+      },
+      undo,
+      redo,
+    });
+  };
+
+  const mergeTextFields: MergeTextFields = ({
+    mergedBlockRef,
+    mergedField,
+    mergedFieldRef,
+    removedChainBlockIndex,
+    removedChainId,
+    removedInnerHTML,
+    undo,
+    redo,
+  }) => {
+    dispatchBlocksDB({
+      type: ReducerTypes.MERGE_TEXT_FIELDS,
+      payload: {
+        mergedBlockRef,
+        mergedField,
+        mergedFieldRef,
+        removedChainBlockIndex,
+        removedChainId,
+        removedInnerHTML,
+      },
+      undo,
+      redo,
+    });
+  };
+
+  const removeLastListItem: RemoveLastListItem = ({
+    blockType,
+    chainBlockIndex,
+    chainId,
+    fieldId,
+    items,
+    blockId,
+    field,
+    undo,
+    redo,
+  }) => {
+    dispatchBlocksDB({
+      type: ReducerTypes.REMOVE_LAST_LIST_ITEM,
+      payload: {
+        blockId,
+        field,
+        chainBlockIndex,
+        chainId,
+        fieldId,
+        items,
+      },
+      undo,
+      redo,
+    });
+  };
+
+  const setLinkData: SetLinkData = ({
+    blockId,
+    description,
+    domain,
+    imageUrl,
+    title,
+    url,
+  }) => {
+    dispatchBlocksDB({
+      type: ReducerTypes.MODIFY_LINK_DATA,
+      payload: {
+        blockId,
+        description,
+        domain,
+        imageUrl,
+        title,
+        url,
+      },
+    });
+  };
+
+  const copyBlocks: CopyBlocks = ({ blockIds, onCopy }) =>
+    dispatchBlocksDB({
+      type: ReducerTypes.COPY_BLOCKS,
+      payload: {
+        blockIds,
+        onCopy,
+      },
+    });
+
+  const moveBlocks: MoveBlocks = ({
+    chainBlockIndexes,
+    chainId,
+    direction,
+    redo,
+    undo,
+  }) =>
+    dispatchBlocksDB({
+      type: ReducerTypes.MOVE_BLOCKS,
+      payload: {
+        chainBlockIndexes,
+        chainId,
+        direction,
+      },
+      undo,
+      redo,
+    });
+
+  const duplicateBlock: DuplicateBlock = ({
+    blockId,
+    chainBlockIndex,
+    chainId,
+    redo,
+    undo,
+  }) =>
+    dispatchBlocksDB({
+      type: ReducerTypes.DUPLICATE_BLOCK,
+      payload: {
+        blockId,
+        chainBlockIndex,
+        chainId,
+      },
+      undo,
+      redo,
+    });
+
+  const undo = () => dispatchBlocksDB({ type: ReducerTypes.UNDO });
+  const redo = () => dispatchBlocksDB({ type: ReducerTypes.REDO });
+
+  const buildFocusFieldAction: BuildFocusFieldAction = ({
+    fieldId,
+    position,
+  }) => ({
+    type: UndoRedoTypes.FOCUS_FIELD,
+    payload: {
+      fieldId,
+      position,
+      setPrevCaretPosition,
+    },
+  });
+
+  const buildModifyFieldInnerHTMLAction: BuildModifyFieldInnerHTMLAction = ({
+    fieldId,
+    caretPosition,
+    focusFieldId,
+    value,
+  }) => ({
+    type: UndoRedoTypes.MODIFY_FIELD_INNERHTML,
+    payload: {
+      fieldId,
+      caretPosition,
+      focusFieldId,
+      value,
+      setPrevCaretPosition,
+    },
+  });
+
+  const buildModifyListInnerHTMLAction: BuildModifyListInnerHTMLAction = ({
+    caretPosition,
+    fieldId,
+    focusFieldId,
+    value,
+  }) => ({
+    type: UndoRedoTypes.MODIFY_LIST_INNERHTML,
+    payload: {
+      caretPosition,
+      fieldId,
+      focusFieldId,
+      value,
+      setPrevCaretPosition,
+    },
+  });
+
+  const value = useMemo(
+    () => ({
+      setFieldValue,
+      removeBlocks,
+      addBlocks,
+      replaceBlocks,
+      splitTextField,
+      mergeTextFields,
+      removeLastListItem,
+      setLinkData,
+      copyBlocks,
+      moveBlocks,
+      duplicateBlock,
+      undo,
+      redo,
+      buildFocusFieldAction,
+      buildModifyListInnerHTMLAction,
+      buildModifyFieldInnerHTMLAction,
+    }),
+    []
+  );
+
+  return (
+    <BlocksDBConsumerContext.Provider value={blocksDB}>
+      <BlocksDBUpdaterContext.Provider value={value}>
+        {children}
+      </BlocksDBUpdaterContext.Provider>
+    </BlocksDBConsumerContext.Provider>
+  );
+};
+
+export const useBlocksDBConsumerContext = () => {
+  const blocksDB = React.useContext(BlocksDBConsumerContext);
+
+  if (typeof blocksDB === 'undefined') {
+    throw new Error(
+      'useBlocksDBConsumerContext must be used within a BlockDataDBProvider'
+    );
+  }
+  return blocksDB;
+};
+
+export const useBlocksDBUpdaterContext = () => {
+  const dispatchBlocksDB = React.useContext(BlocksDBUpdaterContext);
+
+  if (typeof dispatchBlocksDB === 'undefined') {
+    throw new Error(
+      'useBlocksDBUpdaterContext must be used within a BlockDataDBProvider'
+    );
+  }
+
+  return dispatchBlocksDB;
+};

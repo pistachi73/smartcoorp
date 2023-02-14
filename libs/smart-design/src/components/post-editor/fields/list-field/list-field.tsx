@@ -22,8 +22,13 @@ export const ListField: React.FC<ListFieldProps> = ({
 
   const initialRender = useMemo(
     () =>
-      initialItems.map((item) => <S.ListItem dangerouslySetInnerHTML={{ __html: `${item}` }} />),
-    [initialItems]
+      initialItems.map((item, index) => (
+        <S.ListItem
+          key={`${blockId}_${fieldIndex}_${index}`}
+          dangerouslySetInnerHTML={{ __html: `${item}` }}
+        />
+      )),
+    [blockId, fieldIndex, initialItems]
   );
 
   const commonProps = {
@@ -34,7 +39,9 @@ export const ListField: React.FC<ListFieldProps> = ({
     'data-focus-index': fieldIndex,
     onInput: onInputChange,
     dangerouslySetInnerHTML: {
-      __html: `${initialRender.map((item) => ReactDOMServer.renderToStaticMarkup(item)).join('')}`,
+      __html: `${initialRender
+        .map((item) => ReactDOMServer.renderToStaticMarkup(item))
+        .join('')}`,
     },
   };
   return style === 'ordered' ? (

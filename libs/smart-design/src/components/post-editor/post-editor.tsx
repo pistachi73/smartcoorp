@@ -1,11 +1,10 @@
 import { FC } from 'react';
 
 import { Blocks } from './blocks/blocks';
-import { BlockMenuToolProvider } from './contexts/block-menu-tool-context';
 import { BlockSelectionProvider } from './contexts/block-selection-context/block-selection-context';
-import { BlocksDBProvider } from './contexts/blocks-db-context/blocks-db-context';
+import { BlocksDBProvider } from './contexts/blocks-context/blocks-context';
 import { RefsProvider } from './contexts/refs-context/refs-context';
-import { ToolProvider } from './contexts/tool-context';
+import { ToolControlProvider } from './contexts/tool-control-context/tool-control-context';
 import { BlockType, PostEditorProps } from './post-editor.types';
 
 export type ToolProps = {
@@ -25,14 +24,11 @@ export const PostEditor: FC<PostEditorProps> = ({
     <BlocksDBProvider blocksDB={blocksDB} setBlocksDB={setBlocksDB}>
       <RefsProvider>
         <BlockSelectionProvider>
-          <BlockMenuToolProvider>
-            <ToolProvider>
-              {/* <Tools />
-                      <InlineTools postEditorRef={postEditorContainerRef} /> */}
+          <ToolControlProvider>
+            {/* <InlineTools postEditorRef={postEditorContainerRef} /> */}
 
-              <Blocks getMetaData={getMetaData} />
-            </ToolProvider>
-          </BlockMenuToolProvider>
+            <Blocks getMetaData={getMetaData} />
+          </ToolControlProvider>
         </BlockSelectionProvider>
       </RefsProvider>
     </BlocksDBProvider>
