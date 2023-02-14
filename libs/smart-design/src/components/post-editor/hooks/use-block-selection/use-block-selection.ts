@@ -5,14 +5,8 @@ import {
   useBlockSelectionConsumerContext,
   useBlockSelectionUpdaterContext,
 } from '../../contexts/block-selection-context';
-import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context/';
-import {
-  ADD_BLOCKS,
-  COPY_BLOCKS,
-  REPLACE_BLOCKS,
-  ToAddBlock,
-} from '../../contexts/blocks-db-context/blocks-db-reducer';
-import { FOCUS_FIELD } from '../../contexts/blocks-db-context/undo-redo-reducer';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
+import type { ToAddBlock } from '../../contexts/blocks-context/blocks-reducer';
 import { useRefsContext } from '../../contexts/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
@@ -28,11 +22,11 @@ import { getToRemoveBlocksFromSelection } from './use-block-selection-helpers';
 
 export const useBlockSelection = () => {
   const [prevRange, setPrevRange] = useState<Range | null>();
-  const { blockRefs, fieldRefs, focusField, setPrevCaretPosition } =
-    useRefsContext();
+  const { blockRefs, fieldRefs, focusField } = useRefsContext();
   const toolControl = useToolControlContext();
   const setToolBlockIndex = useToolBlockIndexUpdaterContext();
-  const dispatchBlocksDB = useBlocksDBUpdaterContext();
+  const { copyBlocks, replaceBlocks, addBlocks, buildFocusFieldAction } =
+    useBlocksDBUpdaterContext();
 
   const { selectedBlocks, clipboardBlocks, pivotSelectedBlock } =
     useBlockSelectionConsumerContext();
@@ -40,10 +34,6 @@ export const useBlockSelection = () => {
     useBlockSelectionUpdaterContext();
 
   const handleShiftUp = (e: React.KeyboardEvent, blockIndex: number) => {
-    console.log('handleShiftUp');
-    console.log('Pivot: ', pivotSelectedBlock);
-
-    console.log('Selected Blocks: ', selectedBlocks);
     // If some blocks are selected,
     // select the block above the first selected block
     // or deselect the last block
@@ -68,8 +58,6 @@ export const useBlockSelection = () => {
       } else {
         newSelectedBlocks.pop();
       }
-
-      console.log(newSelectedBlocks);
 
       setSelectedBlocks(newSelectedBlocks);
     }
@@ -152,12 +140,9 @@ export const useBlockSelection = () => {
       return blockId;
     });
 
-    dispatchBlocksDB({
-      type: COPY_BLOCKS,
-      payload: {
-        blockIds: selectedBlockIds,
-        onCopy: (blocksDB) => setClipboardBlocks(blocksDB),
-      },
+    copyBlocks({
+      blockIds: selectedBlockIds,
+      onCopy: (blocksDB) => setClipboardBlocks(blocksDB),
     });
   };
 
@@ -174,12 +159,10 @@ export const useBlockSelection = () => {
       const { blockId } = getBlockContainerAttributes(blockRefs.current[i]);
       return blockId;
     });
-    dispatchBlocksDB({
-      type: COPY_BLOCKS,
-      payload: {
-        blockIds: selectedBlockIds,
-        onCopy: (blocksDB) => setClipboardBlocks(blocksDB),
-      },
+
+    copyBlocks({
+      blockIds: selectedBlockIds,
+      onCopy: (blocksDB) => setClipboardBlocks(blocksDB),
     });
 
     // 2: REPLACE SELECTED BLOCKS WITH PARAGRAPH BLOCK
@@ -201,28 +184,17 @@ export const useBlockSelection = () => {
       [newBlock, firstSelectedBlockChainId, firstSelectedBlockChainBlockIndex],
     ];
 
-    dispatchBlocksDB({
-      type: REPLACE_BLOCKS,
-      payload: {
-        toRemoveBlocks,
-        toAddBlocks,
-        undoAction: {
-          type: FOCUS_FIELD,
-          payload: {
-            fieldId: `${firstSelectedBlockId}_0`,
-            position: 'end',
-            setPrevCaretPosition,
-          },
-        },
-        redoAction: {
-          type: FOCUS_FIELD,
-          payload: {
-            fieldId: `${newBlock.id}_0`,
-            position: 'end',
-            setPrevCaretPosition,
-          },
-        },
-      },
+    replaceBlocks({
+      toRemoveBlocks,
+      toAddBlocks,
+      undo: buildFocusFieldAction({
+        fieldId: `${firstSelectedBlockId}_0`,
+        position: 'end',
+      }),
+      redo: buildFocusFieldAction({
+        fieldId: `${newBlock.id}_0`,
+        position: 'end',
+      }),
     });
 
     (await waitForElement(`${newBlock.id}_0`))?.focus();
@@ -231,7 +203,6 @@ export const useBlockSelection = () => {
 
   const handleMetakeyV = async (
     e: React.KeyboardEvent,
-    blockIndex: number,
     chainBlockIndex: number,
     chainId: string
   ) => {
@@ -239,7 +210,7 @@ export const useBlockSelection = () => {
 
     e.preventDefault();
 
-    // 1: FORMAT BLOCKS TO ADD IDS
+    // 1: FORMAT BLOCKS TO MODIFY IDS
     const toAddBlocks: ToAddBlock[] = Object.keys(clipboardBlocks).map(
       (blockId, i) => {
         const id = nanoid(10);
@@ -265,42 +236,28 @@ export const useBlockSelection = () => {
       blockRefs.current
     );
 
-    const undoAction = {
-      type: FOCUS_FIELD,
-      payload: {
-        fieldId: `${firstSelectedBlockId}_0`,
-        position: 'end',
-        setPrevCaretPosition,
-      },
-    } as const;
+    const undo = buildFocusFieldAction({
+      fieldId: `${firstSelectedBlockId}_0`,
+      position: 'end',
+    });
 
-    const redoAction = {
-      type: FOCUS_FIELD,
-      payload: {
-        fieldId: `${lastAddedBlockId}_0`,
-        position: 'end',
-        setPrevCaretPosition,
-      },
-    } as const;
+    const redo = buildFocusFieldAction({
+      fieldId: `${lastAddedBlockId}_0`,
+      position: 'end',
+    });
 
     if (selectedBlocks.length) {
-      dispatchBlocksDB({
-        type: REPLACE_BLOCKS,
-        payload: {
-          toRemoveBlocks,
-          toAddBlocks,
-          undoAction,
-          redoAction,
-        },
+      replaceBlocks({
+        toRemoveBlocks,
+        toAddBlocks,
+        undo,
+        redo,
       });
     } else {
-      dispatchBlocksDB({
-        type: ADD_BLOCKS,
-        payload: {
-          toAddBlocks,
-          undoAction,
-          redoAction,
-        },
+      addBlocks({
+        toAddBlocks,
+        undo,
+        redo,
       });
     }
     setSelectedBlocks([]);
@@ -345,7 +302,7 @@ export const useBlockSelection = () => {
     }
 
     if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
-      handleMetakeyV(e, blockIndex, chainBlockIndex, chainId);
+      handleMetakeyV(e, chainBlockIndex, chainId);
       return;
     }
 

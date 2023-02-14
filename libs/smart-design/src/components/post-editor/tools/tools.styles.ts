@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import {
   borderRadiusS,
   borderRadiusXS,
-  primary500_RGBA,
+  primary100_RGBA,
   scale030,
   scale060,
   scale070,
@@ -104,7 +104,7 @@ export const DropdownContent = styled(motion(DropdownMenu.Content))`
     &[aria-selected] {
       background: ${({ theme }) => theme.common.backgroundColor};
       &[aria-current='true'] {
-        background: rgba(${primary500_RGBA}, 0.5) !important;
+        background: rgba(${primary100_RGBA}, 1) !important;
       }
     }
 
@@ -113,7 +113,7 @@ export const DropdownContent = styled(motion(DropdownMenu.Content))`
       opacity: 0.35;
     }
     &[aria-current='true'] {
-      background: rgba(${primary500_RGBA}, 0.35);
+      background: rgba(${primary100_RGBA}, 0.75) !important;
     }
   }
 

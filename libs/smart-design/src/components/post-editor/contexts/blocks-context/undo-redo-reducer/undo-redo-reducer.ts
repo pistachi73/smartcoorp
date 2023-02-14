@@ -4,18 +4,14 @@ import {
   waitForElement,
 } from '../../../helpers';
 
-import {
-  FOCUS_FIELD,
-  MODIFY_FIELD_INNERHTML,
-  MODIFY_LIST_INNERHTML,
-} from './actions';
-import { UndoRedoAction } from './undo-redo-reducer.types';
+import type { UndoRedoAction } from './undo-redo-reducer.types';
+import { UndoRedoTypes } from './undo-redo-reducer.types';
 
 export const undoRedoDispatcher = async (action: UndoRedoAction) => {
   if (!action) return;
 
   switch (action.type) {
-    case MODIFY_FIELD_INNERHTML: {
+    case UndoRedoTypes.MODIFY_FIELD_INNERHTML: {
       const {
         fieldId,
         focusFieldId,
@@ -24,24 +20,23 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
         caretPosition,
       } = action.payload;
 
-      console.log(caretPosition);
-
       const fieldElement = document.getElementById(fieldId);
       const focusFieldElement = focusFieldId
         ? await waitForElement(focusFieldId)
         : fieldElement;
 
-      if (!fieldElement || !focusFieldElement || typeof value === undefined)
+      if (!fieldElement || !focusFieldElement || typeof value === 'undefined') {
         return;
+      }
 
-      fieldElement.innerHTML = value as string;
+      fieldElement.innerHTML = value;
       setCaretPosition({ element: focusFieldElement, position: caretPosition });
       setPrevCaretPosition(caretPosition);
 
       break;
     }
 
-    case MODIFY_LIST_INNERHTML: {
+    case UndoRedoTypes.MODIFY_LIST_INNERHTML: {
       const {
         fieldId,
         value,
@@ -87,7 +82,7 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
       setPrevCaretPosition(caretPosition);
       break;
     }
-    case FOCUS_FIELD: {
+    case UndoRedoTypes.FOCUS_FIELD: {
       const { fieldId, position, setPrevCaretPosition } = action.payload;
       const field = await waitForElement(fieldId);
 
@@ -100,7 +95,6 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
           position === 'start' ? 0 : getElementTextContent(field).length;
       }
 
-      console.log('caretPosition', caretPosition);
       setCaretPosition({ element: field, position: caretPosition });
       setPrevCaretPosition(caretPosition);
     }

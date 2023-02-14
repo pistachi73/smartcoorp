@@ -1,19 +1,16 @@
 import { Command } from 'cmdk';
 import { memo, useCallback, useMemo } from 'react';
-import { MdOutlineBikeScooter } from 'react-icons/md';
 
 import { useBlockSelectionUpdaterContext } from '../../../contexts/block-selection-context';
-import { useBlocksDBUpdaterContext } from '../../../contexts/blocks-db-context';
-import { MODIFY_FIELD } from '../../../contexts/blocks-db-context/blocks-db-reducer/actions';
+import { useBlocksDBUpdaterContext } from '../../../contexts/blocks-context';
 import { useRefsContext } from '../../../contexts/refs-context/refs-context';
-import { FieldRefs } from '../../../contexts/refs-context/refs.types';
 import {
   useToolBlockIndexUpdaterContext,
   useToolControlContext,
 } from '../../../contexts/tool-control-context/tool-control-context';
-import { ListBlockProps } from '../../../post-editor.types';
+import type { ListBlockProps } from '../../../post-editor.types';
 import { ModifyBlockToolItem } from '../modify-block-tool-item';
-import { ModifyBlockToolProps } from '../modify-block-tool.types';
+import type { ModifyBlockToolProps } from '../modify-block-tool.types';
 
 import { listModifyBlockToolsMap } from './list-tools.helper';
 
@@ -21,7 +18,8 @@ type ListStyle = ListBlockProps['data']['style'];
 
 export const ListTools = memo<ModifyBlockToolProps>(
   ({ blockIndex, blockId }) => {
-    const dispatchBlocksDB = useBlocksDBUpdaterContext();
+    const { setFieldValue, buildFocusFieldAction } =
+      useBlocksDBUpdaterContext();
     const toolControl = useToolControlContext();
     const { focusField, fieldRefs } = useRefsContext();
     const { setSelectedBlocks } = useBlockSelectionUpdaterContext();
@@ -34,13 +32,18 @@ export const ListTools = memo<ModifyBlockToolProps>(
 
     const updateListStyle = useCallback(
       async (style: ListBlockProps['data']['style']) => {
-        dispatchBlocksDB({
-          type: MODIFY_FIELD,
-          payload: {
-            blockId,
-            field: 'style',
-            value: style,
-          },
+        const undo = buildFocusFieldAction({
+          fieldId: `${blockId}_0`,
+          position: 'end',
+        });
+
+        setFieldValue({
+          blockId,
+          blockType: 'list',
+          field: 'style',
+          value: style,
+          undo,
+          redo: undo,
         });
 
         setSelectedBlocks([]);
@@ -51,8 +54,9 @@ export const ListTools = memo<ModifyBlockToolProps>(
       [
         blockId,
         blockIndex,
-        dispatchBlocksDB,
+        buildFocusFieldAction,
         focusField,
+        setFieldValue,
         setSelectedBlocks,
         setToolBlockIndex,
         toolControl,

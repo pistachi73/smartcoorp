@@ -4,8 +4,8 @@ import { Button } from '../../button/button';
 import {
   useBlocksDBConsumerContext,
   useBlocksDBUpdaterContext,
-} from '../contexts/blocks-db-context/blocks-db-context';
-import { Block } from '../post-editor.types';
+} from '../contexts/blocks-context/blocks-context';
+import type { Block } from '../post-editor.types';
 
 import { Column } from './columns/column-block';
 import { HeaderBlock } from './header/header-block';
@@ -17,7 +17,7 @@ import { ParagraphBlock } from './paragraph/paragraph-block';
 export const BlockChain = React.memo(({ chainId }: { chainId: string }) => {
   const blocksDB = useBlocksDBConsumerContext();
 
-  const dispatch = useBlocksDBUpdaterContext();
+  const { undo, redo } = useBlocksDBUpdaterContext();
 
   const chain = blocksDB.chains[chainId];
   let blockIndex = -1;
@@ -85,7 +85,7 @@ export const BlockChain = React.memo(({ chainId }: { chainId: string }) => {
         onClick={() => {
           if (blocksDB.canUndo) {
             console.log('undo');
-            dispatch({ type: 'UNDO' });
+            undo();
           } else {
             console.log('cannot undo');
           }
@@ -97,7 +97,7 @@ export const BlockChain = React.memo(({ chainId }: { chainId: string }) => {
         onClick={() => {
           if (blocksDB.canRedo) {
             console.log('redo');
-            dispatch({ type: 'REDO' });
+            redo();
           } else {
             console.log('cannot redo');
           }

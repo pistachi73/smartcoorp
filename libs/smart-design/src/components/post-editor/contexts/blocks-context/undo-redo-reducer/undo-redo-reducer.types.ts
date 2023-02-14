@@ -1,14 +1,14 @@
 import { Patch } from 'immer';
 
-import {
-  FOCUS_FIELD,
-  MODIFY_FIELD_INNERHTML,
-  MODIFY_LIST_INNERHTML,
-} from './actions';
+export enum UndoRedoTypes {
+  MODIFY_FIELD_INNERHTML = 'MODIFY_FIELD_INNERHTML',
+  MODIFY_LIST_INNERHTML = 'MODIFY_LIST_INNERHTML',
+  FOCUS_FIELD = 'FOCUS_FIELD',
+}
 
 export type UndoRedoAction =
   | {
-      type: typeof MODIFY_FIELD_INNERHTML;
+      type: UndoRedoTypes.MODIFY_FIELD_INNERHTML;
       payload: {
         fieldId: string;
         caretPosition: number;
@@ -18,7 +18,7 @@ export type UndoRedoAction =
       };
     }
   | {
-      type: typeof MODIFY_LIST_INNERHTML;
+      type: UndoRedoTypes.MODIFY_LIST_INNERHTML;
       payload: {
         fieldId: string;
         caretPosition: number;
@@ -28,7 +28,7 @@ export type UndoRedoAction =
       };
     }
   | {
-      type: typeof FOCUS_FIELD;
+      type: UndoRedoTypes.FOCUS_FIELD;
       payload: {
         fieldId: string;
         position: number | 'start' | 'end';
@@ -36,7 +36,7 @@ export type UndoRedoAction =
       };
     };
 
-export type UndoRedoActionByType<T extends UndoRedoAction['type']> = Extract<
+export type UndoRedoActionByType<T extends UndoRedoTypes> = Extract<
   UndoRedoAction,
   { type: T }
 >;

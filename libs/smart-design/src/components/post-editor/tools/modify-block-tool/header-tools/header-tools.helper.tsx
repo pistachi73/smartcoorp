@@ -9,33 +9,27 @@ export const headerModifyBlockToolsMap: Record<
 > = {
   1: {
     label: 'Header 1',
-    command: ['&#8984;', '1'], // ⌘ 1
     icon: <H1Icon width={14} />,
   },
   2: {
     label: 'Header 2',
-    command: ['&#8984;', '2'], // ⌘ 2
     icon: <H2Icon width={14} />,
   },
   3: {
     label: 'Header 3',
-    command: ['&#8984;', '3'], // ⌘ 3
     icon: <H3Icon width={14} />,
   },
   4: {
     label: 'Header 4',
 
-    command: ['&#8984;', '4'], // ⌘ 4
     icon: <H4Icon width={14} />,
   },
   5: {
     label: 'Header 5',
-    command: ['&#8984;', '5'], // ⌘ 5
     icon: <H5Icon width={14} />,
   },
   6: {
     label: 'Header 6',
-    command: ['&#8984;', '6'], // ⌘ 6
     icon: <H6Icon width={14} />,
   },
 };

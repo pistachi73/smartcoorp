@@ -1,8 +1,7 @@
 import debounce from 'lodash.debounce';
 import { useCallback, useMemo } from 'react';
 
-import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context';
-import { MODIFY_FIELD_INNERHTML } from '../../contexts/blocks-db-context/undo-redo-reducer';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import { useRefsContext } from '../../contexts/refs-context';
 import { TextBoxField } from '../../fields/text-box-field';
 import { debounceDelay, getCaretPosition } from '../../helpers';
@@ -19,7 +18,8 @@ export const ImageCaption = ({
   caption,
   blockId,
 }: ImageCaptionProps) => {
-  const dispatchBlocksDB = useBlocksDBUpdaterContext();
+  const { setFieldValue, buildModifyFieldInnerHTMLAction } =
+    useBlocksDBUpdaterContext();
   const { fieldRefs, setPrevCaretPosition, prevCaretPosition } =
     useRefsContext();
 
@@ -30,33 +30,19 @@ export const ImageCaption = ({
         fieldRefs.current[blockIndex][0]
       );
 
-      const undoAction = {
-        type: MODIFY_FIELD_INNERHTML,
-        payload: {
+      setFieldValue({
+        blockId,
+        blockType: 'image',
+        field: 'caption',
+        value: e.target.innerHTML,
+        undo: buildModifyFieldInnerHTMLAction({
           fieldId,
-          setPrevCaretPosition,
           caretPosition: prevCaretPosition.current,
-        },
-      } as const;
-
-      const redoAction = {
-        type: MODIFY_FIELD_INNERHTML,
-        payload: {
+        }),
+        redo: buildModifyFieldInnerHTMLAction({
           fieldId,
           caretPosition: currentCaretPosition,
-          setPrevCaretPosition,
-        },
-      } as const;
-
-      dispatchBlocksDB({
-        type: 'MODIFY_FIELD',
-        payload: {
-          blockId,
-          field: 'caption',
-          value: e.target.innerHTML,
-          undoAction,
-          redoAction,
-        },
+        }),
       });
 
       setPrevCaretPosition(currentCaretPosition);
@@ -64,11 +50,12 @@ export const ImageCaption = ({
     [
       fieldRefs,
       blockIndex,
-      fieldId,
-      setPrevCaretPosition,
-      prevCaretPosition,
-      dispatchBlocksDB,
+      setFieldValue,
       blockId,
+      buildModifyFieldInnerHTMLAction,
+      fieldId,
+      prevCaretPosition,
+      setPrevCaretPosition,
     ]
   );
 

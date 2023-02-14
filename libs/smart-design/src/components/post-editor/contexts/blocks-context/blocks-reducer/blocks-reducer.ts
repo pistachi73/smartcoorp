@@ -11,31 +11,17 @@ import {
 } from '../../../helpers';
 import { setCaretPosition } from '../../../helpers/set-caret-position';
 import { EveryBlockFields } from '../../../post-editor.types';
-import { BlockDataDB } from '../blocks-db.types';
+import { BlockDataDB } from '../blocks-context.types';
 import type { UndoRedoChanges } from '../undo-redo-reducer';
-import { undoRedoDispatcher } from '../undo-redo-reducer/undo-redo-reducer';
+import { UndoRedoTypes, undoRedoDispatcher } from '../undo-redo-reducer';
 
-import {
-  ADD_BLOCKS,
-  COPY_BLOCKS,
-  DUPLICATE_BLOCK,
-  MERGE_TEXT_FIELDS,
-  MODIFY_FIELD,
-  MODIFY_LINK_DATA,
-  MOVE_BLOCKS,
-  REDO,
-  REMOVE_BLOCKS,
-  REMOVE_LAST_LIST_ITEM,
-  REPLACE_BLOCKS,
-  SPLIT_TEXT_FIELD,
-  UNDO,
-} from './actions';
+import { addBlocks, removeBlocks } from './blocks-reducer.helpers';
 import {
   BlocksDBAction,
   BlocksDBReducerState,
+  ReducerTypes,
   isUndoableAction,
-} from './blocks-db-reducer.types';
-import { addBlocks, removeBlocks } from './blocks-db.functions';
+} from './blocks-reducer.types';
 
 enablePatches();
 
@@ -51,44 +37,47 @@ export const blocksDBReducer = (
     state,
     (draft) => {
       switch (action.type) {
-        case MODIFY_FIELD: {
+        case ReducerTypes.MODIFY_FIELD: {
           const { field, blockId, value } = action.payload;
 
-          console.log('MODIFY_FIELD', field, blockId, value);
-          console.log(state);
-          (draft.blocks[blockId]?.data as EveryBlockFields)[field] = value;
+          (draft.blocks[blockId].data as any)[field] = value;
 
-          // Update undo and redo actions
           const currentVal = (state.blocks[blockId].data as EveryBlockFields)[
             field
           ];
 
-          if (action.payload.undoAction && action.payload.redoAction) {
-            action.payload.undoAction.payload.value =
-              (currentVal as typeof value) ?? null;
-            action.payload.redoAction.payload.value = value;
+          if (!action.undo || !action.redo) break;
+
+          if (
+            (action.undo.type === UndoRedoTypes.MODIFY_FIELD_INNERHTML &&
+              action.redo.type === UndoRedoTypes.MODIFY_FIELD_INNERHTML) ||
+            (action.undo.type === UndoRedoTypes.MODIFY_LIST_INNERHTML &&
+              action.redo.type === UndoRedoTypes.MODIFY_LIST_INNERHTML)
+          ) {
+            action.undo.payload.value = (currentVal as any) ?? null;
+            action.redo.payload.value = value;
           }
 
           break;
         }
 
-        case REMOVE_BLOCKS: {
+        case ReducerTypes.REMOVE_BLOCKS: {
           removeBlocks(draft, action.payload.toRemoveBlocks);
           break;
         }
 
-        case ADD_BLOCKS: {
+        case ReducerTypes.ADD_BLOCKS: {
           addBlocks(draft, action.payload.toAddBlocks);
           break;
         }
 
-        case REPLACE_BLOCKS: {
+        case ReducerTypes.REPLACE_BLOCKS: {
           addBlocks(draft, action.payload.toAddBlocks);
           removeBlocks(draft, action.payload.toRemoveBlocks);
           break;
         }
 
-        case SPLIT_TEXT_FIELD: {
+        case ReducerTypes.SPLIT_TEXT_FIELD: {
           const {
             field,
             blockId,
@@ -128,17 +117,18 @@ export const blocksDBReducer = (
           focusElementById(`${newBlock.id}_0`);
 
           // Update undo and redo actions
-          if (action.payload.undoAction && action.payload.redoAction) {
-            action.payload.undoAction.payload.value = (
-              state.blocks[blockId].data as EveryBlockFields
-            )[field] as string;
-            action.payload.redoAction.payload.focusFieldId = `${newBlock.id}_0`;
-            action.payload.redoAction.payload.value = textBeforeCaret;
-          }
+          if (!action.undo || !action.redo) break;
+
+          action.undo.payload.value = (
+            state.blocks[blockId].data as EveryBlockFields
+          )[field] as string;
+          action.redo.payload.focusFieldId = `${newBlock.id}_0`;
+          action.redo.payload.value = textBeforeCaret;
+
           break;
         }
 
-        case MERGE_TEXT_FIELDS: {
+        case ReducerTypes.MERGE_TEXT_FIELDS: {
           const {
             mergedBlockRef,
             mergedField,
@@ -166,15 +156,16 @@ export const blocksDBReducer = (
             position: mergedFieldTextContentLength,
           });
 
-          if (action.payload.undoAction && action.payload.redoAction) {
-            // Update undo and redo actions
-            action.payload.undoAction.payload.value = mergedFieldInnerHTML;
-            action.payload.redoAction.payload.value = newHTML;
-          }
+          if (!action.undo || !action.redo) break;
+
+          // Update undo and redo actions
+          action.redo.payload.value = mergedFieldInnerHTML;
+          action.undo.payload.value = newHTML;
+
           break;
         }
 
-        case REMOVE_LAST_LIST_ITEM: {
+        case ReducerTypes.REMOVE_LAST_LIST_ITEM: {
           const { items, blockId, chainId, field, fieldId, chainBlockIndex } =
             action.payload;
 
@@ -207,19 +198,19 @@ export const blocksDBReducer = (
 
           focusElementById(`${newBlock.id}_0`);
 
+          if (!action.undo || !action.redo) break;
+
           // Update undo and redo actions
-          if (action.payload.undoAction && action.payload.redoAction) {
-            action.payload.undoAction.payload.value = (
-              state.blocks[blockId].data as EveryBlockFields
-            )[field] as string[];
-            action.payload.redoAction.payload.focusFieldId = `${newBlock.id}_0`;
-            action.payload.redoAction.payload.value = items;
-          }
+          action.undo.payload.value = (
+            state.blocks[blockId].data as EveryBlockFields
+          )[field] as string[];
+          action.redo.payload.focusFieldId = `${newBlock.id}_0`;
+          action.redo.payload.value = items;
 
           break;
         }
 
-        case MODIFY_LINK_DATA: {
+        case ReducerTypes.MODIFY_LINK_DATA: {
           const { blockId, ...linkData } = action.payload;
 
           draft.blocks[blockId].data = {
@@ -231,7 +222,7 @@ export const blocksDBReducer = (
           break;
         }
 
-        case COPY_BLOCKS: {
+        case ReducerTypes.COPY_BLOCKS: {
           const { blockIds, onCopy } = action.payload;
           const blocksDB: BlockDataDB = {};
           blockIds.forEach((id) => {
@@ -242,7 +233,7 @@ export const blocksDBReducer = (
           break;
         }
 
-        case MOVE_BLOCKS: {
+        case ReducerTypes.MOVE_BLOCKS: {
           const { chainBlockIndexes, chainId, direction } = action.payload;
 
           const directionFactor = direction === 'up' ? -1 : 1;
@@ -270,7 +261,7 @@ export const blocksDBReducer = (
           break;
         }
 
-        case DUPLICATE_BLOCK: {
+        case ReducerTypes.DUPLICATE_BLOCK: {
           const { blockId, chainId, chainBlockIndex } = action.payload;
 
           const newBlock = { ...state.blocks[blockId] };
@@ -282,7 +273,7 @@ export const blocksDBReducer = (
 
           break;
         }
-        case UNDO: {
+        case ReducerTypes.UNDO: {
           const undoAction = changes[currentVersion].undo.action;
           try {
             return produce(
@@ -300,7 +291,7 @@ export const blocksDBReducer = (
           break;
         }
 
-        case REDO: {
+        case ReducerTypes.REDO: {
           const redoAction = changes[++currentVersion].redo.action;
 
           try {
@@ -334,13 +325,14 @@ export const blocksDBReducer = (
       currentVersion++;
 
       type T = Extract<BlocksDBAction, { type: typeof action.type }>;
-      const undoAction = (action as T).payload.undoAction;
-      const redoAction = (action as T).payload.redoAction;
+      const undoAction = (action as T).undo;
+      const redoAction = (action as T).redo;
 
       changes[currentVersion] = {
         undo: { patch: inversePatches, action: undoAction },
         redo: { patch: patches, action: redoAction },
       };
+      console.log(changes);
 
       delete changes[currentVersion + 1];
       delete changes[currentVersion - noOfVersionsSupported];

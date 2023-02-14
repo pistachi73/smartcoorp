@@ -1,11 +1,8 @@
 import type { WritableDraft } from 'immer/dist/internal';
 
-import type { BlockChainDB } from '../blocks-db.types';
+import type { BlockChainDB } from '../blocks-context.types';
 
-import type {
-  BlocksDBReducerState,
-  ToAddBlock,
-} from './blocks-db-reducer.types';
+import type { BlocksDBReducerState, ToAddBlock } from './blocks-reducer.types';
 
 export const removeBlocks = (
   draft: WritableDraft<BlocksDBReducerState>,
@@ -32,6 +29,8 @@ export const removeBlocks = (
       (blockId) => !blockIds.includes(blockId)
     );
   });
+
+  //TODO: Merge chains
 };
 
 export const addBlocks = (

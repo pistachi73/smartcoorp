@@ -25,7 +25,7 @@ export const ItemContainer = styled.div`
   padding: ${spaceXS} ${spaceM};
 `;
 
-export const IconContainer = styled.div<{ $current?: boolean }>`
+export const IconContainer = styled.div`
   width: ${scale110};
   height: ${scale110};
   margin-right: ${spaceM};
@@ -38,8 +38,7 @@ export const IconContainer = styled.div<{ $current?: boolean }>`
   border: 1px solid;
   background-color: white;
 
-  border-color: ${({ $current, theme }) =>
-    $current ? primary600 : theme.common.overBackgroundNeutral} !important;
+  border-color: ${({ theme }) => theme.common.overBackgroundNeutral} !important;
 `;
 
 export const Label = styled.span`

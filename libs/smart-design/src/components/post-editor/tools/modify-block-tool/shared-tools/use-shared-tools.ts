@@ -1,14 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import { useBlockSelectionUpdaterContext } from '../../../contexts/block-selection-context';
-import { useBlocksDBUpdaterContext } from '../../../contexts/blocks-db-context';
-import {
-  DUPLICATE_BLOCK,
-  MOVE_BLOCKS,
-  REMOVE_BLOCKS,
-  ToRemoveBlock,
-} from '../../../contexts/blocks-db-context/blocks-db-reducer';
-import { FOCUS_FIELD } from '../../../contexts/blocks-db-context/undo-redo-reducer/actions';
+import { useBlocksDBUpdaterContext } from '../../../contexts/blocks-context';
+import { ToRemoveBlock } from '../../../contexts/blocks-context/blocks-reducer';
 import { useRefsContext } from '../../../contexts/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
@@ -25,18 +19,17 @@ export const useSharedTools = ({
   blockIndex,
   blockId,
 }: UseSharedToolsProps) => {
-  const dispatchBlocksDB = useBlocksDBUpdaterContext();
-  const { setPrevCaretPosition, getNextFocusableField, focusField } =
-    useRefsContext();
+  const { moveBlocks, removeBlocks, duplicateBlock, buildFocusFieldAction } =
+    useBlocksDBUpdaterContext();
+  const { getNextFocusableField, focusField } = useRefsContext();
   const { blockRefs } = useRefsContext();
   const toolControl = useToolControlContext();
   const setToolBlockIndex = useToolBlockIndexUpdaterContext();
   const { setSelectedBlocks } = useBlockSelectionUpdaterContext();
 
-  const [
-    { chainBlockIndex, chainId, chainLevel, parentChainId },
-    setBlockProps,
-  ] = useState(getBlockContainerAttributes(blockRefs.current[blockIndex]));
+  const [{ chainBlockIndex, chainId }, setBlockProps] = useState(
+    getBlockContainerAttributes(blockRefs.current[blockIndex])
+  );
 
   const [{ isMoveUpDisabled, isMoveDownDisabled }, setDisabled] = useState({
     isMoveUpDisabled: false,
@@ -79,25 +72,17 @@ export const useSharedTools = ({
   const onMoveUp = async () => {
     if (isMoveUpDisabled) return;
 
-    const undoAction = {
-      type: FOCUS_FIELD,
-      payload: {
-        fieldId: `${blockId}_0`,
-        position: 'end',
-        setPrevCaretPosition,
-      },
-    } as const;
-
+    const undo = buildFocusFieldAction({
+      fieldId: `${blockId}_0`,
+      position: 'end',
+    });
     // Wait until blockRefs are updated to get the correct index
-    await dispatchBlocksDB({
-      type: 'MOVE_BLOCKS',
-      payload: {
-        chainBlockIndexes: [chainBlockIndex],
-        chainId,
-        direction: 'up',
-        undoAction,
-        redoAction: undoAction,
-      },
+    await moveBlocks({
+      chainBlockIndexes: [chainBlockIndex],
+      chainId,
+      direction: 'up',
+      undo: undo,
+      redo: undo,
     });
 
     const prevIndex = getMoveBlockIndex('up');
@@ -112,26 +97,19 @@ export const useSharedTools = ({
   const onMoveDown = async () => {
     if (isMoveDownDisabled) return;
 
-    const undoAction = {
-      type: FOCUS_FIELD,
-      payload: {
-        fieldId: `${blockId}_0`,
-        position: 'end',
-        setPrevCaretPosition,
-      },
-    } as const;
-
-    // Wait until blockRefs are updated to get the correct index
-    await dispatchBlocksDB({
-      type: MOVE_BLOCKS,
-      payload: {
-        chainBlockIndexes: [chainBlockIndex],
-        chainId,
-        direction: 'down',
-        undoAction,
-        redoAction: undoAction,
-      },
+    const undo = buildFocusFieldAction({
+      fieldId: `${blockId}_0`,
+      position: 'end',
     });
+    // Wait until blockRefs are updated to get the correct index
+    await moveBlocks({
+      chainBlockIndexes: [chainBlockIndex],
+      chainId,
+      direction: 'down',
+      undo: undo,
+      redo: undo,
+    });
+
     const nextIndex = getMoveBlockIndex('down');
 
     //Wait until menu is closed to open it again and then set the correct block index
@@ -148,30 +126,17 @@ export const useSharedTools = ({
       blockRefs.current[nextFocusableField[0]]
     );
 
-    dispatchBlocksDB({
-      type: REMOVE_BLOCKS,
-      payload: {
-        toRemoveBlocks,
-        undoAction: {
-          type: FOCUS_FIELD,
-          payload: {
-            fieldId: `${blockId}_0`,
-            position: 'end',
-            setPrevCaretPosition,
-          },
-        },
-        redoAction: {
-          type: FOCUS_FIELD,
-          payload: {
-            fieldId: `${nextFocusableBlockId}_0`,
-            position: 'end',
-            setPrevCaretPosition,
-          },
-        },
-      },
+    removeBlocks({
+      toRemoveBlocks,
+      undo: buildFocusFieldAction({
+        fieldId: `${blockId}_0`,
+        position: 'end',
+      }),
+      redo: buildFocusFieldAction({
+        fieldId: `${nextFocusableBlockId}_0`,
+        position: 'end',
+      }),
     });
-
-    console.log(nextFocusableField);
 
     focusField(nextFocusableField, 'end');
     setSelectedBlocks([]);
@@ -180,26 +145,19 @@ export const useSharedTools = ({
   };
 
   const onDuplicate = () => {
-    console.log('onDuplicate');
-    const undoAction = {
-      type: FOCUS_FIELD,
-      payload: {
-        fieldId: `${blockId}_0`,
-        position: 'end',
-        setPrevCaretPosition,
-      },
-    } as const;
-
-    dispatchBlocksDB({
-      type: DUPLICATE_BLOCK,
-      payload: {
-        blockId,
-        chainId,
-        chainBlockIndex,
-        undoAction,
-        redoAction: undoAction,
-      },
+    const undo = buildFocusFieldAction({
+      fieldId: `${blockId}_0`,
+      position: 'end',
     });
+
+    duplicateBlock({
+      blockId,
+      chainId,
+      chainBlockIndex,
+      undo: undo,
+      redo: undo,
+    });
+
     setSelectedBlocks([]);
     toolControl.setIsModifyBlockMenuOpened(false);
   };

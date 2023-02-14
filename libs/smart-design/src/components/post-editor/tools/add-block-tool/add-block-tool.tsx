@@ -4,18 +4,14 @@ import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { Command } from 'cmdk';
 import React, { FC } from 'react';
 
-import { ColumnBlockProps } from '../../blocks/blocks.types';
-import { useBlocksDBUpdaterContext } from '../../contexts/blocks-db-context';
-import {
-  ToAddBlock,
-  toAddChain,
-} from '../../contexts/blocks-db-context/blocks-db-reducer/blocks-db-reducer.types';
+import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
+import type { ToAddBlock } from '../../contexts/blocks-context/blocks-reducer/blocks-reducer.types';
 import { useRefsContext } from '../../contexts/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
   useToolControlContext,
 } from '../../contexts/tool-control-context/tool-control-context';
-import { Block, BlockType } from '../../post-editor.types';
+import type { Block } from '../../post-editor.types';
 import { DropdownContent, DropdownTrigger, Separator } from '../tools.styles';
 
 import { AddBlockItem } from './add-block-tool-item';
@@ -33,10 +29,9 @@ type AddBlockToolProps = {
 
 export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
   ({ chainId, chainBlockIndex }) => {
-    const dispatchBlocksDB = useBlocksDBUpdaterContext();
+    const { addBlocks, buildFocusFieldAction } = useBlocksDBUpdaterContext();
     const toolControl = useToolControlContext();
     const setToolBlockIndex = useToolBlockIndexUpdaterContext();
-    const { setPrevCaretPosition } = useRefsContext();
 
     const addBlock = async (blockType: DropdownItemTypes) => {
       let toAddBlocks: ToAddBlock[] = [];
@@ -47,7 +42,7 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
         toAddBlocks = newBlocks.map((block, index) => [
           block,
           block.chainId,
-          index === 0 ? chainBlockIndex + 1 : 0,
+          index === 0 ? chainBlockIndex + 1 : 0, //first block is the one containing the columns
         ]);
 
         focusFieldId = `${newBlocks[1].id}_0`;
@@ -56,21 +51,15 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
         toAddBlocks = [[newBlock, chainId, chainBlockIndex + 1]];
         focusFieldId = `${newBlock.id}_0`;
       }
-
-      dispatchBlocksDB({
-        type: 'ADD_BLOCKS',
-        payload: {
-          toAddBlocks,
-          redoAction: {
-            type: 'FOCUS_FIELD',
-            payload: {
-              fieldId: focusFieldId,
-              position: 'end',
-              setPrevCaretPosition,
-            },
-          },
-        },
+      addBlocks({
+        toAddBlocks,
+        // NO UNDO?
+        redo: buildFocusFieldAction({
+          fieldId: focusFieldId,
+          position: 'end',
+        }),
       });
+
       buildBlocksActionMapping[blockType](focusFieldId);
       toolControl.setIsAddBlockMenuOpened(false);
       setToolBlockIndex(-1);
