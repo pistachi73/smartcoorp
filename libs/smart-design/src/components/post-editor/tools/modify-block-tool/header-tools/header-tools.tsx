@@ -1,6 +1,8 @@
 import { Command } from 'cmdk';
 import { memo, useCallback, useMemo } from 'react';
 
+import { ObjectEntries } from '@smartcoorp/smart-types';
+
 import { useBlockSelectionUpdaterContext } from '../../../contexts/block-selection-context';
 import { useBlocksDBUpdaterContext } from '../../../contexts/blocks-context';
 import { useRefsContext } from '../../../contexts/refs-context/refs-context';
@@ -69,17 +71,12 @@ export const HeaderTools = memo<ModifyBlockToolProps>(
 
     return (
       <Command.Group heading={'Header block actions'}>
-        {(
-          Object.keys(headerModifyBlockToolsMap) as unknown as Array<
-            keyof typeof headerModifyBlockToolsMap
-          >
-        ).map((level) => {
-          const tool = headerModifyBlockToolsMap[level];
+        {ObjectEntries(headerModifyBlockToolsMap).map(([level, tool]) => {
           const current = level == currentLevel;
           return (
             <Command.Item
-              aria-current={current ? 'true' : 'false'}
               key={`headerTools-${level}`}
+              aria-current={current ? 'true' : 'false'}
               onSelect={() => updateHeaderLevel(Number(level) as Level)}
             >
               <ModifyBlockToolItem tool={tool} current={current} />

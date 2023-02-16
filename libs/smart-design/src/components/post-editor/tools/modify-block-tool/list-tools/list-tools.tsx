@@ -1,6 +1,8 @@
 import { Command } from 'cmdk';
 import { memo, useCallback, useMemo } from 'react';
 
+import { ObjectEntries } from '@smartcoorp/smart-types';
+
 import { useBlockSelectionUpdaterContext } from '../../../contexts/block-selection-context';
 import { useBlocksDBUpdaterContext } from '../../../contexts/blocks-context';
 import { useRefsContext } from '../../../contexts/refs-context/refs-context';
@@ -65,17 +67,12 @@ export const ListTools = memo<ModifyBlockToolProps>(
 
     return (
       <Command.Group heading={'List block actions'}>
-        {(
-          Object.keys(listModifyBlockToolsMap) as unknown as Array<
-            keyof typeof listModifyBlockToolsMap
-          >
-        ).map((style) => {
-          const tool = listModifyBlockToolsMap[style];
+        {ObjectEntries(listModifyBlockToolsMap).map(([style, tool]) => {
           const current = style === currentStyle;
           return (
             <Command.Item
-              aria-current={current ? 'true' : undefined}
-              key={style}
+              key={`listTools-${style}`}
+              aria-current={current ? 'true' : 'false'}
               onSelect={() => updateListStyle(style)}
             >
               <ModifyBlockToolItem tool={tool} current={current} />

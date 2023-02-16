@@ -157,7 +157,8 @@ export const useRefsContext = (): {
       const nextFocusIndex = (fieldIndex || 0) + direction;
 
       if (nextFocusIndex < 0 && blockIndex === 0) {
-        return [0, 0];
+        //TODO: return 1 if first block deleted???
+        return [1, 0];
       }
       if (nextFocusIndex < 0 && blockIndex > 0) {
         return [blockIndex - 1, fieldRefs.current[blockIndex - 1].length - 1];

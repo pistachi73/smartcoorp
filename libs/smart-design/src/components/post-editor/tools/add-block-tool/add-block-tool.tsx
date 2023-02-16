@@ -51,9 +51,10 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
         toAddBlocks = [[newBlock, chainId, chainBlockIndex + 1]];
         focusFieldId = `${newBlock.id}_0`;
       }
+
       addBlocks({
         toAddBlocks,
-        // NO UNDO?
+        //TODO;  NO UNDO?
         redo: buildFocusFieldAction({
           fieldId: focusFieldId,
           position: 'end',

@@ -24,14 +24,20 @@ export const Tools = () => {
     return getBlockContainerAttributes(blockRefs.current[toolBlockIndex]);
   }, [blockRefs, isValidToolBlockIndex, toolBlockIndex]);
 
-  if (!blockProps || !isValidToolBlockIndex) return null;
+  if (
+    !blockProps ||
+    !isValidToolBlockIndex ||
+    !blockRefs.current[toolBlockIndex] ||
+    blockProps.blockType === 'columns'
+  )
+    return null;
 
   const transition: Transition = {
     type: 'spring',
     damping: 20,
     stiffness: 300,
   };
-
+  //TODO: tooltip
   return (
     <AnimatePresence key={toolBlockIndex}>
       <ToolsContainer
@@ -48,12 +54,9 @@ export const Tools = () => {
           chainBlockIndex={blockProps.chainBlockIndex}
         />
         <ModifyBlockTool
-          chainId={blockProps.chainId}
           blockId={blockProps.blockId}
-          blockType={blockProps.blockType as Exclude<BlockType, 'columns'>}
-          chainBlockIndex={blockProps.chainBlockIndex}
+          blockType={blockProps.blockType}
           blockIndex={toolBlockIndex}
-          chainLength={blockProps.chainLength}
         />
       </ToolsContainer>
     </AnimatePresence>
