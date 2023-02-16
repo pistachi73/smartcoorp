@@ -7,10 +7,7 @@ export type ModifyBlockTool = {
 };
 
 export type ModifyBlockToolContainerProps = {
-  chainId: string;
   blockId: string;
-  chainBlockIndex: number;
-  chainLength: number;
   blockIndex: number;
   blockType: Exclude<BlockType, 'columns'>;
 };

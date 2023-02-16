@@ -28,3 +28,5 @@ export type ExactlyOneKey<K extends keyof any, V, KK extends keyof any = K> = {
     ? { [Q in keyof O]: O[Q] }
     : never;
 }[K];
+
+export type Entries<T> = { [K in keyof T]: [K, T[K]] }[keyof T];

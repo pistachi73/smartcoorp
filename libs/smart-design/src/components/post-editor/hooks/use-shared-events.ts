@@ -6,11 +6,8 @@ import {
   useBlocksDBConsumerContext,
   useBlocksDBUpdaterContext,
 } from '../contexts/blocks-context';
-import type { ToAddBlock } from '../contexts/blocks-context/blocks-reducer/blocks-reducer.types';
 import { useRefsContext } from '../contexts/refs-context';
-import { buildParagraphBlock } from '../helpers';
 import { getBlockContainerAttributes } from '../helpers/get-block-container-attributes';
-import { waitForElement } from '../helpers/wait-for-element';
 
 import { getToRemoveBlocksFromSelection } from './use-block-selection/use-block-selection-helpers';
 
@@ -20,10 +17,10 @@ type UseSharedEventsResult = {
 };
 
 export const useSharedEvents = (): UseSharedEventsResult => {
-  const { replaceBlocks, undo, redo, buildFocusFieldAction } =
+  const { removeBlocks, undo, redo, buildFocusFieldAction } =
     useBlocksDBUpdaterContext();
   const blocksDB = useBlocksDBConsumerContext();
-  const { blockRefs } = useRefsContext();
+  const { blockRefs, getNextFocusableField, focusField } = useRefsContext();
   const { setSelectedBlocks } = useBlockSelectionUpdaterContext();
   const { selectedBlocks } = useBlockSelectionConsumerContext();
 
@@ -33,36 +30,34 @@ export const useSharedEvents = (): UseSharedEventsResult => {
     e.preventDefault();
 
     const firstSelectedBlockIndex = selectedBlocks[0];
-    const {
-      chainBlockIndex: firstSelectedBlockChainBlockIndex,
-      chainId: firstSelectedBlockChainId,
-      blockId: firstSelectedBlockId,
-    } = getBlockContainerAttributes(blockRefs.current[firstSelectedBlockIndex]);
+    const { blockId: firstSelectedBlockId } = getBlockContainerAttributes(
+      blockRefs.current[firstSelectedBlockIndex]
+    );
 
     const toRemoveBlocks = getToRemoveBlocksFromSelection(
       selectedBlocks,
       blockRefs.current
     );
 
-    const newBlock = buildParagraphBlock(firstSelectedBlockChainId);
-    const toAddBlocks: ToAddBlock[] = [
-      [newBlock, firstSelectedBlockChainId, firstSelectedBlockChainBlockIndex],
-    ];
+    const prevBlock = getNextFocusableField(firstSelectedBlockIndex, 0, -1);
+    const { blockId: prevBlockId } = getBlockContainerAttributes(
+      blockRefs.current[prevBlock[0]]
+    );
 
-    replaceBlocks({
+    //TODO: await for removeBlocks to finish???
+    removeBlocks({
       toRemoveBlocks,
-      toAddBlocks,
       undo: buildFocusFieldAction({
         fieldId: `${firstSelectedBlockId}_0`,
         position: 'end',
       }),
       redo: buildFocusFieldAction({
-        fieldId: `${newBlock.id}_0`,
+        fieldId: `${prevBlockId}_${prevBlock[1]}`,
         position: 'end',
       }),
     });
 
-    (await waitForElement(`${newBlock.id}_0`))?.focus();
+    focusField(prevBlock, 'end');
     setSelectedBlocks([]);
   };
 

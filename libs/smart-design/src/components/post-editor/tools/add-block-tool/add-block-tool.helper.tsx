@@ -74,8 +74,6 @@ export const buildBlocksMapping: Record<
       buildParagraphBlock(chainId)
     );
 
-    console.log(newParagraphBlocks);
-
     return [colBlock, ...newParagraphBlocks];
   },
 

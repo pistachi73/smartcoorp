@@ -61,7 +61,7 @@ export const buildColumnsBlock = (
 ): ColumnBlock => {
   const blockId = nanoid();
   return {
-    id: nanoid(),
+    id: blockId,
     chainId,
     type: 'columns',
     data: {

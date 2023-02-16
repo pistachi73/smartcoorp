@@ -5,7 +5,7 @@ import {
 } from '@radix-ui/react-icons';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { Command } from 'cmdk';
-import React, { NamedExoticComponent, ReactElement } from 'react';
+import React, { NamedExoticComponent } from 'react';
 
 import { useBlockSelectionUpdaterContext } from '../../contexts/block-selection-context/block-selection-context';
 import { useRefsContext } from '../../contexts/refs-context/refs-context';
@@ -13,7 +13,7 @@ import {
   useToolBlockIndexUpdaterContext,
   useToolControlContext,
 } from '../../contexts/tool-control-context/tool-control-context';
-import { Block, BlockType } from '../../post-editor.types';
+import type { BlockType } from '../../post-editor.types';
 import { DropdownContent, DropdownTrigger } from '../tools.styles';
 
 import { HeaderTools } from './header-tools/header-tools';
@@ -47,12 +47,9 @@ const blockToolMapping: Record<
 };
 
 export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
-  chainId,
   blockId,
   blockType,
-  chainBlockIndex,
   blockIndex,
-  chainLength,
 }) => {
   const toolControl = useToolControlContext();
   const { focusField } = useRefsContext();
