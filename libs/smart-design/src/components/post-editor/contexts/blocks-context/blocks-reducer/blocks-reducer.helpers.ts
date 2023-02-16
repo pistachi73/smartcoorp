@@ -40,7 +40,6 @@ export const removeBlocks = (
     const columnBlockId = chainId.split('-')[0];
     const columnBlock = draft.blocks[columnBlockId] as ColumnBlock;
 
-    console.log(columnBlock);
     const columnBlockToBeRemoved = columnBlock.data.chains.every((chainId) =>
       removedChainIds.has(chainId)
     );
@@ -68,8 +67,6 @@ export const removeBlocks = (
       removedChainIds.add(chainId);
     }
   });
-
-  console.log(removedChainIds.values());
 
   removedChainIds.forEach((id) => {
     delete draft.chains[id];
