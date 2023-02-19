@@ -35,10 +35,8 @@ export const IconContainer = styled.div`
   justify-content: center;
 
   border-radius: ${borderRadiusXS};
-  border: 1px solid;
   background-color: white;
-
-  border-color: ${({ theme }) => theme.common.overBackgroundNeutral} !important;
+  border: 1px solid ${({ theme }) => theme.color.neutral};
 `;
 
 export const Label = styled.span`
