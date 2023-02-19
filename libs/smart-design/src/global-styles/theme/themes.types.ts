@@ -61,6 +61,14 @@ export interface PostEditor {
   };
 }
 
+/**Tooltip */
+export interface Tooltip {
+  contentBackgroundColor: string;
+  contentHeadingColor: string;
+  contentParagraphColor: string;
+  contentSpanColor: string;
+}
+
 export interface ThemeType {
   color: ColorType;
   backgroundScreen: string;
@@ -83,4 +91,5 @@ export interface ThemeType {
   select: Select;
   modal: Modal;
   postEditor: PostEditor;
+  tooltip: Tooltip;
 }

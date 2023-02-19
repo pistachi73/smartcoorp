@@ -5,8 +5,14 @@ import {
 } from '@radix-ui/react-icons';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { Command } from 'cmdk';
-import React, { NamedExoticComponent } from 'react';
+import React, { NamedExoticComponent, useState } from 'react';
+import styled from 'styled-components';
 
+import { spaceXS } from '@smartcoorp/smart-design/tokens';
+
+import { Body } from '../../../body';
+import { Caption } from '../../../caption/caption';
+import { Tooltip } from '../../../tooltip';
 import { useBlockSelectionUpdaterContext } from '../../contexts/block-selection-context/block-selection-context';
 import { useRefsContext } from '../../contexts/refs-context/refs-context';
 import {
@@ -46,6 +52,13 @@ const blockToolMapping: Record<
   link: ['shared'],
 };
 
+const TooltipContentContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: ${spaceXS};
+`;
+
 export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
   blockId,
   blockType,
@@ -59,6 +72,8 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
     blockId,
   });
   const setToolBlockIndex = useToolBlockIndexUpdaterContext();
+
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
   return (
     <DropdownMenu.Root
@@ -74,9 +89,26 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
         }
       }}
     >
-      <DropdownTrigger>
-        <DragHandleDots2Icon height={18} width={18} />
-      </DropdownTrigger>
+      <Tooltip
+        open={isTooltipOpen}
+        onOpenChange={setIsTooltipOpen}
+        trigger={
+          <DropdownTrigger>
+            <DragHandleDots2Icon height={18} width={18} />
+          </DropdownTrigger>
+        }
+        content={
+          <TooltipContentContainer>
+            <Body size="xsmall" noMargin>
+              Click to tune
+            </Body>
+            <Caption noMargin as={'span'}>
+              ↹ Tab
+            </Caption>
+          </TooltipContentContainer>
+        }
+      />
+
       <DropdownMenu.Portal>
         <DropdownContent
           side="bottom"
@@ -104,7 +136,7 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
               </div>
               <ScrollArea.Viewport>
                 <Command.List>
-                  <Command.Empty>No results found.</Command.Empty>
+                  <Command.Empty>No results found</Command.Empty>
                   {blockToolMapping[blockType].map((tool) => {
                     const Tool = toolMapping[tool];
                     return (

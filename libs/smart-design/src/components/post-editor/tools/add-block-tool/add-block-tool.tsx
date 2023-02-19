@@ -2,11 +2,10 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { MagnifyingGlassIcon, PlusIcon } from '@radix-ui/react-icons';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { Command } from 'cmdk';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import type { ToAddBlock } from '../../contexts/blocks-context/blocks-reducer/blocks-reducer.types';
-import { useRefsContext } from '../../contexts/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
   useToolControlContext,
@@ -14,6 +13,8 @@ import {
 import type { Block } from '../../post-editor.types';
 import { DropdownContent, DropdownTrigger, Separator } from '../tools.styles';
 
+import { Body } from './../../../body';
+import { Tooltip } from './../../../tooltip';
 import { AddBlockItem } from './add-block-tool-item';
 import {
   DropdownItemTypes,
@@ -32,6 +33,8 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
     const { addBlocks, buildFocusFieldAction } = useBlocksDBUpdaterContext();
     const toolControl = useToolControlContext();
     const setToolBlockIndex = useToolBlockIndexUpdaterContext();
+
+    const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
     const addBlock = async (blockType: DropdownItemTypes) => {
       let toAddBlocks: ToAddBlock[] = [];
@@ -71,9 +74,21 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
         open={toolControl.isAddBlockMenuOpened}
         onOpenChange={toolControl.setIsAddBlockMenuOpened}
       >
-        <DropdownTrigger>
-          <PlusIcon height={18} width={18} />
-        </DropdownTrigger>
+        <Tooltip
+          open={isTooltipOpen}
+          onOpenChange={setIsTooltipOpen}
+          trigger={
+            <DropdownTrigger>
+              <PlusIcon height={18} width={18} />
+            </DropdownTrigger>
+          }
+          content={
+            <Body size="xsmall" noMargin>
+              Add block
+            </Body>
+          }
+        />
+
         <DropdownMenu.Portal>
           <DropdownContent
             side="bottom"
@@ -129,7 +144,6 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
               <ScrollArea.Scrollbar orientation="vertical">
                 <ScrollArea.Thumb />
               </ScrollArea.Scrollbar>
-              <ScrollArea.Corner />
             </ScrollArea.Root>
           </DropdownContent>
         </DropdownMenu.Portal>

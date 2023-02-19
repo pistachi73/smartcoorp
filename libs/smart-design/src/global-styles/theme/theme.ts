@@ -97,6 +97,13 @@ export const lightTheme: ThemeType = {
       hoverBackgroundColor: gray500,
     },
   },
+
+  tooltip: {
+    contentBackgroundColor: gray900,
+    contentHeadingColor: gray100,
+    contentParagraphColor: gray200,
+    contentSpanColor: gray400,
+  },
 };
 
 export const darkTheme: ThemeType = {
@@ -158,5 +165,11 @@ export const darkTheme: ThemeType = {
     imageTool: {
       hoverBackgroundColor: gray300,
     },
+  },
+  tooltip: {
+    contentBackgroundColor: gray200,
+    contentHeadingColor: gray900,
+    contentParagraphColor: gray800,
+    contentSpanColor: gray600,
   },
 };
