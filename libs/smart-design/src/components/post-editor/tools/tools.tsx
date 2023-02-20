@@ -4,7 +4,6 @@ import { useMemo } from 'react';
 import { useRefsContext } from '../contexts/refs-context';
 import { useToolBlockIndexConsumerContext } from '../contexts/tool-control-context/tool-control-context';
 import { getBlockContainerAttributes } from '../helpers/get-block-container-attributes';
-import { BlockType } from '../post-editor.types';
 
 import { AddBlockTool } from './add-block-tool/add-block-tool';
 import { ModifyBlockTool } from './modify-block-tool/modify-block-tool';
@@ -37,7 +36,6 @@ export const Tools = () => {
     damping: 20,
     stiffness: 300,
   };
-  //TODO: tooltip
   return (
     <AnimatePresence key={toolBlockIndex}>
       <ToolsContainer
@@ -52,6 +50,7 @@ export const Tools = () => {
         <AddBlockTool
           chainId={blockProps.chainId}
           chainBlockIndex={blockProps.chainBlockIndex}
+          blockIndex={toolBlockIndex}
         />
         <ModifyBlockTool
           blockId={blockProps.blockId}

@@ -9,6 +9,7 @@ import {
   scale030,
   scale060,
   scale070,
+  scale100,
   scale370,
   scale400,
   spaceL,
@@ -27,8 +28,9 @@ export const ToolsContainer = styled(motion.div)`
 `;
 
 export const DropdownTrigger = styled(DropdownMenu.Trigger)`
-  width: 20px;
-  height: 20px;
+  width: ${scale100};
+  height: ${scale100};
+  padding: ${spaceXXS};
   outline: none;
 
   display: flex;

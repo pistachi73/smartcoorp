@@ -17,7 +17,8 @@ import { useBlockSelectionUpdaterContext } from '../../contexts/block-selection-
 import { useRefsContext } from '../../contexts/refs-context/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
-  useToolControlContext,
+  useToolControlConsumerContext,
+  useToolControlUpdaterContext,
 } from '../../contexts/tool-control-context/tool-control-context';
 import type { BlockType } from '../../post-editor.types';
 import { DropdownContent, DropdownTrigger } from '../tools.styles';
@@ -64,7 +65,8 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
   blockType,
   blockIndex,
 }) => {
-  const toolControl = useToolControlContext();
+  const { isModifyBlockMenuOpened } = useToolControlConsumerContext();
+  const { setIsModifyBlockMenuOpened } = useToolControlUpdaterContext();
   const { focusField } = useRefsContext();
   const { setSelectedBlocks } = useBlockSelectionUpdaterContext();
   const { handleSharedToolsKeyDown } = useSharedTools({
@@ -77,9 +79,9 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
 
   return (
     <DropdownMenu.Root
-      open={toolControl.isModifyBlockMenuOpened}
+      open={isModifyBlockMenuOpened}
       onOpenChange={(isOpen) => {
-        toolControl.setIsModifyBlockMenuOpened(isOpen);
+        setIsModifyBlockMenuOpened(isOpen);
         if (isOpen) {
           setSelectedBlocks([blockIndex]);
         } else {
@@ -93,8 +95,8 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
         open={isTooltipOpen}
         onOpenChange={setIsTooltipOpen}
         trigger={
-          <DropdownTrigger>
-            <DragHandleDots2Icon height={18} width={18} />
+          <DropdownTrigger asChild>
+            <DragHandleDots2Icon height={8} width={8} />
           </DropdownTrigger>
         }
         content={
@@ -128,7 +130,7 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
             >
               <div cmdk-input-wrapper="">
                 <MagnifyingGlassIcon
-                  aria-hidden={!toolControl.isAddBlockMenuOpened}
+                  aria-hidden={!isModifyBlockMenuOpened}
                   width="20px"
                   height="20px"
                 />

@@ -6,7 +6,7 @@ import { ToRemoveBlock } from '../../../contexts/blocks-context/blocks-reducer';
 import { useRefsContext } from '../../../contexts/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
-  useToolControlContext,
+  useToolControlUpdaterContext,
 } from '../../../contexts/tool-control-context/tool-control-context';
 import { getBlockContainerAttributes } from '../../../helpers/get-block-container-attributes';
 
@@ -23,8 +23,8 @@ export const useSharedTools = ({
     useBlocksDBUpdaterContext();
   const { getNextFocusableField, focusField } = useRefsContext();
   const { blockRefs } = useRefsContext();
-  const toolControl = useToolControlContext();
   const setToolBlockIndex = useToolBlockIndexUpdaterContext();
+  const { setIsModifyBlockMenuOpened } = useToolControlUpdaterContext();
   const { setSelectedBlocks } = useBlockSelectionUpdaterContext();
 
   const [{ chainBlockIndex, chainId }, setBlockProps] = useState(
@@ -88,8 +88,8 @@ export const useSharedTools = ({
     const prevIndex = getMoveBlockIndex('up');
 
     //Wait until menu is closed to open it again and then set the correct block index
-    await toolControl.setIsModifyBlockMenuOpened(false);
-    await toolControl.setIsModifyBlockMenuOpened(true);
+    await setIsModifyBlockMenuOpened(false);
+    await setIsModifyBlockMenuOpened(true);
     setToolBlockIndex(prevIndex);
     setSelectedBlocks([prevIndex]);
   };
@@ -113,8 +113,8 @@ export const useSharedTools = ({
     const nextIndex = getMoveBlockIndex('down');
 
     //Wait until menu is closed to open it again and then set the correct block index
-    await toolControl.setIsModifyBlockMenuOpened(false);
-    await toolControl.setIsModifyBlockMenuOpened(true);
+    await setIsModifyBlockMenuOpened(false);
+    await setIsModifyBlockMenuOpened(true);
     setToolBlockIndex(nextIndex);
     setSelectedBlocks([nextIndex]);
   };
@@ -140,7 +140,7 @@ export const useSharedTools = ({
 
     focusField(nextFocusableField, 'end');
     setSelectedBlocks([]);
-    toolControl.setIsModifyBlockMenuOpened(false);
+    setIsModifyBlockMenuOpened(false);
     setToolBlockIndex(-1);
   };
 
@@ -159,7 +159,7 @@ export const useSharedTools = ({
     });
 
     setSelectedBlocks([]);
-    toolControl.setIsModifyBlockMenuOpened(false);
+    setIsModifyBlockMenuOpened(false);
   };
 
   const handleSharedToolsKeyDown = (e: React.KeyboardEvent) => {

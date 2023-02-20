@@ -8,7 +8,7 @@ import { useBlocksDBUpdaterContext } from '../../../contexts/blocks-context';
 import { useRefsContext } from '../../../contexts/refs-context/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
-  useToolControlContext,
+  useToolControlUpdaterContext,
 } from '../../../contexts/tool-control-context/tool-control-context';
 import type { HeaderBlockProps } from '../../../post-editor.types';
 import { ModifyBlockToolItem } from '../modify-block-tool-item';
@@ -26,7 +26,7 @@ export const HeaderTools = memo<ModifyBlockToolProps>(
 
     const { setSelectedBlocks } = useBlockSelectionUpdaterContext();
 
-    const toolControl = useToolControlContext();
+    const { setIsModifyBlockMenuOpened } = useToolControlUpdaterContext();
     const setToolBlockIndex = useToolBlockIndexUpdaterContext();
 
     const currentLevel = useMemo(() => {
@@ -53,7 +53,7 @@ export const HeaderTools = memo<ModifyBlockToolProps>(
 
         setSelectedBlocks([]);
         setToolBlockIndex(-1);
-        await toolControl.setIsModifyBlockMenuOpened(false);
+        await setIsModifyBlockMenuOpened(false);
         focusField([blockIndex, 0], 'end');
       },
       [
@@ -63,9 +63,9 @@ export const HeaderTools = memo<ModifyBlockToolProps>(
         focusField,
         prevCaretPosition,
         setFieldValue,
+        setIsModifyBlockMenuOpened,
         setSelectedBlocks,
         setToolBlockIndex,
-        toolControl,
       ]
     );
 

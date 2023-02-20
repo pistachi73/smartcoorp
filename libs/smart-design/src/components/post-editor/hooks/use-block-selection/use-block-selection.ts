@@ -10,7 +10,7 @@ import type { ToAddBlock } from '../../contexts/blocks-context/blocks-reducer';
 import { useRefsContext } from '../../contexts/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
-  useToolControlContext,
+  useToolControlUpdaterContext,
 } from '../../contexts/tool-control-context/tool-control-context';
 import {
   buildParagraphBlock,
@@ -23,7 +23,7 @@ import { getToRemoveBlocksFromSelection } from './use-block-selection-helpers';
 export const useBlockSelection = () => {
   const [prevRange, setPrevRange] = useState<Range | null>();
   const { blockRefs, fieldRefs, focusField } = useRefsContext();
-  const toolControl = useToolControlContext();
+  const { setIsModifyBlockMenuOpened } = useToolControlUpdaterContext();
   const setToolBlockIndex = useToolBlockIndexUpdaterContext();
   const { copyBlocks, replaceBlocks, addBlocks, buildFocusFieldAction } =
     useBlocksDBUpdaterContext();
@@ -272,7 +272,7 @@ export const useBlockSelection = () => {
     setSelectedBlocks([blockIndex]);
     setPivotSelectedBlock(blockIndex);
     setToolBlockIndex(blockIndex);
-    toolControl.setIsModifyBlockMenuOpened(true);
+    setIsModifyBlockMenuOpened(true);
     document.getSelection()?.removeAllRanges();
   };
 
