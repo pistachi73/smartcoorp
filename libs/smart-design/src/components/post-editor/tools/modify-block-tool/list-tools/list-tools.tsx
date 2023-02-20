@@ -8,7 +8,7 @@ import { useBlocksDBUpdaterContext } from '../../../contexts/blocks-context';
 import { useRefsContext } from '../../../contexts/refs-context/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
-  useToolControlContext,
+  useToolControlUpdaterContext,
 } from '../../../contexts/tool-control-context/tool-control-context';
 import type { ListBlockProps } from '../../../post-editor.types';
 import { ModifyBlockToolItem } from '../modify-block-tool-item';
@@ -22,7 +22,7 @@ export const ListTools = memo<ModifyBlockToolProps>(
   ({ blockIndex, blockId }) => {
     const { setFieldValue, buildFocusFieldAction } =
       useBlocksDBUpdaterContext();
-    const toolControl = useToolControlContext();
+    const { setIsModifyBlockMenuOpened } = useToolControlUpdaterContext();
     const { focusField, fieldRefs } = useRefsContext();
     const { setSelectedBlocks } = useBlockSelectionUpdaterContext();
     const setToolBlockIndex = useToolBlockIndexUpdaterContext();
@@ -50,7 +50,7 @@ export const ListTools = memo<ModifyBlockToolProps>(
 
         setSelectedBlocks([]);
         setToolBlockIndex(-1);
-        await toolControl.setIsModifyBlockMenuOpened(false);
+        await setIsModifyBlockMenuOpened(false);
         focusField([blockIndex, 0], 'end');
       },
       [
@@ -59,9 +59,9 @@ export const ListTools = memo<ModifyBlockToolProps>(
         buildFocusFieldAction,
         focusField,
         setFieldValue,
+        setIsModifyBlockMenuOpened,
         setSelectedBlocks,
         setToolBlockIndex,
-        toolControl,
       ]
     );
 

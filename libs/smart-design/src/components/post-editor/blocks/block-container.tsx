@@ -5,7 +5,7 @@ import { useBlockSelectionConsumerContext } from '../contexts/block-selection-co
 import { useRefsContext } from '../contexts/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
-  useToolControlContext,
+  useToolControlUpdaterContext,
 } from '../contexts/tool-control-context/tool-control-context';
 import { useBlockSelection } from '../hooks';
 import { useBlockNavigation } from '../hooks/use-block-navigation';
@@ -30,6 +30,7 @@ export const BlockContainer = ({
   const setToolBlockIndex = useToolBlockIndexUpdaterContext();
   const { handleKeyboardBlockNavigation } = useBlockNavigation(blockIndex);
   const { handleKeyboardBlockSelection } = useBlockSelection();
+  const { setIsAddBlockMenuOpened } = useToolControlUpdaterContext();
   const { selectedBlocks } = useBlockSelectionConsumerContext();
   const {
     blockRefs,
@@ -70,8 +71,20 @@ export const BlockContainer = ({
       (e: React.KeyboardEvent) => {
         handleKeyboardBlockSelection(e, blockIndex, chainBlockIndex, chainId);
         handleKeyboardBlockNavigation(e);
+
+        if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
+          e.preventDefault();
+          console.log('command i');
+          setToolBlockIndex(blockIndex);
+          setIsAddBlockMenuOpened(true);
+        }
       },
-    [handleKeyboardBlockNavigation, handleKeyboardBlockSelection]
+    [
+      handleKeyboardBlockNavigation,
+      handleKeyboardBlockSelection,
+      setIsAddBlockMenuOpened,
+      setToolBlockIndex,
+    ]
   );
 
   const handleKeyUp = useCallback(

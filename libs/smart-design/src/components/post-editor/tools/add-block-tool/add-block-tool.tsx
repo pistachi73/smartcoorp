@@ -3,12 +3,18 @@ import { MagnifyingGlassIcon, PlusIcon } from '@radix-ui/react-icons';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { Command } from 'cmdk';
 import React, { FC, useState } from 'react';
+import styled from 'styled-components';
 
+import { spaceXS } from '@smartcoorp/smart-design/tokens';
+
+import { Caption } from '../../../caption';
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import type { ToAddBlock } from '../../contexts/blocks-context/blocks-reducer/blocks-reducer.types';
+import { useRefsContext } from '../../contexts/refs-context/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
-  useToolControlContext,
+  useToolControlConsumerContext,
+  useToolControlUpdaterContext,
 } from '../../contexts/tool-control-context/tool-control-context';
 import type { Block } from '../../post-editor.types';
 import { DropdownContent, DropdownTrigger, Separator } from '../tools.styles';
@@ -26,12 +32,22 @@ import {
 type AddBlockToolProps = {
   chainId: string;
   chainBlockIndex: number;
+  blockIndex: number;
 };
 
+const TooltipContentContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: ${spaceXS};
+`;
+
 export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
-  ({ chainId, chainBlockIndex }) => {
+  ({ chainId, chainBlockIndex, blockIndex }) => {
     const { addBlocks, buildFocusFieldAction } = useBlocksDBUpdaterContext();
-    const toolControl = useToolControlContext();
+    const { focusField } = useRefsContext();
+    const { setIsAddBlockMenuOpened } = useToolControlUpdaterContext();
+    const { isAddBlockMenuOpened } = useToolControlConsumerContext();
     const setToolBlockIndex = useToolBlockIndexUpdaterContext();
 
     const [isTooltipOpen, setIsTooltipOpen] = useState(false);
@@ -65,27 +81,38 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
       });
 
       buildBlocksActionMapping[blockType](focusFieldId);
-      toolControl.setIsAddBlockMenuOpened(false);
+      setIsAddBlockMenuOpened(false);
       setToolBlockIndex(-1);
     };
 
     return (
       <DropdownMenu.Root
-        open={toolControl.isAddBlockMenuOpened}
-        onOpenChange={toolControl.setIsAddBlockMenuOpened}
+        open={isAddBlockMenuOpened}
+        onOpenChange={(isOpen) => {
+          setIsAddBlockMenuOpened(isOpen);
+          if (!isOpen) {
+            focusField([blockIndex, 0], 'end');
+            setToolBlockIndex(-1);
+          }
+        }}
       >
         <Tooltip
           open={isTooltipOpen}
           onOpenChange={setIsTooltipOpen}
           trigger={
-            <DropdownTrigger>
-              <PlusIcon height={18} width={18} />
+            <DropdownTrigger asChild>
+              <PlusIcon height={16} width={16} />
             </DropdownTrigger>
           }
           content={
-            <Body size="xsmall" noMargin>
-              Add block
-            </Body>
+            <TooltipContentContainer>
+              <Body size="xsmall" noMargin>
+                Add block
+              </Body>
+              <Caption noMargin as={'span'}>
+                &#8984; I
+              </Caption>
+            </TooltipContentContainer>
           }
         />
 
@@ -102,7 +129,7 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
               <Command>
                 <div cmdk-input-wrapper="">
                   <MagnifyingGlassIcon
-                    aria-hidden={!toolControl.isAddBlockMenuOpened}
+                    aria-hidden={!isAddBlockMenuOpened}
                     width="20px"
                     height="20px"
                   />
