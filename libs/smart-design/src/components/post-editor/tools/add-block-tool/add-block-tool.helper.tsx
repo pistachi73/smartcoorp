@@ -69,7 +69,6 @@ export const buildBlocksMapping: Record<
   link: buildLinkBlock,
   'two-column': (chainId: string) => {
     const colBlock = buildColumnsBlock(chainId, 2);
-    console.log(colBlock);
     const newParagraphBlocks = colBlock.data.chains.map((chainId) =>
       buildParagraphBlock(chainId)
     );

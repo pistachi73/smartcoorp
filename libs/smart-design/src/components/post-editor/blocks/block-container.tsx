@@ -74,7 +74,6 @@ export const BlockContainer = ({
 
         if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
           e.preventDefault();
-          console.log('command i');
           setToolBlockIndex(blockIndex);
           setIsAddBlockMenuOpened(true);
         }

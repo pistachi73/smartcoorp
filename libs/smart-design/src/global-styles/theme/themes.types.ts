@@ -1,10 +1,10 @@
-export interface ColorType {
+interface ColorType {
   neutral: string;
   invertedNeutral: string;
 }
 
 /** shadows */
-export interface Shadow {
+interface Shadow {
   shadowS: string;
   shadowM: string;
   shadowL: string;
@@ -12,17 +12,17 @@ export interface Shadow {
 }
 
 /** Common color effects */
-export interface Common {
+interface Common {
   disabledBackgroundColor: string;
   disabledSurfaceColor: string;
   overBackgroundNeutral: string;
   backgroundColor: string;
   errorColor: string;
 }
-export interface PrimaryButtonTypes {
+interface PrimaryButtonTypes {
   hoverBackgroundColor: string;
 }
-export interface SecondaryButtonTypes {
+interface SecondaryButtonTypes {
   hoverBackgroundColor: string;
 }
 
@@ -31,7 +31,7 @@ type MenuItem = {
   hoverBackgroundColor: string;
 };
 
-export interface Menu {
+interface Menu {
   menuItem: MenuItem;
 }
 
@@ -42,17 +42,17 @@ type SelectItem = {
   selectedBackgroundColor: string;
   selectedHoverBackgroundColor: string;
 };
-export interface Select {
+interface Select {
   selectItem: SelectItem;
 }
 
 /** Modal interface */
-export interface Modal {
+interface Modal {
   backgroundColor: string;
 }
 
 /** PostEditor interface */
-export interface PostEditor {
+interface PostEditor {
   linkTool: {
     errorBackgroundColor: string;
   };
@@ -62,7 +62,7 @@ export interface PostEditor {
 }
 
 /**Tooltip */
-export interface Tooltip {
+interface Tooltip {
   contentBackgroundColor: string;
   contentHeadingColor: string;
   contentParagraphColor: string;

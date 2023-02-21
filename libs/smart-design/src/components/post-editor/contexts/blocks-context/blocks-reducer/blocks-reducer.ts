@@ -87,7 +87,6 @@ export const blocksDBReducer = (
             chainBlockIndex,
           } = action.payload;
 
-          console.log(innerHTML);
           const splitInnerHTML = innerHTML
             .split(/<div>(.*?)<\/div>/)
             .filter((t) => t !== '')
@@ -285,6 +284,7 @@ export const blocksDBReducer = (
               }
             );
           } catch (e) {
+            console.log(e);
             changes = {};
             currentVersion = -1;
           }

@@ -85,8 +85,11 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
     case UndoRedoTypes.FOCUS_FIELD: {
       const { fieldId, position, setPrevCaretPosition } = action.payload;
       const field = await waitForElement(fieldId);
+      const fieldElement = document.getElementById(fieldId);
 
       let caretPosition: number;
+
+      if (!field || !fieldElement) return;
 
       if (typeof position === 'number') {
         caretPosition = position;
@@ -95,7 +98,7 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
           position === 'start' ? 0 : getElementTextContent(field).length;
       }
 
-      setCaretPosition({ element: field, position: caretPosition });
+      setCaretPosition({ element: fieldElement, position: caretPosition });
       setPrevCaretPosition(caretPosition);
     }
   }

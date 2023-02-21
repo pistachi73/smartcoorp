@@ -164,6 +164,7 @@ export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({
       blockIndex,
       buildModifyFieldInnerHTMLAction,
       prevCaretPosition,
+      setPrevCaretPosition,
     ]
   );
 

@@ -33,7 +33,6 @@ export const FileField: React.FC<FileFieldProps> = ({
   return (
     <>
       <input
-        id={`${blockId}_${fieldIndex}`}
         hidden
         ref={uploadImageRef}
         type="file"
@@ -43,6 +42,7 @@ export const FileField: React.FC<FileFieldProps> = ({
       />
 
       <S.UploadFileButton
+        id={`${blockId}_${fieldIndex}`}
         ref={addFieldRef(blockIndex, fieldIndex)}
         data-placeholder={placeholder}
         onClick={handleOpenUploadFile}
