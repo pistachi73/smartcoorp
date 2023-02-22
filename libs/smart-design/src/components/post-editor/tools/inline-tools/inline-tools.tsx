@@ -52,7 +52,9 @@ export const InlineTools: FC<InlineToolsProps> = ({ postEditorRef }) => {
     removeFormat,
   } = useInlineTools();
 
-  const { clientRect, isCollapsed } = useTextSelection(postEditorRef.current as HTMLElement);
+  const { clientRect, isCollapsed } = useTextSelection(
+    postEditorRef.current as HTMLElement
+  );
 
   useEffect(() => {
     if (linkTool.isOpen) return;
@@ -115,7 +117,6 @@ export const InlineTools: FC<InlineToolsProps> = ({ postEditorRef }) => {
       const ranges = prevRanges;
       setPrevRanges([]);
       for (const range of ranges) {
-        console.log(range);
         sel.removeAllRanges();
         sel.addRange(range);
         removeWrapper(range);

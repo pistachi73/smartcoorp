@@ -25,14 +25,12 @@ import {
   primary700,
   primary800,
   red100,
-  red200,
-  red300,
   red400,
   red500,
   red700,
 } from '../../tokens';
 
-import { ThemeType } from './themes.types';
+import type { ThemeType } from './themes.types';
 
 export const lightTheme: ThemeType = {
   common: {

@@ -79,7 +79,7 @@ export const HeaderTools = memo<ModifyBlockToolProps>(
               aria-current={current ? 'true' : 'false'}
               onSelect={() => updateHeaderLevel(Number(level) as Level)}
             >
-              <ModifyBlockToolItem tool={tool} current={current} />
+              <ModifyBlockToolItem tool={tool} />
             </Command.Item>
           );
         })}

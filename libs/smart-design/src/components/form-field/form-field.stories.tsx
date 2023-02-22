@@ -75,9 +75,6 @@ const Template: ComponentStory<typeof FormFieldComponent> = ({
 }) => {
   const [value, setValue] = useState<string>('');
 
-  if (value) {
-    console.log('Hol');
-  }
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore

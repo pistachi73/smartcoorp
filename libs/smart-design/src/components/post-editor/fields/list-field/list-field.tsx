@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 
 import { useRefsContext } from '../../contexts/refs-context';
@@ -6,47 +6,54 @@ import { useRefsContext } from '../../contexts/refs-context';
 import * as S from './list-field.styles';
 import { ListFieldProps } from './list-field.types';
 
-export const ListField: React.FC<ListFieldProps> = ({
-  blockId,
-  blockIndex,
-  field,
-  fieldIndex,
-  items,
-  style,
-  onInputChange,
-  ...props
-}) => {
-  const [initialItems] = useState(items);
+export const ListField: React.FC<ListFieldProps> = memo(
+  ({
+    blockId,
+    blockIndex,
+    field,
+    fieldIndex,
+    items,
+    style,
+    onInputChange,
+    ...props
+  }) => {
+    const { addFieldRef } = useRefsContext();
 
-  const { addFieldRef } = useRefsContext();
+    const initialRender = useMemo(
+      () =>
+        items.map((item, index) => (
+          <S.ListItem
+            key={`${blockId}_${fieldIndex}_${index}`}
+            dangerouslySetInnerHTML={{ __html: `${item}` }}
+          />
+        )),
+      [blockId, fieldIndex, items]
+    );
 
-  const initialRender = useMemo(
-    () =>
-      initialItems.map((item, index) => (
-        <S.ListItem
-          key={`${blockId}_${fieldIndex}_${index}`}
-          dangerouslySetInnerHTML={{ __html: `${item}` }}
-        />
-      )),
-    [blockId, fieldIndex, initialItems]
-  );
-
-  const commonProps = {
-    ref: addFieldRef(blockIndex, fieldIndex),
-    id: `${blockId}_${fieldIndex}`,
-    contentEditable: true,
-    suppressContentEditableWarning: true,
-    'data-focus-index': fieldIndex,
-    onInput: onInputChange,
-    dangerouslySetInnerHTML: {
-      __html: `${initialRender
-        .map((item) => ReactDOMServer.renderToStaticMarkup(item))
-        .join('')}`,
-    },
-  };
-  return style === 'ordered' ? (
-    <S.OrderedList {...commonProps} {...props} />
-  ) : (
-    <S.UnorderedList {...commonProps} {...props} />
-  );
-};
+    const commonProps = {
+      ref: addFieldRef(blockIndex, fieldIndex),
+      id: `${blockId}_${fieldIndex}`,
+      contentEditable: true,
+      suppressContentEditableWarning: true,
+      'data-focus-index': fieldIndex,
+      onInput: onInputChange,
+      dangerouslySetInnerHTML: {
+        __html: `${initialRender
+          .map((item) => ReactDOMServer.renderToStaticMarkup(item))
+          .join('')}`,
+      },
+    };
+    return style === 'ordered' ? (
+      <S.OrderedList {...commonProps} {...props} />
+    ) : (
+      <S.UnorderedList {...commonProps} {...props} />
+    );
+  },
+  (prevProps, nextProps) => {
+    // CONDITIONS TO RERENDER
+    return (
+      prevProps.style === nextProps.style &&
+      prevProps.blockIndex === nextProps.blockIndex
+    );
+  }
+);

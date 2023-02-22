@@ -10,11 +10,10 @@ type ModifyBlockToolItemProps = {
 
 export const ModifyBlockToolItem: React.FC<ModifyBlockToolItemProps> = ({
   tool: { label, command, icon },
-  current,
 }) => {
   return (
     <S.ItemContainer>
-      <S.IconContainer $current={current}>{icon}</S.IconContainer>
+      <S.IconContainer>{icon}</S.IconContainer>
       <S.Label>{label}</S.Label>
       {command && (
         <S.CommandContainer>

@@ -65,7 +65,6 @@ export const useBlockNavigation = (
         parseInt(target.getAttribute('data-focus-index') as string),
         -1
       );
-      console.log(nextFocusIndexes);
 
       if (!nextFocusIndexes) return;
 
