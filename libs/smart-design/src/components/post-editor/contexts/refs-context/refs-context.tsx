@@ -64,7 +64,9 @@ export const useRefsContext = (): {
     caretPosition?: 'start' | 'end' | number
   ) => [number, number];
   setPrevCaretPosition: (ref: any) => void;
-  handlePrevTextSelectionOnMouseUp: (e: React.MouseEvent) => void;
+  handlePrevTextSelectionOnFocus: (
+    e: React.MouseEvent | React.FocusEvent
+  ) => void;
   handlePrevTextSelectionOnKeyUp: (e: React.KeyboardEvent) => void;
 } => {
   const { blockRefs, fieldRefs, prevCaretPosition } = useContext(RefsContext);
@@ -97,7 +99,8 @@ export const useRefsContext = (): {
   );
 
   const setPrevCaretPosition = useCallback(
-    (ref: any) => {
+    (ref: HTMLElement | number) => {
+      console.log('setPrevCaretPosition', ref, typeof ref === 'number');
       if (typeof ref === 'number') {
         prevCaretPosition.current = ref;
       } else {
@@ -107,10 +110,15 @@ export const useRefsContext = (): {
     [prevCaretPosition]
   );
 
-  const handlePrevTextSelectionOnMouseUp = (e: React.MouseEvent) => {
+  const handlePrevTextSelectionOnFocus = (
+    e: React.MouseEvent | React.FocusEvent
+  ) => {
     const closestEditableElement = getClosestEditableElement(
       e.target as HTMLElement
     );
+
+    if (!closestEditableElement) return;
+
     setPrevCaretPosition(closestEditableElement);
   };
 
@@ -125,6 +133,8 @@ export const useRefsContext = (): {
       const closestEditableElement = getClosestEditableElement(
         e.target as HTMLElement
       );
+
+      if (!closestEditableElement) return;
       setPrevCaretPosition(closestEditableElement);
     }
   };
@@ -216,7 +226,7 @@ export const useRefsContext = (): {
     focusContiguousField,
     getNextFocusableField,
     setPrevCaretPosition,
-    handlePrevTextSelectionOnMouseUp,
+    handlePrevTextSelectionOnFocus,
     handlePrevTextSelectionOnKeyUp,
   };
 };

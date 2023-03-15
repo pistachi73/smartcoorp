@@ -274,6 +274,7 @@ export const blocksDBReducer = (
         }
         case ReducerTypes.UNDO: {
           const undoAction = changes[currentVersion].undo.action;
+
           try {
             return produce(
               applyPatches(state, changes[currentVersion--].undo.patch),

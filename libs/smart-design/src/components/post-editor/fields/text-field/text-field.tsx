@@ -30,6 +30,7 @@ export const TextField = memo(
       dangerouslySetInnerHTML: { __html: text },
       'data-field-index': fieldIndex,
       onInput: onInputChange,
+      'data-block-type': variant,
     };
 
     if (variant === 'header') {

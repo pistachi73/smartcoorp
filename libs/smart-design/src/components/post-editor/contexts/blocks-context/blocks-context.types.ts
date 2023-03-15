@@ -1,3 +1,5 @@
+import { MutableRefObject } from 'react';
+
 import {
   Block,
   BlockFieldKeys,

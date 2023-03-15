@@ -16,7 +16,7 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
         fieldId,
         focusFieldId,
         value,
-        setPrevCaretPosition,
+        prevCaretPositionRef,
         caretPosition,
       } = action.payload;
 
@@ -29,9 +29,9 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
         return;
       }
 
+      prevCaretPositionRef.current = caretPosition;
       fieldElement.innerHTML = value;
       setCaretPosition({ element: focusFieldElement, position: caretPosition });
-      setPrevCaretPosition(caretPosition);
 
       break;
     }
@@ -41,7 +41,7 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
         fieldId,
         value,
         caretPosition,
-        setPrevCaretPosition,
+        prevCaretPositionRef,
         focusFieldId,
       } = action.payload;
       const fieldElement = document.getElementById(fieldId);
@@ -74,16 +74,16 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
         }
       }
 
+      prevCaretPositionRef.current = caretPosition;
       setCaretPosition({
         element: focusFieldElement,
         position: caretPosition,
       });
 
-      setPrevCaretPosition(caretPosition);
       break;
     }
     case UndoRedoTypes.FOCUS_FIELD: {
-      const { fieldId, position, setPrevCaretPosition } = action.payload;
+      const { fieldId, position, prevCaretPositionRef } = action.payload;
       const field = await waitForElement(fieldId);
       const fieldElement = document.getElementById(fieldId);
       console.log('Hola');
@@ -99,8 +99,8 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
           position === 'start' ? 0 : getElementTextContent(field).length;
       }
 
+      prevCaretPositionRef.current = caretPosition;
       setCaretPosition({ element: fieldElement, position: caretPosition });
-      setPrevCaretPosition(caretPosition);
     }
   }
 };

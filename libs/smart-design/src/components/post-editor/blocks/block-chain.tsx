@@ -20,7 +20,7 @@ export const BlockChain = React.memo(({ chainId }: { chainId: string }) => {
   const blocksDB = useBlocksDBConsumerContext();
 
   const { undo, redo } = useBlocksDBUpdaterContext();
-  const { fieldRefs, blockRefs } = useRefsContext();
+  const { fieldRefs, blockRefs, prevCaretPosition } = useRefsContext();
 
   const chain = blocksDB.chains[chainId];
   let blockIndex = -1;
@@ -110,9 +110,10 @@ export const BlockChain = React.memo(({ chainId }: { chainId: string }) => {
       </Button>
       <Button
         onClick={() => {
-          console.log(blockRefs.current);
+          // console.log(blockRefs.current);
 
-          console.log(fieldRefs.current);
+          // console.log(fieldRefs.current);
+          console.log(prevCaretPosition.current);
         }}
       >
         log blocks

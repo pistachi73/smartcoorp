@@ -1,13 +1,13 @@
 import {
-  Title,
-  Subtitle,
-  Description,
-  Primary,
   ArgsTable,
-  Stories,
+  Description,
   PRIMARY_STORY,
+  Primary,
+  Stories,
+  Subtitle,
+  Title,
 } from '@storybook/addon-docs';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -17,9 +17,9 @@ import { scale160, space4XL, spaceM } from '../../tokens';
 import { Body } from './body';
 import { fontWeights, lineHeights, sizes } from './body.styles';
 import {
-  BodyCopySize,
   BodyCopyFontWeight,
   BodyCopyLineHeight,
+  BodyCopySize,
 } from './body.types';
 
 const bodySizes: string[] = Object.keys(sizes);

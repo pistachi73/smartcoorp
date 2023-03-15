@@ -12,7 +12,7 @@ export type UndoRedoAction =
       payload: {
         fieldId: string;
         caretPosition: number;
-        setPrevCaretPosition: (position: number) => void;
+        prevCaretPositionRef: React.MutableRefObject<number>;
         value?: string;
         focusFieldId?: string;
       };
@@ -22,7 +22,7 @@ export type UndoRedoAction =
       payload: {
         fieldId: string;
         caretPosition: number;
-        setPrevCaretPosition: (position: number) => void;
+        prevCaretPositionRef: React.MutableRefObject<number>;
         value?: string[];
         focusFieldId?: string;
       };
@@ -32,7 +32,7 @@ export type UndoRedoAction =
       payload: {
         fieldId: string;
         position: number | 'start' | 'end';
-        setPrevCaretPosition: (position: number) => void;
+        prevCaretPositionRef: React.MutableRefObject<number>;
       };
     };
 
