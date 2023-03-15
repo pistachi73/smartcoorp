@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useMemo, useReducer } from 'react';
+import React, { useCallback, useMemo, useReducer } from 'react';
 
 import { useRefsContext } from '../refs-context';
 
@@ -53,9 +53,6 @@ const BlocksDBUpdaterContext = React.createContext<
       duplicateBlock: DuplicateBlock;
       undo: () => void;
       redo: () => void;
-      buildFocusFieldAction: BuildFocusFieldAction;
-      buildModifyFieldInnerHTMLAction: BuildModifyFieldInnerHTMLAction;
-      buildModifyListInnerHTMLAction: BuildModifyListInnerHTMLAction;
     }
   | undefined
 >(undefined);
@@ -71,7 +68,7 @@ export const BlocksDBProvider = ({
     canUndo: false,
   });
 
-  const { setPrevCaretPosition } = useRefsContext();
+  const { setPrevCaretPosition, prevCaretPosition } = useRefsContext();
 
   const setFieldValue: SetFieldValue = ({
     blockId,
@@ -276,50 +273,6 @@ export const BlocksDBProvider = ({
   const undo = () => dispatchBlocksDB({ type: ReducerTypes.UNDO });
   const redo = () => dispatchBlocksDB({ type: ReducerTypes.REDO });
 
-  const buildFocusFieldAction: BuildFocusFieldAction = ({
-    fieldId,
-    position,
-  }) => ({
-    type: UndoRedoTypes.FOCUS_FIELD,
-    payload: {
-      fieldId,
-      position,
-      setPrevCaretPosition,
-    },
-  });
-
-  const buildModifyFieldInnerHTMLAction: BuildModifyFieldInnerHTMLAction = ({
-    fieldId,
-    caretPosition,
-    focusFieldId,
-    value,
-  }) => ({
-    type: UndoRedoTypes.MODIFY_FIELD_INNERHTML,
-    payload: {
-      fieldId,
-      caretPosition,
-      focusFieldId,
-      value,
-      setPrevCaretPosition,
-    },
-  });
-
-  const buildModifyListInnerHTMLAction: BuildModifyListInnerHTMLAction = ({
-    caretPosition,
-    fieldId,
-    focusFieldId,
-    value,
-  }) => ({
-    type: UndoRedoTypes.MODIFY_LIST_INNERHTML,
-    payload: {
-      caretPosition,
-      fieldId,
-      focusFieldId,
-      value,
-      setPrevCaretPosition,
-    },
-  });
-
   const value = useMemo(
     () => ({
       setFieldValue,
@@ -335,9 +288,6 @@ export const BlocksDBProvider = ({
       duplicateBlock,
       undo,
       redo,
-      buildFocusFieldAction,
-      buildModifyListInnerHTMLAction,
-      buildModifyFieldInnerHTMLAction,
     }),
     []
   );
@@ -371,5 +321,54 @@ export const useBlocksDBUpdaterContext = () => {
     );
   }
 
-  return dispatchBlocksDB;
+  const { prevCaretPosition } = useRefsContext();
+
+  const buildModifyFieldInnerHTMLAction: BuildModifyFieldInnerHTMLAction =
+    useCallback(
+      ({ fieldId, caretPosition, focusFieldId, value }) => ({
+        type: UndoRedoTypes.MODIFY_FIELD_INNERHTML,
+        payload: {
+          fieldId,
+          caretPosition,
+          focusFieldId,
+          value,
+          prevCaretPositionRef: prevCaretPosition,
+        },
+      }),
+      [prevCaretPosition]
+    );
+
+  const buildFocusFieldAction: BuildFocusFieldAction = useCallback(
+    ({ fieldId, position }) => ({
+      type: UndoRedoTypes.FOCUS_FIELD,
+      payload: {
+        fieldId,
+        position,
+        prevCaretPositionRef: prevCaretPosition,
+      },
+    }),
+    [prevCaretPosition]
+  );
+
+  const buildModifyListInnerHTMLAction: BuildModifyListInnerHTMLAction =
+    useCallback(
+      ({ caretPosition, fieldId, focusFieldId, value }) => ({
+        type: UndoRedoTypes.MODIFY_LIST_INNERHTML,
+        payload: {
+          caretPosition,
+          fieldId,
+          focusFieldId,
+          value,
+          prevCaretPositionRef: prevCaretPosition,
+        },
+      }),
+      [prevCaretPosition]
+    );
+
+  return {
+    ...dispatchBlocksDB,
+    buildFocusFieldAction,
+    buildModifyListInnerHTMLAction,
+    buildModifyFieldInnerHTMLAction,
+  };
 };

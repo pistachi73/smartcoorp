@@ -1,6 +1,7 @@
 import debounce from 'lodash.debounce';
 import React, { useCallback, useMemo } from 'react';
 
+import { setCaretPosition } from '../../../../../../../apps/smart-design-e2e/src/support/helpers';
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import { useRefsContext } from '../../contexts/refs-context';
 import { TextField } from '../../fields/text-field';
@@ -131,6 +132,11 @@ export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({
       if (isTextSplit) {
         debouncedOnTextChange.cancel();
 
+        const currentCaretPosition = prevCaretPosition.current;
+        console.log(currentCaretPosition);
+
+        console.log('SPlit text field', prevCaretPosition);
+
         splitTextField({
           blockId: block.id,
           blockType: 'header',
@@ -139,10 +145,12 @@ export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({
           chainBlockIndex,
           innerHTML,
           splitedBlockRef: fieldRefs.current[blockIndex][0],
-          undo: buildModifyFieldInnerHTMLAction({
-            fieldId: `${block.id}_${fieldIndex}`,
-            caretPosition: prevCaretPosition.current,
-          }),
+          undo: {
+            ...buildModifyFieldInnerHTMLAction({
+              fieldId: `${block.id}_${fieldIndex}`,
+              caretPosition: currentCaretPosition,
+            }),
+          },
           redo: buildModifyFieldInnerHTMLAction({
             fieldId: `${block.id}_${fieldIndex}`,
             caretPosition: 0,

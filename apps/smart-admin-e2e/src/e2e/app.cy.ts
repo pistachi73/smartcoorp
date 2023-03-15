@@ -1,5 +1,4 @@
 import { getGreeting } from '../support/app.po';
-
 describe('smart-admin', () => {
   beforeEach(() => cy.visit('/'));
 

@@ -36,7 +36,7 @@ export const BlockContainer = ({
     blockRefs,
     fieldRefs,
     addBlockRef,
-    handlePrevTextSelectionOnMouseUp,
+    handlePrevTextSelectionOnFocus,
     handlePrevTextSelectionOnKeyUp,
   } = useRefsContext();
 
@@ -50,7 +50,7 @@ export const BlockContainer = ({
   }, [blockRefs, fieldRefs, blockIndex]);
 
   const handleSetTool = useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.MouseEvent | React.FocusEvent) => {
       setToolBlockIndex((currentIndex) =>
         currentIndex === -1 ? null : blockIndex
       );
@@ -58,12 +58,12 @@ export const BlockContainer = ({
     [blockIndex, setToolBlockIndex]
   );
 
-  const handleMouseUp = useCallback(
-    (e: React.MouseEvent) => {
-      handlePrevTextSelectionOnMouseUp(e);
+  const handleFocus = useCallback(
+    (e: React.MouseEvent | React.FocusEvent) => {
+      handlePrevTextSelectionOnFocus(e);
       handleSetTool(e);
     },
-    [handlePrevTextSelectionOnMouseUp, handleSetTool]
+    [handlePrevTextSelectionOnFocus, handleSetTool]
   );
 
   const handleKeyDown = useCallback(
@@ -96,7 +96,8 @@ export const BlockContainer = ({
   return (
     <StyledBlockContainer
       ref={addBlockRef(blockIndex)}
-      onMouseUp={handleMouseUp}
+      onMouseUp={handleFocus}
+      onFocus={handleFocus}
       onMouseEnter={handleSetTool}
       onKeyDown={handleKeyDown(blockIndex, chainBlockIndex, chainId)}
       onKeyUp={handleKeyUp}
