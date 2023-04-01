@@ -8,7 +8,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 
 import { Hero } from '../hero';
@@ -43,15 +43,18 @@ export default {
     },
   },
   argTypes: {},
-} as ComponentMeta<typeof ContainerComponent>;
+} as Meta<typeof ContainerComponent>;
 
-const Template: ComponentStory<typeof ContainerComponent> = (args) => (
+const Template: StoryFn<typeof ContainerComponent> = (args) => (
   <ContainerComponent {...args}>
     <div style={{ backgroundColor: 'lightblue' }}>{args.children}</div>
   </ContainerComponent>
 );
 
-export const Container = Template.bind({});
-Container.args = {
-  children: <Hero size="xlarge">Container for content</Hero>,
+export const Container = {
+  render: Template,
+
+  args: {
+    children: <Hero size="xlarge">Container for content</Hero>,
+  },
 };

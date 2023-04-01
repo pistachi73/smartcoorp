@@ -8,7 +8,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 import { IoBarChartSharp } from 'react-icons/io5';
 import styled from 'styled-components';
@@ -61,15 +61,14 @@ export default {
     sizeConfined: setPropDocumentation({ control: 'inline-radio' }),
     sizeWide: setPropDocumentation({ control: 'inline-radio' }),
   },
-} as ComponentMeta<typeof Button>;
+} as Meta<typeof Button>;
 
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-  children: 'Login',
-  variant: 'primary',
-  size: 'medium',
+export const Default = {
+  args: {
+    children: 'Login',
+    variant: 'primary',
+    size: 'medium',
+  },
 };
 
 const Container = styled.div`
@@ -79,7 +78,7 @@ const Container = styled.div`
   gap: ${spaceXL};
 `;
 
-const ReferenceTemplate: ComponentStory<typeof Button> = (args) => {
+const ReferenceTemplate: StoryFn<typeof Button> = (args) => {
   return (
     <Container>
       <Button size="medium" variant={args.variant}>
@@ -109,49 +108,60 @@ const ReferenceTemplate: ComponentStory<typeof Button> = (args) => {
   );
 };
 
-export const PrimaryVariant = ReferenceTemplate.bind({});
-export const SecondaryVariant = ReferenceTemplate.bind({});
-export const TextVariant = ReferenceTemplate.bind({});
+export const PrimaryVariant = {
+  render: ReferenceTemplate,
 
-PrimaryVariant.args = {
-  variant: 'primary',
-  icon: IoBarChartSharp,
-  iconSize: 18,
-};
-PrimaryVariant.parameters = {
-  ...noCanvas,
+  args: {
+    variant: 'primary',
+    icon: IoBarChartSharp,
+    iconSize: 18,
+  },
 
-  docs: {
-    description: {
-      story: "`Button` component **primary** variant with it's states",
+  parameters: {
+    ...noCanvas,
+
+    docs: {
+      description: {
+        story: "`Button` component **primary** variant with it's states",
+      },
     },
   },
 };
 
-SecondaryVariant.args = {
-  variant: 'secondary',
-  icon: IoBarChartSharp,
-  iconSize: 18,
-};
-SecondaryVariant.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: "`Button` component **secondary** variant with it's states",
+export const SecondaryVariant = {
+  render: ReferenceTemplate,
+
+  args: {
+    variant: 'secondary',
+    icon: IoBarChartSharp,
+    iconSize: 18,
+  },
+
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: "`Button` component **secondary** variant with it's states",
+      },
     },
   },
 };
 
-TextVariant.args = {
-  variant: 'text',
-  icon: IoBarChartSharp,
-  iconSize: 18,
-};
-TextVariant.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: "`Button` component **text** variant with it's states",
+export const TextVariant = {
+  render: ReferenceTemplate,
+
+  args: {
+    variant: 'text',
+    icon: IoBarChartSharp,
+    iconSize: 18,
+  },
+
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: "`Button` component **text** variant with it's states",
+      },
     },
   },
 };

@@ -1,5 +1,5 @@
-import { Title, Subtitle, Primary } from '@storybook/addon-docs';
-import { ComponentMeta } from '@storybook/react';
+import { Primary, Subtitle, Title } from '@storybook/addon-docs';
+import { Meta } from '@storybook/react';
 import styled from 'styled-components';
 
 import { Body } from '../../components';
@@ -21,7 +21,7 @@ export default {
       ),
     },
   },
-} as ComponentMeta<typeof DesignSystemDocumentTable>;
+} as Meta<typeof DesignSystemDocumentTable>;
 
 type Interval = { min: string; max: string };
 
@@ -83,37 +83,39 @@ const MediaQuerysPreview = ({ tokenValue }: { tokenValue: string }) => {
   );
 };
 
-export const MediaQuerys = () => {
-  const tokenKeys: string[] = Object.getOwnPropertyNames(mediaQuerysTokens);
-  const shift = tokenKeys.shift();
+export const MediaQuerys = {
+  render: () => {
+    const tokenKeys: string[] = Object.getOwnPropertyNames(mediaQuerysTokens);
+    const shift = tokenKeys.shift();
 
-  const order = [
-    'mediaTiny',
-    'mediaSmall',
-    'mediaConfined',
-    'mediaWide',
-    'mediaXWide',
-    'mediaSmallOrTiny',
-    'mediaSmallOnly',
-    'mediaConfinedOnly',
-    'mediaWideOnly',
-  ];
-  tokenKeys.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    const order = [
+      'mediaTiny',
+      'mediaSmall',
+      'mediaConfined',
+      'mediaWide',
+      'mediaXWide',
+      'mediaSmallOrTiny',
+      'mediaSmallOnly',
+      'mediaConfinedOnly',
+      'mediaWideOnly',
+    ];
+    tokenKeys.sort((a, b) => order.indexOf(a) - order.indexOf(b));
 
-  return (
-    <DesignSystemDocumentTable
-      tokens={mediaQuerysTokens}
-      preview={MediaQuerysPreview}
-      tokenKeys={tokenKeys}
-    />
-  );
-};
+    return (
+      <DesignSystemDocumentTable
+        tokens={mediaQuerysTokens}
+        preview={MediaQuerysPreview}
+        tokenKeys={tokenKeys}
+      />
+    );
+  },
 
-MediaQuerys.parameters = {
-  ...noCanvas,
-  docs: {
-    source: {
-      code: '',
+  parameters: {
+    ...noCanvas,
+    docs: {
+      source: {
+        code: '',
+      },
     },
   },
 };

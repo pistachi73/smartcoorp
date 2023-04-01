@@ -1,6 +1,6 @@
 // import { noCanvas } from '@helpers';
 import { Title, Subtitle, Primary } from '@storybook/addon-docs';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import React from 'react';
 import styled, { css } from 'styled-components';
 
@@ -21,7 +21,7 @@ export default {
       ),
     },
   },
-} as ComponentMeta<typeof DesignSystemDocumentTable>;
+} as Meta<typeof DesignSystemDocumentTable>;
 
 type PreviewProps = {
   borderRadius: string;
@@ -41,35 +41,37 @@ const SpacingPreview = ({ tokenValue }: { tokenValue: string }) => {
   return <Preview borderRadius={tokenValue} />;
 };
 
-export const BorderRadius = () => {
-  const tokenKeys: string[] = Object.getOwnPropertyNames(borderRadiusTokens);
-  const shift = tokenKeys.shift();
+export const BorderRadius = {
+  render: () => {
+    const tokenKeys: string[] = Object.getOwnPropertyNames(borderRadiusTokens);
+    const shift = tokenKeys.shift();
 
-  const order = [
-    'borderRadiusXXS',
-    'borderRadiusXS',
-    'borderRadiusS',
-    'borderRadiusM',
-    'borderRadiusL',
-    'borderRadiusXL',
-  ];
+    const order = [
+      'borderRadiusXXS',
+      'borderRadiusXS',
+      'borderRadiusS',
+      'borderRadiusM',
+      'borderRadiusL',
+      'borderRadiusXL',
+    ];
 
-  tokenKeys.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    tokenKeys.sort((a, b) => order.indexOf(a) - order.indexOf(b));
 
-  return (
-    <DesignSystemDocumentTable
-      tokens={borderRadiusTokens}
-      preview={SpacingPreview}
-      tokenKeys={tokenKeys}
-    />
-  );
-};
+    return (
+      <DesignSystemDocumentTable
+        tokens={borderRadiusTokens}
+        preview={SpacingPreview}
+        tokenKeys={tokenKeys}
+      />
+    );
+  },
 
-BorderRadius.parameters = {
-  // ...noCanvas,
-  docs: {
-    source: {
-      code: '',
+  parameters: {
+    // ...noCanvas,
+    docs: {
+      source: {
+        code: '',
+      },
     },
   },
 };

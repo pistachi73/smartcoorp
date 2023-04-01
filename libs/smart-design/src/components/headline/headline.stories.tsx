@@ -7,7 +7,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -47,20 +47,17 @@ export default {
     sizeConfined: setPropDocumentation({ control: 'inline-radio' }),
     sizeWide: setPropDocumentation({ control: 'inline-radio' }),
   },
-} as ComponentMeta<typeof Headline>;
+} as Meta<typeof Headline>;
 
-const Template: ComponentStory<typeof Headline> = (args) => (
-  <Headline {...args} />
-);
+export const Default = {
+  args: {
+    children: 'hello',
+    as: 'h2',
+  },
 
-export const Default = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-Default.args = {
-  children: 'hello',
-  as: 'h2',
-};
-Default.parameters = {
-  ...noCanvas,
+  parameters: {
+    ...noCanvas,
+  },
 };
 
 const PropContainer = styled.div`
@@ -73,41 +70,43 @@ const TypeContainer = styled.div`
   width: ${scale160};
 `;
 
-export const Sizes = () => {
-  const sizePx: any = {
-    small: '14px',
-    medium: '16px',
-    large: '18px',
-    xlarge: '20px',
-    xxlarge: '24px',
-    xxxlarge: '32px',
-  };
+export const Sizes = {
+  render: () => {
+    const sizePx: any = {
+      small: '14px',
+      medium: '16px',
+      large: '18px',
+      xlarge: '20px',
+      xxlarge: '24px',
+      xxxlarge: '32px',
+    };
 
-  const headlineSizes = Object.keys(sizes);
+    const headlineSizes = Object.keys(sizes);
 
-  return (
-    <>
-      {headlineSizes.map((key) => (
-        <PropContainer>
-          <TypeContainer>
+    return (
+      <>
+        {headlineSizes.map((key) => (
+          <PropContainer>
+            <TypeContainer>
+              <Headline size={key as HeadlineSize} noMargin>
+                {sizePx[key]}
+              </Headline>
+            </TypeContainer>
             <Headline size={key as HeadlineSize} noMargin>
-              {sizePx[key]}
+              This is a Smartcookie Headline
             </Headline>
-          </TypeContainer>
-          <Headline size={key as HeadlineSize} noMargin>
-            This is a Smartcookie Headline
-          </Headline>
-        </PropContainer>
-      ))}
-    </>
-  );
-};
+          </PropContainer>
+        ))}
+      </>
+    );
+  },
 
-Sizes.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: 'Sizes for `Headline` component',
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'Sizes for `Headline` component',
+      },
     },
   },
 };

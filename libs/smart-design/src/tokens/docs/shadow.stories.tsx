@@ -1,5 +1,5 @@
 import { Primary, Subtitle, Title } from '@storybook/addon-docs';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import React from 'react';
 import styled, { css } from 'styled-components';
 
@@ -21,7 +21,7 @@ export default {
       ),
     },
   },
-} as ComponentMeta<typeof DesignSystemDocumentTable>;
+} as Meta<typeof DesignSystemDocumentTable>;
 
 type PreviewProps = {
   shadow: string;
@@ -57,36 +57,38 @@ const ShadowPreview = ({ tokenValue }: { tokenValue: string }) => {
   );
 };
 
-export const Shadow = () => {
-  const tokenKeys: string[] = Object.getOwnPropertyNames(shadowTokens);
-  const shift = tokenKeys.shift();
+export const Shadow = {
+  render: () => {
+    const tokenKeys: string[] = Object.getOwnPropertyNames(shadowTokens);
+    const shift = tokenKeys.shift();
 
-  const order = [
-    'dropShadowS',
-    'dropShadowM',
-    'dropShadowL',
-    'dropShadowXL',
-    'dropShadowDarkS',
-    'dropShadowDarkM',
-    'dropShadowDarkL',
-    'dropShadowDarkXL',
-  ];
-  tokenKeys.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    const order = [
+      'dropShadowS',
+      'dropShadowM',
+      'dropShadowL',
+      'dropShadowXL',
+      'dropShadowDarkS',
+      'dropShadowDarkM',
+      'dropShadowDarkL',
+      'dropShadowDarkXL',
+    ];
+    tokenKeys.sort((a, b) => order.indexOf(a) - order.indexOf(b));
 
-  return (
-    <DesignSystemDocumentTable
-      tokens={shadowTokens}
-      preview={ShadowPreview}
-      tokenKeys={tokenKeys}
-    />
-  );
-};
+    return (
+      <DesignSystemDocumentTable
+        tokens={shadowTokens}
+        preview={ShadowPreview}
+        tokenKeys={tokenKeys}
+      />
+    );
+  },
 
-Shadow.parameters = {
-  ...noCanvas,
-  docs: {
-    source: {
-      code: '',
+  parameters: {
+    ...noCanvas,
+    docs: {
+      source: {
+        code: '',
+      },
     },
   },
 };

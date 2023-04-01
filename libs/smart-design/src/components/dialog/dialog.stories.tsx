@@ -8,7 +8,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import React, { useState } from 'react';
 
 import { noCanvas } from '../../helpers';
@@ -57,12 +57,12 @@ export default {
     onConfirm: { type: 'function' },
     onReject: { type: 'function' },
   },
-} as ComponentMeta<typeof DialogComponent>;
+} as Meta<typeof DialogComponent>;
 
 function timeout(delay: number) {
   return new Promise((res) => setTimeout(res, delay));
 }
-const Template: ComponentStory<typeof DialogComponent> = (args) => {
+const Template: StoryFn<typeof DialogComponent> = (args) => {
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -102,16 +102,18 @@ const Template: ComponentStory<typeof DialogComponent> = (args) => {
   );
 };
 
-export const Dialog = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-Dialog.args = {
-  rootId: 'docs-root',
-  confirmLabel: 'Confirm',
-  rejectLabel: 'Cancel',
-  size: 'small',
-  closeIcon: true,
-};
+export const Dialog = {
+  render: Template,
 
-Dialog.parameters = {
-  ...noCanvas,
+  args: {
+    rootId: 'docs-root',
+    confirmLabel: 'Confirm',
+    rejectLabel: 'Cancel',
+    size: 'small',
+    closeIcon: true,
+  },
+
+  parameters: {
+    ...noCanvas,
+  },
 };

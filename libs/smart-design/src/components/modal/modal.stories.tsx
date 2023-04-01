@@ -8,7 +8,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -66,7 +66,7 @@ export default {
     as: { table: { disable: true } },
     forwardedAs: { table: { disable: true } },
   },
-} as ComponentMeta<typeof Modal>;
+} as Meta<typeof Modal>;
 
 const CustomButton = styled(Button)`
   width: 100%;
@@ -78,7 +78,7 @@ const CustomButton = styled(Button)`
   }
 `;
 
-const Template: ComponentStory<typeof Modal> = (args) => {
+const Template: StoryFn<typeof Modal> = (args) => {
   const [show, setShow] = useState(false);
 
   return (
@@ -112,9 +112,11 @@ const Template: ComponentStory<typeof Modal> = (args) => {
   );
 };
 
-export const Default = Template.bind({});
-Default.args = {};
+export const Default = {
+  render: Template,
+  args: {},
 
-Default.parameters = {
-  // ...noCanvas,
+  parameters: {
+    // ...noCanvas,
+  },
 };

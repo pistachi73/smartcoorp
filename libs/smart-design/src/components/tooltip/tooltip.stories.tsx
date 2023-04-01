@@ -8,7 +8,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 
 import { Body } from '../body';
@@ -51,9 +51,9 @@ export default {
     as: { table: { disable: true } },
     forwardedAs: { table: { disable: true } },
   },
-} as ComponentMeta<typeof TooltipComponent>;
+} as Meta<typeof TooltipComponent>;
 
-const Template: ComponentStory<typeof TooltipComponent> = (args) => {
+const Template: StoryFn<typeof TooltipComponent> = (args) => {
   const [open, setOpen] = useState(false);
   return (
     <TooltipComponent
@@ -78,9 +78,12 @@ const Template: ComponentStory<typeof TooltipComponent> = (args) => {
   );
 };
 
-export const Tooltip = Template.bind({});
-Tooltip.args = {
-  align: 'center',
-  side: 'right',
-  defaultOpen: false,
+export const Tooltip = {
+  render: Template,
+
+  args: {
+    align: 'center',
+    side: 'right',
+    defaultOpen: false,
+  },
 };

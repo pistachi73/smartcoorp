@@ -7,7 +7,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import React, { useState } from 'react';
 
 import { Button } from '../button';
@@ -36,9 +36,9 @@ export default {
     },
   },
   argTypes: {},
-} as ComponentMeta<typeof ClickOutsideComponent>;
+} as Meta<typeof ClickOutsideComponent>;
 
-const Template: ComponentStory<typeof ClickOutsideComponent> = (args) => {
+const Template: StoryFn<typeof ClickOutsideComponent> = (args) => {
   const [buttonContent, setButtonContent] = useState<string>(
     'Try clicking outside'
   );
@@ -54,4 +54,6 @@ const Template: ComponentStory<typeof ClickOutsideComponent> = (args) => {
   );
 };
 
-export const ClickOutside = Template.bind({});
+export const ClickOutside = {
+  render: Template,
+};
