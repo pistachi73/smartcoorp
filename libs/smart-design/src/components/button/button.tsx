@@ -35,7 +35,6 @@ export const Button: FC<ButtonProps> = ({
     $sizeWide: sizeWide,
     $variant: variant,
     'aria-label': loading ? 'loading' : null,
-    'data-xds': 'Button',
     disabled: disabled || loading,
     $disabled: disabled || loading,
 
@@ -55,7 +54,9 @@ export const Button: FC<ButtonProps> = ({
           <Icon size={iconSize} />
         </Styled.IconContainer>
       )}
-      <Styled.Text $loading={loading}>{children}</Styled.Text>
+      <Styled.Text $loading={loading} data-cy="button-text">
+        {children}
+      </Styled.Text>
       {Icon && iconAfter && (
         <Styled.IconContainer $loading={loading} $iconAfter>
           <Icon size={iconSize} />

@@ -1,22 +1,27 @@
-import { Styled } from './modal.styles';
+import * as DialogPrimitives from '@radix-ui/react-dialog';
 
-export type ModalProps = React.ComponentProps<typeof Styled.ModalContainer> & {
+export type ModalControl =
+  // Controlled Modal
+  | {
+      /** The controlled open state of the dialog. Must be used in conjunction with **onOpenChange**. */
+      open: boolean;
+      /** Event handler called when the open state of the dialog changes. */
+      onOpenChange: (open: boolean) => void;
+    }
+  // Uncontrolled Modal
+  | { open?: never; onOpenChange?: never };
+
+export type ModalRootProps = ModalControl & { children: React.ReactNode };
+
+export type ModalContentProps = {
   /** Content of the modal */
   children: React.ReactNode;
-  /** Add custom css to modal */
-  className?: string;
-  /** Shows or hides the modal */
-  show: boolean;
+  /** An accessible title to be announced when the dialog is opened.  */
+  title: string;
+  /** An accessible description to be announced when the dialog is opened. */
+  description: string;
   /** Show close icon */
   closeIcon?: boolean;
-  /** Modal ARIA description */
-  modalDescription: string;
-  /** Root id of the portal where the modal is going to be rendered*/
-  rootId: string;
-  /** Callback executed when modal is closed bia closeIcon */
-  onClose?: React.MouseEventHandler<
-    HTMLButtonElement | HTMLDivElement | undefined
-  >;
-  /** Callback executed when modal background is clicked */
-  onBackgroundClick?: React.MouseEventHandler<HTMLDivElement | undefined>;
+  /**Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling **event.preventDefault**. */
+  onInteractionOutside?: DialogPrimitives.DialogContentProps['onInteractOutside'];
 };

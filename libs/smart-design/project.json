@@ -47,6 +47,13 @@
           "quiet": true
         }
       }
+    },
+    "component-test": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "libs/smart-design/cypress.config.ts",
+        "testingType": "component"
+      }
     }
   }
 }

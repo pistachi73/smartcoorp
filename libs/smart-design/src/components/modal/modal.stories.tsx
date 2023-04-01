@@ -9,21 +9,21 @@ import {
   Title,
 } from '@storybook/addon-docs';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
-import { noCanvas } from '../../helpers';
 import { mediaConfined, spaceS } from '../../tokens';
 import { Body } from '../body';
 import { Button } from '../button';
 import { Col, Grid, Row } from '../grid-layout';
 import { Headline } from '../headline/headline';
 
-import { Modal as ModalComponent } from './modal';
+import { Modal, ModalContent, ModalTrigger } from './modal';
 
 export default {
   title: 'Layout/Modal',
-  component: ModalComponent,
+  component: Modal,
+  subcomponents: { ModalContent, ModalTrigger },
   parameters: {
     docs: {
       page: () => (
@@ -39,8 +39,18 @@ export default {
           </Description>
           <Description>##Usage</Description>
           <Source
-            language="js"
-            code={`import { Modal } from @smart-design/components`}
+            language="jsx"
+            code={`import { Modal, ModalContent, ModalTrigger } from @smart-design/components
+
+                  <Modal>
+                    <ModalTrigger>
+                      <Button>Open Modal</Button>
+                    </ModalTrigger>
+                    <ModalContent title="Content title" description="Content description">
+                      <h1>Content</h1>
+                    </ModalContent>
+                  </Modal>`}
+            format={true}
           />
           <Description>###Example</Description>
           <Primary />
@@ -55,10 +65,8 @@ export default {
     theme: { table: { disable: true } },
     as: { table: { disable: true } },
     forwardedAs: { table: { disable: true } },
-    onClose: { type: 'function' },
-    onBackgroundClick: { type: 'function' },
   },
-} as ComponentMeta<typeof ModalComponent>;
+} as ComponentMeta<typeof Modal>;
 
 const CustomButton = styled(Button)`
   width: 100%;
@@ -70,19 +78,17 @@ const CustomButton = styled(Button)`
   }
 `;
 
-const Template: ComponentStory<typeof ModalComponent> = (args) => {
+const Template: ComponentStory<typeof Modal> = (args) => {
   const [show, setShow] = useState(false);
 
-  const closeModal = () => setShow(false);
-
   return (
-    <>
-      <Button onClick={() => setShow(true)}>Open Modal</Button>
-      <ModalComponent
-        {...args}
-        show={show}
-        onClose={closeModal}
-        onBackgroundClick={closeModal}
+    <Modal open={show} onOpenChange={setShow}>
+      <ModalTrigger>
+        <Button>Open Modal</Button>
+      </ModalTrigger>
+      <ModalContent
+        title="Example Modal"
+        description="Example modal content description"
       >
         <Headline size="xlarge">Modal header</Headline>
         <Body>
@@ -101,16 +107,14 @@ const Template: ComponentStory<typeof ModalComponent> = (args) => {
             </Col>
           </Row>
         </Grid>
-      </ModalComponent>
-    </>
+      </ModalContent>
+    </Modal>
   );
 };
 
-export const Modal = Template.bind({});
-Modal.args = {
-  rootId: 'docs-root',
-};
+export const Default = Template.bind({});
+Default.args = {};
 
-Modal.parameters = {
-  ...noCanvas,
+Default.parameters = {
+  // ...noCanvas,
 };

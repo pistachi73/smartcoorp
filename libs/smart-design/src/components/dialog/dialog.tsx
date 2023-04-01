@@ -1,3 +1,4 @@
+import * as DialogP from '@radix-ui/react-dialog';
 import { FC } from 'react';
 
 import { Styled } from './dialog.styles';
@@ -5,16 +6,8 @@ import { DialogProps } from './dialog.types';
 
 export const Dialog: FC<DialogProps> = ({
   children,
-  className,
-  show,
-  onClose,
-  onBackgroundClick,
-  rootId,
-  modalDescription,
   loading,
   disabled,
-  closeIcon,
-  onConfirm,
   onReject,
   confirmLabel,
   rejectLabel,
@@ -23,15 +16,7 @@ export const Dialog: FC<DialogProps> = ({
   sizeWide,
 }) => {
   return (
-    <Styled.DialogContainer
-      className={className}
-      rootId={rootId}
-      modalDescription={modalDescription}
-      show={show}
-      onClose={!loading ? onClose : undefined}
-      onBackgroundClick={!loading ? onBackgroundClick : undefined}
-      closeIcon={closeIcon}
-    >
+    <Styled.DialogContainer>
       {children}
       <Styled.DialogActionsContainer $rejectOption={Boolean(rejectLabel)}>
         {rejectLabel && (
@@ -50,7 +35,6 @@ export const Dialog: FC<DialogProps> = ({
           loading={loading}
           disabled={disabled || loading}
           variant="primary"
-          onClick={onConfirm}
           size={size}
           sizeConfined={sizeConfined}
           sizeWide={sizeWide}

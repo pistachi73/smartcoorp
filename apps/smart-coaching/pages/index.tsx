@@ -10,7 +10,7 @@ export function Index() {
 
   return (
     <>
-      <p>{hello.data ? hello.data.greeting : 'Loading tRPC query...'}</p>
+      <p>This is a test</p>
     </>
   );
 }
