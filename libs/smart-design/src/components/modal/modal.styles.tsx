@@ -1,3 +1,4 @@
+import * as Dialog from '@radix-ui/react-dialog';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
@@ -17,24 +18,13 @@ import {
   spaceXS,
 } from '../../tokens';
 
-const ModalBackground = styled(motion.div)`
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 9999;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  overflow: auto;
-
+const ModalOverlay = styled(motion(Dialog.Overlay))`
   background-color: ${({ theme }) => theme.modal.backgroundColor};
+  position: fixed;
+  inset: 0;
 `;
 
-export const ModalContainer = styled(motion.div)`
+const ModalContent = styled(motion(Dialog.Content))`
   padding: ${spaceXL};
   min-height: ${scale320};
   max-height: 60vh;
@@ -42,11 +32,14 @@ export const ModalContainer = styled(motion.div)`
 
   max-width: ${scale420};
 
-  position: relative;
-
   background-color: ${({ theme }) => theme.backgroundScreen};
 
   border-radius: ${borderRadiusS};
+  box-shadow: ${({ theme }) => theme.shadow.shadowS};
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
 
   @media ${mediaSmall} {
     min-width: 450px;
@@ -59,7 +52,7 @@ export const ModalContainer = styled(motion.div)`
   }
 `;
 
-export const ModalCloseIcon = styled.button`
+export const ModalCloseIcon = styled(Dialog.Close)`
   padding: ${spaceXS};
   color: ${({ theme }) => theme.color.neutral};
 
@@ -79,7 +72,7 @@ export const ModalCloseIcon = styled.button`
 `;
 
 export const Styled = {
-  ModalBackground,
-  ModalContainer,
   ModalCloseIcon,
+  ModalOverlay,
+  ModalContent,
 };

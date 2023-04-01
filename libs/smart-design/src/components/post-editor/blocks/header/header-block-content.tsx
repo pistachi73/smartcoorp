@@ -1,7 +1,6 @@
 import debounce from 'lodash.debounce';
 import React, { useCallback, useMemo } from 'react';
 
-import { setCaretPosition } from '../../../../../../../apps/smart-design-e2e/src/support/helpers';
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import { useRefsContext } from '../../contexts/refs-context';
 import { TextField } from '../../fields/text-field';

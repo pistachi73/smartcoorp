@@ -3,6 +3,7 @@ import { ThemeProvider as SCThemeProvider } from 'styled-components';
 
 import { darkTheme, lightTheme } from './theme';
 
+export type Theme = 'light' | 'dark';
 export type ThemeProps = {
   /** Theme Provider content */
   children?: React.ReactNode;
@@ -11,7 +12,7 @@ export type ThemeProps = {
   /** DarkTheme from spicific project */
   darkTheme?: any;
   /** Theme */
-  theme: 'light' | 'dark';
+  theme: Theme;
 };
 
 export const ThemeProvider: React.FC<ThemeProps> = ({
