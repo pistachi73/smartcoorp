@@ -8,7 +8,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 
 import { MenuDivider } from './components';
@@ -46,32 +46,34 @@ export default {
   argTypes: {
     children: { type: 'symbol' },
   },
-} as ComponentMeta<typeof MenuComponent>;
+} as Meta<typeof MenuComponent>;
 
-const Template: ComponentStory<typeof MenuComponent> = (args, context) => {
+const Template: StoryFn<typeof MenuComponent> = (args, context) => {
   const { storyId } = context;
   const { ...menuProps } = useMenu({ id: `story${storyId}_${args.id}` });
   return <MenuComponent {...args} {...menuProps} />;
 };
 
-export const Menu = Template.bind({});
+export const Menu = {
+  render: Template,
 
-Menu.args = {
-  children: (
-    <>
-      <MenuItem to="test">Categoria 1</MenuItem>
-      <MenuItem to="test">Teachers</MenuItem>
-      <MenuDivider></MenuDivider>
-      <MenuItem to="test" disabled>
-        Disabled link
-      </MenuItem>
-      <MenuItem to="test">Online teaching</MenuItem>
-      <MenuItem disabled to="test">
-        Online teaching
-      </MenuItem>
-      <MenuItem to="test">Online teaching</MenuItem>
-    </>
-  ),
-  triggerText: 'Menu popover',
-  id: 'menu',
+  args: {
+    children: (
+      <>
+        <MenuItem to="test">Categoria 1</MenuItem>
+        <MenuItem to="test">Teachers</MenuItem>
+        <MenuDivider></MenuDivider>
+        <MenuItem to="test" disabled>
+          Disabled link
+        </MenuItem>
+        <MenuItem to="test">Online teaching</MenuItem>
+        <MenuItem disabled to="test">
+          Online teaching
+        </MenuItem>
+        <MenuItem to="test">Online teaching</MenuItem>
+      </>
+    ),
+    triggerText: 'Menu popover',
+    id: 'menu',
+  },
 };

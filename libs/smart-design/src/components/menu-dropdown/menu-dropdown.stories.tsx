@@ -7,7 +7,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -49,11 +49,6 @@ export default {
     sizeConfined: setPropDocumentation({ control: 'inline-radio' }),
     sizeWide: setPropDocumentation({ control: 'inline-radio' }),
   },
-} as ComponentMeta<typeof MenuDropdown>;
+} as Meta<typeof MenuDropdown>;
 
-const Template: ComponentStory<typeof MenuDropdown> = (args) => (
-  <MenuDropdown {...args} />
-);
-
-export const Default = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+export const Default = {};

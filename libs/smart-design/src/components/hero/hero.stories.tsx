@@ -7,7 +7,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -51,21 +51,19 @@ export default {
     sizeConfined: setPropDocumentation({ control: 'inline-radio' }),
     sizeWide: setPropDocumentation({ control: 'inline-radio' }),
   },
-} as ComponentMeta<typeof Hero>;
+} as Meta<typeof Hero>;
 
-const Template: ComponentStory<typeof Hero> = (args) => <Hero {...args} />;
+export const Default = {
+  args: {
+    children: 'This is a hero',
+    size: 'medium',
+    fontWeight: 'regular',
+  },
 
-export const Default = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-Default.args = {
-  children: 'This is a hero',
-  size: 'medium',
-  fontWeight: 'regular',
-};
-
-Default.parameters = {
-  ...noCanvas,
-  controls: { hideNoControlsWarning: true },
+  parameters: {
+    ...noCanvas,
+    controls: { hideNoControlsWarning: true },
+  },
 };
 
 const PropContainer = styled.div`
@@ -78,74 +76,78 @@ const TypeContainer = styled.div`
   width: ${scale300};
 `;
 
-export const Sizes = () => {
-  const sizePx: any = {
-    small: '32px',
-    medium: '48px',
-    large: '60px',
-    xlarge: '92px',
-  };
+export const Sizes = {
+  render: () => {
+    const sizePx: any = {
+      small: '32px',
+      medium: '48px',
+      large: '60px',
+      xlarge: '92px',
+    };
 
-  const heroSizes = Object.keys(sizes);
+    const heroSizes = Object.keys(sizes);
 
-  return (
-    <>
-      {heroSizes.map((key) => (
-        <PropContainer key={key}>
-          <TypeContainer>
+    return (
+      <>
+        {heroSizes.map((key) => (
+          <PropContainer key={key}>
+            <TypeContainer>
+              <Hero size={key as HeroSize} noMargin>
+                {sizePx[key]}
+              </Hero>
+            </TypeContainer>
             <Hero size={key as HeroSize} noMargin>
-              {sizePx[key]}
+              THIS IS A HERO
             </Hero>
-          </TypeContainer>
-          <Hero size={key as HeroSize} noMargin>
-            THIS IS A HERO
-          </Hero>
-        </PropContainer>
-      ))}
-    </>
-  );
-};
+          </PropContainer>
+        ))}
+      </>
+    );
+  },
 
-Sizes.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: 'Posible sizes for `HERO` component',
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'Posible sizes for `HERO` component',
+      },
     },
   },
 };
 
-export const FontWeights = () => {
-  const sizePx: any = {
-    regular: 400,
-    bold: 600,
-  };
+export const FontWeights = {
+  render: () => {
+    const sizePx: any = {
+      regular: 400,
+      bold: 600,
+    };
 
-  const heroFontWeights = Object.keys(fontWeights);
+    const heroFontWeights = Object.keys(fontWeights);
 
-  return (
-    <>
-      {heroFontWeights.map((key) => (
-        <PropContainer key={key}>
-          <TypeContainer>
+    return (
+      <>
+        {heroFontWeights.map((key) => (
+          <PropContainer key={key}>
+            <TypeContainer>
+              <Hero noMargin fontWeight={key as HeroFontWeight}>
+                {sizePx[key]}
+              </Hero>
+            </TypeContainer>
             <Hero noMargin fontWeight={key as HeroFontWeight}>
-              {sizePx[key]}
+              HERO FONTWEIGHTS
             </Hero>
-          </TypeContainer>
-          <Hero noMargin fontWeight={key as HeroFontWeight}>
-            HERO FONTWEIGHTS
-          </Hero>
-        </PropContainer>
-      ))}
-    </>
-  );
-};
+          </PropContainer>
+        ))}
+      </>
+    );
+  },
 
-FontWeights.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: 'Font weights for `HERO` component',
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'Font weights for `HERO` component',
+      },
     },
   },
 };

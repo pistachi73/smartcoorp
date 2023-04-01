@@ -8,7 +8,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Button } from '../../../components';
@@ -46,12 +46,9 @@ export default {
     },
   },
   argTypes: {},
-} as ComponentMeta<typeof MultipleSelectComponent>;
+} as Meta<typeof MultipleSelectComponent>;
 
-const Template: ComponentStory<typeof MultipleSelectComponent> = (
-  args,
-  context
-) => {
+const Template: StoryFn<typeof MultipleSelectComponent> = (args, context) => {
   const { control, handleSubmit } = useForm();
 
   const { storyId } = context;
@@ -100,51 +97,54 @@ const Template: ComponentStory<typeof MultipleSelectComponent> = (
   );
 };
 
-export const MultipleSelect = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-MultipleSelect.args = {
-  label: 'Multiple Select',
-  defaultValue: ['mentor', 'teaching'],
-  id: 'multiple-slect',
-};
-MultipleSelect.parameters = {
-  docs: {
-    source: {
-      code: `const { control } = useForm();
+export const MultipleSelect = {
+  render: Template,
 
-const options = [
-    { value: "mentor", label: "Mentoring" },
-    { value: "teaching", label: "Teaching" },
-    { value: "multiple", label: "Multiple" },
-    { value: "tutor", label: "Tutoring" },
-    { value: "1to1", label: "1 to 1" },
-    { value: "mixed", label: "Mixed" },
-    { value: "1to3", label: "1 to 3" },
-];
+  args: {
+    label: 'Multiple Select',
+    defaultValue: ['mentor', 'teaching'],
+    id: 'multiple-slect',
+  },
 
-return (
-    <Controller
-      control={control}
-      name='test'
-      render={({ field: { onChange, ref, ...field }, fieldState: { error } }) => (
-        <MultipleSelect
-          innerRef={ref}
-          options={options}
-          onChange={onChange}
-          error={Boolean(error)}
-          errorMessage={error?.message}
-          {...field}
-          {...args} /** Args of the Multiple Select */
-        />
-      )}
-      rules={{ required: "This field is required" }}
-    ></Controller>
-);`,
+  parameters: {
+    docs: {
+      source: {
+        code: `const { control } = useForm();
+
+  const options = [
+      { value: "mentor", label: "Mentoring" },
+      { value: "teaching", label: "Teaching" },
+      { value: "multiple", label: "Multiple" },
+      { value: "tutor", label: "Tutoring" },
+      { value: "1to1", label: "1 to 1" },
+      { value: "mixed", label: "Mixed" },
+      { value: "1to3", label: "1 to 3" },
+  ];
+
+  return (
+      <Controller
+        control={control}
+        name='test'
+        render={({ field: { onChange, ref, ...field }, fieldState: { error } }) => (
+          <MultipleSelect
+            innerRef={ref}
+            options={options}
+            onChange={onChange}
+            error={Boolean(error)}
+            errorMessage={error?.message}
+            {...field}
+            {...args} /** Args of the Multiple Select */
+          />
+        )}
+        rules={{ required: "This field is required" }}
+      ></Controller>
+  );`,
+      },
     },
   },
 };
 
-const TemplateTwo: ComponentStory<typeof MultipleSelectComponent> = (
+const TemplateTwo: StoryFn<typeof MultipleSelectComponent> = (
   args,
   context
 ) => {
@@ -170,68 +170,80 @@ const TemplateTwo: ComponentStory<typeof MultipleSelectComponent> = (
   );
 };
 
-export const MultipleSelectWithoutLabel = TemplateTwo.bind({});
+export const MultipleSelectWithoutLabel = {
+  render: TemplateTwo,
 
-MultipleSelectWithoutLabel.args = {
-  labelDescription: 'Username',
-  id: 'multiple-select-without-label',
-};
-MultipleSelectWithoutLabel.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: '`MultipleSelect` without label',
+  args: {
+    labelDescription: 'Username',
+    id: 'multiple-select-without-label',
+  },
+
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: '`MultipleSelect` without label',
+      },
     },
   },
 };
 
-export const DisabledMultipleSelect = TemplateTwo.bind({});
+export const DisabledMultipleSelect = {
+  render: TemplateTwo,
 
-DisabledMultipleSelect.args = {
-  label: 'Disabled multiple slect',
-  disabled: true,
-  id: 'disabled-multiple-select-without-values',
-};
-DisabledMultipleSelect.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: 'Disabled `MultipleSelect` component with no values',
+  args: {
+    label: 'Disabled multiple slect',
+    disabled: true,
+    id: 'disabled-multiple-select-without-values',
+  },
+
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'Disabled `MultipleSelect` component with no values',
+      },
     },
   },
 };
 
-export const DisabledMultipleSelectWithValues = TemplateTwo.bind({});
+export const DisabledMultipleSelectWithValues = {
+  render: TemplateTwo,
 
-DisabledMultipleSelectWithValues.args = {
-  label: 'Disabled multiple slect',
-  disabled: true,
-  id: 'disabled-multiple-select-with-values',
+  args: {
+    label: 'Disabled multiple slect',
+    disabled: true,
+    id: 'disabled-multiple-select-with-values',
 
-  defaultValue: ['mentor', 'teaching'],
-};
-DisabledMultipleSelectWithValues.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: 'Disabled `MultipleSelect` component with values',
+    defaultValue: ['mentor', 'teaching'],
+  },
+
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'Disabled `MultipleSelect` component with values',
+      },
     },
   },
 };
 
-export const ErrorMultipleSelect = TemplateTwo.bind({});
+export const ErrorMultipleSelect = {
+  render: TemplateTwo,
 
-ErrorMultipleSelect.args = {
-  label: 'Error multiple select',
-  error: true,
-  errorMessage: 'This field is required',
-  id: 'error-multiple-select',
-};
-ErrorMultipleSelect.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: '`MultipleSelect` component with `error` and `errorMessage`',
+  args: {
+    label: 'Error multiple select',
+    error: true,
+    errorMessage: 'This field is required',
+    id: 'error-multiple-select',
+  },
+
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: '`MultipleSelect` component with `error` and `errorMessage`',
+      },
     },
   },
 };

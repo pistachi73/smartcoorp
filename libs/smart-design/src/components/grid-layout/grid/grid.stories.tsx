@@ -8,7 +8,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -54,7 +54,7 @@ export default {
     forwardedAs: { table: { disable: true } },
     children: { table: { disabled: true } },
   },
-} as ComponentMeta<typeof Grid>;
+} as Meta<typeof Grid>;
 
 const StyledBox = styled.div`
   display: flex;
@@ -86,7 +86,7 @@ const Box: React.FC<{ offset?: ColOffset; size: ColSizes }> = ({
   );
 };
 
-const Template: ComponentStory<typeof Grid> = (args) => {
+const Template: StoryFn<typeof Grid> = (args) => {
   return (
     <Grid {...args}>
       <Row>
@@ -114,4 +114,6 @@ const Template: ComponentStory<typeof Grid> = (args) => {
   );
 };
 
-export const GridTemplate = Template.bind({});
+export const GridTemplate = {
+  render: Template,
+};

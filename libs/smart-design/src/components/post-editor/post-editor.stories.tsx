@@ -8,7 +8,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 
 import { noDocs } from '../../helpers';
 
@@ -43,146 +43,157 @@ export default {
     },
   },
   argTypes: {},
-} as ComponentMeta<typeof PostEditorComponent>;
+} as Meta<typeof PostEditorComponent>;
 
-const Template: ComponentStory<typeof PostEditorComponent> = (args) => {
+const Template: StoryFn<typeof PostEditorComponent> = (args) => {
   return <PostEditorComponent {...args} />;
 };
 
-export const PostEditor = Template.bind({});
+export const PostEditor = {
+  render: Template,
 
-PostEditor.args = {
-  setBlocksDB: () => {},
-  getMetaData: () => {},
-  blocksDB: {
-    blocks: {
-      '0': {
-        id: '0',
-        chainId: 'main',
-        type: 'header',
-        data: {
-          level: 3,
-          text: 'Header with Index 0',
+  args: {
+    setBlocksDB: () => {},
+    getMetaData: () => {},
+    blocksDB: {
+      blocks: {
+        '0': {
+          id: '0',
+          chainId: 'main',
+          type: 'header',
+          data: {
+            level: 3,
+            text: 'Header with Index 0',
+          },
         },
-      },
 
-      '2': {
-        id: '2',
-        chainId: 'twocolumn-chain1',
-        type: 'paragraph',
-        data: {
-          text: 'Paragrapoh with Index 2',
+        '2': {
+          id: '2',
+          chainId: 'twocolumn-chain1',
+          type: 'paragraph',
+          data: {
+            text: 'Paragrapoh with Index 2',
+          },
         },
-      },
 
-      '3': {
-        id: '3',
-        chainId: 'anothertwocolumn-chain3',
-        type: 'list',
-        data: {
-          style: 'unordered',
-          items: ['Unordered list Index 3'],
+        '3': {
+          id: '3',
+          chainId: 'anothertwocolumn-chain3',
+          type: 'list',
+          data: {
+            style: 'unordered',
+            items: ['Unordered list Index 3'],
+          },
         },
-      },
-      '4': {
-        id: '4',
-        chainId: 'anothertwocolumn-chain4',
-        type: 'list',
-        data: {
-          style: 'ordered',
-          items: ['Ordered list Index 4'],
+        '4': {
+          id: '4',
+          chainId: 'anothertwocolumn-chain4',
+          type: 'list',
+          data: {
+            style: 'ordered',
+            items: ['Ordered list Index 4'],
+          },
         },
-      },
-      '5': {
-        id: '5',
-        chainId: 'twocolumn-chain2',
-        type: 'link',
-        data: {},
-      },
-      '6': {
-        id: '6',
-        chainId: 'twocolumn-chain2',
-        type: 'image',
-        data: {},
-      },
-      '7': {
-        id: '7',
-        chainId: 'main',
-        type: 'paragraph',
-        data: {
-          text: 'Paragraph with id 7',
+        '5': {
+          id: '5',
+          chainId: 'twocolumn-chain2',
+          type: 'link',
+          data: {},
         },
-      },
-      '8': {
-        id: '8',
-        chainId: 'main',
-        type: 'paragraph',
-        data: {
-          text: 'Paragraph with id 8',
+        '6': {
+          id: '6',
+          chainId: 'twocolumn-chain2',
+          type: 'image',
+          data: {},
         },
-      },
-      '10': {
-        id: '10',
-        chainId: 'twocolumn-chain2',
-        type: 'paragraph',
-        data: {
-          text: 'Paragraph with id 10',
+        '7': {
+          id: '7',
+          chainId: 'main',
+          type: 'paragraph',
+          data: {
+            text: 'Paragraph with id 7',
+          },
         },
-      },
-      '11': {
-        id: '11',
-        chainId: 'main',
-        type: 'paragraph',
-        data: {
-          text: 'Paragraph with id 11',
+        '8': {
+          id: '8',
+          chainId: 'main',
+          type: 'paragraph',
+          data: {
+            text: 'Paragraph with id 8',
+          },
         },
-      },
-      '15': {
-        id: '15',
-        chainId: 'main',
-        type: 'paragraph',
-        data: {
-          text: 'Paragraph with id 15',
+        '10': {
+          id: '10',
+          chainId: 'twocolumn-chain2',
+          type: 'paragraph',
+          data: {
+            text: 'Paragraph with id 10',
+          },
         },
-      },
-      '16': {
-        id: '16',
-        chainId: 'main',
-        type: 'paragraph',
-        data: {
-          text: 'Paragraph with id 16',
+        '11': {
+          id: '11',
+          chainId: 'main',
+          type: 'paragraph',
+          data: {
+            text: 'Paragraph with id 11',
+          },
         },
-      },
-      twocolumn: {
-        id: 'twocolumn',
-        chainId: 'main',
-        type: 'columns',
-        data: {
-          chains: ['twocolumn-chain1', 'twocolumn-chain2'],
+        '15': {
+          id: '15',
+          chainId: 'main',
+          type: 'paragraph',
+          data: {
+            text: 'Paragraph with id 15',
+          },
         },
-      },
-      anothertwocolumn: {
-        id: 'anothertwocolumn',
-        chainId: 'twocolumn-chain1',
-        type: 'columns',
-        data: {
-          chains: ['anothertwocolumn-chain3', 'anothertwocolumn-chain4'],
+        '16': {
+          id: '16',
+          chainId: 'main',
+          type: 'paragraph',
+          data: {
+            text: 'Paragraph with id 16',
+          },
         },
-      },
+        twocolumn: {
+          id: 'twocolumn',
+          chainId: 'main',
+          type: 'columns',
+          data: {
+            chains: ['twocolumn-chain1', 'twocolumn-chain2'],
+          },
+        },
+        anothertwocolumn: {
+          id: 'anothertwocolumn',
+          chainId: 'twocolumn-chain1',
+          type: 'columns',
+          data: {
+            chains: ['anothertwocolumn-chain3', 'anothertwocolumn-chain4'],
+          },
+        },
 
-      // ...randomBlocks,
-    },
-    chains: {
-      main: ['0', '11', '15', '16', 'twocolumn', '7', '8'],
-      'twocolumn-chain1': ['2', 'anothertwocolumn'],
-      'twocolumn-chain2': ['5', '6', '10'],
-      'anothertwocolumn-chain3': ['3'],
-      'anothertwocolumn-chain4': ['4'],
+        // ...randomBlocks,
+      },
+      chains: {
+        main: ['0', '11', '15', '16', 'twocolumn', '7', '8'],
+        'twocolumn-chain1': ['2', 'anothertwocolumn'],
+        'twocolumn-chain2': ['5', '6', '10'],
+        'anothertwocolumn-chain3': ['3'],
+        'anothertwocolumn-chain4': ['4'],
+      },
     },
   },
 };
 
-export const PostEditorCypress = Template.bind({});
+export const PostEditorCypress = {
+  render: Template,
+
+  args: {
+    setBlocksDB: () => {},
+    getMetaData: () => {},
+    blocksDB: blocksDBMock,
+  },
+};
+
 export const blocksDBMock: BlocksDB = {
   blocks: {
     mainHeader: {
@@ -339,10 +350,4 @@ export const blocksDBMock: BlocksDB = {
       'image',
     ],
   },
-};
-
-PostEditorCypress.args = {
-  setBlocksDB: () => {},
-  getMetaData: () => {},
-  blocksDB: blocksDBMock,
 };

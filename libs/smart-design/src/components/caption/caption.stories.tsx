@@ -7,8 +7,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import { Meta } from '@storybook/react';
 import styled from 'styled-components';
 
 import { noCanvas, setPropDocumentation } from '../../helpers';
@@ -44,16 +43,13 @@ export default {
     forwardedAs: { table: { disable: true } },
     children: setPropDocumentation({ control: 'text' }),
   },
-} as ComponentMeta<typeof Caption>;
+} as Meta<typeof Caption>;
 
-const Template: ComponentStory<typeof Caption> = (args) => (
-  <Caption {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {
-  children: 'This is a caption text',
-  fontWeight: 'regular',
+export const Default = {
+  args: {
+    children: 'This is a caption text',
+    fontWeight: 'regular',
+  },
 };
 
 const PropContainer = styled.div`
@@ -66,84 +62,88 @@ const TypeContainer = styled.div`
   width: ${scale080};
 `;
 
-export const FontWeights = () => {
-  const sizePx: any = {
-    regular: 400,
-    bold: 700,
-  };
+export const FontWeights = {
+  render: () => {
+    const sizePx: any = {
+      regular: 400,
+      bold: 700,
+    };
 
-  const captionFontWeights = Object.keys(fontWeights);
+    const captionFontWeights = Object.keys(fontWeights);
 
-  return (
-    <>
-      {captionFontWeights.map((key) => (
-        <PropContainer key={key}>
-          <TypeContainer>
+    return (
+      <>
+        {captionFontWeights.map((key) => (
+          <PropContainer key={key}>
+            <TypeContainer>
+              <Caption noMargin fontWeight={key as CaptionFontWeight}>
+                {sizePx[key]}
+              </Caption>
+            </TypeContainer>
             <Caption noMargin fontWeight={key as CaptionFontWeight}>
-              {sizePx[key]}
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </Caption>
-          </TypeContainer>
-          <Caption noMargin fontWeight={key as CaptionFontWeight}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </Caption>
-        </PropContainer>
-      ))}
-    </>
-  );
-};
+          </PropContainer>
+        ))}
+      </>
+    );
+  },
 
-FontWeights.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: 'Font weights for `Caption` component',
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'Font weights for `Caption` component',
+      },
     },
   },
 };
 
-export const LineHeights = () => {
-  const lineHeightsMapping: any = {
-    dense: 'dense',
-    default: 'default',
-    increased: 'increased',
-  };
+export const LineHeights = {
+  render: () => {
+    const lineHeightsMapping: any = {
+      dense: 'dense',
+      default: 'default',
+      increased: 'increased',
+    };
 
-  const lineHeightsTypes = Object.keys(lineHeights);
-  lineHeightsTypes[2] = lineHeightsTypes[1];
-  lineHeightsTypes[1] = 'default';
+    const lineHeightsTypes = Object.keys(lineHeights);
+    lineHeightsTypes[2] = lineHeightsTypes[1];
+    lineHeightsTypes[1] = 'default';
 
-  const CaptionContainer = styled.div`
-    width: ${scale360};
-  `;
+    const CaptionContainer = styled.div`
+      width: ${scale360};
+    `;
 
-  return (
-    <>
-      {lineHeightsTypes.map((key) => (
-        <PropContainer key={key}>
-          <TypeContainer>
-            <Caption noMargin lineHeight={key as CaptionLineHeight}>
-              {lineHeightsMapping[key]}
-            </Caption>
-          </TypeContainer>
-          <CaptionContainer>
-            <Caption noMargin lineHeight={key as CaptionLineHeight}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-              egestas, lorem eu condimentum faucibus, est urna sodales magna,
-              consequat elementum ligula lorem efficitur ex. Proin auctor tortor
-              non dolor consectetur tincidunt.
-            </Caption>
-          </CaptionContainer>
-        </PropContainer>
-      ))}
-    </>
-  );
-};
+    return (
+      <>
+        {lineHeightsTypes.map((key) => (
+          <PropContainer key={key}>
+            <TypeContainer>
+              <Caption noMargin lineHeight={key as CaptionLineHeight}>
+                {lineHeightsMapping[key]}
+              </Caption>
+            </TypeContainer>
+            <CaptionContainer>
+              <Caption noMargin lineHeight={key as CaptionLineHeight}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
+                egestas, lorem eu condimentum faucibus, est urna sodales magna,
+                consequat elementum ligula lorem efficitur ex. Proin auctor
+                tortor non dolor consectetur tincidunt.
+              </Caption>
+            </CaptionContainer>
+          </PropContainer>
+        ))}
+      </>
+    );
+  },
 
-LineHeights.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: 'Line heights for `Caption` component',
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'Line heights for `Caption` component',
+      },
     },
   },
 };

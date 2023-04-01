@@ -1,5 +1,5 @@
 import { Title, Subtitle, Primary } from '@storybook/addon-docs';
-import { ComponentMeta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import React from 'react';
 import styled, { css } from 'styled-components';
 
@@ -22,7 +22,7 @@ export default {
       ),
     },
   },
-} as ComponentMeta<typeof DesignSystemDocumentTable>;
+} as Meta<typeof DesignSystemDocumentTable>;
 
 const Preview = styled.div`
   width: 100%;
@@ -54,39 +54,41 @@ const SpacingPreview = ({ tokenValue }: { tokenValue: string }) => {
   );
 };
 
-export const Spacing = () => {
-  const tokenKeys: string[] = Object.getOwnPropertyNames(spacingTokens);
-  const shift = tokenKeys.shift();
+export const Spacing = {
+  render: () => {
+    const tokenKeys: string[] = Object.getOwnPropertyNames(spacingTokens);
+    const shift = tokenKeys.shift();
 
-  const order = [
-    'spaceXXS',
-    'spaceXS',
-    'spaceS',
-    'spaceM',
-    'spaceL',
-    'spaceXL',
-    'spaceXXL',
-    'space3XL',
-    'space4XL',
-    'space5XL',
-    'space6XL',
-  ];
-  tokenKeys.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    const order = [
+      'spaceXXS',
+      'spaceXS',
+      'spaceS',
+      'spaceM',
+      'spaceL',
+      'spaceXL',
+      'spaceXXL',
+      'space3XL',
+      'space4XL',
+      'space5XL',
+      'space6XL',
+    ];
+    tokenKeys.sort((a, b) => order.indexOf(a) - order.indexOf(b));
 
-  return (
-    <DesignSystemDocumentTable
-      tokens={spacingTokens}
-      preview={SpacingPreview}
-      tokenKeys={tokenKeys}
-    />
-  );
-};
+    return (
+      <DesignSystemDocumentTable
+        tokens={spacingTokens}
+        preview={SpacingPreview}
+        tokenKeys={tokenKeys}
+      />
+    );
+  },
 
-Spacing.parameters = {
-  ...noCanvas,
-  docs: {
-    source: {
-      code: '',
+  parameters: {
+    ...noCanvas,
+    docs: {
+      source: {
+        code: '',
+      },
     },
   },
 };

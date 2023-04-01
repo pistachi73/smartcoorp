@@ -7,7 +7,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 
 import { noCanvas } from '../../helpers';
@@ -49,16 +49,14 @@ export default {
     as: { table: { disable: true } },
     forwardedAs: { table: { disable: true } },
   },
-} as ComponentMeta<typeof DotLoadingComponent>;
+} as Meta<typeof DotLoadingComponent>;
 
-const Template: ComponentStory<typeof DotLoadingComponent> = (args) => (
-  <DotLoadingComponent {...args} />
-);
+export const DotLoading = {
+  args: {
+    size: 'medium',
+  },
 
-export const DotLoading = Template.bind({});
-DotLoading.args = {
-  size: 'medium',
-};
-DotLoading.parameters = {
-  ...noCanvas,
+  parameters: {
+    ...noCanvas,
+  },
 };

@@ -7,8 +7,7 @@ import {
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import { Meta } from '@storybook/react';
 import styled from 'styled-components';
 
 import { noCanvas } from '../../helpers';
@@ -50,21 +49,19 @@ export default {
     as: { table: { disable: true } },
     forwardedAs: { table: { disable: true } },
   },
-} as ComponentMeta<typeof Body>;
+} as Meta<typeof Body>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Body> = (args) => <Body {...args} />;
+export const Default = {
+  args: {
+    children: 'Hello this the Default of the body component',
+    size: 'medium',
+    fontWeight: 'regular',
+  },
 
-export const Default = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-Default.args = {
-  children: 'Hello this the Default of the body component',
-  size: 'medium',
-  fontWeight: 'regular',
-};
-Default.parameters = {
-  ...noCanvas,
-  controls: { hideNoControlsWarning: true },
+  parameters: {
+    ...noCanvas,
+    controls: { hideNoControlsWarning: true },
+  },
 };
 
 const PropContainer = styled.div`
@@ -77,111 +74,117 @@ const TypeContainer = styled.div`
   width: ${scale160};
 `;
 
-export const Sizes = () => {
-  const sizePx: any = {
-    xsmall: '12px',
-    small: '14px',
-    medium: '16px',
-    large: '18px',
-    xlarge: '20px',
-  };
+export const Sizes = {
+  render: () => {
+    const sizePx: any = {
+      xsmall: '12px',
+      small: '14px',
+      medium: '16px',
+      large: '18px',
+      xlarge: '20px',
+    };
 
-  return (
-    <>
-      {bodySizes.map((key) => (
-        <PropContainer key={key}>
-          <TypeContainer>
+    return (
+      <>
+        {bodySizes.map((key) => (
+          <PropContainer key={key}>
+            <TypeContainer>
+              <Body size={key as BodyCopySize} noMargin>
+                {sizePx[key]}
+              </Body>
+            </TypeContainer>
             <Body size={key as BodyCopySize} noMargin>
-              {sizePx[key]}
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </Body>
-          </TypeContainer>
-          <Body size={key as BodyCopySize} noMargin>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </Body>
-        </PropContainer>
-      ))}
-    </>
-  );
-};
+          </PropContainer>
+        ))}
+      </>
+    );
+  },
 
-Sizes.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: 'Posible sizes for `Body` component',
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'Posible sizes for `Body` component',
+      },
     },
   },
 };
 
-export const FontWeights = () => {
-  const sizePx: any = {
-    regular: 400,
-    bold: 700,
-  };
-  return (
-    <>
-      {bodyWeights.map((key) => (
-        <PropContainer key={key}>
-          <TypeContainer>
+export const FontWeights = {
+  render: () => {
+    const sizePx: any = {
+      regular: 400,
+      bold: 700,
+    };
+    return (
+      <>
+        {bodyWeights.map((key) => (
+          <PropContainer key={key}>
+            <TypeContainer>
+              <Body noMargin fontWeight={key as BodyCopyFontWeight}>
+                {sizePx[key]}
+              </Body>
+            </TypeContainer>
             <Body noMargin fontWeight={key as BodyCopyFontWeight}>
-              {sizePx[key]}
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </Body>
-          </TypeContainer>
-          <Body noMargin fontWeight={key as BodyCopyFontWeight}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </Body>
-        </PropContainer>
-      ))}
-    </>
-  );
-};
+          </PropContainer>
+        ))}
+      </>
+    );
+  },
 
-FontWeights.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: 'Font weights for `Body` component',
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'Font weights for `Body` component',
+      },
     },
   },
 };
 
-export const LineHeights = () => {
-  const lineHeightsMapping: any = {
-    dense: 'dense',
-    default: 'default',
-    increased: 'increased',
-  };
+export const LineHeights = {
+  render: () => {
+    const lineHeightsMapping: any = {
+      dense: 'dense',
+      default: 'default',
+      increased: 'increased',
+    };
 
-  const lineHeightsTypes = Object.keys(lineHeights);
-  lineHeightsTypes[2] = lineHeightsTypes[1];
-  lineHeightsTypes[1] = 'default';
+    const lineHeightsTypes = Object.keys(lineHeights);
+    lineHeightsTypes[2] = lineHeightsTypes[1];
+    lineHeightsTypes[1] = 'default';
 
-  return (
-    <>
-      {lineHeightsTypes.map((key) => (
-        <PropContainer key={key}>
-          <TypeContainer>
+    return (
+      <>
+        {lineHeightsTypes.map((key) => (
+          <PropContainer key={key}>
+            <TypeContainer>
+              <Body noMargin lineHeight={key as BodyCopyLineHeight}>
+                {lineHeightsMapping[key]}
+              </Body>
+            </TypeContainer>
             <Body noMargin lineHeight={key as BodyCopyLineHeight}>
-              {lineHeightsMapping[key]}
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
+              egestas, lorem eu condimentum faucibus, est urna sodales magna,
+              consequat elementum ligula lorem efficitur ex. Proin auctor tortor
+              non dolor consectetur tincidunt.
             </Body>
-          </TypeContainer>
-          <Body noMargin lineHeight={key as BodyCopyLineHeight}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-            egestas, lorem eu condimentum faucibus, est urna sodales magna,
-            consequat elementum ligula lorem efficitur ex. Proin auctor tortor
-            non dolor consectetur tincidunt.
-          </Body>
-        </PropContainer>
-      ))}
-    </>
-  );
-};
+          </PropContainer>
+        ))}
+      </>
+    );
+  },
 
-LineHeights.parameters = {
-  ...noCanvas,
-  docs: {
-    description: {
-      story: 'Line heights for `Body` component',
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'Line heights for `Body` component',
+      },
     },
   },
 };
