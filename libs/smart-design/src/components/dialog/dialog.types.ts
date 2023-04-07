@@ -1,17 +1,56 @@
 import { ButtonSizes } from '../button/button.types';
-import { Modal } from '../modal';
 
-export type DialogProps = React.ComponentProps<typeof Modal> &
-  RejectProps & {
+type CancelProps =
+  | {
+      /**  Callback executed on dialog rejection */
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      onCancel?: React.HTMLProps<HTMLButtonElement>['onClick'];
+      /** Label for the reject button */
+      cancelLabel: string;
+    }
+  | {
+      /**  Callback executed on dialog rejection */
+      onCancel?: never;
+      /** Label for the reject button */
+      cancelLabel?: never;
+    };
+
+type ActionProps = {
+  /**  Callback executed on dialog action */
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  onAction?: React.HTMLProps<HTMLButtonElement>['onClick'];
+  /** Label for the action button */
+  actionLabel: string;
+};
+
+export type DialogControl =
+  // Controlled Modal
+  | {
+      /** The controlled open state of the dialog. Must be used in conjunction with **onOpenChange**. */
+      open: boolean;
+      /** Event handler called when the open state of the dialog changes. */
+      onOpenChange: (open: boolean) => void;
+    }
+  // Uncontrolled Modal
+  | { open?: never; onOpenChange?: never };
+
+export type DialoglRootProps = DialogControl & {
+  /** Content of the modal */
+  children: React.ReactNode;
+};
+
+export type DialogContentProps = CancelProps &
+  ActionProps & {
+    /** Content of the modal */
+    children: React.ReactNode;
+    /** An accessible title to be announced when the dialog is opened.  */
+    title: string;
+    /** An accessible description to be announced when the dialog is opened. */
+    description: string;
     /** Is Dialog confirm action loading (async) */
     loading?: boolean;
     /** Is dialog confirm action disabled */
     disabled?: boolean;
-    /** Callback executed on dialog confirmation*/
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    onConfirm: Function;
-    /** Label for the confirm button */
-    confirmLabel: string;
     /** The size of the buttons on mobile screens or larger */
     size?: ButtonSizes;
     /** The size of the buttons on tablet screens or larger */
@@ -19,18 +58,3 @@ export type DialogProps = React.ComponentProps<typeof Modal> &
     /** The size of the buttons on desktop screens or larger */
     sizeWide?: ButtonSizes;
   };
-
-type RejectProps =
-  | {
-      /**  Callback executed on dialog rejection */
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      onReject: Function;
-      /** Label for the reject button */
-      rejectLabel: string;
-    }
-  | {
-      /**  Callback executed on dialog rejection */
-      onReject?: never;
-      /** Label for the reject button */
-      rejectLabel?: never;
-    };

@@ -40,23 +40,13 @@ export default {
           <Description>##Usage</Description>
           <Source
             language="jsx"
-            code={`import { Modal, ModalContent, ModalTrigger } from @smart-design/components
-
-                  <Modal>
-                    <ModalTrigger>
-                      <Button>Open Modal</Button>
-                    </ModalTrigger>
-                    <ModalContent title="Content title" description="Content description">
-                      <h1>Content</h1>
-                    </ModalContent>
-                  </Modal>`}
+            code={`import { Modal, ModalContent, ModalTrigger } from @smart-design/components`}
             format={true}
           />
           <Description>###Example</Description>
           <Primary />
           <ArgsTable story={PRIMARY_STORY} />
           <Stories title="References" />
-          <div id="portal" />
         </>
       ),
     },

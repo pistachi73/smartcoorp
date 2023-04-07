@@ -9,18 +9,18 @@ import {
   Title,
 } from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { noCanvas } from '../../helpers';
 import { Body } from '../body';
 import { Button } from '../button';
 import { Headline } from '../headline/headline';
 
-import { Dialog as DialogComponent } from './dialog';
+import { Dialog, DialogContent, DialogTrigger } from './dialog';
 
 export default {
   title: 'Layout/Dialog',
-  component: DialogComponent,
+  component: Dialog,
+  subcomponents: { DialogContent, DialogTrigger },
   parameters: {
     docs: {
       page: () => (
@@ -32,13 +32,14 @@ export default {
             A Dialog component presents content within a container on top of the
             application's main UI. Dialogs give two options: reject or confirm
             for the action required inside. This is useful when something is
-            going to be deleted, when data is going to be losed for some reason
+            going to be deleted, when data is going to be lost for some reason
             etc...
           </Description>
           <Description>##Usage</Description>
           <Source
-            language="js"
-            code={`import { Dialog } from @smart-design/components`}
+            language="jsx"
+            code={`import { Dialog, DialogContent, DialogTrigger } from @smart-design/components`}
+            format={true}
           />
           <Description>###Example</Description>
           <Primary />
@@ -47,49 +48,40 @@ export default {
         </>
       ),
     },
+    controls: { sort: 'requiredFirst' },
   },
-  argTypes: {
-    theme: { table: { disable: true } },
-    as: { table: { disable: true } },
-    forwardedAs: { table: { disable: true } },
-    onClose: { type: 'function' },
-    onBackgroundClick: { type: 'function' },
-    onConfirm: { type: 'function' },
-    onReject: { type: 'function' },
-  },
-} as Meta<typeof DialogComponent>;
+} as Meta<typeof Dialog>;
 
 function timeout(delay: number) {
   return new Promise((res) => setTimeout(res, delay));
 }
-const Template: StoryFn<typeof DialogComponent> = (args) => {
-  const [show, setShow] = useState(false);
+const Template: StoryFn<typeof Dialog> = (args) => {
+  const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const closeModal = () => setShow(false);
-
-  const onConfirm = async () => {
+  const onAction = async () => {
     setIsLoading(true);
     await timeout(3000);
-    setShow(false);
     setIsLoading(false);
+    setOpen(false);
   };
 
-  const onReject = () => {
-    setShow(false);
+  const onCancel = () => {
+    setOpen(false);
   };
 
   return (
-    <>
-      <Button onClick={() => setShow(true)}>Open Dialog</Button>
-      <DialogComponent
-        {...args}
-        show={show}
-        onClose={closeModal}
-        onBackgroundClick={closeModal}
-        onConfirm={onConfirm}
-        onReject={onReject}
-        rejectLabel={args.rejectLabel!}
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>
+        <Button>Open Dialog</Button>
+      </DialogTrigger>
+      <DialogContent
+        title="Delete content"
+        description="Delete blog content"
+        actionLabel="Yes, delete content"
+        onAction={onAction}
+        cancelLabel="Cancel"
+        onCancel={onCancel}
         loading={isLoading}
       >
         <Headline size="xlarge">Delete content</Headline>
@@ -97,23 +89,13 @@ const Template: StoryFn<typeof DialogComponent> = (args) => {
           Are you sure to remove this content? You can access this file for 7
           days in your trash.
         </Body>
-      </DialogComponent>
-    </>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export const Dialog = {
+export const Default = {
   render: Template,
-
-  args: {
-    rootId: 'docs-root',
-    confirmLabel: 'Confirm',
-    rejectLabel: 'Cancel',
-    size: 'small',
-    closeIcon: true,
-  },
-
-  parameters: {
-    ...noCanvas,
-  },
+  args: {},
+  parameters: {},
 };

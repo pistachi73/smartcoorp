@@ -1,38 +1,74 @@
-import styled from 'styled-components';
+import * as DialogAlertPrimitives from '@radix-ui/react-alert-dialog';
+import { motion } from 'framer-motion';
+import styled, { css } from 'styled-components';
 
-import { scale280, scale370, spaceM, spaceXL } from '../../tokens';
-import { Button } from '../button';
-import { Modal } from '../modal';
+import {
+  borderRadiusS,
+  scale170,
+  scale280,
+  spaceL,
+  spaceM,
+  spaceXL,
+} from '../../tokens';
 
 type DialogActionsContainerTransientProps = {
-  $rejectOption?: boolean;
+  $cancelLabel?: boolean;
 };
 
-const DialogContainer = styled(Modal)`
+const DialogContent = styled(motion(DialogAlertPrimitives.AlertDialogContent))`
   min-width: ${scale280};
-  max-width: ${scale370};
+  max-width: 500px;
+  padding: ${spaceXL};
+  min-height: ${scale170};
+  max-height: 60vh;
+  width: 90%;
+
+  background-color: ${({ theme }) => theme.backgroundScreen};
+
+  border-radius: ${borderRadiusS};
+  box-shadow: ${({ theme }) => theme.shadow.shadowS};
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
+const DialogOverlay = styled(motion(DialogAlertPrimitives.Overlay))`
+  background-color: ${({ theme }) => theme.modal.backgroundColor};
+  position: fixed;
+  inset: 0;
+`;
 const DialogActionsContainer = styled.div<DialogActionsContainerTransientProps>`
   display: flex;
   align-items: center;
-  justify-content: ${({ $rejectOption }) =>
-    $rejectOption ? 'space-betweem' : 'center'};
+
   gap: ${spaceM};
 
-  padding-top: ${spaceXL};
+  ${({ $cancelLabel }) =>
+    $cancelLabel
+      ? css`
+          width: 100%;
+          justify-content: space-between;
+        `
+      : css`
+          width: 50%;
+          margin: 0 auto;
+        `};
+
+  padding-top: ${spaceL};
 `;
 
-const DialogActionButton = styled(Button)`
+const DialogActionButton = styled(DialogAlertPrimitives.Action)`
   width: 100%;
 `;
 
 export const Styled = {
-  DialogContainer,
+  DialogOverlay,
+  DialogContent,
   DialogActionsContainer,
   DialogActionButton,
 };

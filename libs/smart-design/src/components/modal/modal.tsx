@@ -1,13 +1,11 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
-import { motion } from 'framer-motion';
 import React, { FC, forwardRef } from 'react';
 import { ImCross } from 'react-icons/im';
 
 import { Styled } from './modal.styles';
 import type { ModalContentProps, ModalRootProps } from './modal.types';
 
-// type ModalVariants = Record<'animate' | 'initial', Variant>;
 const variantMapping = {
   animate: 'animate',
   initial: 'initial',
@@ -96,7 +94,7 @@ export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
 );
 export const ModalTrigger = DialogPrimitive.Trigger;
 export const Modal: FC<ModalRootProps> = ({ children, open, onOpenChange }) => {
-  const controlledProps = open ? { open, onOpenChange } : {};
+  const controlledProps = onOpenChange ? { open, onOpenChange } : {};
   return (
     <DialogPrimitive.Root {...controlledProps}>{children}</DialogPrimitive.Root>
   );

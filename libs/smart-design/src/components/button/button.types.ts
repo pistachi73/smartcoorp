@@ -23,7 +23,7 @@ type CommonProps = {
   /** Loading state of the button */
   loading?: boolean;
   /** @callback */
-  onClick?: (e: MouseEvent) => void;
+  onClick?: React.HTMLProps<HTMLButtonElement>['onClick'];
   /** The variant of button */
   variant?: ButtonVariants;
   /** Icon size */
