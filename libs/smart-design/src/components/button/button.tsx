@@ -1,11 +1,11 @@
-import { FC } from 'react';
+import React from 'react';
 
 import Link from 'next/link';
 
 import { Styled } from './button.styles';
 import { ButtonProps } from './button.types';
 
-export const Button: FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
   children,
   disabled = false,
   href,
