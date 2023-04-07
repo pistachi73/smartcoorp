@@ -83,7 +83,7 @@ const Template: StoryFn<typeof Modal> = (args) => {
 
   return (
     <Modal open={show} onOpenChange={setShow}>
-      <ModalTrigger>
+      <ModalTrigger asChild>
         <Button>Open Modal</Button>
       </ModalTrigger>
       <ModalContent

@@ -11,6 +11,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       mount: typeof mount;
+      getByCyId: typeof getByCyId;
     }
   }
 }
@@ -39,5 +40,7 @@ const mount = (
     options
   );
 };
+const getByCyId = (id: string) => cy.get(`[data-cy="${id}"]`);
 
 Cypress.Commands.add('mount', mount);
+Cypress.Commands.add('getByCyId', { prevSubject: false }, getByCyId);

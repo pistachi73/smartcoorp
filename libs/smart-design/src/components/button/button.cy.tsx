@@ -1,8 +1,9 @@
 import React from 'react';
 
-import type { Theme } from '../../../global-styles/theme/theme-provider';
-import { Button } from '../button';
-import type { ButtonProps } from '../button.types';
+import type { Theme } from '../../global-styles/theme/theme-provider';
+
+import { Button } from './button';
+import type { ButtonProps } from './button.types';
 
 const renderButton = (
   props: ButtonProps,
