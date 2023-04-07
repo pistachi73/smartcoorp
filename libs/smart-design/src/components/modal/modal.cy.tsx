@@ -7,7 +7,7 @@ import type { ModalControl } from './modal.types';
 
 const modalContentCyId = 'modal-content';
 const modalTriggerCyId = 'modal-trigger';
-
+const onOpenChange = () => {};
 const renderModal = (
   {
     modalControl,
@@ -32,7 +32,6 @@ const renderModal = (
 };
 
 describe('<Modal />', () => {
-  const onOpenChange = cy.stub().as('onOpenChange');
   it('should render modal when show is true', () => {
     renderModal({
       modalControl: {

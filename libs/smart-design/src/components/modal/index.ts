@@ -1,1 +1,1 @@
-export { ModalTrigger } from './modal';
+export { ModalTrigger, ModalContent, Modal } from './modal';

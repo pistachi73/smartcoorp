@@ -1,49 +1,159 @@
-import * as DialogP from '@radix-ui/react-dialog';
-import { FC } from 'react';
+import * as DialogPrimitive from '@radix-ui/react-alert-dialog';
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
+import React, { FC, MouseEvent, forwardRef } from 'react';
+
+import { Button } from '../button';
 
 import { Styled } from './dialog.styles';
-import { DialogProps } from './dialog.types';
+import type { DialogContentProps, DialoglRootProps } from './dialog.types';
 
-export const Dialog: FC<DialogProps> = ({
-  children,
-  loading,
-  disabled,
-  onReject,
-  confirmLabel,
-  rejectLabel,
-  size = 'medium',
-  sizeConfined,
-  sizeWide,
-}) => {
-  return (
-    <Styled.DialogContainer>
-      {children}
-      <Styled.DialogActionsContainer $rejectOption={Boolean(rejectLabel)}>
-        {rejectLabel && (
-          <Styled.DialogActionButton
-            disabled={disabled || loading}
-            variant="secondary"
-            onClick={onReject}
-            size={size}
-            sizeConfined={sizeConfined}
-            sizeWide={sizeWide}
-          >
-            {rejectLabel}
-          </Styled.DialogActionButton>
-        )}
-        <Styled.DialogActionButton
-          loading={loading}
-          disabled={disabled || loading}
-          variant="primary"
-          size={size}
-          sizeConfined={sizeConfined}
-          sizeWide={sizeWide}
-        >
-          {confirmLabel}
-        </Styled.DialogActionButton>
-      </Styled.DialogActionsContainer>
-    </Styled.DialogContainer>
-  );
+const variantMapping = {
+  animate: 'animate',
+  initial: 'initial',
+  exit: 'initial',
+};
+const overlayVariants = {
+  animate: {
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      type: 'spring',
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+  initial: {
+    opacity: 0,
+    transition: {
+      duration: 0.5,
+      type: 'spring',
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+};
+const contentVariants = {
+  animate: {
+    y: '-50%',
+    x: '-50%',
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      delay: 0.25,
+      stiffness: 150,
+      damping: 30,
+    },
+  },
+  initial: {
+    y: '-55%',
+    x: '-50%',
+    opacity: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 150,
+      damping: 30,
+    },
+  },
 };
 
-Dialog.displayName = 'Dialog';
+export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
+  (
+    {
+      children,
+      title,
+      description,
+      actionLabel,
+      onAction,
+      onCancel,
+      cancelLabel,
+      disabled,
+      loading,
+      ...props
+    },
+    forwardedRef: React.Ref<HTMLDivElement>
+  ) => {
+    const onActionClick = onAction
+      ? {
+          onClick: (
+            e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+          ) => {
+            e.preventDefault();
+            onAction(e);
+          },
+        }
+      : {};
+
+    const onCancelClick = onCancel
+      ? {
+          onClick: (
+            e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+          ) => {
+            e.preventDefault();
+            onCancel(e);
+          },
+        }
+      : {};
+
+    return (
+      <DialogPrimitive.Portal>
+        <Styled.DialogOverlay variants={overlayVariants} {...variantMapping} />
+        <Styled.DialogContent
+          ref={forwardedRef}
+          variants={contentVariants}
+          {...variantMapping}
+          {...props}
+        >
+          <VisuallyHidden.Root>
+            <DialogPrimitive.Title>{title}</DialogPrimitive.Title>
+          </VisuallyHidden.Root>
+          <VisuallyHidden.Root>
+            <DialogPrimitive.Description>
+              {description}
+            </DialogPrimitive.Description>
+          </VisuallyHidden.Root>
+          <div>{children}</div>
+          <Styled.DialogActionsContainer $cancelLabel={Boolean(cancelLabel)}>
+            {cancelLabel && (
+              <Styled.DialogActionButton asChild={true}>
+                <Button
+                  disabled={disabled || loading}
+                  variant="secondary"
+                  size="small"
+                  sizeConfined="medium"
+                  sizeWide="medium"
+                  {...onCancelClick}
+                >
+                  {cancelLabel}
+                </Button>
+              </Styled.DialogActionButton>
+            )}
+            <Styled.DialogActionButton asChild={true}>
+              <Button
+                loading={loading}
+                disabled={disabled || loading}
+                variant="primary"
+                size="small"
+                sizeConfined="medium"
+                sizeWide="medium"
+                {...onActionClick}
+              >
+                {actionLabel}
+              </Button>
+            </Styled.DialogActionButton>
+          </Styled.DialogActionsContainer>
+        </Styled.DialogContent>
+      </DialogPrimitive.Portal>
+    );
+  }
+);
+export const Dialog: FC<DialoglRootProps> = ({
+  children,
+  open,
+  onOpenChange,
+}) => {
+  const controlledProps = onOpenChange ? { open, onOpenChange } : {};
+  return (
+    <DialogPrimitive.Root {...controlledProps}>{children}</DialogPrimitive.Root>
+  );
+};
+export const DialogTrigger = DialogPrimitive.Trigger;

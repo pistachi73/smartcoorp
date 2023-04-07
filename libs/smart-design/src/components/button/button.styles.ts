@@ -16,7 +16,6 @@ import {
   scale150,
   scale160,
   spaceS,
-  spaceXS,
 } from '../../tokens';
 import { DotLoading } from '../dot-loading';
 
