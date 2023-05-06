@@ -72,7 +72,7 @@ const Template: StoryFn<typeof SingleSelectComponent> = (args, context) => {
         name="single-select"
         defaultValue={'value1'}
         render={({
-          field: { ref, onChange, ...field },
+          field: { value, ref, onChange, ...field },
           fieldState: { error },
         }) => (
           <SingleSelectComponent

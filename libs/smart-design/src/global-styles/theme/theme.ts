@@ -102,6 +102,13 @@ export const lightTheme: ThemeType = {
     contentParagraphColor: gray200,
     contentSpanColor: gray400,
   },
+  singleSelect: {
+    disabledColor: gray300,
+    unSelectedColor: gray400,
+    selectedColor: 'black',
+    errorColor: red500,
+    selectedItemColor: primary100,
+  },
 };
 
 export const darkTheme: ThemeType = {
@@ -169,5 +176,12 @@ export const darkTheme: ThemeType = {
     contentHeadingColor: gray900,
     contentParagraphColor: gray800,
     contentSpanColor: gray600,
+  },
+  singleSelect: {
+    disabledColor: gray800,
+    unSelectedColor: gray600,
+    selectedColor: 'white',
+    errorColor: red500,
+    selectedItemColor: primary600,
   },
 };

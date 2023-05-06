@@ -46,6 +46,15 @@ interface Select {
   selectItem: SelectItem;
 }
 
+/** SingleSelect interface */
+interface SingleSelect {
+  unSelectedColor: string;
+  selectedColor: string;
+  disabledColor: string;
+  errorColor: string;
+  selectedItemColor: string;
+}
+
 /** Modal interface */
 interface Modal {
   backgroundColor: string;
@@ -92,4 +101,5 @@ export interface ThemeType {
   modal: Modal;
   postEditor: PostEditor;
   tooltip: Tooltip;
+  singleSelect: SingleSelect;
 }
