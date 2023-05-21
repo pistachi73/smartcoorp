@@ -1,1 +1,5 @@
-export { SingleSelect } from './single-select';
+export {
+  SingleSelect,
+  SingleSelectItem,
+  SingleSlectItemGroup,
+} from './single-select';
