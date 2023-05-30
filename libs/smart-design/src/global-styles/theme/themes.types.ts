@@ -53,8 +53,17 @@ interface SingleSelect {
   disabledColor: string;
   errorColor: string;
   selectedItemColor: string;
+  triggerHoverColor: string;
+  groupDividerColor: string;
+  groupLabelColor: string;
 }
 
+/** MultipleSelect specific interface   */
+interface MultipleSelect {
+  selectedValueBackgroundColor: string;
+  selectedValueTextColor: string;
+  deleteValueHoverBackgroundColor: string;
+}
 /** Modal interface */
 interface Modal {
   backgroundColor: string;
@@ -76,6 +85,12 @@ interface Tooltip {
   contentHeadingColor: string;
   contentParagraphColor: string;
   contentSpanColor: string;
+}
+
+interface ScrollArea {
+  thumbColor: string;
+  scrollbarBackground: string;
+  scrollbarBackgroundHover: string;
 }
 
 export interface ThemeType {
@@ -102,4 +117,6 @@ export interface ThemeType {
   postEditor: PostEditor;
   tooltip: Tooltip;
   singleSelect: SingleSelect;
+  multipleSelect: MultipleSelect;
+  scrollArea: ScrollArea;
 }

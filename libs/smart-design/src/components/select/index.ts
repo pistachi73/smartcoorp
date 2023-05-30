@@ -1,2 +1,2 @@
-export { MultipleSelect } from './multiple-select';
-export { SingleSelect } from './single-select';
+export type { SelectOptions } from './select.types';
+export { Select } from './select';

@@ -8,23 +8,32 @@ export const BaseStyles = createGlobalStyle`
   *::before,
   *::after {
     box-sizing: border-box;
+        /* width */
+       
   }
-  
-  &::-webkit-scrollbar {
-    width: ${scale030};
-  }
-  &::-webkit-scrollbar-track {
-    background:  ${({ theme }) => theme.common.backgroundColor};
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    border-radius: ${borderRadiusXS};
-    background:  ${({ theme }) => theme.common.disabledSurfaceColor};
-  }
+  *::-webkit-scrollbar {
+      width: 9px;
+    }
 
-  &::-webkit-scrollbar-thumb:hover {
-    background:${({ theme }) => theme.common.overBackgroundNeutral};
-  }
+    /* Track */
+    *::-webkit-scrollbar-track {
+      border-left: 1px solid
+        ${({ theme }) => theme.scrollArea.scrollbarBackgroundHover};
+      background: ${({ theme }) => theme.scrollArea.scrollbarBackground};
+      &:hover {
+        background: ${({ theme }) => theme.scrollArea.scrollbarBackgroundHover};
+      }
+    }
+
+    /* Handle */
+    *::-webkit-scrollbar-thumb {
+      border: 2px solid rgba(0, 0, 0, 0);
+      background-clip: padding-box;
+      border-radius: 9999px;
+      background-color: ${({ theme }) => theme.scrollArea.thumbColor};
+      /* background: ${({ theme }) => theme.scrollArea.thumbColor}; */
+    }
+  
 
   ::-moz-selection { /* Code for Firefox */
     background: rgba(179, 212, 252, 0.75);

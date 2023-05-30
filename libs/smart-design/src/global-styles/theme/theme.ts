@@ -20,14 +20,19 @@ import {
   gray900_RGBA,
   primary100,
   primary200,
+  primary300,
   primary400,
+  primary500,
   primary600,
   primary700,
   primary800,
+  primary900,
   red100,
+  red200,
   red400,
   red500,
   red700,
+  red800,
 } from '../../tokens';
 
 import type { ThemeType } from './themes.types';
@@ -108,6 +113,19 @@ export const lightTheme: ThemeType = {
     selectedColor: 'black',
     errorColor: red500,
     selectedItemColor: primary100,
+    triggerHoverColor: gray100,
+    groupDividerColor: gray200,
+    groupLabelColor: gray400,
+  },
+  multipleSelect: {
+    selectedValueBackgroundColor: primary200,
+    selectedValueTextColor: primary800,
+    deleteValueHoverBackgroundColor: primary400,
+  },
+  scrollArea: {
+    thumbColor: gray300,
+    scrollbarBackgroundHover: gray200,
+    scrollbarBackground: gray100,
   },
 };
 
@@ -178,10 +196,24 @@ export const darkTheme: ThemeType = {
     contentSpanColor: gray600,
   },
   singleSelect: {
-    disabledColor: gray800,
+    disabledColor: gray700,
     unSelectedColor: gray600,
     selectedColor: 'white',
     errorColor: red500,
-    selectedItemColor: primary600,
+    selectedItemColor: primary800,
+    triggerHoverColor: gray800,
+    groupDividerColor: gray700,
+    groupLabelColor: gray600,
+  },
+
+  multipleSelect: {
+    selectedValueBackgroundColor: primary800,
+    selectedValueTextColor: primary200,
+    deleteValueHoverBackgroundColor: primary700,
+  },
+  scrollArea: {
+    thumbColor: gray600,
+    scrollbarBackgroundHover: gray700,
+    scrollbarBackground: gray800,
   },
 };

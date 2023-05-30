@@ -39,7 +39,7 @@ export const parameters = {
 };
 const ThemeBlock = styled.div`
   width: ${(props) => (props.vertical ? '50%' : '100%')};
-  height: ${(props) => (props.vertical ? '50vh' : '100%')};
+  height: ${(props) => (props.vertical ? '500px' : '100%')};
   bottom: 0;
   padding: 32px;
   background: ${(props) => props.theme.backgroundScreen};

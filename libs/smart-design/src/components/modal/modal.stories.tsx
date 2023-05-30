@@ -21,7 +21,7 @@ import { Headline } from '../headline/headline';
 import { Modal, ModalContent, ModalTrigger } from './modal';
 
 export default {
-  title: 'Layout/Modal',
+  title: 'Component/Modal',
   component: Modal,
   subcomponents: { ModalContent, ModalTrigger },
   parameters: {

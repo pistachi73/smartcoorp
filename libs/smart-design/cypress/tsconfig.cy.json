@@ -13,6 +13,9 @@
     "../**/*.cy.tsx",
     "../**/*.cy.js",
     "../**/*.cy.jsx",
-    "../**/*.d.ts"
-, "support/commands.tsx", "support/component.tsx"  ]
+    "../**/*.d.ts",
+    "support/commands.tsx",
+    "support/component.tsx",
+    "../src/components/multiple-select/multiple-select.tsx"
+  ]
 }
