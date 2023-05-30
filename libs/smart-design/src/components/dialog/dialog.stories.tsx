@@ -9,7 +9,7 @@ import {
   Title,
 } from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Body } from '../body';
 import { Button } from '../button';

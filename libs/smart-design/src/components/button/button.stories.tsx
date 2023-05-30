@@ -17,6 +17,7 @@ import { iconArgs, noCanvas, setPropDocumentation } from '../../helpers';
 import { spaceXL } from '../../tokens';
 
 import { Button } from './button';
+import { ButtonProps } from './button.types';
 
 export default {
   title: 'Component/Button',
@@ -78,7 +79,7 @@ const Container = styled.div`
   gap: ${spaceXL};
 `;
 
-const ReferenceTemplate: StoryFn<typeof Button> = (args) => {
+const ReferenceTemplate: StoryFn<ButtonProps> = (args, a) => {
   return (
     <Container>
       <Button size="medium" variant={args.variant}>

@@ -1,11 +1,11 @@
-import React from 'react';
+import { FC } from 'react';
 
 import Link from 'next/link';
 
 import { Styled } from './button.styles';
 import { ButtonProps } from './button.types';
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button: FC<ButtonProps> = ({
   children,
   disabled = false,
   href,
@@ -92,3 +92,5 @@ export const Button: React.FC<ButtonProps> = ({
     </Styled.Button>
   );
 };
+
+Button.displayName = 'Button';
