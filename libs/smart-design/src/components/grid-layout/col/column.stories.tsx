@@ -15,13 +15,12 @@ import { noCanvas } from '../../../helpers';
 import { Grid } from '../grid';
 import { Row } from '../row';
 
-import { ColOffset, ColSizes } from './col.types';
+import { ColOffset, ColProps, ColSizes } from './col.types';
 
-import { Col as ColumnComponent } from './index';
-
+import { Col } from './index';
 export default {
-  title: 'Layout/Grid/Column',
-  component: ColumnComponent,
+  title: 'Component/Grid/Column',
+  component: Col,
   parameters: {
     docs: {
       page: () => (
@@ -52,7 +51,7 @@ export default {
     forwardedAs: { table: { disable: true } },
     children: { table: { disabled: true } },
   },
-} as Meta<typeof ColumnComponent>;
+} as Meta<ColProps>;
 
 const StyledBox = styled.div`
   display: flex;
@@ -83,13 +82,13 @@ const Box: React.FC<{ offset?: ColOffset; size: ColSizes }> = ({
     </StyledBox>
   );
 };
-const Template: StoryFn<typeof ColumnComponent> = (args) => {
+const Template: StoryFn<ColProps> = (args) => {
   return (
     <Grid gridRuler>
       <Row noMargin>
-        <ColumnComponent {...args}>
+        <Col {...args}>
           <Box size={args.size} offset={args.offset} />
-        </ColumnComponent>
+        </Col>
       </Row>
     </Grid>
   );

@@ -48,14 +48,9 @@ type SelectLabelProps = {
 
 export const sizes = {
   small: {
-    trigger: css`
-      min-height: ${scale140};
-      font-size: ${scale070};
-      padding: 0 ${spaceS};
-    `,
     container: css`
-      padding: ${spaceXXS} ${spaceS};
-      min-height: calc(${scale140} - ${spaceXS});
+      padding: ${spaceXXS} ${spaceM};
+      min-height: ${scale140};
       font-size: ${scale070};
     `,
     input: css`
@@ -73,9 +68,7 @@ export const sizes = {
     label: css`
       font-size: ${scale060};
     `,
-    placeholder: css`
-      font-size: ${scale060};
-    `,
+
     groupLabel: css`
       font-size: ${scale060};
       padding: ${spaceXXS} ${spaceM};
@@ -85,11 +78,6 @@ export const sizes = {
     `,
   },
   medium: {
-    trigger: css`
-      min-height: ${scale150};
-      font-size: ${scale080};
-      padding: 0 ${spaceM};
-    `,
     indicator: css`
       padding: ${scale050};
     `,
@@ -111,9 +99,7 @@ export const sizes = {
     label: css`
       font-size: ${scale070};
     `,
-    placeholder: css`
-      font-size: ${scale070};
-    `,
+
     groupLabel: css`
       font-size: ${scale060};
       padding: ${spaceXXS} ${spaceM};
@@ -127,34 +113,22 @@ export const sizes = {
 export const states = {
   enabled: {
     unselected: css`
-      color: ${({ theme }) => theme.singleSelect.unSelectedColor};
-      border-color: ${({ theme }) => theme.singleSelect.unSelectedColor};
+      color: ${({ theme }) => theme.form.placeholderColor};
+      border-color: ${({ theme }) => theme.form.neutralColor};
     `,
     selected: css`
-      color: ${({ theme }) => theme.singleSelect.selectedColor};
+      color: ${({ theme }) => theme.color.neutral};
       cursor: pointer;
     `,
   },
-  disabled: {
-    unselected: css`
-      color: ${({ theme }) => theme.singleSelect.disabledColor};
-      border-color: ${({ theme }) => theme.singleSelect.disabledColor};
-      cursor: not-allowed;
-      background-color: inherit !important;
-    `,
-    selected: css`
-      border-color: ${({ theme }) => theme.singleSelect.disabledColor};
-      cursor: not-allowed;
-    `,
-  },
+
   error: {
     selected: css`
-      border-color: ${({ theme }) => theme.singleSelect.errorColor};
+      border-color: ${({ theme }) => theme.form.errorColor};
       cursor: pointer;
     `,
     unselected: css`
-      color: ${({ theme }) => theme.singleSelect.errorColor};
-      border-color: ${({ theme }) => theme.singleSelect.errorColor};
+      border-color: ${({ theme }) => theme.form.errorColor};
     `,
   },
 };
@@ -163,9 +137,7 @@ const HelperText = styled.span<HelperTextProps>`
   //FIX: this is a temporary fix for the helper text color
 
   color: ${({ $error, theme }) =>
-    $error
-      ? theme.singleSelect.errorColor
-      : theme.singleSelect.unSelectedColor};
+    $error ? theme.form.errorColor : theme.form.neutralColor};
   /** Size styles */
   ${({ $size }) =>
     $size &&
@@ -190,10 +162,10 @@ const HelperText = styled.span<HelperTextProps>`
 `;
 
 const SingleSelectLabel = styled.p<SelectLabelProps>`
-  margin-bottom: ${spaceXS};
+  margin-bottom: ${spaceXXS};
   padding: 0;
   font-size: ${scale070};
-  color: ${({ theme }) => theme.singleSelect.unSelectedColor};
+  color: ${({ theme }) => theme.form.neutralColor};
 
   /** Size styles */
   ${({ $size }) =>
@@ -237,8 +209,10 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     justify-content: space-between;
     border-radius: ${borderRadiusXS};
     background-color: ${({ theme }) => theme.backgroundScreen};
+
     border-width: 1px;
     border-style: solid;
+    border-color: ${({ theme }) => theme.form.neutralColor};
 
     transition-property: background-color;
     transition-duration: ${motionTimeXS};
@@ -247,16 +221,13 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     cursor: pointer;
     /** Size styles */
     &:hover {
-      background-color: ${({ theme }) => theme.singleSelect.triggerHoverColor};
+      background-color: ${({ theme }) => theme.form.hoverColor};
     }
-
-    border-color: ${({ theme }) => theme.singleSelect.unSelectedColor};
 
     ${({ $error }) =>
       $error &&
       css`
-        border-color: ${({ theme }) =>
-          theme.singleSelect.errorColor} !important;
+        border-color: ${({ theme }) => theme.form.errorColor} !important;
       `}
   }
 
@@ -268,8 +239,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
 
   .react-select__control--menu-is-open {
     box-shadow: none;
-    border-color: ${({ theme }) =>
-      theme.singleSelect.unSelectedColor} !important;
+    border-color: ${({ theme }) => theme.form.neutralColor} !important;
   }
 
   .react-select__value-container {
@@ -304,7 +274,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
   }
 
   .react-select__input {
-    color: ${({ theme }) => theme.singleSelect.selectedColor} !important;
+    color: ${({ theme }) => theme.color.neutral} !important;
   }
 
   .react-select__indicators {
@@ -318,13 +288,13 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     margin: ${spaceS} 0;
     width: 1px;
     align-self: stretch;
-    background-color: ${({ theme }) => theme.singleSelect.unSelectedColor};
+    background-color: ${({ theme }) => theme.form.neutralColor};
   }
 
   .react-select__indicator {
     display: flex;
     transition: color 150ms;
-    color: ${({ theme }) => theme.singleSelect.unSelectedColor};
+    color: ${({ theme }) => theme.form.neutralColor};
     cursor: pointer;
 
     svg {
@@ -374,7 +344,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     border-radius: ${borderRadiusXS};
     border-width: 1px;
     border-style: solid;
-    border-color: ${({ theme }) => theme.singleSelect.triggerHoverColor};
+    border-color: ${({ theme }) => theme.form.hoverColor};
 
     outline: none;
     box-shadow: 0 0 0 3px rgba(${primary_RGBA}, 0.25);
@@ -436,15 +406,15 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
   }
 
   .react-select__option--is-selected {
-    background-color: ${({ theme }) => theme.singleSelect.selectedItemColor};
+    background-color: ${({ theme }) => theme.form.select.selectedItemColor};
   }
   .react-select__group {
     padding: ${spaceS} 0;
     padding-bottom: 0;
-    border-top: 1px solid ${({ theme }) => theme.singleSelect.groupDividerColor};
+    border-top: 1px solid ${({ theme }) => theme.form.select.groupDividerColor};
     &:not(:last-child) {
       border-bottom: 1px solid
-        ${({ theme }) => theme.singleSelect.groupDividerColor};
+        ${({ theme }) => theme.form.select.groupDividerColor};
     }
   }
   .react-select__group-heading {
@@ -452,7 +422,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     display: block;
     text-transform: uppercase;
 
-    color: ${gray400};
+    color: ${({ theme }) => theme.form.neutralColor};
 
     /** Size styles */
     ${({ $size }) =>
@@ -479,7 +449,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
 
   .react-select__menu-notice--no-options {
     padding: ${spaceM} 0;
-    color: ${({ theme }) => theme.singleSelect.unSelectedColor};
+    color: ${({ theme }) => theme.form.neutralColor};
   }
 
   .react-select__multi-value {
@@ -487,7 +457,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     min-width: 0;
     background-color: hsl(0, 0%, 90%);
     background-color: ${({ theme }) =>
-      theme.multipleSelect.selectedValueBackgroundColor};
+      theme.form.multipleSelect.selectedValueBackgroundColor};
     border-radius: 2px;
     margin: 2px;
     box-sizing: border-box;
@@ -497,7 +467,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     text-overflow: ellipsis;
     white-space: nowrap;
     border-radius: 2px;
-    color: ${({ theme }) => theme.multipleSelect.selectedValueTextColor};
+    color: ${({ theme }) => theme.form.multipleSelect.selectedValueTextColor};
     font-size: 75%;
     padding: 3px;
     padding-left: 6px;
@@ -511,14 +481,14 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     padding-right: 4px;
     box-sizing: border-box;
 
-    color: ${({ theme }) => theme.multipleSelect.selectedValueTextColor};
+    color: ${({ theme }) => theme.form.multipleSelect.selectedValueTextColor};
 
     transition-property: background-color;
     transition-duration: ${motionTimeXS};
     transition-timing-function: ${motionEasingStandard};
     &:hover {
       background-color: ${({ theme }) =>
-        theme.multipleSelect.deleteValueHoverBackgroundColor};
+        theme.form.multipleSelect.deleteValueHoverBackgroundColor};
     }
   }
 `;

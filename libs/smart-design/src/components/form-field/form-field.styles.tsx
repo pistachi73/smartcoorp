@@ -1,365 +1,191 @@
 import styled, { css } from 'styled-components';
 
 import {
-  borderRadiusS,
+  borderRadiusXS,
   mediaConfined,
   mediaWide,
-  motionEasingEnter,
-  motionTimeM,
-  scale005,
+  primary,
+  primary_RGBA,
+  scale050,
   scale060,
   scale070,
   scale080,
-  scale100,
-  scale110,
-  scale130,
   scale140,
   scale150,
-  scale160,
-  scale170,
   scale230,
-  scale260,
   spaceM,
-  spaceXL,
+  spaceS,
+  spaceXXS,
 } from '../../tokens';
-import { Caption } from '../caption';
 
-import { FormFieldSize, FormFieldVariant } from './form-field.types';
+import { FormFieldSize } from './form-field.types';
 
-type TextareaTransientProps = {
-  $error?: boolean;
-  $isDisabled?: boolean;
-  $hasFocus: boolean;
-  $isFilled: boolean;
-  $size?: FormFieldSize;
-  $sizeConfined?: FormFieldSize;
-  $sizeWide?: FormFieldSize;
-  $success?: boolean;
-};
-
-type InputTransientProps = {
-  $error?: boolean;
-  $hasAction?: boolean;
-  $iconSize?: 18 | 24;
-  $isDisabled?: boolean;
-  $isFilled: boolean;
-  $hasFocus: boolean;
-  $isIconSet?: boolean;
+interface SizeProps {
   $size: FormFieldSize;
   $sizeConfined?: FormFieldSize;
   $sizeWide?: FormFieldSize;
-  $success?: boolean;
-  $variant?: FormFieldVariant;
-};
+}
 
-type LabelTransientProps = {
-  $hasFocus: boolean;
-  $isDisabled?: boolean;
-  $isFilled: boolean;
-  $isIconSet?: boolean;
-  $multiline?: boolean;
-  $error?: boolean;
-  $size: FormFieldSize;
-  $sizeConfined?: FormFieldSize;
-  $sizeWide?: FormFieldSize;
-};
+interface InputProps extends SizeProps {
+  $hasIcon?: boolean;
+}
 
-type IconTransientProps = {
-  $hasFocus: boolean;
-  $isDisabled?: boolean;
-  $isFilled: boolean;
+type WithError = {
   $error?: boolean;
 };
 
-export const variants = {
-  primary: {
-    small: css`
-      padding-right: ${scale070};
-    `,
-    medium: css`
-      padding-right: ${scale070};
-    `,
-    large: css`
-      padding-right: ${scale080};
-    `,
-  },
-  password: {
-    small: css`
-      padding-right: ${scale140};
-    `,
-    medium: css`
-      padding-right: ${scale140};
-    `,
-    large: css`
-      padding-right: ${scale150};
-    `,
-  },
-};
+interface IconContainerProps extends SizeProps {
+  $isClickable?: boolean;
+}
 
 export const sizes = {
   small: {
-    input: css`
-      font-size: ${scale070};
-      height: ${scale150};
-      min-width: ${scale260};
-      padding-left: ${scale070};
+    container: css`
+      min-height: ${scale140};
     `,
-    label: css`
+    input: css`
+      padding: ${spaceXXS} ${spaceM};
       font-size: ${scale070};
+    `,
+    textArea: css`
+      padding: ${spaceS};
+      font-size: ${scale070};
+      min-height: ${scale230};
+    `,
+
+    label: css`
+      font-size: ${scale060};
+    `,
+    placeholder: css`
+      font-size: ${scale060};
+    `,
+
+    helperText: css`
+      font-size: ${scale050};
+    `,
+    indicator: css`
+      padding: ${spaceS};
     `,
   },
   medium: {
+    container: css`
+      min-height: ${scale150};
+    `,
     input: css`
       font-size: ${scale080};
-      height: ${scale160};
-      min-width: ${scale260};
-      padding-left: ${scale070};
+      padding: ${spaceXXS} ${spaceM};
     `,
-    label: css`
+
+    textArea: css`
+      padding: ${spaceM};
       font-size: ${scale080};
+      min-height: ${scale230};
+    `,
+    placeholder: css`
+      font-size: ${scale050};
+    `,
+
+    label: css`
+      font-size: ${scale070};
+    `,
+
+    helperText: css`
+      font-size: ${scale060};
+    `,
+    indicator: css`
+      padding: ${scale050};
     `,
   },
-  large: {
-    input: css`
-      font-size: ${scale100};
-      height: ${scale170};
-      min-width: ${scale260};
-      padding-left: ${scale080};
-    `,
-    label: css`
-      font-size: ${scale080};
-    `,
-  },
 };
 
-const inputHasIcon = {
-  small: css`
-    padding-left: ${scale130};
-  `,
+export const Container = styled.div<{ $disabled?: boolean }>`
+  position: relative;
 
-  medium: css`
-    padding-left: ${scale140};
-  `,
-
-  large: css`
-    padding-left: ${scale140};
-  `,
-};
-
-const borderWidth = scale005;
-
-/* Label styles  */
-const baseLabel = (multiline?: boolean) => css`
-  position: absolute;
-  top: ${multiline ? spaceXL : '50%'};
-  left: ${scale070};
-  transform: translateY(-50%);
-
-  cursor: text;
-  color: ${({ theme }) => theme.common.overBackgroundNeutral};
-
-  transition-property: top, left, padding, color, font-size;
-  transition-timing-function: ${motionEasingEnter};
-  transition-duration: ${motionTimeM};
-
-  &::after,
-  &::before {
-    content: '';
-    position: absolute;
-    width: ${borderWidth};
-    height: 80%;
-
-    transform-origin: top;
-
-    transform: scaleY(0) translateY(-50%);
-    transition-property: transform, background-color, top, left;
-    transition-timing-function: ${motionEasingEnter};
-    transition-duration: 0ms;
-    transition-delay: 0ms;
-  }
-
-  &::after {
-    right: 0px;
-    top: 50%;
-  }
-  &::before {
-    left: 0px;
-    top: 50%;
-  }
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      opacity: 0.35;
+      pointer-events: none;
+    `}
 `;
+export const InputContainer = styled.div<SizeProps & WithError>`
+  width: 100%;
 
-const disabledLabel = css`
-  color: ${({ theme }) => theme.common.disabledSurfaceColor};
-  pointer-events: none;
-`;
+  border-radius: ${borderRadiusXS};
 
-const labelHasIcon = {
-  small: css`
-    left: calc(${scale070} + ${scale100});
-  `,
+  display: flex;
+  align-items: center;
 
-  medium: css`
-    left: calc(${scale070} + ${scale110});
-  `,
+  border-style: solid;
+  border-width: 1px;
+  border-color: ${({ theme }) => theme.form.neutralColor};
 
-  large: css`
-    left: calc(${scale070} + ${scale110});
-  `,
-};
-const filledLabel = css`
-  font-size: ${scale060} !important;
-  top: calc(${borderWidth} / 2) !important;
-  left: calc(${scale070} + ${borderWidth}) !important;
-  padding: 0 ${spaceM};
+  /** Size styles */
+  ${({ $size }) =>
+    $size &&
+    css`
+      ${sizes[$size].container}
+    `}
 
-  background-color: ${({ theme }) => theme.backgroundScreen};
-  color: ${({ theme }) => theme.common.overBackgroundNeutral};
-  transition-delay: 0ms;
-
-  &::after,
-  &::before {
-    background-color: ${({ theme }) => theme.common.overBackgroundNeutral};
-
-    transform: scaleY(1) translateY(-50%);
-    transition-duration: ${motionTimeM};
-    transition-delay: ${motionTimeM};
-  }
-`;
-const errorLabel = css`
-  color: ${({ theme }) => theme.common.errorColor};
-
-  &::before,
-  &::after {
-    background-color: ${({ theme }) => theme.common.errorColor};
-  }
-`;
-
-const Label = styled.label<LabelTransientProps>`
-  ${({ $multiline }) => baseLabel($multiline)}
-
-  ${({ $size }) => $size && sizes[$size].label}
-  ${({ $isIconSet, $size }) => $isIconSet && labelHasIcon[$size]}
-  ${({ $hasFocus, $isFilled }) => ($hasFocus || $isFilled) && filledLabel}
-  ${({ $isDisabled }) => $isDisabled && disabledLabel}
-  ${({ $error }) => $error && errorLabel}
-
-
-  ${({ $sizeConfined, $isIconSet }) =>
+  ${({ $sizeConfined }) =>
     $sizeConfined &&
     css`
       @media ${mediaConfined} {
-        ${sizes[$sizeConfined].label}
-        ${$isIconSet && labelHasIcon[$sizeConfined]}
+        ${sizes[$sizeConfined].container}
       }
     `};
 
-  ${({ $sizeWide, $isIconSet }) =>
+  ${({ $sizeWide }) =>
     $sizeWide &&
     css`
       @media ${mediaWide} {
-        ${sizes[$sizeWide].label}
-        ${$isIconSet && labelHasIcon[$sizeWide]}
+        ${$sizeWide && sizes[$sizeWide].container}
       }
     `};
-`;
+  ${({ $error, theme }) =>
+    $error &&
+    css`
+      border-color: ${theme.form.errorColor};
+    `}
 
-/* Input styles */
-const baseInput = css`
-  width: 100%;
-  border: none;
-  outline: none;
-  border-radius: ${borderRadiusS};
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-
-  color: ${({ theme }) => theme.color.neutral};
-  background-color: ${({ theme }) => theme.common.backgroundColor};
-
-  border-width: ${borderWidth};
-  border-style: solid;
-  border-color: transparent;
-
-  border-bottom-width: calc(${borderWidth});
-  border-bottom-color: ${({ theme }) => theme.common.overBackgroundNeutral};
+  &:focus-within {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(${primary_RGBA}, 0.25);
+    border-color: ${primary} !important;
+  }
 
   &:hover {
-    border-bottom-color: ${({ theme }) => theme.color.neutral} !important;
+    background-color: ${({ theme }) => theme.form.hoverColor};
   }
 `;
 
-const disabledInput = (isFilled?: boolean) => css`
-  background-color: ${({ theme }) => theme.common.disabledBackgroundColor};
-  border-color: ${({ theme }) =>
-    isFilled && theme.common.disabledSurfaceColor} !important;
-  border-bottom-color: ${({ theme }) => theme.common.disabledSurfaceColor};
-  pointer-events: none;
-`;
+const Input = styled.input<InputProps>`
+  width: 100%;
+  outline: none;
+  border: none;
 
-const filledInput = css`
+  background-color: transparent;
+
   color: ${({ theme }) => theme.color.neutral};
-  border-top-color: ${({ theme }) => theme.common.overBackgroundNeutral};
-  border-left-color: ${({ theme }) => theme.common.overBackgroundNeutral};
-  border-right-color: ${({ theme }) => theme.common.overBackgroundNeutral};
-  background-color: ${({ theme }) => theme.backgroundScreen};
 
-  transition-delay: 0ms;
-`;
+  &::placeholder {
+    color: ${({ theme }) => theme.form.placeholderColor};
+  }
+  &:focus {
+    outline: none;
+  }
+  /** Size styles */
+  ${({ $size }) =>
+    $size &&
+    css`
+      ${sizes[$size].input}
+    `}
 
-const errorInput = css`
-  border-color: ${({ theme }) => theme.common.errorColor};
-  border-bottom-color: ${({ theme }) => theme.common.errorColor};
-`;
-
-const Input = styled.input<InputTransientProps>`
-  ${baseInput}
-
-  ${({ $size }) => $size && sizes[$size].input}
-  ${({ $size, $isIconSet }) => $isIconSet && inputHasIcon[$size]}
-  ${({ $size, $variant }) => $variant && variants[$variant][$size]}
-
-  ${({ $isFilled, $hasFocus }) => ($isFilled || $hasFocus) && filledInput}
-  ${({ $isDisabled, $isFilled }) => $isDisabled && disabledInput($isFilled)}
-  ${({ $error }) => $error && errorInput}
-
-  ${({ $sizeConfined, $isIconSet, $variant }) =>
+  ${({ $sizeConfined }) =>
     $sizeConfined &&
     css`
       @media ${mediaConfined} {
-        ${$sizeConfined && sizes[$sizeConfined].input}
-        ${$variant && variants[$variant][$sizeConfined]}
-        ${$isIconSet && inputHasIcon[$sizeConfined]}
-      }
-    `};
-
-  ${({ $sizeWide, $isIconSet, $variant }) =>
-    $sizeWide &&
-    css`
-      @media ${mediaWide} {
-        ${$sizeWide && sizes[$sizeWide].input}
-        ${$variant && variants[$variant][$sizeWide]}
-        ${$isIconSet && inputHasIcon[$sizeWide]}
-      }
-    `};
-`;
-
-const Textarea = styled.textarea<TextareaTransientProps>`
-  ${baseInput}
-  overflow: hidden;
-  min-height: ${scale230};
-  padding-top: ${spaceM};
-  line-height: 1.25;
-  resize: vertical;
-
-  ${({ $size }) => $size && sizes[$size].input}
-  ${({ $isFilled, $hasFocus }) => ($isFilled || $hasFocus) && filledInput}
-  ${({ $isDisabled, $isFilled }) => $isDisabled && disabledInput($isFilled)}
-  ${({ $error }) => $error && errorInput}
-
-    ${({ $sizeConfined }) =>
-    $sizeConfined &&
-    css`
-      @media ${mediaConfined} {
-        ${$sizeConfined && sizes[$sizeConfined].input}
+        ${sizes[$sizeConfined].input}
       }
     `};
 
@@ -370,83 +196,166 @@ const Textarea = styled.textarea<TextareaTransientProps>`
         ${$sizeWide && sizes[$sizeWide].input}
       }
     `};
-`;
 
-const TextareaWrapper = styled.div`
-  padding: 20px 0;
-`;
+  ${({ $hasIcon }) =>
+    $hasIcon &&
+    css`
+      padding: 0 !important;
+    `}
 
-/** Icon styles */
-const baseIcon = css`
-  color: ${({ theme }) => theme.common.overBackgroundNeutral};
+  &[type="number"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  z-index: 2;
-  top: 50%;
-  left: calc(${spaceM});
-  transform: translateY(-50%);
-`;
-
-const disabledIcon = css`
-  color: ${({ theme }) => theme.common.disabledSurfaceColor};
-`;
-
-const errorIcon = css`
-  color: ${({ theme }) => theme.common.errorColor};
-`;
-const IconWrapper = styled.div<IconTransientProps>`
-  ${baseIcon}
-
-  ${({ $isDisabled }) => $isDisabled && disabledIcon}
-  ${({ $error }) => $error && errorIcon}
-`;
-
-const FormFieldContainer = styled.div`
-  position: relative;
-  width: 100%;
-`;
-
-const PasswordWrapper = styled.button`
-  color: ${({ theme }) => theme.common.overBackgroundNeutral};
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: absolute;
-  right: ${spaceM};
-  top: 50%;
-  transform: translateY(-50%);
-
-  cursor: pointer;
-
-  &:focus {
-    color: ${({ theme }) => theme.color.neutral};
-    outline: none;
+  &[type='number']::-webkit-inner-spin-button,
+  &[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
   }
 `;
+const Textarea = styled.textarea<SizeProps>`
+  width: 100%;
+  outline: none;
+  border: none;
 
-const ErrorMessageWrapper = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 0px;
+  background-color: transparent;
+
+  color: ${({ theme }) => theme.color.neutral};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.form.placeholderColor};
+  }
+  &:focus {
+    outline: none;
+  }
+  /** Size styles */
+  ${({ $size }) =>
+    $size &&
+    css`
+      ${sizes[$size].textArea}
+    `}
+
+  ${({ $sizeConfined }) =>
+    $sizeConfined &&
+    css`
+      @media ${mediaConfined} {
+        ${sizes[$sizeConfined].textArea}
+      }
+    `};
+
+  ${({ $sizeWide }) =>
+    $sizeWide &&
+    css`
+      @media ${mediaWide} {
+        ${$sizeWide && sizes[$sizeWide].textArea}
+      }
+    `};
 `;
 
-const ErrorCaption = styled(Caption)`
-  color: ${({ theme }) => theme.common.errorColor};
+const HelperText = styled.span<SizeProps & WithError>`
+  color: ${({ $error, theme }) =>
+    $error ? theme.form.errorColor : theme.form.neutralColor};
+  /** Size styles */
+  ${({ $size }) =>
+    $size &&
+    css`
+      ${sizes[$size].helperText}
+    `}
+  ${({ $sizeConfined }) =>
+    $sizeConfined &&
+    css`
+      @media ${mediaConfined} {
+        ${sizes[$sizeConfined].helperText}
+      }
+    `};
+
+  ${({ $sizeWide }) =>
+    $sizeWide &&
+    css`
+      @media ${mediaWide} {
+        ${$sizeWide && sizes[$sizeWide].helperText}
+      }
+    `};
+`;
+
+const Label = styled.p<SizeProps>`
+  margin-bottom: ${spaceXXS};
+  padding: 0;
+  font-size: ${scale070};
+  color: ${({ theme }) => theme.form.neutralColor};
+  /* font-weight: 500; */
+
+  /** Size styles */
+  ${({ $size }) =>
+    $size &&
+    css`
+      ${sizes[$size].label}
+    `}
+
+  ${({ $sizeConfined }) =>
+    $sizeConfined &&
+    css`
+      @media ${mediaConfined} {
+        ${sizes[$sizeConfined].label}
+      }
+    `};
+
+  ${({ $sizeWide }) =>
+    $sizeWide &&
+    css`
+      @media ${mediaWide} {
+        ${$sizeWide && sizes[$sizeWide].label}
+      }
+    `};
+`;
+
+const IconContainer = styled.button<IconContainerProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: ${({ theme }) => theme.form.neutralColor};
+
+  ${({ $isClickable }) =>
+    $isClickable &&
+    css`
+      cursor: pointer;
+      &:hover {
+        color: ${({ theme }) => theme.color.neutral};
+      }
+    `}
+
+  /** Size styles */
+  ${({ $size }) =>
+    $size &&
+    css`
+      ${sizes[$size].indicator}
+    `}
+
+  ${({ $sizeConfined }) =>
+    $sizeConfined &&
+    css`
+      @media ${mediaConfined} {
+        ${sizes[$sizeConfined].indicator}
+      }
+    `};
+
+  ${({ $sizeWide }) =>
+    $sizeWide &&
+    css`
+      @media ${mediaWide} {
+        ${$sizeWide && sizes[$sizeWide].indicator}
+      }
+    `};
 `;
 
 export const Styled = {
-  FormFieldContainer,
+  Container,
+  InputContainer,
+  IconContainer,
   Input,
-  Label,
   Textarea,
-  TextareaWrapper,
-  IconWrapper,
-  ErrorMessageWrapper,
-  ErrorCaption,
-  PasswordWrapper,
+  Label,
+  HelperText,
 };

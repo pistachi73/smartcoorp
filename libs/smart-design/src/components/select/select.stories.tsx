@@ -9,15 +9,14 @@ import {
   Title,
 } from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
-import { Button } from '../button';
-
+import { RHFSelect } from './rhf-select';
 import { Select } from './select';
 import type { SelectOptions, SelectProps } from './select.types';
 
 export default {
-  title: 'Component/Select',
+  title: 'Form/Select',
   component: Select,
   parameters: {
     docs: {
@@ -75,26 +74,21 @@ const Template: StoryFn<SelectProps> = (args) => {
   ];
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Controller
+      <RHFSelect
         control={control}
         name="single-select"
         rules={{ required: 'This field is required' }}
-        render={({ field, fieldState: { error } }) => (
-          <Select
-            isDisabled={args?.isDisabled}
-            isError={args?.isError ? args?.isError : Boolean(error)}
-            helperText={error ? error?.message : args.helperText}
-            label={args.label}
-            options={options}
-            isMulti={args.isMulti}
-            size={args.size}
-            placeholder={args.placeholder}
-            sizeConfined={args.sizeConfined}
-            sizeWide={args.sizeWide}
-            {...field}
-          />
-        )}
-      ></Controller>
+        defaultValue={args.isMulti ? ['mentor'] : 'mentor'}
+        isDisabled={args?.isDisabled}
+        helperText={args?.helperText}
+        label={args.label}
+        options={options}
+        isMulti={args.isMulti}
+        size={args.size}
+        placeholder={args.placeholder}
+        sizeConfined={args.sizeConfined}
+        sizeWide={args.sizeWide}
+      />
     </form>
   );
 };

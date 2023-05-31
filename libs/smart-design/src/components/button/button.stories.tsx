@@ -9,7 +9,6 @@ import {
   Title,
 } from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
-import React from 'react';
 import { IoBarChartSharp } from 'react-icons/io5';
 import styled from 'styled-components';
 

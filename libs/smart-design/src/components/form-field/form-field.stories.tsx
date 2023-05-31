@@ -9,17 +9,18 @@ import {
   Title,
 } from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
-import React, { ChangeEvent, useState } from 'react';
-import { IoCaretUpCircle } from 'react-icons/io5';
+import { useForm } from 'react-hook-form';
 
-import { iconArgs, noCanvas, setPropDocumentation } from '../../helpers';
+import { iconArgs } from '../../helpers';
+import { Button } from '../button';
 
-import { FormField as FormFieldComponent } from './form-field';
-import { FormFieldSize } from './form-field.types';
+import { FormField } from './form-field';
+import { FormFieldProps } from './form-field.types';
+import { RHFFormField } from './rhf-form-field';
 
 export default {
-  title: 'Component/FormField',
-  component: FormFieldComponent,
+  title: 'Form/Form Field',
+  component: FormField,
   parameters: {
     docs: {
       page: () => (
@@ -48,187 +49,98 @@ export default {
     theme: { table: { disable: true } },
     as: { table: { disable: true } },
     forwardedAs: { table: { disable: true } },
-    onChange: { table: { disable: true } },
-    onBlur: { table: { disable: true } },
-    onFocus: { table: { disable: true } },
-    innerRef: { table: { disable: true } },
     icon: iconArgs,
-    size: setPropDocumentation({ control: 'inline-radio' }),
-    sizeConfined: setPropDocumentation({ control: 'inline-radio' }),
-    sizeWide: setPropDocumentation({ control: 'inline-radio' }),
   },
-} as Meta<typeof FormFieldComponent>;
+} as Meta<FormFieldProps>;
 
-const Template: StoryFn<typeof FormFieldComponent> = ({
-  id,
-  label,
-  size,
-  error,
-  errorMessage,
-  icon: Icon,
-  sizeConfined,
-  sizeWide,
-  variant,
-  multiline,
-  disabled,
-  value: templateValue,
-}) => {
-  const [value, setValue] = useState<string>('');
+const Template: StoryFn<FormFieldProps> = (args) => {
+  const { control, handleSubmit } = useForm<{
+    input: string | number;
+  }>({});
+
+  const onSubmit = (data: any) => console.log(data);
 
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    <FormFieldComponent
-      value={templateValue ?? value}
-      id={`${size}_${id}`}
-      label={label}
-      size={size as FormFieldSize}
-      error={error}
-      errorMessage={errorMessage}
-      icon={Icon}
-      sizeWide={sizeWide}
-      sizeConfined={sizeConfined}
-      variant={variant}
-      multiline={multiline}
-      disabled={disabled}
-      onChange={(e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
-    />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <RHFFormField
+        control={control}
+        name="input"
+        rules={{
+          required: 'This field is required',
+        }}
+        label={args?.label}
+        icon={args?.icon}
+        placeholder="Type something..."
+        defaultValue={args?.defaultValue}
+        isMultiline={args?.isMultiline}
+        isDisabled={args?.isDisabled}
+        isError={args?.isError}
+        helperText={args.helperText}
+        type={args?.type}
+        size={args?.size}
+        sizeConfined={args?.sizeConfined}
+        sizeWide={args?.sizeWide}
+      />
+
+      <Button style={{ marginTop: '20px' }} type="submit">
+        Submit
+      </Button>
+    </form>
   );
 };
 
 export const Default = {
   render: Template,
-
   args: {
-    label: 'Default label',
-    id: 'default',
-    size: 'medium',
+    label: 'Form field Label',
+    helperText: 'Helper text',
   },
 };
 
-export const WithValueDisabled = {
+export const Multiline = {
   render: Template,
-
   args: {
-    label: 'Default label',
-    id: 'disabled',
-    size: 'medium',
-    value: 'I am disabled',
-    disabled: true,
-  },
-
-  parameters: {
-    ...noCanvas,
-    docs: {
-      description: {
-        story:
-          '`FormField` component **primary** variant with **value** and **disabled**.',
-      },
-    },
+    label: 'Form field Label',
+    isMultiline: true,
   },
 };
 
-export const WithIcon = {
+export const Disabled = {
   render: Template,
-
   args: {
-    label: 'With Icon',
-    id: 'wIcon',
-    size: 'medium',
-    icon: IoCaretUpCircle,
-  },
-
-  parameters: {
-    ...noCanvas,
-    docs: {
-      description: {
-        story: '`FormField` component **primary** variant with **Icon**.',
-      },
-    },
+    label: 'Form field Label',
+    isDisabled: true,
   },
 };
 
-export const WithError = {
+export const Error = {
   render: Template,
-
   args: {
-    label: 'With Error',
-    id: 'wError',
-    size: 'medium',
-    error: true,
-    errorMessage: 'this is an error message',
-  },
-
-  parameters: {
-    ...noCanvas,
-    docs: {
-      description: {
-        story: '`FormField` component **primary** variant with **Error**.',
-      },
-    },
+    label: 'Form field Label',
+    isError: true,
   },
 };
 
-export const WithErrorAndIcon = {
+export const Number = {
   render: Template,
-
   args: {
-    label: 'With Error',
-    id: 'wErrorIcon',
-    size: 'medium',
-    error: true,
-    errorMessage: 'this is an error message',
-    icon: IoCaretUpCircle,
+    label: 'Form field Label',
+    type: 'number',
   },
-
-  parameters: {
-    ...noCanvas,
-    docs: {
-      description: {
-        story:
-          '`FormField` component **primary** variant with **Error** and **Icon**.',
-      },
-    },
+};
+export const WithTextDefaultValue = {
+  render: Template,
+  args: {
+    label: 'Form field Label',
+    defaultValue: 'Default value',
   },
 };
 
-export const Password = {
+export const WithNumberDefaultValue = {
   render: Template,
-
   args: {
-    label: 'Password variant',
-    id: 'passwordVariuant',
-    size: 'medium',
-    variant: 'password',
-  },
-
-  parameters: {
-    ...noCanvas,
-    docs: {
-      description: {
-        story: '`FormField` component **password** variant.',
-      },
-    },
-  },
-};
-
-export const Textarea = {
-  render: Template,
-
-  args: {
-    label: 'Add your message here',
-    id: 'multiline',
-    size: 'medium',
-    multiline: true,
-  },
-
-  parameters: {
-    ...noCanvas,
-    docs: {
-      description: {
-        story:
-          '`FormField` **textarea** component. Used for large multiline blocks of texts like descriptions, messages etc...',
-      },
-    },
+    label: 'Form field Label',
+    defaultValue: 2,
+    type: 'number',
   },
 };

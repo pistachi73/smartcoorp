@@ -19,7 +19,7 @@ import { Row } from '../row';
 import { Grid } from '.';
 
 export default {
-  title: 'Layout/Grid',
+  title: 'Component/Grid',
   component: Grid,
   parameters: {
     docs: {

@@ -79,15 +79,6 @@ export const lightTheme: ThemeType = {
     },
   },
 
-  select: {
-    selectItem: {
-      hoverBackgroundColor: gray200,
-      focusBackgroundColor: gray300,
-      selectedBackgroundColor: primary100,
-      selectedHoverBackgroundColor: primary200,
-    },
-  },
-
   modal: {
     backgroundColor: `rgba(${gray900_RGBA}, 0.75)`,
   },
@@ -107,25 +98,27 @@ export const lightTheme: ThemeType = {
     contentParagraphColor: gray200,
     contentSpanColor: gray400,
   },
-  singleSelect: {
-    disabledColor: gray300,
-    unSelectedColor: gray400,
-    selectedColor: 'black',
-    errorColor: red500,
-    selectedItemColor: primary100,
-    triggerHoverColor: gray100,
-    groupDividerColor: gray200,
-    groupLabelColor: gray400,
-  },
-  multipleSelect: {
-    selectedValueBackgroundColor: primary200,
-    selectedValueTextColor: primary800,
-    deleteValueHoverBackgroundColor: primary400,
-  },
+
   scrollArea: {
     thumbColor: gray300,
     scrollbarBackgroundHover: gray200,
     scrollbarBackground: gray100,
+  },
+
+  form: {
+    neutralColor: gray400,
+    placeholderColor: gray300,
+    hoverColor: gray100,
+    errorColor: red500,
+    select: {
+      selectedItemColor: primary100,
+      groupDividerColor: gray200,
+    },
+    multipleSelect: {
+      selectedValueBackgroundColor: primary200,
+      selectedValueTextColor: primary800,
+      deleteValueHoverBackgroundColor: primary400,
+    },
   },
 };
 
@@ -169,14 +162,6 @@ export const darkTheme: ThemeType = {
       hoverBackgroundColor: gray700,
     },
   },
-  select: {
-    selectItem: {
-      hoverBackgroundColor: gray700,
-      focusBackgroundColor: gray600,
-      selectedBackgroundColor: primary800,
-      selectedHoverBackgroundColor: primary700,
-    },
-  },
 
   modal: {
     backgroundColor: `rgba(${gray800_RGBA}, 0.80)`,
@@ -195,25 +180,26 @@ export const darkTheme: ThemeType = {
     contentParagraphColor: gray800,
     contentSpanColor: gray600,
   },
-  singleSelect: {
-    disabledColor: gray700,
-    unSelectedColor: gray600,
-    selectedColor: 'white',
-    errorColor: red500,
-    selectedItemColor: primary800,
-    triggerHoverColor: gray800,
-    groupDividerColor: gray700,
-    groupLabelColor: gray600,
-  },
 
-  multipleSelect: {
-    selectedValueBackgroundColor: primary800,
-    selectedValueTextColor: primary200,
-    deleteValueHoverBackgroundColor: primary700,
-  },
   scrollArea: {
     thumbColor: gray600,
     scrollbarBackgroundHover: gray700,
     scrollbarBackground: gray800,
+  },
+
+  form: {
+    neutralColor: gray500,
+    placeholderColor: gray600,
+    hoverColor: gray800,
+    errorColor: red500,
+    select: {
+      selectedItemColor: primary800,
+      groupDividerColor: gray700,
+    },
+    multipleSelect: {
+      selectedValueBackgroundColor: primary800,
+      selectedValueTextColor: primary200,
+      deleteValueHoverBackgroundColor: primary700,
+    },
   },
 };
