@@ -1,4 +1,4 @@
-export type ContainerProps = {
+export type WidthLimiterProps = {
   /** Content of the Container */
   children: React.ReactNode;
   /** Add custom css to component */

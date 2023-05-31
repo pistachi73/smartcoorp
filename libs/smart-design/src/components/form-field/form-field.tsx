@@ -1,143 +1,163 @@
-import React, { FC } from 'react';
-import { BiHide, BiShow } from 'react-icons/bi';
+import React, { forwardRef } from 'react';
+import { BiHide, BiMinus, BiPlus, BiShow } from 'react-icons/bi';
 
-import { Styled } from './form-field.styles';
-import { FormFieldProps } from './form-field.types';
+import { Styled as S } from './form-field.styles';
+import type { FormFieldProps } from './form-field.types';
 
-export const FormField: FC<FormFieldProps> = React.forwardRef(
+export const FormField = forwardRef<
+  HTMLInputElement | HTMLTextAreaElement,
+  FormFieldProps
+>(
   (
     {
-      disabled,
-      error,
-      errorMessage,
-      success,
-      id,
+      helperText,
+      placeholder,
+      isDisabled,
+      isError,
       icon: Icon,
       label = '',
-      multiline,
-      onBlur,
-      onChange,
-      onFocus,
       size = 'medium',
       sizeConfined,
       sizeWide,
-      variant = 'primary',
-      value = '',
-      type,
+      isMultiline,
+      type = 'text',
+      onChange,
+      onFocus,
+      onBlur,
       ...props
     },
     ref?: React.Ref<HTMLElement>
   ) => {
-    const [hasFocus, setHasFocus] = React.useState(false);
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
-    const handleFocus = (e: any) => {
-      setHasFocus(true);
-      onFocus && onFocus(e);
-    };
-
-    const handleBlur = (e: any) => {
-      setHasFocus(false);
-      onBlur && onBlur(e);
-    };
-
+    const inputId = React.useMemo(
+      () => `input-${Math.random().toString(36).substr(2, 9)}`,
+      []
+    );
     const handlePasswordSwitch = () => {
-      document.getElementById(id)?.focus();
+      document.getElementById(inputId)?.focus();
+
       setShowPassword(!showPassword);
     };
 
-    const isFilled = typeof value === 'number' ? value != 0 : value.length > 0;
-    const iconSize = size === 'small' ? 16 : 18;
-    const passwordVariantType = showPassword ? 'text' : 'password';
-    const inputType = variant === 'password' ? passwordVariantType : type;
+    const handleNumberChange = (type: 'add' | 'minus') => () => {
+      const input = document.getElementById(inputId) as HTMLInputElement;
+      onChange(Number(input.value) + (type === 'add' ? 1 : -1));
+    };
+
+    const iconSize = 14;
+    const passwordType = showPassword ? 'text' : 'password';
+    const inputType = type === 'password' ? passwordType : type;
 
     return (
-      <Styled.FormFieldContainer>
-        {Icon && (
-          <Styled.IconWrapper
-            $isDisabled={disabled}
-            $isFilled={isFilled}
-            $hasFocus={hasFocus}
-            $error={error}
-          >
-            <Icon size={iconSize} />
-          </Styled.IconWrapper>
-        )}
-        {multiline ? (
-          <Styled.Textarea
-            ref={ref}
-            $error={error}
-            $isDisabled={disabled}
-            $isFilled={isFilled}
-            $hasFocus={hasFocus}
-            $isIconSet={Boolean(Icon)}
-            $size={size}
-            $sizeConfined={sizeConfined}
-            $sizeWide={sizeWide}
-            $success={success}
-            data-xds="FormField"
-            disabled={disabled}
-            id={id}
-            onBlur={handleBlur}
-            onChange={onChange}
-            onFocus={handleFocus}
-            value={value}
-            {...props}
-          ></Styled.Textarea>
-        ) : (
-          <Styled.Input
-            ref={ref}
-            $error={error}
-            $isDisabled={disabled}
-            $isFilled={isFilled}
-            $hasFocus={hasFocus}
-            $isIconSet={Boolean(Icon)}
-            $size={size}
-            $sizeConfined={sizeConfined}
-            $sizeWide={sizeWide}
-            $success={success}
-            data-xds="FormField"
-            disabled={disabled}
-            id={id}
-            onBlur={handleBlur}
-            onChange={onChange}
-            onFocus={handleFocus}
-            value={value}
-            $variant={variant}
-            type={inputType}
-            {...props}
-          />
-        )}
+      <S.Container $disabled={isDisabled}>
         {label && (
-          <Styled.Label
-            $error={error}
-            $hasFocus={hasFocus}
-            $isDisabled={disabled}
-            $isFilled={isFilled}
-            $isIconSet={Boolean(Icon)}
+          <S.Label
             $size={size}
-            $multiline={multiline}
             $sizeConfined={sizeConfined}
             $sizeWide={sizeWide}
-            htmlFor={id}
           >
             {label}
-          </Styled.Label>
+          </S.Label>
         )}
-        {variant === 'password' && !multiline && (
-          <Styled.PasswordWrapper
-            data-testid="formfield-password-switch"
-            onClick={handlePasswordSwitch}
+        <S.InputContainer
+          forwardedAs={'button'}
+          type="button"
+          $size={size}
+          $sizeConfined={sizeConfined}
+          $sizeWide={sizeWide}
+          $error={isError}
+        >
+          {inputType === 'number' ? (
+            <S.IconContainer
+              forwardedAs={'button'}
+              type="button"
+              $size={size}
+              $sizeConfined={sizeConfined}
+              $sizeWide={sizeWide}
+              $isClickable
+              onClick={handleNumberChange('minus')}
+            >
+              <BiMinus size={iconSize} />
+            </S.IconContainer>
+          ) : null}
+          {Icon && (
+            <S.IconContainer
+              $size={size}
+              $sizeConfined={sizeConfined}
+              $sizeWide={sizeWide}
+            >
+              <Icon size={iconSize} />
+            </S.IconContainer>
+          )}
+          {isMultiline ? (
+            <S.Textarea
+              ref={ref as React.Ref<HTMLTextAreaElement>}
+              placeholder={placeholder}
+              disabled={isDisabled}
+              $size={size}
+              $sizeConfined={sizeConfined}
+              $sizeWide={sizeWide}
+              onChange={onChange}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              {...props}
+            />
+          ) : (
+            <S.Input
+              id={inputId}
+              ref={ref as React.Ref<HTMLInputElement>}
+              placeholder={placeholder}
+              type={inputType}
+              disabled={isDisabled}
+              $size={size}
+              $sizeConfined={sizeConfined}
+              $sizeWide={sizeWide}
+              $hasIcon={!!Icon || inputType === 'number'}
+              onChange={onChange}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              {...props}
+            ></S.Input>
+          )}
+          {type === 'password' && !isMultiline && (
+            <S.IconContainer
+              forwardedAs={'button'}
+              type="button"
+              onClick={handlePasswordSwitch}
+              $size={size}
+              $sizeConfined={sizeConfined}
+              $sizeWide={sizeWide}
+              $isClickable
+            >
+              {showPassword ? <BiShow size={18} /> : <BiHide size={18} />}
+            </S.IconContainer>
+          )}
+          {inputType === 'number' ? (
+            <S.IconContainer
+              forwardedAs={'button'}
+              type="button"
+              $size={size}
+              $sizeConfined={sizeConfined}
+              $sizeWide={sizeWide}
+              $isClickable
+              onClick={handleNumberChange('add')}
+            >
+              <BiPlus size={iconSize} />
+            </S.IconContainer>
+          ) : null}
+        </S.InputContainer>
+        {helperText && (
+          <S.HelperText
+            $error={isError}
+            $size={size}
+            $sizeConfined={sizeConfined}
+            $sizeWide={sizeWide}
           >
-            {showPassword ? <BiShow size={18} /> : <BiHide size={18} />}
-          </Styled.PasswordWrapper>
+            {helperText}
+          </S.HelperText>
         )}
-        {error && errorMessage && (
-          <Styled.ErrorMessageWrapper>
-            <Styled.ErrorCaption noMargin>{errorMessage}</Styled.ErrorCaption>
-          </Styled.ErrorMessageWrapper>
-        )}
-      </Styled.FormFieldContainer>
+      </S.Container>
     );
   }
 );

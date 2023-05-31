@@ -35,35 +35,6 @@ interface Menu {
   menuItem: MenuItem;
 }
 
-/** Select interface */
-type SelectItem = {
-  hoverBackgroundColor: string;
-  focusBackgroundColor: string;
-  selectedBackgroundColor: string;
-  selectedHoverBackgroundColor: string;
-};
-interface Select {
-  selectItem: SelectItem;
-}
-
-/** SingleSelect interface */
-interface SingleSelect {
-  unSelectedColor: string;
-  selectedColor: string;
-  disabledColor: string;
-  errorColor: string;
-  selectedItemColor: string;
-  triggerHoverColor: string;
-  groupDividerColor: string;
-  groupLabelColor: string;
-}
-
-/** MultipleSelect specific interface   */
-interface MultipleSelect {
-  selectedValueBackgroundColor: string;
-  selectedValueTextColor: string;
-  deleteValueHoverBackgroundColor: string;
-}
 /** Modal interface */
 interface Modal {
   backgroundColor: string;
@@ -93,6 +64,22 @@ interface ScrollArea {
   scrollbarBackgroundHover: string;
 }
 
+interface Form {
+  hoverColor: string;
+  placeholderColor: string;
+  neutralColor: string;
+  errorColor: string;
+  select: {
+    selectedItemColor: string;
+    groupDividerColor: string;
+  };
+  multipleSelect: {
+    selectedValueBackgroundColor: string;
+    selectedValueTextColor: string;
+    deleteValueHoverBackgroundColor: string;
+  };
+}
+
 export interface ThemeType {
   color: ColorType;
   backgroundScreen: string;
@@ -112,11 +99,9 @@ export interface ThemeType {
   };
 
   menu: Menu;
-  select: Select;
   modal: Modal;
   postEditor: PostEditor;
   tooltip: Tooltip;
-  singleSelect: SingleSelect;
-  multipleSelect: MultipleSelect;
   scrollArea: ScrollArea;
+  form: Form;
 }

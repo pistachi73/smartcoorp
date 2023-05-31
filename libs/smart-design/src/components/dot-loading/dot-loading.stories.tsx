@@ -4,19 +4,19 @@ import {
   PRIMARY_STORY,
   Primary,
   Source,
+  Stories,
   Subtitle,
   Title,
 } from '@storybook/addon-docs';
-import { Meta, StoryFn } from '@storybook/react';
-import React from 'react';
+import { Meta } from '@storybook/react';
 
 import { noCanvas } from '../../helpers';
 
-import { DotLoading as DotLoadingComponent } from './dot-loading';
+import { DotLoading } from './dot-loading';
 
 export default {
   title: 'Component/Dot Loading',
-  component: DotLoadingComponent,
+  component: DotLoading,
   parameters: {
     docs: {
       page: () => (
@@ -40,6 +40,7 @@ export default {
           <Description>###Example</Description>
           <Primary />
           <ArgsTable story={PRIMARY_STORY} />
+          <Stories title="References" />
         </>
       ),
     },
@@ -49,14 +50,30 @@ export default {
     as: { table: { disable: true } },
     forwardedAs: { table: { disable: true } },
   },
-} as Meta<typeof DotLoadingComponent>;
+} as Meta<typeof DotLoading>;
 
-export const DotLoading = {
+export const Default = {
   args: {
     size: 'medium',
   },
 
   parameters: {
     ...noCanvas,
+  },
+};
+
+export const Disabled = {
+  args: {
+    size: 'medium',
+    disabled: true,
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        // Write a description for the story here.
+        story: '**Disabled** state of the component',
+      },
+    },
   },
 };

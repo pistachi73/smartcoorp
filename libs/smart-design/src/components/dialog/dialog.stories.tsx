@@ -18,7 +18,7 @@ import { Headline } from '../headline/headline';
 import { Dialog, DialogContent, DialogTrigger } from './dialog';
 
 export default {
-  title: 'Layout/Dialog',
+  title: 'Component/Dialog',
   component: Dialog,
   subcomponents: { DialogContent, DialogTrigger },
   parameters: {

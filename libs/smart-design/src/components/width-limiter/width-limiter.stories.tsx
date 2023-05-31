@@ -13,26 +13,27 @@ import React from 'react';
 
 import { Hero } from '../hero';
 
-import { Container as ContainerComponent } from './container';
+import { WidthLimiter } from './width-limiter';
+import type { WidthLimiterProps } from './width-limiter.types';
 
 export default {
-  title: 'Layout/Container',
-  component: ContainerComponent,
+  title: 'Component/Width Limiter',
+  component: WidthLimiter,
   parameters: {
     docs: {
       page: () => (
         <>
-          <Title>Container</Title>
-          <Subtitle>Container Component</Subtitle>
+          <Title>Width Limiter</Title>
+          <Subtitle>Width Limiter Component</Subtitle>
           <Description>##Overview</Description>
           <Description>
-            `Container` component is used to set `max-width` and left/right
+            `WidthLimiter` component is used to set `max-width` and left/right
             paddings for content
           </Description>
           <Description>##Usage</Description>
           <Source
             language="js"
-            code={`import { Container } from @smart-design/components`}
+            code={`import { WidthLimiter } from @smart-design/components`}
           />
           <Description>###Example</Description>
           <Primary />
@@ -43,15 +44,15 @@ export default {
     },
   },
   argTypes: {},
-} as Meta<typeof ContainerComponent>;
+} as Meta<WidthLimiterProps>;
 
-const Template: StoryFn<typeof ContainerComponent> = (args) => (
-  <ContainerComponent {...args}>
+const Template: StoryFn<WidthLimiterProps> = (args) => (
+  <WidthLimiter {...args}>
     <div style={{ backgroundColor: 'lightblue' }}>{args.children}</div>
-  </ContainerComponent>
+  </WidthLimiter>
 );
 
-export const Container = {
+export const Default = {
   render: Template,
 
   args: {

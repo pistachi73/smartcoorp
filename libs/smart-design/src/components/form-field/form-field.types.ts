@@ -1,17 +1,20 @@
-import { Styled, sizes, variants } from './form-field.styles';
+import { sizes } from './form-field.styles';
 
 export type FormFieldSize = keyof typeof sizes;
-export type FormFieldVariant = keyof typeof variants;
 
 type CommonProps = {
+  /** Ref object */
+  innerRef?: any;
+  /** Formfield placeholder */
+  placeholder?: string;
+  /** FormField type */
+  type?: HTMLInputElement['type'];
   /** Disable the input or textarea */
-  disabled?: boolean;
+  isDisabled?: boolean;
   /** Set error state */
-  error?: boolean;
-  /** Set error message */
-  errorMessage?: string;
-  /** The id attribute of the input or textarea */
-  id: string;
+  isError?: boolean;
+  /** Form field helper text */
+  helperText?: string;
   /** The label attribute for the input element */
   label?: string;
   /** The size on mobile screens or larger */
@@ -20,46 +23,32 @@ type CommonProps = {
   sizeConfined?: FormFieldSize;
   /** The size on desktop screens or larger */
   sizeWide?: FormFieldSize;
-  /** Set success state */
-  success?: boolean;
-  /** The value attribute of the input or textarea */
-  value?: string;
+  /** The defaultValue of the input */
+  defaultValue?: string | number;
+  /** Add leading icon */
+  icon?: React.FC<{ size: number }>;
+  /** @callback */
+  onBlur?: (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  /** @callback */
+  onChange: (val: any) => void;
+  /** @callback */
+  onFocus?: (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 };
 
-type InputProps = React.ComponentProps<typeof Styled.Input> &
-  CommonProps & {
-    /** Set FromField Variant */
-    variant?: FormFieldVariant;
-    /** Add leading icon */
-    icon?: React.FC<{ size: number }>;
-    /** Ref object */
-    innerRef?: React.RefObject<typeof Styled.Input>;
-    /** Render a textarea */
-    multiline?: never;
-    /** @callback */
-    onBlur?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-    /** @callback */
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    /** @callback */
-    onFocus?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  };
+type InputProps = CommonProps & {
+  /** FormField type */
+  type?: HTMLInputElement['type'];
+  /** Render a textarea */
+  isMultiline?: never;
+};
 
-type TextareaProps = React.ComponentProps<typeof Styled.Textarea> &
-  CommonProps & {
-    /** Set FromField Variant */
-    variant?: never;
-    /** Add leading icon */
-    icon?: never;
-    /** Ref object */
-    innerRef?: React.RefObject<typeof Styled.Textarea>;
-    /** Render a textarea */
-    multiline?: boolean;
-    /** @callback */
-    onBlur?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-    /** @callback */
-    onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-    /** @callback */
-    onFocus?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-  };
+type TextareaProps = CommonProps & {
+  /** Render a textarea */
+  isMultiline?: boolean;
+};
 
 export type FormFieldProps = InputProps | TextareaProps;

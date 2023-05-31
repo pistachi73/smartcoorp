@@ -16,11 +16,12 @@ import { Button } from '../button';
 import { Caption } from '../caption/caption';
 import { Headline } from '../headline';
 
-import { Tooltip as TooltipComponent } from './tooltip';
+import { Tooltip } from './tooltip';
+import type { TooltipProps } from './tooltip.types';
 
 export default {
   title: 'Component/Tooltip',
-  component: TooltipComponent,
+  component: Tooltip,
   parameters: {
     docs: {
       page: () => (
@@ -51,12 +52,12 @@ export default {
     as: { table: { disable: true } },
     forwardedAs: { table: { disable: true } },
   },
-} as Meta<typeof TooltipComponent>;
+} as Meta<TooltipProps>;
 
-const Template: StoryFn<typeof TooltipComponent> = (args) => {
+const Template: StoryFn<TooltipProps> = (args) => {
   const [open, setOpen] = useState(false);
   return (
-    <TooltipComponent
+    <Tooltip
       {...args}
       open={open}
       onOpenChange={setOpen}
@@ -78,7 +79,7 @@ const Template: StoryFn<typeof TooltipComponent> = (args) => {
   );
 };
 
-export const Tooltip = {
+export const Default = {
   render: Template,
 
   args: {
