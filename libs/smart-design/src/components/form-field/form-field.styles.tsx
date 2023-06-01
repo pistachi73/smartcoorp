@@ -279,7 +279,7 @@ const HelperText = styled.span<SizeProps & WithError>`
     `};
 `;
 
-const Label = styled.p<SizeProps>`
+const Label = styled.label<SizeProps>`
   margin-bottom: ${spaceXXS};
   padding: 0;
   font-size: ${scale070};

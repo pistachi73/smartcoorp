@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import { BiHide, BiMinus, BiPlus, BiShow } from 'react-icons/bi';
+import { v4 as uuid } from 'uuid';
 
 import { Styled as S } from './form-field.styles';
 import type { FormFieldProps } from './form-field.types';
@@ -10,6 +11,7 @@ export const FormField = forwardRef<
 >(
   (
     {
+      id,
       helperText,
       placeholder,
       isDisabled,
@@ -30,10 +32,8 @@ export const FormField = forwardRef<
   ) => {
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
-    const inputId = React.useMemo(
-      () => `input-${Math.random().toString(36).substr(2, 9)}`,
-      []
-    );
+    const inputId = id ?? uuid();
+
     const handlePasswordSwitch = () => {
       document.getElementById(inputId)?.focus();
 
@@ -53,6 +53,7 @@ export const FormField = forwardRef<
       <S.Container $disabled={isDisabled}>
         {label && (
           <S.Label
+            htmlFor={inputId}
             $size={size}
             $sizeConfined={sizeConfined}
             $sizeWide={sizeWide}
