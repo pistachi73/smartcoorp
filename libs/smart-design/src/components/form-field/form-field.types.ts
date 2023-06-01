@@ -3,6 +3,8 @@ import { sizes } from './form-field.styles';
 export type FormFieldSize = keyof typeof sizes;
 
 type CommonProps = {
+  /** Id */
+  id?: string;
   /** Ref object */
   innerRef?: any;
   /** Formfield placeholder */
