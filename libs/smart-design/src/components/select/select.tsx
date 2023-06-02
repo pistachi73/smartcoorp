@@ -6,7 +6,7 @@ import { Option, SelectProps, isOption } from './select.types';
 export const Select = forwardRef<any, SelectProps>(
   (
     {
-      placeholder,
+      placeholder = '',
       value,
       label,
       defaultValue,

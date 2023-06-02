@@ -7,8 +7,6 @@ import {
   mediaWide,
   motionEasingStandard,
   motionTimeXS,
-  primary,
-  primary_RGBA,
   scale050,
   scale060,
   scale070,
@@ -21,12 +19,12 @@ import {
   spaceXXS,
 } from '../../tokens';
 
-import { FormFieldSize } from './form-field.types';
+import { DatePickerSize } from './date-picker.types';
 
 interface SizeProps {
-  $size: FormFieldSize;
-  $sizeConfined?: FormFieldSize;
-  $sizeWide?: FormFieldSize;
+  $size: DatePickerSize;
+  $sizeConfined?: DatePickerSize;
+  $sizeWide?: DatePickerSize;
 }
 
 interface InputProps extends SizeProps {
@@ -37,30 +35,17 @@ type WithError = {
   $error?: boolean;
 };
 
-interface IconContainerProps extends SizeProps {
-  $isClickable?: boolean;
-}
-
 export const sizes = {
   small: {
     container: css`
       min-height: ${scale140};
-    `,
-    input: css`
-      padding: ${spaceXXS} ${spaceM};
-      font-size: ${scale070};
-    `,
-    textArea: css`
-      padding: ${spaceS};
-      font-size: ${scale070};
-      min-height: ${scale230};
     `,
 
     label: css`
       font-size: ${scale060};
     `,
     placeholder: css`
-      font-size: ${scale060};
+      font-size: ${scale070};
     `,
 
     helperText: css`
@@ -85,7 +70,7 @@ export const sizes = {
       min-height: ${scale230};
     `,
     placeholder: css`
-      font-size: ${scale050};
+      font-size: ${scale080};
     `,
 
     label: css`
@@ -101,9 +86,9 @@ export const sizes = {
   },
 };
 
-export const Container = styled.div<{ $disabled?: boolean }>`
+export const Container = styled.button<{ $disabled?: boolean }>`
   position: relative;
-
+  width: 100%;
   ${({ $disabled }) =>
     $disabled &&
     css`
@@ -126,6 +111,9 @@ export const InputContainer = styled.div<SizeProps & WithError>`
   transition-property: background-color;
   transition-duration: ${motionTimeXS};
   transition-timing-function: ${motionEasingStandard};
+
+  color: ${({ theme }) => theme.color.neutral};
+
   /** Size styles */
   ${({ $size }) =>
     $size &&
@@ -164,18 +152,8 @@ export const InputContainer = styled.div<SizeProps & WithError>`
   }
 `;
 
-const Input = styled.input<InputProps>`
-  width: 100%;
-  outline: none;
-  border: none;
-
-  background-color: transparent;
-
-  color: ${({ theme }) => theme.color.neutral};
-
-  &::placeholder {
-    color: ${({ theme }) => theme.form.placeholderColor};
-  }
+const Placeholder = styled.span<SizeProps>`
+  color: ${({ theme }) => theme.form.placeholderColor};
   &:focus {
     outline: none;
   }
@@ -183,14 +161,14 @@ const Input = styled.input<InputProps>`
   ${({ $size }) =>
     $size &&
     css`
-      ${sizes[$size].input}
+      ${sizes[$size].placeholder}
     `}
 
   ${({ $sizeConfined }) =>
     $sizeConfined &&
     css`
       @media ${mediaConfined} {
-        ${sizes[$sizeConfined].input}
+        ${sizes[$sizeConfined].placeholder}
       }
     `};
 
@@ -198,62 +176,7 @@ const Input = styled.input<InputProps>`
     $sizeWide &&
     css`
       @media ${mediaWide} {
-        ${$sizeWide && sizes[$sizeWide].input}
-      }
-    `};
-
-  ${({ $hasIcon }) =>
-    $hasIcon &&
-    css`
-      padding: 0 !important;
-    `}
-
-  &[type="number"] {
-    -webkit-appearance: textfield;
-    -moz-appearance: textfield;
-    appearance: textfield;
-  }
-
-  &[type='number']::-webkit-inner-spin-button,
-  &[type='number']::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-  }
-`;
-const Textarea = styled.textarea<SizeProps>`
-  width: 100%;
-  outline: none;
-  border: none;
-
-  background-color: transparent;
-
-  color: ${({ theme }) => theme.color.neutral};
-
-  &::placeholder {
-    color: ${({ theme }) => theme.form.placeholderColor};
-  }
-  &:focus {
-    outline: none;
-  }
-  /** Size styles */
-  ${({ $size }) =>
-    $size &&
-    css`
-      ${sizes[$size].textArea}
-    `}
-
-  ${({ $sizeConfined }) =>
-    $sizeConfined &&
-    css`
-      @media ${mediaConfined} {
-        ${sizes[$sizeConfined].textArea}
-      }
-    `};
-
-  ${({ $sizeWide }) =>
-    $sizeWide &&
-    css`
-      @media ${mediaWide} {
-        ${$sizeWide && sizes[$sizeWide].textArea}
+        ${$sizeWide && sizes[$sizeWide].placeholder}
       }
     `};
 `;
@@ -315,21 +238,12 @@ const Label = styled.label<SizeProps>`
     `};
 `;
 
-const IconContainer = styled.button<IconContainerProps>`
+const IconContainer = styled.button<SizeProps>`
   display: flex;
   align-items: center;
   justify-content: center;
 
   color: ${({ theme }) => theme.form.neutralColor};
-
-  ${({ $isClickable }) =>
-    $isClickable &&
-    css`
-      cursor: pointer;
-      &:hover {
-        color: ${({ theme }) => theme.color.neutral};
-      }
-    `}
 
   /** Size styles */
   ${({ $size }) =>
@@ -359,8 +273,7 @@ export const Styled = {
   Container,
   InputContainer,
   IconContainer,
-  Input,
-  Textarea,
   Label,
   HelperText,
+  Placeholder,
 };

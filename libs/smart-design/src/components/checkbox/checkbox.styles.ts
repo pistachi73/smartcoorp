@@ -1,6 +1,7 @@
 import * as Checkbox from '@radix-ui/react-checkbox';
 import styled, { css } from 'styled-components';
 
+import { focusShadow } from '../../styles';
 import { borderRadiusXS } from '../../tokens/borderRadius';
 import { primary, primary_RGBA } from '../../tokens/color';
 import { mediaConfined, mediaWide } from '../../tokens/media';
@@ -94,14 +95,13 @@ export const Root = styled(Checkbox.Root)<SizeProps>`
   &:hover {
     background-color: ${({ theme }) => theme.form.hoverColor};
   }
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(${primary_RGBA}, 0.25);
-    border-color: ${primary};
+  &:focus-within {
+    ${focusShadow}
   }
 `;
 
 export const Label = styled.label<SizeProps>`
+  color: ${({ theme }) => theme.color.neutral};
   /** Size styles */
   ${({ $size }) =>
     $size &&

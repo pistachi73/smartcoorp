@@ -1,6 +1,7 @@
 import ReactSelect from 'react-select';
 import styled, { css } from 'styled-components';
 
+import { focusShadow } from '../../styles';
 import {
   borderRadiusXS,
   gray400,
@@ -212,7 +213,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
 
     border-width: 1px;
     border-style: solid;
-    border-color: ${({ theme }) => theme.form.neutralColor};
+    border-color: ${({ theme }) => theme.form.placeholderColor};
 
     transition-property: background-color;
     transition-duration: ${motionTimeXS};
@@ -222,6 +223,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     /** Size styles */
     &:hover {
       background-color: ${({ theme }) => theme.form.hoverColor};
+      border-color: ${({ theme }) => theme.form.neutralColor};
     }
 
     ${({ $error }) =>
@@ -232,9 +234,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
   }
 
   .react-select__control--is-focused {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(${primary_RGBA}, 0.25);
-    border-color: ${primary} !important;
+    ${focusShadow}
   }
 
   .react-select__control--menu-is-open {
@@ -288,7 +288,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     margin: ${spaceS} 0;
     width: 1px;
     align-self: stretch;
-    background-color: ${({ theme }) => theme.form.neutralColor};
+    background-color: ${({ theme }) => theme.form.placeholderColor};
   }
 
   .react-select__indicator {
@@ -351,9 +351,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     border-color: ${primary} !important;
 
     &:focus-within {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(${primary_RGBA}, 0.25);
-      border-color: ${primary};
+      ${focusShadow}
     }
 
     /** Animation styles */

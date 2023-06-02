@@ -25,6 +25,8 @@ type CommonProps = {
   sizeConfined?: FormFieldSize;
   /** The size on desktop screens or larger */
   sizeWide?: FormFieldSize;
+  /** The value of the input */
+  value?: string | number;
   /** The defaultValue of the input */
   defaultValue?: string | number;
   /** Add leading icon */

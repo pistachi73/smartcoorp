@@ -9,14 +9,15 @@ import {
   Title,
 } from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { iconArgs } from '../../helpers';
+import { TemplateProps, iconArgs, noCanvas } from '../../helpers';
 import { Button } from '../button';
 
 import { FormField } from './form-field';
 import { FormFieldProps } from './form-field.types';
-import { RHFFormField } from './rhf-form-field';
+import { RHFFormField, RHFFormFieldProps } from './rhf-form-field';
 
 export default {
   title: 'Form/Form Field',
@@ -54,38 +55,24 @@ export default {
 } as Meta<FormFieldProps>;
 
 const Template: StoryFn<FormFieldProps> = (args) => {
-  const { control, handleSubmit } = useForm<{
-    input: string | number;
-  }>({});
-
-  const onSubmit = (data: any) => console.log(data);
-
+  const [value, setValue] = useState<string | number>();
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <RHFFormField
-        control={control}
-        name="input"
-        rules={{
-          required: 'This field is required',
-        }}
-        label={args?.label}
-        icon={args?.icon}
-        placeholder="Type something..."
-        defaultValue={args?.defaultValue}
-        isMultiline={args?.isMultiline}
-        isDisabled={args?.isDisabled}
-        isError={args?.isError}
-        helperText={args.helperText}
-        type={args?.type}
-        size={args?.size}
-        sizeConfined={args?.sizeConfined}
-        sizeWide={args?.sizeWide}
-      />
-
-      <Button style={{ marginTop: '20px' }} type="submit">
-        Submit
-      </Button>
-    </form>
+    <FormField
+      label={args?.label}
+      icon={args?.icon}
+      placeholder="Type something..."
+      defaultValue={args?.defaultValue}
+      isMultiline={args?.isMultiline}
+      isDisabled={args?.isDisabled}
+      isError={args?.isError}
+      helperText={args.helperText}
+      type={args?.type}
+      size={args?.size}
+      sizeConfined={args?.sizeConfined}
+      sizeWide={args?.sizeWide}
+      onChange={setValue}
+      value={value}
+    />
   );
 };
 
@@ -142,5 +129,70 @@ export const WithNumberDefaultValue = {
     label: 'Form field Label',
     defaultValue: 2,
     type: 'number',
+  },
+};
+
+type FormValues = {
+  input: string | number;
+};
+const WithReactHookFormTemplate: StoryFn<RHFFormFieldProps<FormValues>> = (
+  args
+) => {
+  const { control, handleSubmit } = useForm<FormValues>({});
+  const onSubmit = (data: FormValues) => console.log(data);
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <RHFFormField
+        control={control}
+        name="input"
+        rules={{
+          required: 'This field is required',
+        }}
+        label={args?.label}
+        placeholder="Type something..."
+        defaultValue={args?.defaultValue}
+        helperText={args.helperText}
+        type={args?.type}
+      />
+
+      <Button style={{ marginTop: '20px' }} type="submit">
+        Submit
+      </Button>
+    </form>
+  );
+};
+
+export const WithReactHookForm: TemplateProps<RHFFormFieldProps<FormValues>> = {
+  render: WithReactHookFormTemplate,
+  args: {
+    label: 'Form field Label',
+    helperText: 'Helper text',
+    type: 'text',
+  },
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'This is an example of how to use the component with **RHF**',
+      },
+      source: {
+        code: `
+<form onSubmit={handleSubmit(onSubmit)}>
+  <RHFFormField
+    control={control}
+    name="input"
+    rules={{
+      required: 'This field is required',
+    }}
+    label="Form field Label"
+    placeholder="Type something..."
+    helperText="Helper text"
+    type="text"
+  />
+</form>`,
+        language: 'tsx',
+      },
+    },
   },
 };

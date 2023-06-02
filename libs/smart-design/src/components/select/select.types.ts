@@ -23,9 +23,9 @@ export type SelectProps = {
   /** Select options */
   options: SelectOptions;
   /** Select @callback */
-  onChange: React.ComponentProps<typeof ReactSelect>['onChange'];
+  onChange: (...props: any) => void;
   /** Select value */
-  value: string | string[];
+  value?: string | string[];
   /** Select defaultValue */
   defaultValue?: string | string[];
   /** Single select placeholder */

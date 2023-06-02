@@ -9,9 +9,13 @@ import {
   Title,
 } from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { RHFSelect } from './rhf-select';
+import { TemplateProps, noCanvas } from '../../helpers';
+import { Button } from '../button';
+
+import { RHFSelect, RHFSelectProps } from './rhf-select';
 import { Select } from './select';
 import type { SelectOptions, SelectProps } from './select.types';
 
@@ -50,51 +54,66 @@ export default {
   },
 } as Meta<typeof Select>;
 
-const Template: StoryFn<SelectProps> = (args) => {
-  const { control, handleSubmit } = useForm();
+const options: SelectOptions = [
+  { value: 'mentor', label: 'Mentoring' },
+  { value: 'teaching', label: 'Teaching' },
+  { value: 'multiple', label: 'Multiple' },
+  { value: 'tutor', label: 'Tutoring' },
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+  { value: 'mixed', label: 'Mixed' },
+  {
+    label: 'Structure',
+    options: [
+      { value: '1to1', label: '1 to 1' },
+      { value: '1to3', label: '1 to 3' },
+    ],
+  },
+];
 
-  const options: SelectOptions = [
-    { value: 'mentor', label: 'Mentoring' },
-    { value: 'teaching', label: 'Teaching' },
-    { value: 'multiple', label: 'Multiple' },
-    { value: 'tutor', label: 'Tutoring' },
+const SingleSelectTemplate: StoryFn<SelectProps> = (args) => {
+  const [selectedOption, setSelectedOption] = useState<string>();
 
-    { value: 'mixed', label: 'Mixed' },
-    {
-      label: 'Structure',
-      options: [
-        { value: '1to1', label: '1 to 1' },
-        { value: '1to3', label: '1 to 3' },
-      ],
-    },
-  ];
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <RHFSelect
-        control={control}
-        name="single-select"
-        rules={{ required: 'This field is required' }}
-        defaultValue={args.isMulti ? ['mentor'] : 'mentor'}
-        isDisabled={args?.isDisabled}
-        helperText={args?.helperText}
-        label={args.label}
-        options={options}
-        isMulti={args.isMulti}
-        size={args.size}
-        placeholder={args.placeholder}
-        sizeConfined={args.sizeConfined}
-        sizeWide={args.sizeWide}
-      />
-    </form>
+    <Select
+      defaultValue={args.isMulti ? ['mentor'] : 'mentor'}
+      isDisabled={args?.isDisabled}
+      isError={args?.isError}
+      helperText={args?.helperText}
+      label={args.label}
+      options={options}
+      size={args.size}
+      placeholder={args.placeholder}
+      sizeConfined={args.sizeConfined}
+      sizeWide={args.sizeWide}
+      onChange={setSelectedOption}
+      value={selectedOption}
+    />
+  );
+};
+
+const MultipleSelectTemplate: StoryFn<SelectProps> = (args) => {
+  const [selectedOptions, setSelectedOptions] = useState<string[]>();
+
+  return (
+    <Select
+      defaultValue={args.defaultValue}
+      isDisabled={args?.isDisabled}
+      helperText={args?.helperText}
+      label={args.label}
+      options={options}
+      isMulti={true}
+      size={args.size}
+      placeholder={args.placeholder}
+      sizeConfined={args.sizeConfined}
+      sizeWide={args.sizeWide}
+      onChange={setSelectedOptions}
+      value={selectedOptions}
+    />
   );
 };
 
 export const Default = {
-  render: Template,
+  render: SingleSelectTemplate,
   args: {
     placeholder: 'Select something...',
     label: 'Single select',
@@ -102,7 +121,7 @@ export const Default = {
   },
 };
 export const Single = {
-  render: Template,
+  render: SingleSelectTemplate,
   args: {
     placeholder: 'Select something...',
     label: 'Single select',
@@ -110,18 +129,15 @@ export const Single = {
   parameters: {
     docs: {
       description: {
-        story:
-          //Write a description for this story
-          'This is a **single** select component.',
+        story: 'This is a **single** select component.',
       },
     },
   },
 };
 
 export const Multiple = {
-  render: Template,
+  render: MultipleSelectTemplate,
   args: {
-    isMulti: true,
     placeholder: 'Select something...',
     label: 'Multiple select',
   },
@@ -136,7 +152,7 @@ export const Multiple = {
   },
 };
 export const Disabled = {
-  render: Template,
+  render: SingleSelectTemplate,
   args: {
     isDisabled: true,
     placeholder: 'Select something...',
@@ -155,7 +171,7 @@ export const Disabled = {
 };
 
 export const Error = {
-  render: Template,
+  render: SingleSelectTemplate,
   args: {
     isError: true,
     placeholder: 'Select something...',
@@ -167,6 +183,75 @@ export const Error = {
         story:
           //Write a description for this story
           'This is a **error** select component.',
+      },
+    },
+  },
+};
+
+type FormValues = {
+  select: string;
+};
+const WithReactHookFormTemplate: StoryFn<RHFSelectProps<FormValues>> = (
+  args
+) => {
+  const { control, handleSubmit } = useForm<FormValues>();
+
+  const onSubmit = (data: FormValues) => {
+    console.log(data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <RHFSelect
+        control={control}
+        name="select"
+        rules={{ required: 'This field is required' }}
+        defaultValue={args?.isMulti ? ['mentor'] : 'mentor'}
+        isDisabled={args?.isDisabled}
+        helperText={args?.helperText}
+        label={args.label}
+        options={options}
+        isMulti={args.isMulti}
+        size={args.size}
+        placeholder={args.placeholder}
+        sizeConfined={args.sizeConfined}
+        sizeWide={args.sizeWide}
+      />
+
+      <Button style={{ marginTop: '20px' }} type="submit">
+        Submit
+      </Button>
+    </form>
+  );
+};
+
+export const WithReactHookForm: TemplateProps<RHFSelectProps<FormValues>> = {
+  render: WithReactHookFormTemplate,
+  args: {
+    label: 'Select Label',
+    helperText: 'Helper text',
+    isMulti: false,
+  },
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'This is an example of how to use the component with **RHF**',
+      },
+      source: {
+        code: `
+<form onSubmit={handleSubmit(onSubmit)}>
+  <RHFSelect
+    control={control}
+    name="select"
+    rules={{ required: 'This field is required' }}
+    defaultValue={"mentor"}
+    helperText={"Helper text"}
+    label={"Select Label"}
+    options={options}
+  />
+</form>`,
+        language: 'tsx',
       },
     },
   },

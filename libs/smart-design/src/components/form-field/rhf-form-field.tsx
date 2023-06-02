@@ -15,7 +15,7 @@ type OmittedFormFieldProps = Omit<
   'onChange' | 'onBlur' | 'defaultValue'
 >;
 
-export type RHFInputProps<FormValues extends FieldValues> =
+export type RHFFormFieldProps<FormValues extends FieldValues> =
   OmittedFormFieldProps & {
     control: Control<FormValues>;
     name: Path<FormValues>;
@@ -29,7 +29,7 @@ export const RHFFormField = <FormValues extends FieldValues>({
   name,
   defaultValue,
   ...props
-}: RHFInputProps<FormValues>) => {
+}: RHFFormFieldProps<FormValues>) => {
   return (
     <Controller
       control={control}
