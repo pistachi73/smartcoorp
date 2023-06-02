@@ -15,12 +15,13 @@ type OmittedFormFieldProps = Omit<
   'onChange' | 'onBlur' | 'isError' | 'value' | 'defaultValue'
 >;
 
-type RHFSelectProps<FormValues extends FieldValues> = OmittedFormFieldProps & {
-  control: Control<FormValues>;
-  name: Path<FormValues>;
-  rules?: RegisterOptions;
-  defaultValue?: PathValue<FormValues, Path<FormValues>> | undefined;
-};
+export type RHFSelectProps<FormValues extends FieldValues> =
+  OmittedFormFieldProps & {
+    control: Control<FormValues>;
+    name: Path<FormValues>;
+    rules?: RegisterOptions;
+    defaultValue?: string[] | string;
+  };
 
 export const RHFSelect = <FormValues extends FieldValues>({
   control,
@@ -34,7 +35,7 @@ export const RHFSelect = <FormValues extends FieldValues>({
       control={control}
       name={name}
       rules={rules}
-      defaultValue={defaultValue}
+      defaultValue={defaultValue as any}
       render={({ field: { ref, ...field }, fieldState: { error } }) => (
         <Select
           {...field}

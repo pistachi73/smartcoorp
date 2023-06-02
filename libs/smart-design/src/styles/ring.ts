@@ -1,12 +1,29 @@
 import { css } from 'styled-components';
 
-import { scale010, spaceXS } from '../tokens';
+import {
+  motionEasingStandard,
+  motionTimeXXS,
+  primary,
+  primary_RGBA,
+  scale010,
+  spaceXS,
+} from '../tokens';
 
 type RingProps = {
   width?: string;
   color: string;
   offset?: string;
 };
+
+export const focusShadow = css`
+  transition-property: box-shadow;
+  transition-duration: ${motionTimeXXS};
+  transition-timing-function: ${motionEasingStandard};
+
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(${primary_RGBA}, 0.25);
+  border-color: ${primary} !important;
+`;
 
 export const focusRing = ({
   width = scale010,

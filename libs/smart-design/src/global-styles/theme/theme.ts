@@ -53,7 +53,7 @@ export const lightTheme: ThemeType = {
   },
   color: {
     neutral: 'black',
-    invertedNeutral: 'white',
+    invertedNeutral: gray100,
   },
   backgroundScreen: 'white',
 
@@ -108,8 +108,9 @@ export const lightTheme: ThemeType = {
   form: {
     neutralColor: gray400,
     placeholderColor: gray300,
-    hoverColor: gray100,
+    hoverColor: gray200,
     errorColor: red500,
+    backgroundColor: 'white',
     select: {
       selectedItemColor: primary100,
       groupDividerColor: gray200,
@@ -118,6 +119,10 @@ export const lightTheme: ThemeType = {
       selectedValueBackgroundColor: primary200,
       selectedValueTextColor: primary800,
       deleteValueHoverBackgroundColor: primary400,
+    },
+    calendar: {
+      selectedItemBackgroundColor: primary200,
+      selectedRangeLimitBackgroundColor: primary400,
     },
   },
 };
@@ -137,7 +142,7 @@ export const darkTheme: ThemeType = {
     shadowXL: dropShadowDarkXL,
   },
   color: {
-    neutral: 'white',
+    neutral: gray100,
     invertedNeutral: 'black',
   },
   backgroundScreen: gray900,
@@ -192,6 +197,8 @@ export const darkTheme: ThemeType = {
     placeholderColor: gray600,
     hoverColor: gray800,
     errorColor: red500,
+    backgroundColor: gray900,
+
     select: {
       selectedItemColor: primary800,
       groupDividerColor: gray700,
@@ -200,6 +207,10 @@ export const darkTheme: ThemeType = {
       selectedValueBackgroundColor: primary800,
       selectedValueTextColor: primary200,
       deleteValueHoverBackgroundColor: primary700,
+    },
+    calendar: {
+      selectedItemBackgroundColor: primary800,
+      selectedRangeLimitBackgroundColor: primary600,
     },
   },
 };

@@ -12,7 +12,7 @@ import { CheckboxProps } from './checkbox.types';
 
 type OmittedFormFieldProps = Omit<CheckboxProps, 'value' | 'onChange'>;
 
-type RHFCheckboxProps<FormValues extends FieldValues> =
+export type RHFCheckboxProps<FormValues extends FieldValues> =
   OmittedFormFieldProps & {
     control: Control<FormValues>;
     name: Path<FormValues>;

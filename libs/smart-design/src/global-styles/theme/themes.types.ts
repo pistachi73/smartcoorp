@@ -69,6 +69,7 @@ interface Form {
   placeholderColor: string;
   neutralColor: string;
   errorColor: string;
+  backgroundColor: string;
   select: {
     selectedItemColor: string;
     groupDividerColor: string;
@@ -77,6 +78,10 @@ interface Form {
     selectedValueBackgroundColor: string;
     selectedValueTextColor: string;
     deleteValueHoverBackgroundColor: string;
+  };
+  calendar: {
+    selectedItemBackgroundColor: string;
+    selectedRangeLimitBackgroundColor: string;
   };
 }
 

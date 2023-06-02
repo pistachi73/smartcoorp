@@ -1,1 +1,1 @@
-export { focusRing } from './ring';
+export { focusRing, focusShadow } from './ring';

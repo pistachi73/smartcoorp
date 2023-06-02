@@ -9,13 +9,15 @@ import {
   Title,
 } from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+import { TemplateProps, noCanvas } from '../../helpers';
 import { Button } from '../button';
 
 import { Checkbox } from './checkbox';
 import type { CheckboxProps } from './checkbox.types';
-import { RHFCheckbox } from './rhf-checkbox';
+import { RHFCheckbox, RHFCheckboxProps } from './rhf-checkbox';
 export default {
   title: 'Form/Checkbox',
   component: Checkbox,
@@ -27,8 +29,10 @@ export default {
           <Subtitle>Checkbox component</Subtitle>
           <Description>##Overview</Description>
           <Description>
-            The checkbox component is used to select multiple options from a set
-            of options.
+            The Checkbox component is a reusable React component that provides a
+            simple and intuitive way to include checkboxes in your user
+            interface. It allows users to select one or multiple options from a
+            predefined list by toggling the checkboxes on or off.
           </Description>
           <Description>##Usage</Description>
           <Source
@@ -48,11 +52,47 @@ export default {
 } as Meta<CheckboxProps>;
 
 const Template: StoryFn<CheckboxProps> = (args) => {
-  const { control, handleSubmit } = useForm<{ checkbox: boolean }>();
+  const [checked, setChecked] = useState(false);
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+  return (
+    <Checkbox
+      onChange={setChecked}
+      value={checked}
+      label={args?.label}
+      defaultValue={args?.defaultValue}
+      isDisabled={args?.isDisabled}
+      size={args?.size}
+      sizeConfined={args?.sizeConfined}
+      sizeWide={args?.sizeWide}
+    />
+  );
+};
+
+export const Default: TemplateProps<CheckboxProps> = {
+  render: Template,
+  args: {
+    label: 'Accept terms and conditions.',
+  },
+  parameters: {},
+};
+
+export const Disabled: TemplateProps<CheckboxProps> = {
+  render: Template,
+  args: {
+    label: 'Accept terms and conditions.',
+    isDisabled: true,
+  },
+};
+
+type FormFields = {
+  checkbox: boolean;
+};
+const WithReactHookFormTemplate: StoryFn<RHFCheckboxProps<FormFields>> = (
+  args
+) => {
+  const { control, handleSubmit } = useForm<FormFields>();
+  const onSubmit = (data: FormFields) => console.log(data);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <RHFCheckbox
@@ -65,23 +105,35 @@ const Template: StoryFn<CheckboxProps> = (args) => {
         sizeConfined={args?.sizeConfined}
         sizeWide={args?.sizeWide}
       />
+      <Button style={{ marginTop: '20px' }} type="submit">
+        Submit
+      </Button>
     </form>
   );
 };
 
-export const Default = {
-  render: Template,
+export const WithReactHookForm: TemplateProps<RHFCheckboxProps<FormFields>> = {
+  render: WithReactHookFormTemplate,
   args: {
     label: 'Accept terms and conditions.',
   },
-  parameters: {},
-};
-
-export const Disabled = {
-  render: Template,
-  args: {
-    label: 'Accept terms and conditions.',
-
-    isDisabled: true,
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'This is an example of how to use the component with **RHF**',
+      },
+      source: {
+        code: `
+<form onSubmit={handleSubmit(onSubmit)}>
+  <RHFCheckbox
+    control={control}
+    name="checkbox"
+    label={"Accept terms and conditions."}
+  />
+</form>`,
+        language: 'tsx',
+      },
+    },
   },
 };
