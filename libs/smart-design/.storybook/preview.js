@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import * as nextImage from 'next/image';
 
 import { GlobalStyles, ThemeProvider } from '../src/global-styles';
-
 import '../src/helpers/storybook.css';
 import '../src/global-styles/fonts.css';
 
