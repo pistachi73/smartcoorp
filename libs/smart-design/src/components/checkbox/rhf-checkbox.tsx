@@ -3,17 +3,16 @@ import {
   Controller,
   FieldValues,
   Path,
-  PathValue,
   RegisterOptions,
 } from 'react-hook-form';
 
 import { Checkbox } from './checkbox';
 import { CheckboxProps } from './checkbox.types';
 
-type OmittedFormFieldProps = Omit<CheckboxProps, 'value' | 'onChange'>;
+type OmittedCheckboxdProps = Omit<CheckboxProps, 'value' | 'onChange'>;
 
 export type RHFCheckboxProps<FormValues extends FieldValues> =
-  OmittedFormFieldProps & {
+  OmittedCheckboxdProps & {
     control: Control<FormValues>;
     name: Path<FormValues>;
     rules?: RegisterOptions;
