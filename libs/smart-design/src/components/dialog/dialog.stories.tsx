@@ -1,13 +1,3 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 
@@ -23,30 +13,10 @@ export default {
   subcomponents: { DialogContent, DialogTrigger },
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Dialog</Title>
-          <Subtitle>Dialog layout component</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            A Dialog component presents content within a container on top of the
-            application's main UI. Dialogs give two options: reject or confirm
-            for the action required inside. This is useful when something is
-            going to be deleted, when data is going to be lost for some reason
-            etc...
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="jsx"
-            code={`import { Dialog, DialogContent, DialogTrigger } from @smart-design/components`}
-            format={true}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          "A Dialog component presents content within a container on top of the application's main UI. Dialogs give two options: reject or confirm for the action required inside. This is useful when something is going to be deleted, when data is going to be lost for some reason etc...",
+      },
     },
     controls: { sort: 'requiredFirst' },
   },

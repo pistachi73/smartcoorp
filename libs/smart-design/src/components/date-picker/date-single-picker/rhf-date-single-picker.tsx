@@ -1,10 +1,8 @@
-import { FC } from 'react';
 import {
   Control,
   Controller,
   FieldValues,
   Path,
-  PathValue,
   RegisterOptions,
 } from 'react-hook-form';
 

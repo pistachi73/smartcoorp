@@ -1,17 +1,6 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
 import { TemplateProps, noCanvas } from 'libs/smart-design/src/helpers';
 import { useState } from 'react';
-import { DateRange } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '../../button';
@@ -28,31 +17,10 @@ export default {
   component: DateSinglePicker,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Date Single Picker</Title>
-          <Subtitle>Date Single Picker component for SC projects</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            A single date picker is a versatile component designed for React
-            projects, allowing users to select a specific date from a calendar
-            interface. With its intuitive design and seamless integration, it
-            provides a seamless and efficient way for users to input dates.
-            Whether it's for scheduling appointments, setting deadlines, or
-            managing events, the single date picker is an essential tool for
-            enhancing user experiences in your React applications.
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="tsx"
-            code={`import { DateSinglePicker } from @smart-design/components`}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          "A single date picker is a versatile component designed for React projects, allowing users to select a specific date from a calendar interface. With its intuitive design and seamless integration, it provides a seamless and efficient way for users to input dates. Whether it's for scheduling appointments, setting deadlines, or managing events, the single date picker is an essential tool for enhancing user experiences in your React applications.",
+      },
     },
   },
   argTypes: {

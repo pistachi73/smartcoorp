@@ -23,26 +23,10 @@ export default {
   component: Col,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Column</Title>
-          <Subtitle>Column layout component</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            `Column` component goes inside `Row` component. It is used to
-            determine how much space is going to be used by some content inside
-            the row. It goes from `1` to `12` columns
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="js"
-            code={`import { Row, Col } from @smart-design/components`}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-        </>
-      ),
+      description: {
+        component:
+          'Column component goes inside `Row` component. It is used to determine how much space is going to be used by some content inside the row. It goes from `1` to `12` columns',
+      },
     },
   },
   argTypes: {

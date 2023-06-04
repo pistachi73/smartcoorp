@@ -27,10 +27,6 @@ interface SizeProps {
   $sizeWide?: DatePickerSize;
 }
 
-interface InputProps extends SizeProps {
-  $hasIcon?: boolean;
-}
-
 type WithError = {
   $error?: boolean;
 };

@@ -1,13 +1,3 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
 import { TemplateProps } from 'libs/smart-design/src/helpers';
 import { useState } from 'react';
@@ -22,32 +12,10 @@ export default {
   component: DateRangePicker,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>DateRangePicker</Title>
-          <Subtitle>DateRangePicker component for SC projects</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            The `DateRangePicker` component in our React component library
-            simplifies date selection for users. It provides an interactive
-            calendar interface, allowing users to choose dates with ease. The
-            selected date is automatically displayed in an input field. The
-            component offers customization options, localization support, and
-            adheres to accessibility guidelines. It also allows for date
-            restrictions. Enhance user experience and streamline date selection
-            in your React application with our `DateRangePicker` component.
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="tsx"
-            code={`import { DateRangePicker } from @smart-design/components`}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          'The Date Range Picker component in our React component library simplifies date selection for users. It provides an interactive calendar interface, allowing users to choose dates with ease. The selected date is automatically displayed in an input field. The component offers customization options, localization support, and adheres to accessibility guidelines. It also allows for date restrictions. Enhance user experience and streamline date selection in your React application with our Date Range Picker component.',
+      },
     },
   },
   argTypes: {
@@ -71,11 +39,6 @@ const Template: StoryFn<DateRangePickerProps> = (args) => {
   );
 };
 
-export const Default = {
-  render: Template,
-  args: {},
-};
-
 export const WithCustomValues: TemplateProps<DateRangePickerProps> = {
   render: Template,
   args: {
@@ -93,5 +56,13 @@ export const WithCustomValues: TemplateProps<DateRangePickerProps> = {
         value: 'next-week',
       },
     ],
+  },
+  /** Add a descriptioon to the story */
+  parameters: {
+    docs: {
+      description: {
+        story: 'Example with custom selectable values',
+      },
+    },
   },
 };

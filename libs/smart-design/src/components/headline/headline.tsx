@@ -1,9 +1,9 @@
-import * as React from 'react';
+import { forwardRef } from 'react';
 
 import { Styled } from './headline.styles';
 import type { HeadlineProps } from './headline.types';
 
-export const Headline = React.forwardRef(
+export const Headline = forwardRef<HTMLHeadingElement, HeadlineProps>(
   (
     {
       children,
@@ -32,5 +32,3 @@ export const Headline = React.forwardRef(
     </Styled.Headline>
   )
 );
-
-Headline.displayName = 'Headline';

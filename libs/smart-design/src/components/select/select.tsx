@@ -1,4 +1,4 @@
-import { FC, forwardRef, useRef, useState } from 'react';
+import { forwardRef, useState } from 'react';
 
 import { Styled } from './select.styles';
 import { Option, SelectProps, isOption } from './select.types';

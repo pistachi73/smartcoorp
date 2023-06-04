@@ -143,7 +143,7 @@ export const darkTheme: ThemeType = {
   },
   color: {
     neutral: gray100,
-    invertedNeutral: 'black',
+    invertedNeutral: gray900,
   },
   backgroundScreen: gray900,
   typography: {

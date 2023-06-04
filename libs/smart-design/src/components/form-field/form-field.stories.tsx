@@ -1,13 +1,3 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -24,26 +14,9 @@ export default {
   component: FormField,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>FormField</Title>
-          <Subtitle>FormField component for SC projects</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            `FormField` component is used as **Input** field for forms
-          </Description>
-
-          <Description>##Usage</Description>
-          <Source
-            language="tsx"
-            code={`import { FormField } from @smart-design/components`}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component: 'Form Field component is used as **Input** field for forms',
+      },
     },
   },
   argTypes: {
@@ -54,7 +27,7 @@ export default {
   },
 } as Meta<FormFieldProps>;
 
-const Template: StoryFn<FormFieldProps> = (args) => {
+const Template: StoryFn<FormFieldProps> = (args: any) => {
   const [value, setValue] = useState<string | number>();
   return (
     <FormField

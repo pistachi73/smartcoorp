@@ -1,26 +1,10 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
-import { useState } from 'react';
 import styled from 'styled-components';
 
-import { gray100, gray200 } from '../../tokens/color';
-import { Body } from '../body';
 import { Button } from '../button';
-import { Calendar } from '../calendar/calendar';
 import { FormField } from '../form-field';
-import { Headline } from '../headline/headline';
 
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import type { PopoverProps } from './popover.types';
 
 export default {
   title: 'Component/Popover',
@@ -28,37 +12,10 @@ export default {
   subcomponents: { PopoverContent, PopoverTrigger },
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Popover</Title>
-          <Subtitle>Popover layout component</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            A Popover component presents content within a container on top of
-            the application's main UI. Popovers give two options: reject or
-            confirm for the action required inside. This is useful when
-            something is going to be deleted, when data is going to be lost for
-            some reason etc...
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="jsx"
-            code={`import { Popover, PopoverContent, PopoverTrigger } from @smart-design/components`}
-            format={true}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable
-            story={PRIMARY_STORY}
-            components={{
-              Popover,
-              PopoverContent,
-              PopoverTrigger,
-            }}
-          />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          "A Popover component presents content within a container on top of the application's main UI. Popovers give two options: reject or confirm for the action required inside. This is useful when something is going to be deleted, when data is going to be lost for some reason etc...",
+      },
     },
     controls: { sort: 'requiredFirst' },
   },
@@ -73,6 +30,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  background-color: white;
 `;
 const Template: StoryFn<typeof Popover> = (args) => {
   return (

@@ -1,12 +1,7 @@
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import styled from 'styled-components';
 
-import {
-  motionEasingEnter,
-  motionEasingLeave,
-  motionTimeM,
-  motionTimeS,
-} from '../../tokens/motion';
+import { motionEasingLeave, motionTimeS } from '../../tokens/motion';
 import { spaceXXS } from '../../tokens/spacing';
 
 export const ScrollAreaRoot = styled(ScrollArea.Root)`

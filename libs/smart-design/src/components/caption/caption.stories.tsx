@@ -22,19 +22,10 @@ export default {
   component: Caption,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Caption</Title>
-          <Subtitle>Caption typography Smartcookie component</Subtitle>
-          <Description>
-            The `Caption` component is used for common paragraph copies arround
-            SC projects.
-          </Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="Reference" />
-        </>
-      ),
+      description: {
+        component:
+          'The Caption component is used for common paragraph copies arround SC projects.',
+      },
     },
   },
   argTypes: {

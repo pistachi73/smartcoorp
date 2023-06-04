@@ -1,18 +1,8 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
 import { IoBarChartSharp } from 'react-icons/io5';
 import styled from 'styled-components';
 
-import { iconArgs, noCanvas, setPropDocumentation } from '../../helpers';
+import { iconArgs, noCanvas } from '../../helpers';
 import { spaceXL } from '../../tokens';
 
 import { Button } from './button';
@@ -20,31 +10,15 @@ import { ButtonProps } from './button.types';
 
 export default {
   title: 'Component/Button',
+  description: 'Button component for SC projects',
   component: Button,
 
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Button</Title>
-          <Subtitle>Button component for SC projects</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            Basic `Button` component to perform navigation inside / outside the
-            project or to perform `onClick` events
-          </Description>
-
-          <Description>##Usage</Description>
-          <Source
-            language="tsx"
-            code={`import { Button } from @smart-design/components`}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          'Basic Button component to perform navigation inside / outside the project or to perform onClick events',
+      },
     },
   },
   argTypes: {
@@ -53,13 +27,6 @@ export default {
     forwardedAs: { table: { disable: true } },
     innerRef: { table: { disable: true } },
     icon: iconArgs,
-    children: setPropDocumentation({ control: 'text' }),
-    to: setPropDocumentation({ control: 'text' }),
-    href: setPropDocumentation({ control: 'text' }),
-    variant: setPropDocumentation({ control: 'inline-radio' }),
-    size: setPropDocumentation({ control: 'inline-radio' }),
-    sizeConfined: setPropDocumentation({ control: 'inline-radio' }),
-    sizeWide: setPropDocumentation({ control: 'inline-radio' }),
   },
 } as Meta<typeof Button>;
 
@@ -78,7 +45,7 @@ const Container = styled.div`
   gap: ${spaceXL};
 `;
 
-const ReferenceTemplate: StoryFn<ButtonProps> = (args, a) => {
+const ReferenceTemplate: StoryFn<ButtonProps> = (args: any) => {
   return (
     <Container>
       <Button size="medium" variant={args.variant}>
@@ -106,26 +73,6 @@ const ReferenceTemplate: StoryFn<ButtonProps> = (args, a) => {
       </Button>
     </Container>
   );
-};
-
-export const PrimaryVariant = {
-  render: ReferenceTemplate,
-
-  args: {
-    variant: 'primary',
-    icon: IoBarChartSharp,
-    iconSize: 18,
-  },
-
-  parameters: {
-    ...noCanvas,
-
-    docs: {
-      description: {
-        story: "`Button` component **primary** variant with it's states",
-      },
-    },
-  },
 };
 
 export const SecondaryVariant = {

@@ -1,12 +1,3 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta } from '@storybook/react';
 import styled from 'styled-components';
 
@@ -29,19 +20,10 @@ export default {
   component: Body,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Body</Title>
-          <Subtitle>Paragraph typography Smartcookie component</Subtitle>
-          <Description>
-            The `Body` component is used for common paragraph copies arround SC
-            projects.
-          </Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          'The Body component is used for common paragraph copies arround SC projects.',
+      },
     },
   },
   argTypes: {

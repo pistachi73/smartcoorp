@@ -1,4 +1,4 @@
-//PRIMARY
+// //PRIMARY
 /** Primary color (HEX) token: **#FF5E0E** */ export const primary = '#FF5E0E';
 /** Primary color (HEX) token: **#FFEFE7** */ export const primary100 =
   '#FFEFE7';
@@ -165,15 +165,24 @@ export const gray800_RGBA = '46, 48, 57';
 export const gray900_RGBA = '31, 32, 40';
 
 //EXTRA
-/** Red color (HEX) token: **#fee8ed** */ export const red100 = '#fee8ed';
-/** Red color (HEX) token: **#fcb9ca** */ export const red200 = '#fcb9ca';
-/** Red color (HEX) token: **#fa8ba6** */ export const red300 = '#fa8ba6';
-/** Red color (HEX) token: **#f64571** */ export const red400 = '#f64571';
-/** Red color (HEX) token: **#F4164D** */ export const red500 = '#F4164D';
-/** Red color (HEX) token: **#c3123e** */ export const red600 = '#c3123e';
-/** Red color (HEX) token: **#920d2e** */ export const red700 = '#920d2e';
-/** Red color (HEX) token: **#62091f** */ export const red800 = '#62091f';
-/** Red color (HEX) token: **#31040f** */ export const red900 = '#31040f';
+export const red100 = '#FFEEEE';
+export const red200 = '#FFCDD2';
+export const red300 = '#EF9A9A';
+export const red400 = '#E57373';
+export const red500 = '#EF5350';
+export const red600 = '#F44336';
+export const red700 = '#E53935';
+export const red800 = '#D32F2F';
+export const red900 = '#C62828';
 
-/** Green color (HEX) token: **#68d94a** */ export const green = '#68d94a';
+export const green100 = '#E8F5E9';
+export const green200 = '#C8E6C9';
+export const green300 = '#A5D6A7';
+export const green400 = '#81C784';
+export const green500 = '#66BB6A';
+export const green600 = '#4CAF50';
+export const green700 = '#43A047';
+export const green800 = '#388E3C';
+export const green900 = '#2E7D32';
+
 /** Yellow color (HEX) token: **#ffd644** */ export const yellow = '#ffd644';

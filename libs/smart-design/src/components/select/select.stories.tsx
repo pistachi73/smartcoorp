@@ -1,13 +1,3 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -24,27 +14,10 @@ export default {
   component: Select,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Select</Title>
-          <Subtitle>Select component</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            Select component is a wrapper around react-select component. It
-            provides a styled select component with a label and helper text.
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="jsx"
-            code={`import { Select } from @smart-design/components`}
-            format={true}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          'Select component is a wrapper around react-select component. It provides a styled select component with a label and helper text.',
+      },
     },
   },
   argTypes: {

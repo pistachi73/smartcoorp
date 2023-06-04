@@ -1,13 +1,3 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 
@@ -24,26 +14,10 @@ export default {
   component: Tooltip,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Tooltip</Title>
-          <Subtitle>Tooltip component</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            A Tooltip component presents content within a container on top of
-            the application's main UI.
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="js"
-            code={`import { Tooltip } from @smart-design/components`}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          "A Tooltip component presents content within a container on top of the application's main UI.",
+      },
     },
     controls: { sort: 'requiredFirst' },
   },
@@ -64,9 +38,7 @@ const Template: StoryFn<TooltipProps> = (args) => {
       trigger={<Button variant="secondary">Hover me</Button>}
       content={
         <>
-          <Headline size="small" noMarign>
-            Tooltip headline
-          </Headline>
+          <Headline size="small">Tooltip headline</Headline>
           <Body size="xsmall" noMargin>
             Tooltip paragraph
           </Body>

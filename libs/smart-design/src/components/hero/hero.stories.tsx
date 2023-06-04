@@ -1,14 +1,4 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
-import { Meta, StoryFn } from '@storybook/react';
-import React from 'react';
+import { Meta } from '@storybook/react';
 import styled from 'styled-components';
 
 import { noCanvas, setPropDocumentation } from '../../helpers';
@@ -23,23 +13,10 @@ export default {
   component: Hero,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Hero</Title>
-          <Subtitle>Hero typography Smartcookie component</Subtitle>
-          <Description>
-            The `Hero` component is used for common paragraph copies arround SC
-            projects.
-          </Description>
-          <Description>
-            `Hero` component uses a different `font style` from the rest of the
-            typograpography components. It uses `Oswald`
-          </Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="Reference" />
-        </>
-      ),
+      description: {
+        component:
+          'The Hero component is used for common paragraph copies arround SC projects.',
+      },
     },
   },
   argTypes: {

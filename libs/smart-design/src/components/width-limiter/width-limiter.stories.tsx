@@ -21,26 +21,10 @@ export default {
   component: WidthLimiter,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Width Limiter</Title>
-          <Subtitle>Width Limiter Component</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            `WidthLimiter` component is used to set `max-width` and left/right
-            paddings for content
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="js"
-            code={`import { WidthLimiter } from @smart-design/components`}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          'WidthLimiter component is used to set `max-width` and left/right paddings for content',
+      },
     },
   },
   argTypes: {},
