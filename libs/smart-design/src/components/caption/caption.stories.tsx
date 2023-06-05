@@ -1,17 +1,11 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta } from '@storybook/react';
-import styled from 'styled-components';
 
 import { noCanvas, setPropDocumentation } from '../../helpers';
-import { scale080, scale360, space4XL, spaceM } from '../../tokens';
+import {
+  Container,
+  PropContainer,
+  TypeContainer,
+} from '../../helpers/typography-docs.styles';
 
 import { Caption } from './caption';
 import { fontWeights, lineHeights } from './caption.styles';
@@ -21,6 +15,7 @@ export default {
   title: 'Typography/Caption',
   component: Caption,
   parameters: {
+    maxWidth: true,
     docs: {
       description: {
         component:
@@ -43,16 +38,6 @@ export const Default = {
   },
 };
 
-const PropContainer = styled.div`
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-column-gap: ${space4XL};
-  padding: ${spaceM} 0;
-`;
-const TypeContainer = styled.div`
-  width: ${scale080};
-`;
-
 export const FontWeights = {
   render: () => {
     const sizePx: any = {
@@ -63,7 +48,7 @@ export const FontWeights = {
     const captionFontWeights = Object.keys(fontWeights);
 
     return (
-      <>
+      <Container>
         {captionFontWeights.map((key) => (
           <PropContainer key={key}>
             <TypeContainer>
@@ -76,7 +61,7 @@ export const FontWeights = {
             </Caption>
           </PropContainer>
         ))}
-      </>
+      </Container>
     );
   },
 
@@ -102,12 +87,8 @@ export const LineHeights = {
     lineHeightsTypes[2] = lineHeightsTypes[1];
     lineHeightsTypes[1] = 'default';
 
-    const CaptionContainer = styled.div`
-      width: ${scale360};
-    `;
-
     return (
-      <>
+      <Container>
         {lineHeightsTypes.map((key) => (
           <PropContainer key={key}>
             <TypeContainer>
@@ -115,17 +96,15 @@ export const LineHeights = {
                 {lineHeightsMapping[key]}
               </Caption>
             </TypeContainer>
-            <CaptionContainer>
-              <Caption noMargin lineHeight={key as CaptionLineHeight}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-                egestas, lorem eu condimentum faucibus, est urna sodales magna,
-                consequat elementum ligula lorem efficitur ex. Proin auctor
-                tortor non dolor consectetur tincidunt.
-              </Caption>
-            </CaptionContainer>
+            <Caption noMargin lineHeight={key as CaptionLineHeight}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
+              egestas, lorem eu condimentum faucibus, est urna sodales magna,
+              consequat elementum ligula lorem efficitur ex. Proin auctor tortor
+              non dolor consectetur tincidunt.
+            </Caption>
           </PropContainer>
         ))}
-      </>
+      </Container>
     );
   },
 

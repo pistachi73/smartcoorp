@@ -1,8 +1,11 @@
 import { Meta } from '@storybook/react';
-import styled from 'styled-components';
 
 import { noCanvas } from '../../helpers';
-import { scale160, space4XL, spaceM } from '../../tokens';
+import {
+  Container,
+  PropContainer,
+  TypeContainer,
+} from '../../helpers/typography-docs.styles';
 
 import { Body } from './body';
 import { fontWeights, lineHeights, sizes } from './body.styles';
@@ -19,6 +22,7 @@ export default {
   title: 'Typography/Body',
   component: Body,
   parameters: {
+    maxWidth: true,
     docs: {
       description: {
         component:
@@ -46,16 +50,6 @@ export const Default = {
   },
 };
 
-const PropContainer = styled.div`
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-column-gap: ${space4XL};
-  padding: ${spaceM} 0;
-`;
-const TypeContainer = styled.div`
-  width: ${scale160};
-`;
-
 export const Sizes = {
   render: () => {
     const sizePx: any = {
@@ -67,7 +61,7 @@ export const Sizes = {
     };
 
     return (
-      <>
+      <Container>
         {bodySizes.map((key) => (
           <PropContainer key={key}>
             <TypeContainer>
@@ -80,7 +74,7 @@ export const Sizes = {
             </Body>
           </PropContainer>
         ))}
-      </>
+      </Container>
     );
   },
 
@@ -101,7 +95,7 @@ export const FontWeights = {
       bold: 700,
     };
     return (
-      <>
+      <Container>
         {bodyWeights.map((key) => (
           <PropContainer key={key}>
             <TypeContainer>
@@ -114,7 +108,7 @@ export const FontWeights = {
             </Body>
           </PropContainer>
         ))}
-      </>
+      </Container>
     );
   },
 
@@ -141,7 +135,7 @@ export const LineHeights = {
     lineHeightsTypes[1] = 'default';
 
     return (
-      <>
+      <Container>
         {lineHeightsTypes.map((key) => (
           <PropContainer key={key}>
             <TypeContainer>
@@ -157,7 +151,7 @@ export const LineHeights = {
             </Body>
           </PropContainer>
         ))}
-      </>
+      </Container>
     );
   },
 

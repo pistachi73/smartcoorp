@@ -1,17 +1,21 @@
 import { Meta } from '@storybook/react';
-import styled from 'styled-components';
 
 import { noCanvas, setPropDocumentation } from '../../helpers';
-import { scale160, space4XL, spaceM } from '../../tokens';
+import {
+  Container,
+  PropContainer,
+  TypeContainer,
+} from '../../helpers/typography-docs.styles';
 
 import { Headline } from './headline';
 import { sizes } from './headline.styles';
-import { HeadlineSize } from './headline.types';
+import { HeadlineProps, HeadlineSize } from './headline.types';
 
 export default {
   title: 'Typography/Headline',
   component: Headline,
   parameters: {
+    maxWidth: true,
     docs: {
       description: {
         component:
@@ -28,7 +32,7 @@ export default {
     sizeConfined: setPropDocumentation({ control: 'inline-radio' }),
     sizeWide: setPropDocumentation({ control: 'inline-radio' }),
   },
-} as Meta<typeof Headline>;
+} as Meta<HeadlineProps>;
 
 export const Default = {
   args: {
@@ -40,16 +44,6 @@ export const Default = {
     ...noCanvas,
   },
 };
-
-const PropContainer = styled.div`
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-column-gap: ${space4XL};
-  padding: ${spaceM} 0;
-`;
-const TypeContainer = styled.div`
-  width: ${scale160};
-`;
 
 export const Sizes = {
   render: () => {
@@ -65,7 +59,7 @@ export const Sizes = {
     const headlineSizes = Object.keys(sizes);
 
     return (
-      <>
+      <Container>
         {headlineSizes.map((key) => (
           <PropContainer>
             <TypeContainer>
@@ -78,7 +72,7 @@ export const Sizes = {
             </Headline>
           </PropContainer>
         ))}
-      </>
+      </Container>
     );
   },
 
