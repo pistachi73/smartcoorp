@@ -1,4 +1,4 @@
-import { Title, Subtitle, Primary } from '@storybook/addon-docs';
+import { Primary, Subtitle, Title } from '@storybook/addon-docs';
 import { Meta } from '@storybook/react';
 import React from 'react';
 import styled, { css } from 'styled-components';
@@ -10,15 +10,13 @@ import * as scaleTokens from '../scale';
 
 export default {
   title: 'Tokens/Scale',
+
   parameters: {
+    maxWidth: true,
     docs: {
-      page: () => (
-        <>
-          <Title>Scale token</Title>
-          <Subtitle>Design tokens: scale</Subtitle>
-          <Primary />
-        </>
-      ),
+      descrioption: {
+        component: 'Design tokens: media scale',
+      },
     },
   },
 } as Meta<typeof DesignSystemDocumentTable>;

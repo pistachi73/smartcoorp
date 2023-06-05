@@ -14,6 +14,7 @@ export default {
   component: Button,
 
   parameters: {
+    maxWidth: true,
     docs: {
       description: {
         component:
@@ -73,6 +74,24 @@ const ReferenceTemplate: StoryFn<ButtonProps> = (args: any) => {
       </Button>
     </Container>
   );
+};
+export const PrimaryVariant = {
+  render: ReferenceTemplate,
+
+  args: {
+    variant: 'primary',
+    icon: IoBarChartSharp,
+    iconSize: 18,
+  },
+
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: "`Button` component **primary** variant with it's states",
+      },
+    },
+  },
 };
 
 export const SecondaryVariant = {

@@ -22,6 +22,7 @@ const DialogContent = styled(motion(DialogAlertPrimitives.AlertDialogContent))`
   min-height: ${scale170};
   max-height: 60vh;
   width: 90%;
+  z-index: 9999;
 
   background-color: ${({ theme }) => theme.backgroundScreen};
 

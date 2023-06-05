@@ -67,6 +67,7 @@ export const lightTheme: ThemeType = {
   button: {
     primary: {
       hoverBackgroundColor: primary600,
+      activeBackgroundColor: primary700,
     },
     secondary: {
       hoverBackgroundColor: gray200,
@@ -156,6 +157,7 @@ export const darkTheme: ThemeType = {
   button: {
     primary: {
       hoverBackgroundColor: primary400,
+      activeBackgroundColor: primary300,
     },
     secondary: {
       hoverBackgroundColor: gray800,

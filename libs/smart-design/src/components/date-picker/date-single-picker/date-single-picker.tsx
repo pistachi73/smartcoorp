@@ -47,7 +47,7 @@ export const DateSinglePicker = ({
           </S.InputContainer>
         </S.Container>
       </PopoverTrigger>
-      <PopoverContent align="start">
+      <PopoverContent align="center">
         <Calendar
           mode="single"
           selected={selected}

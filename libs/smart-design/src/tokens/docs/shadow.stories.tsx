@@ -11,14 +11,11 @@ import * as shadowTokens from '../shadow';
 export default {
   title: 'Tokens/Shadow',
   parameters: {
+    maxWidth: true,
     docs: {
-      page: () => (
-        <>
-          <Title>Shadow token</Title>
-          <Subtitle>Design tokens: shadow</Subtitle>
-          <Primary />
-        </>
-      ),
+      descrioption: {
+        component: 'Design tokens: media shadow',
+      },
     },
   },
 } as Meta<typeof DesignSystemDocumentTable>;

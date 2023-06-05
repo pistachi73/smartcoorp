@@ -191,6 +191,8 @@ const SingleSelectLabel = styled.p<SelectLabelProps>`
 `;
 
 const SelectContainer = styled.div<{ $disabled: boolean }>`
+  position: relative;
+  width: 100%;
   ${({ $disabled }) =>
     $disabled &&
     css`

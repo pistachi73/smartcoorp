@@ -1,9 +1,9 @@
 // import { noCanvas } from '@helpers';
-import { Title, Subtitle, Primary } from '@storybook/addon-docs';
 import { Meta } from '@storybook/react';
 import React from 'react';
 import styled, { css } from 'styled-components';
 
+import { noCanvas } from '../../helpers';
 import { DesignSystemDocumentTable } from '../../shared';
 import * as borderRadiusTokens from '../borderRadius';
 import { primary } from '../color';
@@ -11,14 +11,11 @@ import { primary } from '../color';
 export default {
   title: 'Tokens/Border Radius',
   parameters: {
+    maxWidth: true,
     docs: {
-      page: () => (
-        <>
-          <Title>Border radius token</Title>
-          <Subtitle>Design tokens: border radius</Subtitle>
-          <Primary />
-        </>
-      ),
+      descrioption: {
+        component: 'Design tokens: border radius',
+      },
     },
   },
 } as Meta<typeof DesignSystemDocumentTable>;
@@ -67,7 +64,6 @@ export const BorderRadius = {
   },
 
   parameters: {
-    // ...noCanvas,
     docs: {
       source: {
         code: '',

@@ -101,6 +101,7 @@ export const sizes = {
 
 export const Container = styled.div<{ $disabled?: boolean }>`
   position: relative;
+  width: 100%;
 
   ${({ $disabled }) =>
     $disabled &&

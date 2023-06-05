@@ -115,7 +115,7 @@ const WithReactHookFormTemplate: StoryFn<RHFFormFieldProps<FormValues>> = (
   const onSubmit = (data: FormValues) => console.log(data);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
       <RHFFormField
         control={control}
         name="input"
