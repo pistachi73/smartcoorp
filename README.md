@@ -28,5 +28,3 @@ To get started with any of the projects within this repository, please follow th
 ## Contributing
 We welcome contributions from the community to improve Smartcoorp. If you would like to contribute, please follow the guidelines outlined in the `CONTRIBUTING.md` file of each project. Make sure to adhere to the code of conduct specified in the `CODE_OF_CONDUCT.md` file.
 
-## License
-The Smartcoorp repository is open-source and released under the [MIT License](LICENSE). Feel free to use, modify, and distribute the code as permitted by the license.
