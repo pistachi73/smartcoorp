@@ -1,4 +1,4 @@
-import { Styled, fontWeights, lineHeights, sizes } from './body.styles';
+import { fontWeights, lineHeights, sizes } from './body.styles';
 
 export type BodyCopySize = keyof typeof sizes;
 export type BodyCopyLineHeight = keyof typeof lineHeights;

@@ -1,8 +1,11 @@
 import { Meta } from '@storybook/react';
-import styled from 'styled-components';
 
 import { noCanvas, setPropDocumentation } from '../../helpers';
-import { scale300, space4XL, spaceM } from '../../tokens';
+import {
+  Container,
+  PropContainer,
+  TypeContainer,
+} from '../../helpers/typography-docs.styles';
 
 import { Hero } from './hero';
 import { fontWeights, sizes } from './hero.styles';
@@ -12,6 +15,7 @@ export default {
   title: 'Typography/Hero',
   component: Hero,
   parameters: {
+    maxWidth: true,
     docs: {
       description: {
         component:
@@ -24,9 +28,6 @@ export default {
     as: { table: { disable: true } },
     forwardedAs: { table: { disable: true } },
     children: setPropDocumentation({ control: 'text' }),
-    size: setPropDocumentation({ control: 'inline-radio' }),
-    sizeConfined: setPropDocumentation({ control: 'inline-radio' }),
-    sizeWide: setPropDocumentation({ control: 'inline-radio' }),
   },
 } as Meta<typeof Hero>;
 
@@ -43,16 +44,6 @@ export const Default = {
   },
 };
 
-const PropContainer = styled.div`
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-column-gap: ${space4XL};
-  padding: ${spaceM} 0;
-`;
-const TypeContainer = styled.div`
-  width: ${scale300};
-`;
-
 export const Sizes = {
   render: () => {
     const sizePx: any = {
@@ -65,7 +56,7 @@ export const Sizes = {
     const heroSizes = Object.keys(sizes);
 
     return (
-      <>
+      <Container>
         {heroSizes.map((key) => (
           <PropContainer key={key}>
             <TypeContainer>
@@ -78,7 +69,7 @@ export const Sizes = {
             </Hero>
           </PropContainer>
         ))}
-      </>
+      </Container>
     );
   },
 
@@ -102,7 +93,7 @@ export const FontWeights = {
     const heroFontWeights = Object.keys(fontWeights);
 
     return (
-      <>
+      <Container>
         {heroFontWeights.map((key) => (
           <PropContainer key={key}>
             <TypeContainer>
@@ -115,7 +106,7 @@ export const FontWeights = {
             </Hero>
           </PropContainer>
         ))}
-      </>
+      </Container>
     );
   },
 

@@ -54,7 +54,9 @@ const ThemeBlock = styled.div<{ $largerStory?: boolean; $maxWidth?: boolean }>`
 
 const ThemeBlockWrapper = styled.div<{ $maxWidth: boolean }>`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
   ${({ $maxWidth }) =>
     $maxWidth
       ? css`
