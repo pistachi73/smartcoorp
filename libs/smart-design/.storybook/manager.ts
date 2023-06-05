@@ -1,6 +1,7 @@
-import { create } from '@storybook/theming/create';
+import { addons } from '@storybook/addons';
+import { create } from '@storybook/theming';
 
-export default create({
+const theme = create({
   base: 'light',
   // Typography
   fontBase: '"Inter", Montserrat',
@@ -16,7 +17,7 @@ export default create({
   colorSecondary: '#FF5E0E',
 
   // UI
-  appBg: '#FFEFE7', //tghis
+  appBg: '#fff8f5',
   appContentBg: '#ffffff',
   appBorderColor: '#D3D4DA',
   appBorderRadius: 8,
@@ -36,4 +37,8 @@ export default create({
   inputBorder: '#D3D4DA',
   inputTextColor: '#10162F',
   inputBorderRadius: 4,
+});
+
+addons.setConfig({
+  theme,
 });
