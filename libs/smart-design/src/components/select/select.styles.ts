@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components';
 import { focusShadow } from '../../styles';
 import {
   borderRadiusXS,
-  gray400,
   mediaConfined,
   mediaWide,
   motionEasingEnter,
@@ -22,7 +21,6 @@ import {
   slideUpAndFadeIn,
   spaceM,
   spaceS,
-  spaceXS,
   spaceXXS,
 } from '../../tokens';
 
@@ -395,6 +393,10 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
           ${$sizeWide && sizes[$sizeWide].item}
         }
       `};
+
+    &:hover {
+      background-color: ${({ theme }) => theme.form.hoverColor};
+    }
   }
 
   .react-select__option--is-focused {

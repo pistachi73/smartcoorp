@@ -1,13 +1,3 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 import styled from 'styled-components';
@@ -23,29 +13,10 @@ export default {
   component: Grid,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Grid</Title>
-          <Subtitle>Grid layout component</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            `Grid` component is used for marking up the content of SC projects
-          </Description>
-          <Description>
-            Inside `Grid` component, use `Row` and `Col` component to build
-            different layouts
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="js"
-            code={`import { Grid, Row, Col } from @smart-design/components`}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          'Inside Grid component, use Row and Col component to build different layouts',
+      },
     },
   },
   argTypes: {

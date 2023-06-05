@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { forwardRef } from 'react';
 
 import { Styled } from './body.styles';
 import { BodyProps } from './body.types';
 
-export const Body = React.forwardRef(
+export const Body = forwardRef(
   (
     {
       children,

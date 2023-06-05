@@ -31,7 +31,7 @@ type BodyTransientProps = {
 
 // *** Base ***
 const baseBodyCopy = css`
-  color: ${({ theme }) => theme.typography.bodyTextColor};
+  color: ${({ theme }) => theme.typography.bodyTextColor} !important;
   line-height: 1.5;
   margin-left: 0;
   margin-right: 0;

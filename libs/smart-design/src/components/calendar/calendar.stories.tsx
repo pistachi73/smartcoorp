@@ -1,15 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-nocheck
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 import { DateRange } from 'react-day-picker';
@@ -24,30 +12,10 @@ export default {
   component: Calendar,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Calendar</Title>
-          <Subtitle>Calendar component for SC projects</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            A Calendar React component is a reusable UI element that displays
-            dates and allows users to navigate through months and years. It
-            provides a grid layout with cells representing days and can include
-            features like highlighting today's date and selecting specific
-            dates. It's highly customizable and promotes code modularity for
-            date-centric applications.
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="tsx"
-            code={`import { Calendar } from @smart-design/components`}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          "A Calendar React component is a reusable UI element that displays dates and allows users to navigate through months and years. It provides a grid layout with cells representing days and can include features like highlighting today's date and selecting specific dates. It's highly customizable and promotes code modularity for date-centric applications.",
+      },
     },
   },
   argTypes: {
@@ -57,7 +25,7 @@ export default {
   },
 } as Meta<CalendarProps>;
 
-const SingleTemplate: StoryFn<CalendarProps> = (args) => {
+const SingleTemplate: StoryFn<CalendarProps> = (args: any) => {
   const [singleSelect, setSingleSelect] = useState<Date | undefined>();
 
   return (
@@ -65,11 +33,11 @@ const SingleTemplate: StoryFn<CalendarProps> = (args) => {
       mode={'single'}
       selected={singleSelect}
       onSelect={setSingleSelect}
-      withCustomValues={args.withCustomValues}
+      withCustomValues={args?.withCustomValues}
     />
   );
 };
-const MultipleTemplate: StoryFn<CalendarProps> = (args) => {
+const MultipleTemplate: StoryFn<CalendarProps> = (args: any) => {
   const [multipleSelect, setMultipleSelect] = useState<Date[] | undefined>();
 
   return (
@@ -82,7 +50,7 @@ const MultipleTemplate: StoryFn<CalendarProps> = (args) => {
     />
   );
 };
-const RangeTemplate: StoryFn<CalendarProps> = (args) => {
+const RangeTemplate: StoryFn<CalendarProps> = (args: any) => {
   const [rangeSelect, setRangeSelect] = useState<DateRange | undefined>();
 
   return (
@@ -119,6 +87,14 @@ export const WithCustomValues: TemplateProps<CalendarProps> = {
       },
     ],
   },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This is an example of how to use the component with custom selectable values',
+      },
+    },
+  },
 };
 
 export const Multiple: TemplateProps<CalendarProps> = {
@@ -127,12 +103,29 @@ export const Multiple: TemplateProps<CalendarProps> = {
     max: 4,
     min: 2,
   },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          /** Add story descriotion */
+          'This is an example of how to use the component with multiple selectable values',
+      },
+    },
+  },
 };
 
 export const Range: TemplateProps<CalendarProps> = {
   render: RangeTemplate,
   args: {
     mode: 'range',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This is an example of how to use the component with range selectable values',
+      },
+    },
   },
 };
 
@@ -155,5 +148,14 @@ export const RangeWithCustomValues: TemplateProps<CalendarProps> = {
         value: 'next-week',
       },
     ],
+  },
+  /** Add story descriotion */
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This is an example of how to use the component with range selectable values and custom values',
+      },
+    },
   },
 };

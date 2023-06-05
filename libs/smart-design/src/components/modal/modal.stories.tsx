@@ -1,13 +1,3 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -26,29 +16,10 @@ export default {
   subcomponents: { ModalContent, ModalTrigger },
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Modal</Title>
-          <Subtitle>Modal layout component</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            A Modal component presents content within a container on top of the
-            application's main UI. Modals can have multiple instances, in which
-            case they will overlay on top of each other. This component supports
-            `react-router`.
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="jsx"
-            code={`import { Modal, ModalContent, ModalTrigger } from @smart-design/components`}
-            format={true}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          "A Modal component presents content within a container on top of the application's main UI. Modals can have multiple instances, in which case they will overlay on top of each other. This component supports `react-router`",
+      },
     },
   },
   argTypes: {

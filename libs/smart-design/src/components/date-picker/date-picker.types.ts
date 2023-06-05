@@ -1,6 +1,5 @@
 import {
   DateRange,
-  SelectMultipleEventHandler,
   SelectRangeEventHandler,
   SelectSingleEventHandler,
 } from 'react-day-picker';

@@ -13,7 +13,7 @@ type CaptionTransientProps = {
 
 // *** Base ***
 const baseCaption = css`
-  color: ${({ theme }) => theme.typography.captionTextColor};
+  color: ${({ theme }) => theme.typography.captionTextColor} !important;
   font-size: ${scale050};
   line-height: 1.5;
   margin-left: 0;

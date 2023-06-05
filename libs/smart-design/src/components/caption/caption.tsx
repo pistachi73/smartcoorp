@@ -22,5 +22,3 @@ export const Caption: FC<CaptionProps> = ({
     {children}
   </Styled.Caption>
 );
-
-Caption.displayName = 'Caption';

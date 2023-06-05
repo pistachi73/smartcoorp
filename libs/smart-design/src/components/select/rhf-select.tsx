@@ -3,7 +3,6 @@ import {
   Controller,
   FieldValues,
   Path,
-  PathValue,
   RegisterOptions,
 } from 'react-hook-form';
 

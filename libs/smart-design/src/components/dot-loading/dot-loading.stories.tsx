@@ -19,30 +19,10 @@ export default {
   component: DotLoading,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Loader</Title>
-          <Subtitle>Loading animation</Subtitle>
-
-          <Description>##Overview</Description>
-          <Description>
-            `DotLoading` component is the loading animation for SC projects. It
-            can be used in different situations
-          </Description>
-          <Description>- loading state for `Button` component</Description>
-          <Description>- loading page</Description>
-
-          <Description>##Usage</Description>
-          <Source
-            language="tsx"
-            code={`import { DotLoading } from @smart-design/components`}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          'DotLoading component is the loading animation for SC projects. It can be used in different situations',
+      },
     },
   },
   argTypes: {
@@ -71,7 +51,6 @@ export const Disabled = {
   parameters: {
     docs: {
       description: {
-        // Write a description for the story here.
         story: '**Disabled** state of the component',
       },
     },

@@ -13,10 +13,10 @@ export const TooltipContet = styled(motion(Tooltip.Content))`
 
   user-select: none;
   & p {
-    color: ${({ theme }) => theme.tooltip.contentParagraphColor};
+    color: ${({ theme }) => theme.tooltip.contentParagraphColor} !important;
   }
   & span {
-    color: ${({ theme }) => theme.tooltip.contentSpanColor};
+    color: ${({ theme }) => theme.tooltip.contentSpanColor} !important;
   }
 
   & h1,
@@ -25,7 +25,7 @@ export const TooltipContet = styled(motion(Tooltip.Content))`
   h4,
   h5,
   h6 {
-    color: ${({ theme }) => theme.tooltip.contentHeadingColor};
+    color: ${({ theme }) => theme.tooltip.contentHeadingColor} !important;
   }
 `;
 

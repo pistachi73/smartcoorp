@@ -4,7 +4,8 @@
     "outDir": "../../../dist/out-tsc",
     "module": "commonjs",
     "types": ["cypress", "node"],
-    "jsx": "react"
+    "jsx": "react",
+    "sourceMap": false
   },
   "include": [
     "support/**/*.ts",

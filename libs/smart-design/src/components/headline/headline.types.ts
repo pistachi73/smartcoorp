@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { Styled, sizes } from './headline.styles';
+import { sizes } from './headline.styles';
 
 export type HeadlineSize = keyof typeof sizes;
-export type HeadlineProps = React.ComponentProps<typeof Styled.Headline> & {
+export type HeadlineProps = {
   /** Content of the headline */
   children?: React.ReactNode;
   /** Custom styling */

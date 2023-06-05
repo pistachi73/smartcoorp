@@ -1,16 +1,6 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { TemplateProps, noCanvas } from '../../helpers';
 import { Button } from '../button';
@@ -18,34 +8,16 @@ import { Button } from '../button';
 import { Checkbox } from './checkbox';
 import type { CheckboxProps } from './checkbox.types';
 import { RHFCheckbox, RHFCheckboxProps } from './rhf-checkbox';
+
 export default {
   title: 'Form/Checkbox',
   component: Checkbox,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Checkbox</Title>
-          <Subtitle>Checkbox component</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            The Checkbox component is a reusable React component that provides a
-            simple and intuitive way to include checkboxes in your user
-            interface. It allows users to select one or multiple options from a
-            predefined list by toggling the checkboxes on or off.
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="jsx"
-            code={`import { Checkbox } from @smart-design/components`}
-            format={true}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          'The Checkbox component is a reusable React component that provides a simple and intuitive way to include checkboxes in your user interface. It allows users to select one or multiple options from a predefined list by toggling the checkboxes on or off.',
+      },
     },
     controls: { sort: 'requiredFirst' },
   },

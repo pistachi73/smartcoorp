@@ -1,14 +1,4 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
-import { Meta, StoryFn } from '@storybook/react';
-import React from 'react';
+import { Meta } from '@storybook/react';
 import styled from 'styled-components';
 
 import { noCanvas, setPropDocumentation } from '../../helpers';
@@ -23,19 +13,10 @@ export default {
   component: Headline,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>Headline</Title>
-          <Subtitle>Headline typography Smartcookie component</Subtitle>
-          <Description>
-            The `Headline` component is used for common paragraph copies arround
-            SC projects.
-          </Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="Reference" />
-        </>
-      ),
+      description: {
+        component:
+          'The Headline component is used for common paragraph copies arround SC projects.',
+      },
     },
   },
   argTypes: {
@@ -51,7 +32,7 @@ export default {
 
 export const Default = {
   args: {
-    children: 'hello',
+    children: 'Headline',
     as: 'h2',
   },
 

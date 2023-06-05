@@ -2,26 +2,14 @@ import { DayPicker as DayPickerPrimitive } from 'react-day-picker';
 import styled from 'styled-components';
 
 import { focusShadow } from '../../styles';
-import { borderRadiusXS, borderRadiusXXS } from '../../tokens/borderRadius';
-import { primary300, primary400 } from '../../tokens/color';
+import { borderRadiusXS } from '../../tokens/borderRadius';
 import {
   motionEasingStandard,
   motionTimeS,
   motionTimeXS,
 } from '../../tokens/motion';
-import { scale090, scale110, scale130, scale140 } from '../../tokens/scale';
-import {
-  spaceL,
-  spaceM,
-  spaceS,
-  spaceXS,
-  spaceXXS,
-} from '../../tokens/spacing';
-
-const sizes = {
-  small: {},
-  medium: {},
-};
+import { scale110, scale140 } from '../../tokens/scale';
+import { spaceL, spaceM, spaceS, spaceXXS } from '../../tokens/spacing';
 
 const DayPicker = styled(DayPickerPrimitive)`
   .rdp-months {

@@ -1,13 +1,3 @@
-import {
-  ArgsTable,
-  Description,
-  PRIMARY_STORY,
-  Primary,
-  Source,
-  Stories,
-  Subtitle,
-  Title,
-} from '@storybook/addon-docs';
 import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -24,29 +14,10 @@ export default {
   component: RadioGroup,
   parameters: {
     docs: {
-      page: () => (
-        <>
-          <Title>RadioGroup</Title>
-          <Subtitle>RadioGroup component</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            The RadioGroup component is a reusable React component that provides
-            a simple and intuitive way to include RadioGroupes in your user
-            interface. It allows users to select one or multiple options from a
-            predefined list by toggling the RadioGroupes on or off.
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="jsx"
-            code={`import { RadioGroup } from @smart-design/components`}
-            format={true}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component:
+          'The RadioGroup component is a reusable React component that provides a simple and intuitive way to include RadioGroupes in your user interface. It allows users to select one or multiple options from a predefined list by toggling the RadioGroupes on or off.',
+      },
     },
     controls: { sort: 'requiredFirst' },
   },

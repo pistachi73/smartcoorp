@@ -1,5 +1,5 @@
 import * as PopoverPrimitive from '@radix-ui/react-popover';
-import React, { ComponentProps } from 'react';
+import React from 'react';
 
 export type PopoverProps = {
   /** The content to render inside the popover. */

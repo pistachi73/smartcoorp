@@ -3,17 +3,9 @@ import styled, { css } from 'styled-components';
 
 import { focusShadow } from '../../styles';
 import { borderRadiusXS } from '../../tokens/borderRadius';
-import { primary, primary_RGBA } from '../../tokens/color';
+import { primary } from '../../tokens/color';
 import { mediaConfined, mediaWide } from '../../tokens/media';
-import {
-  scale060,
-  scale070,
-  scale080,
-  scale090,
-  scale100,
-  scale110,
-  scale140,
-} from '../../tokens/scale';
+import { scale070, scale080, scale100, scale110 } from '../../tokens/scale';
 import { spaceM } from '../../tokens/spacing';
 
 import type { CheckboxSize } from './checkbox.types';
