@@ -29,6 +29,7 @@ const ModalContent = styled(motion(Dialog.Content))`
   min-height: ${scale320};
   max-height: 60vh;
   width: 90%;
+  z-index: 9999;
 
   max-width: ${scale420};
 

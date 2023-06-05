@@ -3,15 +3,15 @@ import styled, { css } from 'styled-components';
 import { Body as BodyComponent } from '../../components';
 import {
   borderRadiusS,
+  gray200,
   gray300,
   gray400,
+  primary300,
   scale005,
   spaceM,
-  spaceXS,
   spaceS,
   spaceXL,
-  gray200,
-  primary300,
+  spaceXS,
 } from '../../tokens';
 
 type TableRowProps = {
@@ -42,7 +42,7 @@ export const BodyHeaders = styled(BodyComponent)`
 `;
 
 export const NameColumn = styled.th`
-  flex: 1 0 50%;
+  flex: 1 0 25%;
 `;
 
 export const NameCell = styled.div`
@@ -61,7 +61,7 @@ export const NameButton = styled.button`
 `;
 
 export const ValueColumn = styled.th`
-  flex: 0 0 25%;
+  flex: 0 0 50%;
 `;
 
 export const ValueCell = styled.div`

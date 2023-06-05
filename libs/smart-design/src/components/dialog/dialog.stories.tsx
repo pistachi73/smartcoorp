@@ -41,26 +41,34 @@ const Template: StoryFn<typeof Dialog> = (args) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button>Open Dialog</Button>
-      </DialogTrigger>
-      <DialogContent
-        title="Delete content"
-        description="Delete blog content"
-        actionLabel="Yes, delete content"
-        onAction={onAction}
-        cancelLabel="Cancel"
-        onCancel={onCancel}
-        loading={isLoading}
-      >
-        <Headline size="xlarge">Delete content</Headline>
-        <Body size="small">
-          Are you sure to remove this content? You can access this file for 7
-          days in your trash.
-        </Body>
-      </DialogContent>
-    </Dialog>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger>
+          <Button>Open Dialog</Button>
+        </DialogTrigger>
+        <DialogContent
+          title="Delete content"
+          description="Delete blog content"
+          actionLabel="Yes, delete content"
+          onAction={onAction}
+          cancelLabel="Cancel"
+          onCancel={onCancel}
+          loading={isLoading}
+        >
+          <Headline size="xlarge">Delete content</Headline>
+          <Body size="small">
+            Are you sure to remove this content? You can access this file for 7
+            days in your trash.
+          </Body>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 

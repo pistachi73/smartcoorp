@@ -13,6 +13,8 @@ export default {
   title: 'Form/Select',
   component: Select,
   parameters: {
+    largerStory: true,
+
     docs: {
       description: {
         component:
@@ -133,6 +135,8 @@ export const Disabled = {
   },
 
   parameters: {
+    largerStory: false,
+
     docs: {
       description: {
         story:
@@ -150,6 +154,7 @@ export const Error = {
     placeholder: 'Select something...',
     label: 'Error select',
   },
+
   parameters: {
     docs: {
       description: {
@@ -174,7 +179,7 @@ const WithReactHookFormTemplate: StoryFn<RHFSelectProps<FormValues>> = (
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
       <RHFSelect
         control={control}
         name="select"

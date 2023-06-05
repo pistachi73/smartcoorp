@@ -1,4 +1,3 @@
-import { Primary, Subtitle, Title } from '@storybook/addon-docs';
 import { Meta } from '@storybook/react';
 import styled from 'styled-components';
 
@@ -11,14 +10,11 @@ import * as mediaQuerysTokens from '../media';
 export default {
   title: 'Tokens/Media Querys',
   parameters: {
+    maxWidth: true,
     docs: {
-      page: () => (
-        <>
-          <Title>Media query token</Title>
-          <Subtitle>Design tokens: media query</Subtitle>
-          <Primary />
-        </>
-      ),
+      descrioption: {
+        component: 'Design tokens: media query',
+      },
     },
   },
 } as Meta<typeof DesignSystemDocumentTable>;

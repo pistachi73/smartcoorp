@@ -96,7 +96,7 @@ export const InputContainer = styled.div<SizeProps & WithError>`
   width: 100%;
 
   border-radius: ${borderRadiusXS};
-  background-color: ${({ theme }) => theme.color.invertedNeutral};
+  background-color: ${({ theme }) => theme.backgroundScreen};
   display: flex;
   align-items: center;
 

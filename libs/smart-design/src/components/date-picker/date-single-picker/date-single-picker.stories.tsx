@@ -2,6 +2,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import { TemplateProps, noCanvas } from 'libs/smart-design/src/helpers';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
 
 import { Button } from '../../button';
 import { DateSinglePickerProps } from '../date-picker.types';
@@ -30,17 +31,23 @@ export default {
   },
 } as Meta<DateSinglePickerProps>;
 
+const Container = styled.div`
+  width: 298px;
+`;
+
 const Template: StoryFn<DateSinglePickerProps> = (args) => {
   const [singleSelect, setSingleSelect] = useState<Date | undefined>();
 
   return (
-    <DateSinglePicker
-      selected={singleSelect}
-      onSelect={setSingleSelect}
-      withCustomValues={args.withCustomValues}
-      isDisabled={args.isDisabled}
-      isError={args.isError}
-    />
+    <Container>
+      <DateSinglePicker
+        selected={singleSelect}
+        onSelect={setSingleSelect}
+        withCustomValues={args.withCustomValues}
+        isDisabled={args.isDisabled}
+        isError={args.isError}
+      />
+    </Container>
   );
 };
 
@@ -90,14 +97,16 @@ const WithReactHookFormTemplate: StoryFn<
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <RHFDateSinglePicker
-        control={control}
-        name="date"
-        defaultValue={args?.defaultValue}
-        withCustomValues={args.withCustomValues}
-        isDisabled={args.isDisabled}
-      />
+    <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
+      <Container>
+        <RHFDateSinglePicker
+          control={control}
+          name="date"
+          defaultValue={args?.defaultValue}
+          withCustomValues={args.withCustomValues}
+          isDisabled={args.isDisabled}
+        />
+      </Container>
       <Button style={{ marginTop: '10px' }} type="submit">
         Submit
       </Button>

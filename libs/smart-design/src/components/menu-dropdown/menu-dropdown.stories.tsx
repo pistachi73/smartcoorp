@@ -17,7 +17,7 @@ import { scale300, space4XL, spaceM } from '../../tokens';
 import { MenuDropdown } from './menu-dropdown';
 
 export default {
-  title: 'Components/MenuDropdown',
+  title: 'Component/MenuDropdown',
   component: MenuDropdown,
   parameters: {
     docs: {

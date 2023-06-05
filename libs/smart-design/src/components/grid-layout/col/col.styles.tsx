@@ -29,7 +29,7 @@ export const Col = styled.div<ColTransientProps>`
   ${({ $offset }) =>
     $offset &&
     css`
-      margin-left: ${($offset / 12) * 100}%;
+      margin-left: ${($offset / 12) * 100}% !important;
     `}
 
   padding-left: ${scale020};

@@ -1,4 +1,4 @@
-import { Title, Subtitle, Primary } from '@storybook/addon-docs';
+import { Primary, Subtitle, Title } from '@storybook/addon-docs';
 import { Meta } from '@storybook/react';
 import React from 'react';
 
@@ -10,14 +10,11 @@ import * as motionTokens from '../motion';
 export default {
   title: 'Tokens/Motion',
   parameters: {
+    maxWidth: true,
     docs: {
-      page: () => (
-        <>
-          <Title>Motion token</Title>
-          <Subtitle>Design tokens: motion</Subtitle>
-          <Primary />
-        </>
-      ),
+      descrioption: {
+        component: 'Design tokens: motion',
+      },
     },
   },
 } as Meta<typeof DesignSystemDocumentTable>;

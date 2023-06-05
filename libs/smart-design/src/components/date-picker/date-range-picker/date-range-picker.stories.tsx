@@ -2,6 +2,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import { TemplateProps } from 'libs/smart-design/src/helpers';
 import { useState } from 'react';
 import { DateRange } from 'react-day-picker';
+import styled from 'styled-components';
 
 import { DateRangePickerProps } from '../date-picker.types';
 
@@ -25,18 +26,28 @@ export default {
   },
 } as Meta<DateRangePickerProps>;
 
+const Container = styled.div`
+  width: 298px;
+`;
 const Template: StoryFn<DateRangePickerProps> = (args) => {
   const [singleSelect, setSingleSelect] = useState<DateRange | undefined>();
 
   return (
-    <DateRangePicker
-      selected={singleSelect}
-      onSelect={setSingleSelect}
-      max={args?.max}
-      min={args?.min}
-      withCustomValues={args.withCustomValues}
-    />
+    <Container>
+      <DateRangePicker
+        selected={singleSelect}
+        onSelect={setSingleSelect}
+        max={args?.max}
+        min={args?.min}
+        withCustomValues={args.withCustomValues}
+      />
+    </Container>
   );
+};
+
+export const Default = {
+  render: Template,
+  args: {},
 };
 
 export const WithCustomValues: TemplateProps<DateRangePickerProps> = {

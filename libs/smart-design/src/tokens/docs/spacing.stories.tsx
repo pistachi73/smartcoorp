@@ -1,4 +1,4 @@
-import { Title, Subtitle, Primary } from '@storybook/addon-docs';
+import { Primary, Subtitle, Title } from '@storybook/addon-docs';
 import { Meta } from '@storybook/react';
 import React from 'react';
 import styled, { css } from 'styled-components';
@@ -12,14 +12,11 @@ import * as spacingTokens from '../spacing';
 export default {
   title: 'Tokens/Spacing',
   parameters: {
+    maxWidth: true,
     docs: {
-      page: () => (
-        <>
-          <Title>Spacing token</Title>
-          <Subtitle>Design tokens: spacing</Subtitle>
-          <Primary />
-        </>
-      ),
+      descrioption: {
+        component: 'Design tokens: spacing',
+      },
     },
   },
 } as Meta<typeof DesignSystemDocumentTable>;

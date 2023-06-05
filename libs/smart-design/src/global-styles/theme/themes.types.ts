@@ -21,6 +21,7 @@ interface Common {
 }
 interface PrimaryButtonTypes {
   hoverBackgroundColor: string;
+  activeBackgroundColor: string;
 }
 interface SecondaryButtonTypes {
   hoverBackgroundColor: string;
