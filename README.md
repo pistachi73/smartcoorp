@@ -1,0 +1,2 @@
+# smartcoorp
+Smartcoork monorepo
