@@ -26,7 +26,7 @@ type HeadlineTransientProps = {
 // *** Base ***
 const baseHeadline = css`
   color: ${({ theme }) => theme.typography.headlineTextColor};
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.25;
   margin-left: 0;
   margin-right: 0;

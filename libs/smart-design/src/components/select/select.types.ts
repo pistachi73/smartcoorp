@@ -46,4 +46,6 @@ export type SelectProps = {
   sizeConfined?: SelectSizes;
   /** The size on desktop screens or larger */
   sizeWide?: SelectSizes;
+  /** Popover placing */
+  menuPlacement?: 'auto' | 'bottom' | 'top';
 };

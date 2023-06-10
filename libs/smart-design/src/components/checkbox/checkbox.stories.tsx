@@ -29,7 +29,7 @@ const Template: StoryFn<CheckboxProps> = (args) => {
   return (
     <Checkbox
       onChange={setChecked}
-      value={checked}
+      checked={checked}
       label={args?.label}
       defaultValue={args?.defaultValue}
       isDisabled={args?.isDisabled}

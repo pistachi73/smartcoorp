@@ -31,7 +31,7 @@ type BodyTransientProps = {
 
 // *** Base ***
 const baseBodyCopy = css`
-  color: ${({ theme }) => theme.typography.bodyTextColor} !important;
+  color: ${({ theme }) => theme.typography.bodyTextColor};
   line-height: 1.5;
   margin-left: 0;
   margin-right: 0;
@@ -93,13 +93,13 @@ export const fontWeights = {
     font-weight: 400;
   `,
   bold: css`
-    font-weight: 700;
+    font-weight: 600;
   `,
 };
 
 // *** Components ***
 const Body = styled.p<BodyTransientProps>`
-  font-weight: 700;
+  font-weight: 600;
   ${baseBodyCopy};
   ${({ $lineHeight }) => $lineHeight && lineHeights[$lineHeight]};
   ${({ $fontWeight }) => $fontWeight && fontWeights[$fontWeight]};

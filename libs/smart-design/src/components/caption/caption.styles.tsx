@@ -52,7 +52,7 @@ export const fontWeights = {
     font-weight: 400;
   `,
   bold: css`
-    font-weight: 700;
+    font-weight: 600;
   `,
 };
 

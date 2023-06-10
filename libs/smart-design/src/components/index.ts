@@ -15,3 +15,5 @@ export * from './post-editor/post-editor.types';
 export * from './tooltip';
 export * from './radio-group';
 export * from './checkbox';
+export * from './resizable-panel';
+export * from './table';

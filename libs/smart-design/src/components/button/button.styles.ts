@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 
-import { focusRing } from '../../styles';
+import { focusRing, focusShadow } from '../../styles';
 import {
-  borderRadiusS,
+  borderRadiusXS,
   mediaConfined,
   mediaWide,
   motionEasingStandard,
@@ -16,6 +16,7 @@ import {
   scale150,
   scale160,
   spaceS,
+  spaceXXS,
 } from '../../tokens';
 import { DotLoading } from '../dot-loading';
 
@@ -47,9 +48,9 @@ type InnerContentTransientProps = {
 
 const baseButton = css`
   border: none;
-  font-weight: 700;
+  font-weight: 600;
   color: black;
-  border-radius: ${borderRadiusS};
+  border-radius: ${borderRadiusXS};
   cursor: pointer;
   background-color: transparent;
   align-items: center;
@@ -103,13 +104,18 @@ export const sizes = {
 export const variants = {
   primary: css`
     background-color: ${primary};
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
 
     &:hover {
       background-color: ${({ theme }) =>
         theme.button.primary.hoverBackgroundColor};
     }
 
-    ${focusRing({ color: primary })}
+    &:focus-visible {
+      ${focusShadow}
+    }
 
     &:active {
       color: ${({ theme }) => theme.color.invertedNeutral};
@@ -118,7 +124,7 @@ export const variants = {
   `,
   secondary: css`
     background-color: transparent;
-    border-width: 2px;
+    border-width: 1px;
     border-style: solid;
     border-color: ${({ theme }) => theme.color.neutral};
     color: ${({ theme }) => theme.color.neutral};
@@ -128,8 +134,9 @@ export const variants = {
         theme.button.secondary.hoverBackgroundColor};
     }
 
-    ${focusRing({ color: primary, offset: scale030 })}
-
+    &:focus-visible {
+      ${focusShadow}
+    }
     &:active {
       color: ${({ theme }) => theme.color.invertedNeutral};
       background-color: ${({ theme }) => theme.color.neutral};
@@ -138,23 +145,21 @@ export const variants = {
   text: css`
     position: relative;
     color: ${({ theme }) => theme.color.neutral};
-    padding: 0px !important;
-    border-radius: 0 !important;
-    border-bottom: 2px solid transparent;
+    padding: 0px ${spaceXXS} !important;
+
     outline: none;
 
-    &:after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      top: calc(100% - 5px);
-      background-color: transparent;
-    }
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+
     &:focus-visible {
-      &:after {
-        background-color: ${({ theme }) => theme.color.neutral};
-      }
+      ${focusShadow}
+    }
+
+    &:hover {
+      background-color: ${({ theme }) =>
+        theme.button.secondary.hoverBackgroundColor};
     }
   `,
 };
@@ -166,7 +171,7 @@ export const disabled = {
     cursor: not-allowed;
   `,
   secondary: css`
-    border: 2px solid ${({ theme }) => theme.common.disabledSurfaceColor};
+    border: 1px solid ${({ theme }) => theme.common.disabledSurfaceColor};
     color: ${({ theme }) => theme.common.disabledSurfaceColor};
     cursor: not-allowed;
   `,
@@ -194,7 +199,6 @@ const IconContainer = styled.div<IconContainerTransientProps>`
 
 const iconOnly = css`
   padding: 0;
-  border-radius: 50%;
   & ${IconContainer} {
     margin: 0;
   }

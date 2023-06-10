@@ -82,8 +82,14 @@ interface Form {
   };
   calendar: {
     selectedItemBackgroundColor: string;
-    selectedRangeLimitBackgroundColor: string;
+    selectRangeInsideColor: string;
   };
+}
+
+interface Table {
+  neutralColor: string;
+  selectedRowColor: string;
+  rowHoverColor: string;
 }
 
 export interface ThemeType {
@@ -110,4 +116,5 @@ export interface ThemeType {
   tooltip: Tooltip;
   scrollArea: ScrollArea;
   form: Form;
+  table: Table;
 }

@@ -122,9 +122,15 @@ export const lightTheme: ThemeType = {
       deleteValueHoverBackgroundColor: primary400,
     },
     calendar: {
-      selectedItemBackgroundColor: primary200,
-      selectedRangeLimitBackgroundColor: primary400,
+      selectedItemBackgroundColor: primary400,
+      selectRangeInsideColor: primary200,
     },
+  },
+
+  table: {
+    neutralColor: gray400,
+    selectedRowColor: primary100,
+    rowHoverColor: gray100,
   },
 };
 
@@ -211,8 +217,14 @@ export const darkTheme: ThemeType = {
       deleteValueHoverBackgroundColor: primary700,
     },
     calendar: {
-      selectedItemBackgroundColor: primary800,
-      selectedRangeLimitBackgroundColor: primary600,
+      selectedItemBackgroundColor: primary600,
+      selectRangeInsideColor: primary800,
     },
+  },
+
+  table: {
+    neutralColor: gray500,
+    selectedRowColor: primary800,
+    rowHoverColor: gray800,
   },
 };
