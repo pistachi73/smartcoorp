@@ -1,6 +1,6 @@
 import { ColumnFiltersState, Updater } from '@tanstack/react-table';
 import { useCallback } from 'react';
-import { MdDelete } from 'react-icons/md';
+import { BiTrash } from 'react-icons/bi';
 import { RxCross2 } from 'react-icons/rx';
 
 import { isDate, isNumber } from '@smartcoorp/smart-types';
@@ -37,7 +37,7 @@ export const ColumnFilters = ({
           <S.RemoveButton
             variant="secondary"
             size="small"
-            icon={MdDelete}
+            icon={BiTrash}
             onClick={removeAllFilters}
             key="remove-all-filters"
           />

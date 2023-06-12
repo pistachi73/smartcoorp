@@ -1,6 +1,3 @@
-import React from 'react';
-import ReactSelect from 'react-select';
-
 import { sizes } from './select.styles';
 export type SelectSizes = keyof typeof sizes;
 

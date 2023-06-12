@@ -90,6 +90,12 @@ interface Table {
   neutralColor: string;
   selectedRowColor: string;
   rowHoverColor: string;
+  headerHoverColor: string;
+}
+
+interface Command {
+  KBDBacgroundColor: string;
+  KBDColor: string;
 }
 
 export interface ThemeType {
@@ -117,4 +123,5 @@ export interface ThemeType {
   scrollArea: ScrollArea;
   form: Form;
   table: Table;
+  command: Command;
 }

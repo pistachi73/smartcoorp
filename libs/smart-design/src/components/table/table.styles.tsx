@@ -6,15 +6,12 @@ import {
   borderRadiusM,
   borderRadiusXS,
   gray100,
-  gray200,
-  gray400,
   gray500,
   gray600,
   green500,
   motionEasingStandard,
   motionTimeXS,
   primary,
-  primary100,
   primary600,
   scale060,
   scale070,
@@ -54,7 +51,7 @@ export const Table = styled(motion.table)`
 `;
 
 export const TableHead = styled.thead`
-  background-color: ${gray100};
+  background-color: ${({ theme }) => theme.table.rowHoverColor};
   border-radius: ${borderRadiusM};
 `;
 
@@ -62,7 +59,7 @@ export const TableHeader = styled.th<{ $width?: string }>`
   width: ${({ $width }) => $width || 'auto'};
   height: ${scale110};
   font-size: ${scale060};
-  color: ${gray400};
+  color: ${gray500};
   letter-spacing: 1px;
   font-weight: 600;
   padding: ${spaceXS};
@@ -87,7 +84,7 @@ export const TableHeaderWrapper = styled.div<{ $sortingEnabled?: boolean }>`
     css`
       cursor: pointer;
       &:hover {
-        background-color: ${gray200};
+        background-color: ${({ theme }) => theme.table.headerHoverColor};
         color: ${theme.color.neutral};
       }
     `}
@@ -136,7 +133,8 @@ export const TableRow = styled.tr<TableRowProps>`
     left: 0px;
     width: 2px;
     height: 100%;
-    background-color: ${({ $selected }) => $selected && primary};
+    background-color: ${({ $selected, theme }) =>
+      $selected && theme.table.selectedRowColor};
   }
 
   &:hover {
@@ -145,6 +143,7 @@ export const TableRow = styled.tr<TableRowProps>`
 `;
 
 export const TableCell = styled.td<{ $uniqueCell?: boolean }>`
+  color: ${({ theme }) => theme.color.neutral};
   padding: ${spaceL};
   height: ${({ $uniqueCell }) => ($uniqueCell ? scale220 : 'auto')};
   text-align: ${({ $uniqueCell }) => ($uniqueCell ? 'center' : 'left')};
@@ -215,7 +214,8 @@ const StyledTextButton = styled(Button)<{ $selected?: boolean }>`
     $selected &&
     css`
       border-color: ${primary};
-      background-color: ${primary100} !important;
+      background-color: ${({ theme }) =>
+        theme.table.selectedRowColor} !important;
     `}
 `;
 
@@ -242,11 +242,6 @@ const InlineFilterButton = styled(StyledButton)<{
 }>`
   height: ${scale110};
   min-width: ${scale110};
-  color: ${gray400};
-
-  &:hover {
-    color: black;
-  }
 
   ${({ $isFilteredColumn }) =>
     $isFilteredColumn &&
@@ -303,7 +298,7 @@ const PoppoverContentContainer = styled.div<{ $width?: number }>`
   align-items: start;
   padding: ${spaceM} ${spaceM};
   /* background-color: ${gray100}; */
-  background-color: white;
+  background-color: ${({ theme }) => theme.color.invertedNeutral};
   box-shadow: ${({ theme }) => theme.shadow.shadowM};
 
   border: 1px solid ${({ theme }) => theme.form.placeholderColor};

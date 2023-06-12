@@ -20,7 +20,6 @@ import {
   customValuesRangeSelectFormatter,
   customValuesSingleSelectFormatter,
 } from './helpers';
-// import 'react-day-picker/dist/style.css';
 
 const Caption = (props: CaptionProps) => {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
