@@ -53,7 +53,8 @@ export const Table = <T,>({
     }
     columnDefs.unshift({
       id: 'select',
-      width: '30px',
+      maxSize: 30,
+      minSize: 30,
       header: ({ table }) => (
         <Checkbox
           checked={table.getIsAllPageRowsSelected()}
@@ -62,6 +63,7 @@ export const Table = <T,>({
           size="small"
         />
       ),
+
       cell: ({ row }) => (
         <Checkbox
           size="small"
