@@ -55,8 +55,7 @@ export const TableHead = styled.thead`
   border-radius: ${borderRadiusM};
 `;
 
-export const TableHeader = styled.th<{ $width?: string }>`
-  width: ${({ $width }) => $width || 'auto'};
+export const TableHeader = styled.th`
   height: ${scale110};
   font-size: ${scale060};
   color: ${gray500};

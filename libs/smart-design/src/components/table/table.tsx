@@ -53,7 +53,8 @@ export const Table = <T,>({
     }
     columnDefs.unshift({
       id: 'select',
-      width: '30px',
+      maxSize: 30,
+      minSize: 30,
       header: ({ table }) => (
         <Checkbox
           checked={table.getIsAllPageRowsSelected()}
@@ -62,6 +63,7 @@ export const Table = <T,>({
           size="small"
         />
       ),
+
       cell: ({ row }) => (
         <Checkbox
           size="small"
@@ -167,10 +169,7 @@ export const Table = <T,>({
             <S.TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <S.TableHeader
-                    key={header.id}
-                    $width={header.column.columnDef.width}
-                  >
+                  <S.TableHeader key={header.id}>
                     {header.isPlaceholder ? null : (
                       <S.TableHeaderWrapper
                         $sortingEnabled={header.column.getCanSort()}
