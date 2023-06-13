@@ -2,7 +2,8 @@ export type FocusableElement =
   | HTMLParagraphElement
   | HTMLHeadingElement
   | HTMLOListElement
-  | HTMLUListElement;
+  | HTMLUListElement
+  | any;
 
 export type BlockRefs = HTMLDivElement[];
 

@@ -12,7 +12,7 @@ type CommonProps<T extends TextFieldVariant> = {
   blockIndex: number;
   fieldIndex: number;
   field: BlockFieldKeys<T>;
-  size: React.ComponentProps<typeof Headline>['size'];
+  size?: React.ComponentProps<typeof Headline>['size'];
   onInputChange: (e: React.ChangeEvent) => void;
 };
 

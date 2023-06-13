@@ -15,7 +15,7 @@ export const TextField = memo(
     blockIndex,
     field,
     onInputChange,
-    size,
+    size = 'medium',
     ...props
   }: TextFieldProps<T>) => {
     const { addFieldRef } = useRefsContext();

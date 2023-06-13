@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { BiCalendar } from 'react-icons/bi';
 
-import { Calendar } from '../../calendar';
+import { RangeCalendar } from '../../calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../../popover';
 import { Styled as S } from '../date-picker.styles';
 import type { DateRangePickerProps } from '../date-picker.types';
@@ -55,8 +55,7 @@ export const DateRangePicker = ({
         </S.Container>
       </PopoverTrigger>
       <PopoverContent align="start">
-        <Calendar
-          mode="range"
+        <RangeCalendar
           selected={selected}
           onSelect={onSelect}
           initialFocus

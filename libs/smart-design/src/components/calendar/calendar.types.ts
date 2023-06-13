@@ -1,5 +1,4 @@
 import {
-  DayPickerDefaultProps,
   DayPickerMultipleProps,
   DayPickerRangeProps,
   DayPickerSingleProps,
@@ -15,19 +14,21 @@ export type SingleCustomValuesOptions = {
   value: `${number}`;
 };
 
-type DatePickerProps =
-  | DayPickerDefaultProps
-  | (DayPickerSingleProps & {
-      /** Include custom selec values */
-      withCustomValues?: SingleCustomValuesOptions[];
-    })
-  | DayPickerMultipleProps
-  | (DayPickerRangeProps & {
-      /** Include custom selec values */
-      withCustomValues?: RangeCustomValuesOptions[];
-    });
-export type CalendarProps = DatePickerProps & {
+export type SingleCalendarProps = Omit<DayPickerSingleProps, 'mode'> & {
   /** Include custom selec values */
+  withCustomValues?: SingleCustomValuesOptions[];
+  /** Remove Calendar borders */
+  withBorder?: boolean;
+};
+
+export type MultipleCalendarProps = Omit<DayPickerMultipleProps, 'mode'> & {
+  /** Remove Calendar borders */
+  withBorder?: boolean;
+};
+
+export type RangeCalendarProps = Omit<DayPickerRangeProps, 'mode'> & {
+  /** Include custom selec values */
+  withCustomValues?: RangeCustomValuesOptions[];
   /** Remove Calendar borders */
   withBorder?: boolean;
 };

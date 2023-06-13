@@ -15,11 +15,13 @@ export const Body = forwardRef(
       sizeConfined,
       sizeWide,
       className,
+      id,
       ...props
     }: BodyProps,
     ref?: React.Ref<HTMLParagraphElement>
   ) => (
     <Styled.Body
+      id={id}
       ref={ref}
       $ellipsis={ellipsis}
       $fontWeight={fontWeight}

@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { BiCalendar } from 'react-icons/bi';
 
-import { Calendar } from '../../calendar';
+import { SingleCalendar } from '../../calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../../popover/popover';
 import { Styled as S } from '../date-picker.styles';
 import type { DateSinglePickerProps } from '../date-picker.types';
@@ -48,8 +48,7 @@ export const DateSinglePicker = ({
         </S.Container>
       </PopoverTrigger>
       <PopoverContent align="center">
-        <Calendar
-          mode="single"
+        <SingleCalendar
           selected={selected}
           onSelect={onSelect}
           initialFocus
