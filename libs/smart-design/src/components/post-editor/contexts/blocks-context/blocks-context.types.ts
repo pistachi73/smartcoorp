@@ -39,7 +39,7 @@ export type SetFieldValue = <T extends BlockType, F extends BlockFieldKeys<T>>({
   blockId: string;
   blockType: T;
   field: F;
-  value: BlockFieldType<T, F>;
+  value: BlockFieldType<T, any>;
   undo?: UndoRedoAction;
   redo?: UndoRedoAction;
 }) => void;

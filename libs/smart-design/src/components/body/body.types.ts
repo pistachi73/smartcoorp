@@ -1,9 +1,13 @@
-import { fontWeights, lineHeights, sizes } from './body.styles';
+import React from 'react';
+
+import { Styled, fontWeights, lineHeights, sizes } from './body.styles';
 
 export type BodyCopySize = keyof typeof sizes;
 export type BodyCopyLineHeight = keyof typeof lineHeights;
 export type BodyCopyFontWeight = keyof typeof fontWeights;
-export type BodyProps = {
+export type BodyProps = React.ComponentProps<typeof Styled.Body> & {
+  /** Id of the body */
+  id?: string;
   /** Content of the body copy */
   children?: React.ReactNode;
   /** Custom css className */

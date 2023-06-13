@@ -1,1 +1,1 @@
-export { Container } from './width-limiter';
+export { WidthLimiter } from './width-limiter';

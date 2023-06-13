@@ -1,6 +1,8 @@
-import { createGlobalStyle } from 'styled-components';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
+import { createGlobalStyle, css } from 'styled-components';
 
-import { borderRadiusXS, scale030, scale080, scale100 } from '../tokens';
+import { scale080, scale100 } from '../tokens';
 
 export const BaseStyles = createGlobalStyle`
   
@@ -17,11 +19,15 @@ export const BaseStyles = createGlobalStyle`
 
     /* Track */
     *::-webkit-scrollbar-track {
-      border-left: 1px solid
-        ${({ theme }) => theme.scrollArea.scrollbarBackgroundHover};
-      background: ${({ theme }) => theme.scrollArea.scrollbarBackground};
+      ${({ theme }) => css`
+        border-left: 1px solid ${theme.scrollArea.scrollbarBackgroundHover};
+        background: ${theme.scrollArea.scrollbarBackground};
+      `};
+
       &:hover {
-        background: ${({ theme }) => theme.scrollArea.scrollbarBackgroundHover};
+        ${({ theme }) => css`
+          background: ${theme.scrollArea.scrollbarBackgroundHover};
+        `};
       }
     }
 

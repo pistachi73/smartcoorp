@@ -2,7 +2,7 @@ import { Column, FilterFn, Row } from '@tanstack/react-table';
 import { FC, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 
-import { Calendar } from '../../../calendar';
+import { RangeCalendar } from '../../../calendar';
 import { Styled as S } from '../../table.styles';
 
 import { SortFilters } from './sort-filters';
@@ -23,9 +23,8 @@ export const DateFilter: FC<DateFilterProps> = ({ column }) => {
   return (
     <S.PoppoverContentContainer>
       <S.FilterContainer>
-        <Calendar
+        <RangeCalendar
           withBorder={false}
-          mode="range"
           selected={selectedRange}
           onSelect={(range) => {
             const minValue = range?.from;
@@ -64,7 +63,7 @@ export const DateFilter: FC<DateFilterProps> = ({ column }) => {
   );
 };
 
-export const dateBetweenFilterFn: FilterFn<T> = (
+export const dateBetweenFilterFn: FilterFn<any> = (
   row: Row<any>,
   id: string,
   filterValues: FilterValue

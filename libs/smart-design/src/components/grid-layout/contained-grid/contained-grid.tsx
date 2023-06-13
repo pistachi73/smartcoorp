@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container } from '../../width-limiter';
+import { WidthLimiter } from '../../width-limiter';
 import { Grid } from '../grid';
 
 import { ContainedGridProps } from './contained-grid.types';
@@ -11,9 +11,9 @@ export const ContainedGrid: React.FC<ContainedGridProps> = ({
   gridRuler,
 }) => {
   return (
-    <Container className={className}>
+    <WidthLimiter className={className}>
       <Grid gridRuler={gridRuler}>{children}</Grid>
-    </Container>
+    </WidthLimiter>
   );
 };
 
