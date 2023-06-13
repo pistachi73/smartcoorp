@@ -5,6 +5,10 @@ import { useForm } from 'react-hook-form';
 import { TemplateProps, iconArgs, noCanvas } from '../../helpers';
 import { Button } from '../button';
 
+import {
+  DebounceFormField,
+  DebounceFormFieldProps,
+} from './debounce-form-field';
 import { FormField } from './form-field';
 import { FormFieldProps } from './form-field.types';
 import { RHFFormField, RHFFormFieldProps } from './rhf-form-field';
@@ -167,5 +171,51 @@ export const WithReactHookForm: TemplateProps<RHFFormFieldProps<FormValues>> = {
         language: 'tsx',
       },
     },
+  },
+};
+
+const DebouncedFormFieldTemplate: StoryFn<DebounceFormFieldProps> = (
+  args: DebounceFormFieldProps
+) => {
+  const [value, setValue] = useState<string>();
+  return (
+    <>
+      <DebounceFormField
+        label={args?.label}
+        icon={args?.icon}
+        placeholder="Type something..."
+        defaultValue={args?.defaultValue}
+        isMultiline={args?.isMultiline}
+        isDisabled={args?.isDisabled}
+        isError={args?.isError}
+        helperText={args.helperText}
+        type={args?.type}
+        size={args?.size}
+        sizeConfined={args?.sizeConfined}
+        sizeWide={args?.sizeWide}
+        onChange={setValue}
+        value={value}
+      />
+      <span>
+        <b>Debounced value:</b> {value ? value : 'No value yet'}
+      </span>
+    </>
+  );
+};
+
+export const WithDebounceText = {
+  render: DebouncedFormFieldTemplate,
+  args: {
+    label: 'Form field Label',
+    helperText: 'Helper text',
+  },
+};
+
+export const WithDebounceNumber = {
+  render: DebouncedFormFieldTemplate,
+  args: {
+    type: 'number',
+    label: 'Form field Label',
+    helperText: 'Helper text',
   },
 };

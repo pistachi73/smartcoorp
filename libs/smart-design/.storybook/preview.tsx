@@ -1,7 +1,6 @@
 import { DocsContainer } from '@storybook/addon-docs';
 import { addons } from '@storybook/addons';
 import {
-  ArgsTable,
   Controls,
   Description,
   Primary,
@@ -12,14 +11,12 @@ import {
 import { UPDATE_GLOBALS } from '@storybook/core-events';
 import { Preview } from '@storybook/react';
 import React from 'react';
-import styled from 'styled-components';
 
-import { Col, Grid, Headline, Row, Select } from '../src';
+import { Col, Grid, Row, Select } from '../src';
 import { GlobalStyles, ThemeProvider } from '../src/global-styles';
 import { Styled as S } from '../src/helpers/storybook.styles';
 import '../src/helpers/storybook.css';
 import '../src/global-styles/fonts.css';
-import { useHeadings, useScrollSpy } from '../src/hooks';
 
 import theme from './storybook-theme';
 

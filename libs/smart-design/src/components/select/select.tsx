@@ -19,6 +19,7 @@ export const Select = forwardRef<any, SelectProps>(
       options,
       isMulti = false,
       onChange,
+      menuPlacement = 'bottom',
     },
     ref
   ) => {
@@ -47,15 +48,15 @@ export const Select = forwardRef<any, SelectProps>(
       }
     };
 
-    const findOption = (value: string) => (option: Option) =>
-      option.value === value;
+    const findOption = (optionValue: string) => (option: Option) =>
+      option.value === optionValue;
 
-    const findSelectedOptions = (values?: string | string[]) => {
-      if (!values) return;
+    const findSelectedOptions = (findValue?: string | string[]) => {
+      if (!findValue) return;
 
       return isMulti
         ? (value as string[])?.map((v) => flattenedOptions.find(findOption(v)))
-        : flattenedOptions.find(findOption(value as string));
+        : flattenedOptions.find(findOption(findValue as string));
     };
 
     return (
@@ -82,6 +83,7 @@ export const Select = forwardRef<any, SelectProps>(
           closeMenuOnSelect={isMulti ? false : true}
           isMulti={isMulti}
           isDisabled={isDisabled}
+          menuPlacement={menuPlacement}
           $error={isError}
           $size={size}
           $sizeConfined={sizeConfined}

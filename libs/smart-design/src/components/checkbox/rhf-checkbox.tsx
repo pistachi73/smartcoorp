@@ -9,7 +9,7 @@ import {
 import { Checkbox } from './checkbox';
 import { CheckboxProps } from './checkbox.types';
 
-type OmittedCheckboxdProps = Omit<CheckboxProps, 'value' | 'onChange'>;
+type OmittedCheckboxdProps = Omit<CheckboxProps, 'checked' | 'onChange'>;
 
 export type RHFCheckboxProps<FormValues extends FieldValues> =
   OmittedCheckboxdProps & {
@@ -30,8 +30,9 @@ export const RHFCheckbox = <FormValues extends FieldValues>({
       name={name}
       rules={rules}
       defaultValue={(props?.defaultValue ?? false) as any}
-      render={({ field: { ref, ...field } }) => (
+      render={({ field: { ref, value, ...field } }) => (
         <Checkbox
+          checked={value}
           defaultValue={props.defaultValue}
           label={props?.label}
           isDisabled={props?.isDisabled}

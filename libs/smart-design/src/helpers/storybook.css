@@ -13,6 +13,10 @@
   color: #606370 !important;
 }
 
+.sbdocs-content {
+  max-width: 1200px !important;
+}
+
 .sbdocs-title {
   margin-bottom: 0 !important;
 }

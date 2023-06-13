@@ -28,4 +28,6 @@ type DatePickerProps =
     });
 export type CalendarProps = DatePickerProps & {
   /** Include custom selec values */
+  /** Remove Calendar borders */
+  withBorder?: boolean;
 };

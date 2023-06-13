@@ -335,7 +335,6 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     width: 100%;
     margin-bottom: 8px;
     margin-top: 8px;
-    top: 100%;
     position: absolute;
     width: 100%;
     z-index: 1;
@@ -362,6 +361,12 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
   }
 
   .react-select__menu-list {
+    max-height: 300px;
+    overflow-y: auto;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+    padding: ${spaceXXS} 0;
+    box-sizing: border-box;
   }
   .react-select__option {
     /** Base styles */

@@ -35,6 +35,7 @@ export const sizes = {
   small: {
     container: css`
       min-height: ${scale140};
+      font-size: ${scale070};
     `,
 
     label: css`
@@ -54,6 +55,7 @@ export const sizes = {
   medium: {
     container: css`
       min-height: ${scale150};
+      font-size: ${scale080};
     `,
     input: css`
       font-size: ${scale080};

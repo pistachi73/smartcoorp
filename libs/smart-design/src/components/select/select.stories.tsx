@@ -93,6 +93,7 @@ export const Default = {
     placeholder: 'Select something...',
     label: 'Single select',
     helperText: 'This is a helper text',
+    defaultValue: 'mentor',
   },
 };
 export const Single = {

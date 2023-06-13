@@ -18,21 +18,19 @@ import {
   gray800_RGBA,
   gray900,
   gray900_RGBA,
+  primary,
   primary100,
   primary200,
   primary300,
   primary400,
-  primary500,
   primary600,
   primary700,
   primary800,
   primary900,
   red100,
-  red200,
   red400,
   red500,
   red700,
-  red800,
 } from '../../tokens';
 
 import type { ThemeType } from './themes.types';
@@ -52,8 +50,8 @@ export const lightTheme: ThemeType = {
     shadowXL: dropShadowXL,
   },
   color: {
-    neutral: 'black',
-    invertedNeutral: gray100,
+    neutral: gray900,
+    invertedNeutral: 'white',
   },
   backgroundScreen: 'white',
 
@@ -122,9 +120,21 @@ export const lightTheme: ThemeType = {
       deleteValueHoverBackgroundColor: primary400,
     },
     calendar: {
-      selectedItemBackgroundColor: primary200,
-      selectedRangeLimitBackgroundColor: primary400,
+      selectedItemBackgroundColor: primary400,
+      selectRangeInsideColor: primary200,
     },
+  },
+
+  table: {
+    neutralColor: gray400,
+    selectedRowColor: primary100,
+    rowHoverColor: gray100,
+    headerHoverColor: gray200,
+  },
+
+  command: {
+    KBDBacgroundColor: primary100,
+    KBDColor: primary,
   },
 };
 
@@ -143,7 +153,7 @@ export const darkTheme: ThemeType = {
     shadowXL: dropShadowDarkXL,
   },
   color: {
-    neutral: gray100,
+    neutral: 'white',
     invertedNeutral: gray900,
   },
   backgroundScreen: gray900,
@@ -198,7 +208,7 @@ export const darkTheme: ThemeType = {
     neutralColor: gray500,
     placeholderColor: gray600,
     hoverColor: gray800,
-    errorColor: red500,
+    errorColor: red700,
     backgroundColor: gray900,
 
     select: {
@@ -211,8 +221,19 @@ export const darkTheme: ThemeType = {
       deleteValueHoverBackgroundColor: primary700,
     },
     calendar: {
-      selectedItemBackgroundColor: primary800,
-      selectedRangeLimitBackgroundColor: primary600,
+      selectedItemBackgroundColor: primary600,
+      selectRangeInsideColor: primary800,
     },
+  },
+
+  table: {
+    neutralColor: gray500,
+    selectedRowColor: primary900,
+    rowHoverColor: gray800,
+    headerHoverColor: gray700,
+  },
+  command: {
+    KBDBacgroundColor: primary800,
+    KBDColor: primary300,
   },
 };

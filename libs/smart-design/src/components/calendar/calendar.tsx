@@ -20,7 +20,6 @@ import {
   customValuesRangeSelectFormatter,
   customValuesSingleSelectFormatter,
 } from './helpers';
-// import 'react-day-picker/dist/style.css';
 
 const Caption = (props: CaptionProps) => {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
@@ -62,7 +61,7 @@ const Day = (props: DayProps) => {
   );
 };
 
-export const Calendar = ({ ...props }: CalendarProps) => {
+export const Calendar = ({ withBorder = true, ...props }: CalendarProps) => {
   if (props.mode === 'single') {
     const onSelectChangeHandler = (val: SingleCustomValuesOptions['value']) => {
       if (!props.onSelect) return;
@@ -73,8 +72,9 @@ export const Calendar = ({ ...props }: CalendarProps) => {
       //@ts-ignore
       props?.onSelect(selectedDate);
     };
+
     return (
-      <S.Container>
+      <S.Container $withBorder={withBorder}>
         {props?.withCustomValues && (
           <S.SelectContainer>
             <Select
@@ -107,7 +107,7 @@ export const Calendar = ({ ...props }: CalendarProps) => {
       props?.onSelect(newRange);
     };
     return (
-      <S.Container>
+      <S.Container $withBorder={withBorder}>
         {props?.withCustomValues && (
           <S.SelectContainer>
             <Select
@@ -131,7 +131,7 @@ export const Calendar = ({ ...props }: CalendarProps) => {
     );
   } else {
     return (
-      <S.Container>
+      <S.Container $withBorder={withBorder}>
         <S.DayPicker
           components={{
             Caption,

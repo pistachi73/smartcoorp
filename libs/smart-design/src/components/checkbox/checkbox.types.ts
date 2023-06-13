@@ -4,7 +4,9 @@ export type CheckboxSize = keyof typeof sizes;
 type CheckedState = boolean;
 export type CheckboxProps = {
   /** Checkbox value */
-  value: CheckedState;
+  checked?: CheckedState;
+  /** Is intermediate check */
+  intermediate?: CheckedState;
   /** Ref object */
   innerRef?: any;
   /**Checkbox Id */

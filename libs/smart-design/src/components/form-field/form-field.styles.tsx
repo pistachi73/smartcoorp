@@ -160,12 +160,12 @@ export const InputContainer = styled.div<SizeProps & WithError>`
 
   &:hover {
     background-color: ${({ theme }) => theme.form.hoverColor};
-    border-color: ${({ theme }) => theme.form.neutralColor};
   }
 `;
 
 const Input = styled.input<InputProps>`
   width: 100%;
+  height: 100%;
   outline: none;
   border: none;
 
@@ -205,7 +205,7 @@ const Input = styled.input<InputProps>`
   ${({ $hasIcon }) =>
     $hasIcon &&
     css`
-      padding: 0 !important;
+      padding-left: 0 !important;
     `}
 
   &[type="number"] {
@@ -315,7 +315,7 @@ const Label = styled.label<SizeProps>`
     `};
 `;
 
-const IconContainer = styled.button<IconContainerProps>`
+const IconContainer = styled.div<IconContainerProps>`
   display: flex;
   align-items: center;
   justify-content: center;

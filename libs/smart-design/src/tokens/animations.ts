@@ -9,6 +9,26 @@ export const slideUpAndFadeIn = keyframes`
     opacity: 1;
     transform: translateY(0);
   }`;
+
+export const slideRightAndFadeIn = keyframes`
+from {
+  opacity: 0;
+  transform: translateX(-5px);
+}
+to {
+  opacity: 1;
+  transform: translateY(0);
+}`;
+export const slideLeftAndFadeIn = keyframes`
+from {
+  opacity: 0;
+  transform: translateX(5px);
+}
+to {
+  opacity: 1;
+  transform: translateY(0);
+}`;
+
 export const slideDownAndFadeOut = keyframes`
   from {
     opacity: 1;

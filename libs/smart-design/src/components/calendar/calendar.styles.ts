@@ -1,5 +1,5 @@
 import { DayPicker as DayPickerPrimitive } from 'react-day-picker';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { focusShadow } from '../../styles';
 import { borderRadiusXS } from '../../tokens/borderRadius';
@@ -70,7 +70,12 @@ const DayPicker = styled(DayPickerPrimitive)`
   .rdp-day_range_start,
   .rdp-day_range_end {
     background-color: ${({ theme }) =>
-      theme.form.calendar.selectedRangeLimitBackgroundColor} !important;
+      theme.form.calendar.selectedItemBackgroundColor} !important;
+  }
+
+  .rdp-day_range_middle {
+    background-color: ${({ theme }) =>
+      theme.form.calendar.selectRangeInsideColor} !important;
   }
 
   .rdp-row {
@@ -92,16 +97,23 @@ const DayPicker = styled(DayPickerPrimitive)`
   }
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ $withBorder?: boolean }>`
+  width: 100%;
+  height: 100%;
   max-width: 298px;
   display: flex;
   flex-direction: column;
-  padding: ${spaceL} calc(${spaceL} - ${spaceS});
-  padding-bottom: calc(${spaceL} - ${spaceS});
-  border: 1px solid ${({ theme }) => theme.form.placeholderColor};
-  border-radius: ${borderRadiusXS};
 
+  border-radius: ${borderRadiusXS};
   background-color: ${({ theme }) => theme.form.backgroundColor};
+
+  ${({ theme, $withBorder }) =>
+    $withBorder &&
+    css`
+      padding: ${spaceL} calc(${spaceL} - ${spaceS});
+      padding-bottom: calc(${spaceL} - ${spaceS});
+      border: 1px solid ${theme.form.placeholderColor};
+    `}
 `;
 
 const CaptionContainer = styled.div`

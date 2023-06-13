@@ -6,7 +6,7 @@ import { borderRadiusXS } from '../../tokens/borderRadius';
 import { primary } from '../../tokens/color';
 import { mediaConfined, mediaWide } from '../../tokens/media';
 import { scale070, scale080, scale100, scale110 } from '../../tokens/scale';
-import { spaceM } from '../../tokens/spacing';
+import { spaceM, spaceS } from '../../tokens/spacing';
 
 import type { CheckboxSize } from './checkbox.types';
 
@@ -19,18 +19,18 @@ type SizeProps = {
 export const sizes = {
   small: {
     checkbox: css`
-      width: ${scale100};
-      height: ${scale100};
+      min-width: ${scale100};
+      min-height: ${scale100};
     `,
     label: css`
       font-size: ${scale070};
-      padding: ${spaceM};
+      padding: ${spaceS} ${spaceM};
     `,
   },
   medium: {
     checkbox: css`
-      width: ${scale110};
-      height: ${scale110};
+      min-width: ${scale110};
+      min-height: ${scale110};
     `,
     label: css`
       font-size: ${scale080};
@@ -42,6 +42,7 @@ export const sizes = {
 export const Container = styled.div<{ $disabled?: boolean }>`
   display: flex;
   align-items: center;
+  width: 100%;
   ${({ $disabled }) =>
     $disabled &&
     css`
@@ -50,9 +51,6 @@ export const Container = styled.div<{ $disabled?: boolean }>`
     `}
 `;
 export const Root = styled(Checkbox.Root)<SizeProps>`
-  width: ${scale110};
-  height: ${scale110};
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,10 +88,16 @@ export const Root = styled(Checkbox.Root)<SizeProps>`
   &:focus-within {
     ${focusShadow}
   }
+
+  &[data-state='checked'] {
+    border-color: ${primary};
+  }
 `;
 
 export const Label = styled.label<SizeProps>`
+  width: 100%;
   color: ${({ theme }) => theme.color.neutral};
+  cursor: pointer;
   /** Size styles */
   ${({ $size }) =>
     $size &&

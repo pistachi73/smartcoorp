@@ -185,4 +185,24 @@ export const green700 = '#43A047';
 export const green800 = '#388E3C';
 export const green900 = '#2E7D32';
 
+export const yellow100 = '#FFF9E0';
+export const yellow200 = '#FFF2B2';
+export const yellow300 = '#FFE980';
+export const yellow400 = '#FFDF50';
+export const yellow500 = '#FFD500';
+export const yellow600 = '#CCAD00';
+export const yellow700 = '#997900';
+export const yellow800 = '#664500';
+export const yellow900 = '#332200';
+
+export const blue100 = '#E6F5FF';
+export const blue200 = '#B3E5FF';
+export const blue300 = '#80D4FF';
+export const blue400 = '#4DC4FF';
+export const blue500 = '#1AB3FF';
+export const blue600 = '#008CDB';
+export const blue700 = '#00669B';
+export const blue800 = '#00405C';
+export const blue900 = '#001D1E';
+
 /** Yellow color (HEX) token: **#ffd644** */ export const yellow = '#ffd644';

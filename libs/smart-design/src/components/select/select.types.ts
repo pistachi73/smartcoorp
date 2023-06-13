@@ -1,6 +1,3 @@
-import React from 'react';
-import ReactSelect from 'react-select';
-
 import { sizes } from './select.styles';
 export type SelectSizes = keyof typeof sizes;
 
@@ -46,4 +43,6 @@ export type SelectProps = {
   sizeConfined?: SelectSizes;
   /** The size on desktop screens or larger */
   sizeWide?: SelectSizes;
+  /** Popover placing */
+  menuPlacement?: 'auto' | 'bottom' | 'top';
 };
