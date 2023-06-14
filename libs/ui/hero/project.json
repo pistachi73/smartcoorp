@@ -1,0 +1,16 @@
+{
+  "name": "ui-hero",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/hero/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/ui/hero/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

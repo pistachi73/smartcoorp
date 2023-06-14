@@ -10,14 +10,14 @@ import {
 } from '@storybook/blocks';
 import { UPDATE_GLOBALS } from '@storybook/core-events';
 import { Preview } from '@storybook/react';
-import React from 'react';
 
-import { Col, Grid, Row, Select } from '../src';
-import { GlobalStyles, ThemeProvider } from '../src/global-styles';
-import { Styled as S } from '../src/helpers/storybook.styles';
-import '../src/helpers/storybook.css';
-import '../src/global-styles/fonts.css';
+import { ThemeProvider } from '@smartcoorp/ui/global-styles';
+import { Col, Grid, Row } from '@smartcoorp/ui/grid';
+import { Select } from '@smartcoorp/ui/select';
 
+import { Styled as S } from '../src/storybook.styles';
+
+import '../src/storybook.css';
 import theme from './storybook-theme';
 
 const preview: Preview = {
@@ -28,7 +28,6 @@ const preview: Preview = {
 
       return (
         <ThemeProvider theme={theme}>
-          <GlobalStyles />
           <S.ThemeBlock $largerStory={largerStory}>
             <S.ThemeBlockWrapper $maxWidth={maxWidth}>
               <Story />
@@ -72,7 +71,6 @@ const preview: Preview = {
         }
         return (
           <ThemeProvider theme={'light'}>
-            <GlobalStyles />
             <DocsContainer {...props}>
               <Grid>
                 <Row>

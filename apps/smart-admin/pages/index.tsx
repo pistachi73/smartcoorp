@@ -1,7 +1,13 @@
 import React from 'react';
 
+import { Body } from '@smartcoorp/ui/body';
+
 export function Index() {
-  return <>Welcome to smart admin</>;
+  return (
+    <>
+      <Body>ADMIN BABY</Body>
+    </>
+  );
 }
 
 export default Index;
