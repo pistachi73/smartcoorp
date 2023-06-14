@@ -1,0 +1,16 @@
+{
+  "name": "ui-post-editor",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/post-editor/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/ui/post-editor/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

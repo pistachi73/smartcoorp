@@ -1,0 +1,16 @@
+{
+  "name": "ui-modal",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/modal/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/ui/modal/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

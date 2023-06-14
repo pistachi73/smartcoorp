@@ -1,0 +1,16 @@
+{
+  "name": "ui-dot-loading",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/dot-loading/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/ui/dot-loading/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

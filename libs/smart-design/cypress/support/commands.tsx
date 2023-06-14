@@ -1,8 +1,12 @@
 import { MountOptions, mount as cypressMount } from 'cypress/react18';
 import React, { ReactNode } from 'react';
 
-import { GlobalStyles, ThemeProvider } from '../../src/global-styles';
-import { Theme } from '../../src/global-styles/theme/theme-provider';
+import {
+  GlobalStyles,
+  Theme,
+  ThemeProvider,
+} from '@smartcoorp/ui/global-styles';
+
 import { gray900 } from '../../src/tokens/color';
 
 export {};

@@ -1,7 +1,7 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import { GlobalStyles, ThemeProvider } from '@smartcoorp/smart-design';
+import { GlobalStyles, ThemeProvider } from '@smartcoorp/ui/global-styles';
 
 import { trpc } from '../utils/trpc';
 

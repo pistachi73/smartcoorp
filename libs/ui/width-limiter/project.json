@@ -1,0 +1,16 @@
+{
+  "name": "ui-width-limiter",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/width-limiter/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/ui/width-limiter/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

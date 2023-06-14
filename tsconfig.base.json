@@ -20,8 +20,49 @@
       "@smartcoorp/smart-design/tokens": [
         "libs/smart-design/src/tokens/index.ts"
       ],
+      "@smartcoorp/smart-hooks": ["libs/smart-hooks/src/index.ts"],
       "@smartcoorp/smart-types": ["libs/smart-types/src/index.ts"],
-      "@smartcoorp/trpc": ["apps/smart-admin/utils/trpc.ts"]
+      "@smartcoorp/trpc": ["apps/smart-admin/utils/trpc.ts"],
+      "@smartcoorp/ui/body": ["libs/ui/body/src/index.ts"],
+      "@smartcoorp/ui/button": ["libs/ui/button/src/index.ts"],
+      "@smartcoorp/ui/caption": ["libs/ui/caption/src/index.ts"],
+      "@smartcoorp/ui/checkbox": ["libs/ui/checkbox/src/index.ts"],
+      "@smartcoorp/ui/command": ["libs/ui/command/src/index.ts"],
+      "@smartcoorp/ui/data-table": ["libs/ui/data-table/src/index.ts"],
+      "@smartcoorp/ui/date-range-picker": [
+        "libs/ui/date-range-picker/src/index.ts"
+      ],
+      "@smartcoorp/ui/date-single-picker": [
+        "libs/ui/date-single-picker/src/index.ts"
+      ],
+      "@smartcoorp/ui/dialog": ["libs/ui/dialog/src/index.ts"],
+      "@smartcoorp/ui/dot-loading": ["libs/ui/dot-loading/src/index.ts"],
+      "@smartcoorp/ui/dropdown-menu": ["libs/ui/dropdown-menu/src/index.ts"],
+      "@smartcoorp/ui/form-field": ["libs/ui/form-field/src/index.ts"],
+      "@smartcoorp/ui/global-styles": ["libs/ui/global-styles/src/index.ts"],
+      "@smartcoorp/ui/grid": ["libs/ui/grid/src/index.ts"],
+      "@smartcoorp/ui/headline": ["libs/ui/headline/src/index.ts"],
+      "@smartcoorp/ui/hero": ["libs/ui/hero/src/index.ts"],
+      "@smartcoorp/ui/modal": ["libs/ui/modal/src/index.ts"],
+      "@smartcoorp/ui/multiple-calendar": [
+        "libs/ui/multiple-calendar/src/index.ts"
+      ],
+      "@smartcoorp/ui/popover": ["libs/ui/popover/src/index.ts"],
+      "@smartcoorp/ui/post-editor": ["libs/ui/post-editor/src/index.ts"],
+      "@smartcoorp/ui/radio-group": ["libs/ui/radio-group/src/index.ts"],
+      "@smartcoorp/ui/range-calendar": ["libs/ui/range-calendar/src/index.ts"],
+      "@smartcoorp/ui/resizable-panel": [
+        "libs/ui/resizable-panel/src/index.ts"
+      ],
+      "@smartcoorp/ui/scroll-area": ["libs/ui/scroll-area/src/index.ts"],
+      "@smartcoorp/ui/select": ["libs/ui/select/src/index.ts"],
+      "@smartcoorp/ui/shared": ["libs/ui/shared/src/index.ts"],
+      "@smartcoorp/ui/single-calendar": [
+        "libs/ui/single-calendar/src/index.ts"
+      ],
+      "@smartcoorp/ui/tokens": ["libs/ui/tokens/src/index.ts"],
+      "@smartcoorp/ui/tooltip": ["libs/ui/tooltip/src/index.ts"],
+      "@smartcoorp/ui/width-limiter": ["libs/ui/width-limiter/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

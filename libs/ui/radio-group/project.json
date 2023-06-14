@@ -1,0 +1,16 @@
+{
+  "name": "ui-radio-group",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/radio-group/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/ui/radio-group/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}
