@@ -3,11 +3,12 @@ import { Meta } from '@storybook/react';
 import { TypographyDocs, noCanvas } from '@smartcoorp/ui/shared';
 
 import { Body } from './body';
-import { fontWeights, lineHeights, sizes } from './body.styles';
+import { fontWeights, lineHeights, sizes, variants } from './body.styles';
 import {
   BodyCopyFontWeight,
   BodyCopyLineHeight,
   BodyCopySize,
+  BodyCopyVariants,
 } from './body.types';
 
 const bodySizes: string[] = Object.keys(sizes);
@@ -155,6 +156,46 @@ export const LineHeights = {
     docs: {
       description: {
         story: 'Line heights for `Body` component',
+      },
+    },
+  },
+};
+
+export const Variants = {
+  render: () => {
+    const variantsMapping: any = {
+      primary: 'primary',
+      neutral: 'neutral',
+      success: 'success',
+      warning: 'warning',
+      error: 'error',
+    };
+
+    const variantTypes = Object.keys(variants);
+
+    return (
+      <TypographyDocs.Container>
+        {variantTypes.map((key) => (
+          <TypographyDocs.PropContainer key={key}>
+            <TypographyDocs.TypeContainer>
+              <Body noMargin lineHeight={key as BodyCopyLineHeight}>
+                {variantsMapping[key]}
+              </Body>
+            </TypographyDocs.TypeContainer>
+            <Body noMargin variant={key as BodyCopyVariants}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </Body>
+          </TypographyDocs.PropContainer>
+        ))}
+      </TypographyDocs.Container>
+    );
+  },
+
+  parameters: {
+    ...noCanvas,
+    docs: {
+      description: {
+        story: 'Variants for `Body` component',
       },
     },
   },

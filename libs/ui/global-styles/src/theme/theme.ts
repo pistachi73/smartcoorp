@@ -11,13 +11,21 @@ import {
   gray200,
   gray300,
   gray400,
+  gray400_RGBA,
   gray500,
+  gray500_RGBA,
   gray600,
   gray700,
   gray800,
   gray800_RGBA,
   gray900,
   gray900_RGBA,
+  green500,
+  green500_RGBA,
+  green600,
+  green700,
+  green800,
+  green800_RGBA,
   primary,
   primary100,
   primary200,
@@ -27,10 +35,21 @@ import {
   primary700,
   primary800,
   primary900,
+  primary_RGBA,
   red100,
   red400,
   red500,
+  red600,
+  red600_RGBA,
   red700,
+  red800,
+  red800_RGBA,
+  yellow400,
+  yellow500,
+  yellow500_RGBA,
+  yellow600,
+  yellow600_RGBA,
+  yellow700,
 } from '@smartcoorp/ui/tokens';
 
 import type { ThemeType } from './themes.types';
@@ -57,6 +76,10 @@ export const lightTheme: ThemeType = {
 
   typography: {
     bodyTextColor: 'black',
+    neutralTextColor: gray400,
+    warningTextColor: yellow500,
+    errorTextColor: red500,
+    successTextColor: green500,
     headlineTextColor: 'black',
     heroTextColor: 'black',
     captionTextColor: gray700,
@@ -64,11 +87,42 @@ export const lightTheme: ThemeType = {
 
   button: {
     primary: {
-      hoverBackgroundColor: primary600,
-      activeBackgroundColor: primary700,
+      buttonColor: primary,
+      buttonColorRGBA: primary_RGBA,
+      hoverColor: primary600,
+      activeColor: primary700,
+      activeTextColor: 'black',
     },
-    secondary: {
-      hoverBackgroundColor: gray200,
+    neutral: {
+      buttonColor: gray400,
+      buttonColorRGBA: gray400_RGBA,
+      hoverColor: gray500,
+      activeColor: gray600,
+      activeTextColor: 'black',
+    },
+    error: {
+      buttonColor: red600,
+      buttonColorRGBA: red600_RGBA,
+      hoverColor: red700,
+      activeColor: red800,
+      activeTextColor: 'black',
+    },
+    success: {
+      buttonColor: green500,
+      buttonColorRGBA: green500_RGBA,
+      hoverColor: green600,
+      activeColor: green700,
+      activeTextColor: 'black',
+    },
+    warning: {
+      buttonColor: yellow500,
+      buttonColorRGBA: yellow500_RGBA,
+      hoverColor: yellow600,
+      activeColor: yellow700,
+      activeTextColor: 'black',
+    },
+    shared: {
+      secondaryHoverColor: gray200,
     },
   },
 
@@ -159,6 +213,10 @@ export const darkTheme: ThemeType = {
   backgroundScreen: gray900,
   typography: {
     bodyTextColor: gray100,
+    neutralTextColor: gray500,
+    warningTextColor: yellow500,
+    errorTextColor: red500,
+    successTextColor: green500,
     headlineTextColor: 'white',
     heroTextColor: 'white',
     captionTextColor: gray300,
@@ -166,11 +224,42 @@ export const darkTheme: ThemeType = {
 
   button: {
     primary: {
-      hoverBackgroundColor: primary400,
-      activeBackgroundColor: primary300,
+      buttonColor: primary,
+      buttonColorRGBA: primary_RGBA,
+      hoverColor: primary600,
+      activeColor: 'black',
+      activeTextColor: 'white',
     },
-    secondary: {
-      hoverBackgroundColor: gray800,
+    neutral: {
+      buttonColor: gray500,
+      buttonColorRGBA: gray500_RGBA,
+      hoverColor: gray400,
+      activeColor: gray300,
+      activeTextColor: 'black',
+    },
+    error: {
+      buttonColor: red800,
+      buttonColorRGBA: red800_RGBA,
+      hoverColor: red700,
+      activeColor: red600,
+      activeTextColor: 'black',
+    },
+    success: {
+      buttonColor: green800,
+      buttonColorRGBA: green800_RGBA,
+      hoverColor: green700,
+      activeColor: green600,
+      activeTextColor: 'black',
+    },
+    warning: {
+      buttonColor: yellow600,
+      buttonColorRGBA: yellow600_RGBA,
+      hoverColor: yellow500,
+      activeColor: yellow400,
+      activeTextColor: 'black',
+    },
+    shared: {
+      secondaryHoverColor: gray800,
     },
   },
 

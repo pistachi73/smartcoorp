@@ -1,7 +1,5 @@
 import { forwardRef } from 'react';
 
-import Link from 'next/link';
-
 import { Styled } from './button.styles';
 import { ButtonProps } from './button.types';
 
@@ -9,6 +7,7 @@ export const Button = forwardRef<any, ButtonProps>(
   (
     {
       children,
+      className,
       disabled = false,
       href,
       icon: Icon,
@@ -18,21 +17,22 @@ export const Button = forwardRef<any, ButtonProps>(
       size = 'medium',
       sizeConfined,
       sizeWide,
-      to,
-      type,
       variant = 'primary',
       iconSize: iconSizePx,
       iconAfter,
-      target = '_blank',
+      to,
+      type,
+      color = 'primary',
       ...props
     },
-    forwardedRef
+    forwardedRef: React.Ref<HTMLButtonElement | HTMLLinkElement>
   ) => {
     const iconSize = iconSizePx ? iconSizePx : size === 'small' ? 18 : 24;
 
     const iconOnly = !children;
 
     const commonProps = {
+      className,
       $iconOnly: iconOnly,
       $size: size,
       $sizeConfined: sizeConfined,
@@ -41,7 +41,7 @@ export const Button = forwardRef<any, ButtonProps>(
       'aria-label': loading ? 'loading' : null,
       disabled: disabled || loading,
       $disabled: disabled || loading,
-
+      $color: color,
       onClick,
       ref: forwardedRef,
     };
@@ -71,11 +71,9 @@ export const Button = forwardRef<any, ButtonProps>(
 
     if (to) {
       return (
-        <Link href={to} passHref>
-          <Styled.LinkButton {...commonProps} {...props}>
-            {buttonContent}
-          </Styled.LinkButton>
-        </Link>
+        <Styled.NextLink href={to} {...commonProps} {...props}>
+          {buttonContent}
+        </Styled.NextLink>
       );
     }
     if (href) {
@@ -84,18 +82,16 @@ export const Button = forwardRef<any, ButtonProps>(
           {...commonProps}
           {...props}
           href={href}
-          target={target}
+          ref={forwardRef}
         >
           {buttonContent}
         </Styled.LinkButton>
       );
     }
     return (
-      <Styled.Button type={type} {...commonProps} {...props}>
+      <Styled.Button {...commonProps} {...props}>
         {buttonContent}
       </Styled.Button>
     );
   }
 );
-
-Button.displayName = 'Button';

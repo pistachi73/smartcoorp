@@ -1,8 +1,6 @@
 import { httpBatchLink, loggerLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
 import { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
-import Cors from 'cors';
-import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import superjson from 'superjson';
 
 import { type AppRouter } from '../server/trpc/router/_app';
@@ -24,7 +22,7 @@ export const trpc = createTRPCNext<AppRouter>({
             (opts.direction === 'down' && opts.result instanceof Error),
         }),
         httpBatchLink({
-          url: `http://localhost:${4200}/api/trpc`,
+          url: getBaseUrl() + '/api/trpc',
         }),
       ],
     };

@@ -18,3 +18,15 @@ export const focusShadow = css`
   box-shadow: 0 0 0 3px rgba(${primary_RGBA}, 0.25);
   border-color: ${primary} !important;
 `;
+
+export const getFocusShadow = (color: string, colorRGBA: string) => css`
+  transition-property: box-shadow;
+  transition-duration: ${motionTimeXXS};
+  transition-timing-function: ${motionEasingStandard};
+  border-width: 1px;
+  border-style: solid;
+
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(${colorRGBA}, 0.25);
+  border-color: ${color} !important;
+`;

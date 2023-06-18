@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@smartcoorp/smart-auth": ["libs/smart-auth/src/index.ts"],
       "@smartcoorp/smart-backend/main": ["apps/smart-backend/src/main.ts"],
       "@smartcoorp/smart-design": ["libs/smart-design/src/index.ts"],
       "@smartcoorp/smart-design/tokens": [

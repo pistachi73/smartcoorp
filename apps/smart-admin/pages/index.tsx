@@ -1,13 +1,21 @@
-import React from 'react';
+import type { NextPage } from 'next';
 
-import { Body } from '@smartcoorp/ui/body';
+import Head from 'next/head';
 
-export function Index() {
+import { Login } from '../components/login/login';
+
+const Home: NextPage = () => {
   return (
     <>
-      <Body>ADMIN BABY</Body>
+      <Head>
+        <title>Login in Smart Admin</title>
+        <meta name="description" content="SmartAdmin loging" />
+        <link rel="icon" href="/logo.ico" />
+      </Head>
+
+      <Login />
     </>
   );
-}
+};
 
-export default Index;
+export default Home;
