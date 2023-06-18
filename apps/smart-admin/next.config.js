@@ -1,6 +1,9 @@
 //@ts-check
 
 const { withNx } = require('@nx/next/plugins/with-nx');
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const { PrismaPlugin } = require('@prisma/nextjs-monorepo-workaround-plugin');
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -25,6 +28,10 @@ const nextConfig = {
       test: /\.(woff|woff2|eot|ttf|otf)$/i,
       type: 'asset/resource',
     });
+
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()];
+    }
 
     return config;
   },
