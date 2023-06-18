@@ -19,12 +19,12 @@ interface Common {
   backgroundColor: string;
   errorColor: string;
 }
-interface PrimaryButtonTypes {
-  hoverBackgroundColor: string;
-  activeBackgroundColor: string;
-}
-interface SecondaryButtonTypes {
-  hoverBackgroundColor: string;
+interface ButtonTypes {
+  buttonColor: string;
+  buttonColorRGBA: string;
+  hoverColor: string;
+  activeColor: string;
+  activeTextColor: string;
 }
 
 /** Menu item interface */
@@ -106,14 +106,24 @@ export interface ThemeType {
 
   typography: {
     bodyTextColor: string;
+    neutralTextColor: string;
+    warningTextColor: string;
+    errorTextColor: string;
+    successTextColor: string;
     headlineTextColor: string;
     heroTextColor: string;
     captionTextColor: string;
   };
 
   button: {
-    primary: PrimaryButtonTypes;
-    secondary: SecondaryButtonTypes;
+    primary: ButtonTypes;
+    neutral: ButtonTypes;
+    error: ButtonTypes;
+    warning: ButtonTypes;
+    success: ButtonTypes;
+    shared: {
+      secondaryHoverColor: string;
+    };
   };
 
   menu: Menu;

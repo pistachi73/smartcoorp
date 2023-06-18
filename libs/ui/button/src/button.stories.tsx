@@ -3,7 +3,7 @@ import { IoBarChartSharp } from 'react-icons/io5';
 import styled from 'styled-components';
 
 import { iconArgs, noCanvas } from '@smartcoorp/ui/shared';
-import { spaceXL } from '@smartcoorp/ui/tokens';
+import { spaceL, spaceXL } from '@smartcoorp/ui/tokens';
 
 import { Button } from './button';
 import { ButtonProps } from './button.types';
@@ -44,35 +44,58 @@ const Container = styled.div`
   flex-wrap: wrap;
   align-items: center;
   gap: ${spaceXL};
+
+  &:not(:last-of-type) {
+    margin-bottom: ${spaceL};
+  }
 `;
 
+const buttonColors = [
+  'primary',
+  'neutral',
+  'success',
+  'error',
+  'warning',
+] as const;
 const ReferenceTemplate: StoryFn<ButtonProps> = (args: any) => {
   return (
-    <Container>
-      <Button size="medium" variant={args.variant}>
-        {args.variant!.charAt(0).toUpperCase() + args.variant!.slice(1)}
-      </Button>
-      <Button
-        size="medium"
-        variant={args.variant}
-        icon={args.icon}
-        iconSize={args.iconSize}
-      >
-        {args.variant!.charAt(0).toUpperCase() + args.variant!.slice(1)}
-      </Button>
-      <Button
-        size="medium"
-        variant={args.variant}
-        icon={args.icon}
-        iconSize={args.iconSize}
-      />
-      <Button size="medium" variant={args.variant} loading icon={args.icon}>
-        {args.variant!.charAt(0).toUpperCase() + args.variant!.slice(1)}
-      </Button>
-      <Button size="medium" variant={args.variant} disabled>
-        {args.variant!.charAt(0).toUpperCase() + args.variant!.slice(1)}
-      </Button>
-    </Container>
+    <>
+      {buttonColors.map((color) => (
+        <Container>
+          <Button size="medium" color={color} variant={args.variant}>
+            {args.variant!.charAt(0).toUpperCase() + args.variant!.slice(1)}
+          </Button>
+          <Button
+            size="medium"
+            color={color}
+            variant={args.variant}
+            icon={args.icon}
+            iconSize={args.iconSize}
+          >
+            {args.variant!.charAt(0).toUpperCase() + args.variant!.slice(1)}
+          </Button>
+          <Button
+            size="medium"
+            color={color}
+            variant={args.variant}
+            icon={args.icon}
+            iconSize={args.iconSize}
+          />
+          <Button
+            size="medium"
+            color={color}
+            variant={args.variant}
+            loading
+            icon={args.icon}
+          >
+            {args.variant!.charAt(0).toUpperCase() + args.variant!.slice(1)}
+          </Button>
+          <Button size="medium" color={color} variant={args.variant} disabled>
+            {args.variant!.charAt(0).toUpperCase() + args.variant!.slice(1)}
+          </Button>
+        </Container>
+      ))}
+    </>
   );
 };
 export const PrimaryVariant = {

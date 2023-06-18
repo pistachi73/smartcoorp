@@ -17,6 +17,7 @@ import type {
   BodyCopyFontWeight,
   BodyCopyLineHeight,
   BodyCopySize,
+  BodyCopyVariants,
 } from './body.types';
 
 type BodyTransientProps = {
@@ -27,6 +28,7 @@ type BodyTransientProps = {
   $size: BodyCopySize;
   $sizeConfined?: BodyCopySize;
   $sizeWide?: BodyCopySize;
+  $variant: BodyCopyVariants;
 };
 
 // *** Base ***
@@ -37,6 +39,7 @@ const baseBodyCopy = css`
   margin-right: 0;
   margin-top: 0;
   padding: 0;
+  text-align: left;
 `;
 
 const noMargin = css`
@@ -87,6 +90,25 @@ export const lineHeights = {
   `,
 };
 
+// *** Variants ***
+export const variants = {
+  primary: css`
+    color: ${({ theme }) => theme.typography.bodyTextColor};
+  `,
+  neutral: css`
+    color: ${({ theme }) => theme.typography.neutralTextColor};
+  `,
+  success: css`
+    color: ${({ theme }) => theme.typography.successTextColor};
+  `,
+  error: css`
+    color: ${({ theme }) => theme.typography.errorTextColor};
+  `,
+  warning: css`
+    color: ${({ theme }) => theme.typography.warningTextColor};
+  `,
+};
+
 // *** Font-Weights ***
 export const fontWeights = {
   regular: css`
@@ -104,6 +126,7 @@ const Body = styled.p<BodyTransientProps>`
   ${({ $lineHeight }) => $lineHeight && lineHeights[$lineHeight]};
   ${({ $fontWeight }) => $fontWeight && fontWeights[$fontWeight]};
   ${({ $size }) => $size && sizes[$size]};
+  ${({ $variant }) => $variant && variants[$variant]};
 
   ${({ $sizeConfined }) =>
     $sizeConfined &&

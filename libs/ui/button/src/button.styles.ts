@@ -1,14 +1,15 @@
 import styled, { css } from 'styled-components';
 
+import Link from 'next/link';
+
 import { DotLoading } from '@smartcoorp/ui/dot-loading';
 import {
   borderRadiusXS,
-  focusShadow,
+  getFocusShadow,
   mediaConfined,
   mediaWide,
   motionEasingStandard,
   motionTimeXS,
-  primary,
   scale070,
   scale080,
   scale100,
@@ -19,7 +20,7 @@ import {
   spaceXXS,
 } from '@smartcoorp/ui/tokens';
 
-import { ButtonSizes, ButtonVariants } from './button.types';
+import { ButtonColors, ButtonSizes, ButtonVariants } from './button.types';
 
 type ButtonTransientProps = {
   $ellipsis?: boolean;
@@ -29,6 +30,7 @@ type ButtonTransientProps = {
   $sizeWide?: ButtonSizes;
   $variant: ButtonVariants;
   $disabled?: boolean;
+  $color: ButtonColors;
 };
 
 type IconContainerTransientProps = {
@@ -58,6 +60,9 @@ const baseButton = css`
   position: relative;
   text-decoration: none;
   vertical-align: top;
+
+  user-select: none;
+  touch-action: none;
 
   transition-property: transform, background-color, box-shadow, border;
   transition-duration: ${motionTimeXS};
@@ -100,51 +105,63 @@ export const sizes = {
 };
 
 // *** Variants ***
-export const variants = {
+export const variants = (color: ButtonColors) => ({
   primary: css`
-    background-color: ${primary};
     border-width: 1px;
     border-style: solid;
     border-color: transparent;
 
-    &:hover {
-      background-color: ${({ theme }) =>
-        theme.button.primary.hoverBackgroundColor};
-    }
-
-    &:focus-visible {
-      ${focusShadow}
-    }
-
-    &:active {
-      color: ${({ theme }) => theme.color.invertedNeutral};
-      background-color: ${({ theme }) => theme.color.neutral};
-    }
+    ${({ theme }) => css`
+      background-color: ${theme.button[color].buttonColor};
+      &:hover {
+        background-color: ${theme.button[color].hoverColor};
+      }
+      &:focus-visible {
+        ${getFocusShadow(
+          theme.button[color].buttonColor,
+          theme.button[color].buttonColorRGBA
+        )}
+      }
+      &:active {
+        color: ${theme.button[color].activeTextColor};
+        background-color: ${theme.button[color].activeColor};
+      }
+    `}
   `,
+
   secondary: css`
     background-color: transparent;
     border-width: 1px;
     border-style: solid;
-    border-color: ${({ theme }) => theme.color.neutral};
-    color: ${({ theme }) => theme.color.neutral};
 
-    &:hover {
-      background-color: ${({ theme }) =>
-        theme.button.secondary.hoverBackgroundColor};
-    }
+    ${({ theme }) => css`
+      border-color: ${color === 'primary'
+        ? theme.color.neutral
+        : theme.button[color].buttonColor};
+      color: ${color === 'primary'
+        ? theme.color.neutral
+        : theme.button[color].buttonColor};
 
-    &:focus-visible {
-      ${focusShadow}
-    }
-    &:active {
-      color: ${({ theme }) => theme.color.invertedNeutral};
-      background-color: ${({ theme }) => theme.color.neutral};
-    }
+      &:hover {
+        background-color: ${theme.button.shared.secondaryHoverColor};
+      }
+
+      &:focus-visible {
+        ${getFocusShadow(
+          theme.button[color].buttonColor,
+          theme.button[color].buttonColorRGBA
+        )}
+      }
+      &:active {
+        color: ${theme.button.shared.secondaryHoverColor};
+        background-color: ${theme.color.neutral};
+        border-color: ${theme.color.neutral};
+      }
+    `}
   `,
   text: css`
     position: relative;
-    color: ${({ theme }) => theme.color.neutral};
-    padding: 0px ${spaceXXS} !important;
+    padding: 0px ${spaceXXS};
 
     outline: none;
 
@@ -152,16 +169,19 @@ export const variants = {
     border-style: solid;
     border-color: transparent;
 
-    &:focus-visible {
-      ${focusShadow}
-    }
-
-    &:hover {
-      background-color: ${({ theme }) =>
-        theme.button.secondary.hoverBackgroundColor};
-    }
+    ${({ theme }) => css`
+      color: ${color === 'primary'
+        ? theme.color.neutral
+        : theme.button[color].buttonColor};
+      &:focus-visible {
+        ${getFocusShadow(
+          theme.button[color].buttonColor,
+          theme.button[color].buttonColorRGBA
+        )}
+      }
+    `}
   `,
-};
+});
 
 export const disabled = {
   primary: css`
@@ -205,8 +225,8 @@ const iconOnly = css`
 
 const Button = styled.button<ButtonTransientProps>`
   ${baseButton};
-  ${({ $variant, $disabled }) =>
-    $variant && $disabled ? disabled[$variant] : variants[$variant]}
+  ${({ $variant, $color, $disabled }) =>
+    $variant && $disabled ? disabled[$variant] : variants($color)[$variant]}
   ${({ $size }) => $size && sizes[$size]}
 
 
@@ -231,8 +251,34 @@ const Button = styled.button<ButtonTransientProps>`
 
 const LinkButton = styled.a<ButtonTransientProps>`
   ${baseButton};
-  ${({ $variant, $disabled }) =>
-    $variant && $disabled ? disabled[$variant] : variants[$variant]}
+  ${({ $variant, $disabled, $color }) =>
+    $variant && $disabled ? disabled[$variant] : variants($color)[$variant]}
+  ${({ $size }) => $size && sizes[$size]}
+
+
+${({ $sizeConfined }) =>
+    $sizeConfined &&
+    css`
+      @media ${mediaConfined} {
+        ${sizes[$sizeConfined]}
+      }
+    `};
+
+  ${({ $sizeWide }) =>
+    $sizeWide &&
+    css`
+      @media ${mediaWide} {
+        ${sizes[$sizeWide]}
+      }
+    `};
+
+  ${({ $iconOnly }) => $iconOnly && iconOnly};
+`;
+
+export const NextLink = styled(Link)<ButtonTransientProps>`
+  ${baseButton};
+  ${({ $variant, $disabled, $color }) =>
+    $variant && $disabled ? disabled[$variant] : variants($color)[$variant]}
   ${({ $size }) => $size && sizes[$size]}
 
 
@@ -294,4 +340,5 @@ export const Styled = {
   LoadingContainer,
   Text,
   LinkButton,
+  NextLink,
 };

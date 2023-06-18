@@ -164,7 +164,7 @@ export const gray800_RGBA = '46, 48, 57';
  */
 export const gray900_RGBA = '31, 32, 40';
 
-//EXTRA
+/** ERROR COLORS */
 export const red100 = '#FFEEEE';
 export const red200 = '#FFCDD2';
 export const red300 = '#EF9A9A';
@@ -174,7 +174,17 @@ export const red600 = '#F44336';
 export const red700 = '#E53935';
 export const red800 = '#D32F2F';
 export const red900 = '#C62828';
+export const red100_RGBA = '255, 238, 238';
+export const red200_RGBA = '255, 205, 210';
+export const red300_RGBA = '239, 154, 154';
+export const red400_RGBA = '229, 115, 115';
+export const red500_RGBA = '239, 83, 80';
+export const red600_RGBA = '244, 67, 54';
+export const red700_RGBA = '229, 57, 53';
+export const red800_RGBA = '211, 47, 47';
+export const red900_RGBA = '198, 40, 40';
 
+/** SUCCESS COLORS */
 export const green100 = '#E8F5E9';
 export const green200 = '#C8E6C9';
 export const green300 = '#A5D6A7';
@@ -184,16 +194,35 @@ export const green600 = '#4CAF50';
 export const green700 = '#43A047';
 export const green800 = '#388E3C';
 export const green900 = '#2E7D32';
+export const green100_RGBA = '232, 245, 233';
+export const green200_RGBA = '200, 230, 201';
+export const green300_RGBA = '165, 214, 167';
+export const green400_RGBA = '129, 199, 132';
+export const green500_RGBA = '102, 187, 106';
+export const green600_RGBA = '76, 175, 80';
+export const green700_RGBA = '67, 160, 71';
+export const green800_RGBA = '56, 142, 60';
+export const green900_RGBA = '46, 125, 50';
 
-export const yellow100 = '#FFF9E0';
-export const yellow200 = '#FFF2B2';
-export const yellow300 = '#FFE980';
-export const yellow400 = '#FFDF50';
-export const yellow500 = '#FFD500';
-export const yellow600 = '#CCAD00';
-export const yellow700 = '#997900';
-export const yellow800 = '#664500';
-export const yellow900 = '#332200';
+/** WARNING COLORS */
+export const yellow100 = '#FFFDE6';
+export const yellow200 = '#FFF7B3';
+export const yellow300 = '#FFEF80';
+export const yellow400 = '#FFE54D';
+export const yellow500 = '#FFDB19';
+export const yellow600 = '#CCA300';
+export const yellow700 = '#997A00';
+export const yellow800 = '#664D00';
+export const yellow900 = '#332600';
+export const yellow100_RGBA = '255, 253, 230';
+export const yellow200_RGBA = '255, 247, 179';
+export const yellow300_RGBA = '255, 239, 128';
+export const yellow400_RGBA = '255, 229, 77';
+export const yellow500_RGBA = '255, 219, 25';
+export const yellow600_RGBA = '204, 163, 0';
+export const yellow700_RGBA = '153, 122, 0';
+export const yellow800_RGBA = '102, 77, 0';
+export const yellow900_RGBA = '51, 38, 0';
 
 export const blue100 = '#E6F5FF';
 export const blue200 = '#B3E5FF';
@@ -204,5 +233,14 @@ export const blue600 = '#008CDB';
 export const blue700 = '#00669B';
 export const blue800 = '#00405C';
 export const blue900 = '#001D1E';
+export const blue100_RGBA = '230, 245, 255';
+export const blue200_RGBA = '179, 229, 255';
+export const blue300_RGBA = '128, 212, 255';
+export const blue400_RGBA = '77, 196, 255';
+export const blue500_RGBA = '26, 179, 255';
+export const blue600_RGBA = '0, 140, 219';
+export const blue700_RGBA = '0, 102, 155';
+export const blue800_RGBA = '0, 64, 92';
+export const blue900_RGBA = '0, 29, 30';
 
 /** Yellow color (HEX) token: **#ffd644** */ export const yellow = '#ffd644';

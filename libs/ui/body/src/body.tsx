@@ -16,6 +16,7 @@ export const Body = forwardRef(
       sizeWide,
       className,
       id,
+      variant = 'primary',
       ...props
     }: BodyProps,
     ref?: React.Ref<HTMLParagraphElement>
@@ -30,6 +31,7 @@ export const Body = forwardRef(
       $size={size}
       $sizeConfined={sizeConfined}
       $sizeWide={sizeWide}
+      $variant={variant}
       data-xds="Body"
       className={className}
       {...props}
