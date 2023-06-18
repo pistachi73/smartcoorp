@@ -8,6 +8,12 @@ const { withNx } = require('@nx/next/plugins/with-nx');
 const nextConfig = {
   experimental: {
     externalDir: true,
+    outputFileTracingIgnores: [
+      'node_modules/@swc/core-linux-x64-gnu',
+      'node_modules/@swc/core-linux-x64-musl',
+      'node_modules/esbuild-linux-64/bin', // doesn't work, can ignore
+      'node_modules/webpack/lib', // doesn't work, can ignore
+    ],
   },
   compiler: {
     styledComponents: true,
