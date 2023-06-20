@@ -18,13 +18,14 @@ const RefContainer = styled.div<{ $hasHeight?: boolean }>`
 export const ResizablePanel: FC<ResizablePanelProps> = ({
   children,
   variants,
+  minHeight,
 }) => {
   const [ref, { height }] = useMeasure();
 
   return (
     <ResizableContainer
       animate={{
-        height: height || 'auto',
+        height: height || minHeight ? `${minHeight}px` : 'auto',
       }}
     >
       <AnimatePresence initial={false}>

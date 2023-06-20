@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { StyledComponentProps } from 'styled-components';
 
-import { Styled, sizes } from './headline.styles';
+import { sizes } from './headline.styles';
 
 export type HeadlineSize = keyof typeof sizes;
-export type HeadlineProps = React.ComponentProps<typeof Styled.Headline> & {
+export type CommonProps = {
   /** Content of the headline */
   children?: React.ReactNode;
   /** Custom styling */
@@ -18,4 +19,15 @@ export type HeadlineProps = React.ComponentProps<typeof Styled.Headline> & {
   sizeConfined?: HeadlineSize;
   /** The size on desktop screens or larger */
   sizeWide?: HeadlineSize;
+};
+
+export type HeadlineProps = StyledComponentProps<
+  'h1',
+  any,
+  CommonProps,
+  never // `never` optional'ed attributes from .attrs
+> & {
+  // Add `as` and `forwardedAs` polymorphic props
+  as?: string | React.ComponentType<any> | undefined;
+  forwardedAs?: string | React.ComponentType<any> | undefined;
 };

@@ -10,18 +10,6 @@ import {
   spaceXXL,
 } from '@smartcoorp/ui/tokens';
 
-export const Layout = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  background-image: url('./bg-login.svg');
-  background-size: cover;
-`;
-
 export const LogoContainer = styled.div`
   display: flex;
   align-items: flex-start;

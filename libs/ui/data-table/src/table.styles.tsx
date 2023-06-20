@@ -120,7 +120,7 @@ export const TableRow = styled.tr<TableRowProps>`
   transition-duration: ${motionTimeXS};
   transition-timing-function: ${motionEasingStandard};
   background-color: ${({ theme, $selected }) =>
-    $selected && theme.table.selectedRowColor} !important;
+    $selected ? theme.table.selectedRowColor : theme.backgroundScreen};
 
   &:not(:last-child) {
     border-bottom: 1px solid ${({ theme }) => theme.form.placeholderColor};
@@ -200,6 +200,8 @@ const GlobalFilterContainer = styled.div`
 `;
 
 const StyledButton = styled(Button)<{ variant: 'primary' | 'secondary' }>`
+  background-color: ${({ theme, variant }) =>
+    variant === 'secondary' && theme.backgroundScreen};
   border-color: ${({ theme, variant }) =>
     variant === 'primary' ? 'transparent' : theme.form.placeholderColor};
 `;
