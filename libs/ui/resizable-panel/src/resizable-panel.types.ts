@@ -9,6 +9,8 @@ export type ResizablePanelProps = {
   children: React.ReactNode;
   /** Framer motion animation */
   variants?: ResizablePanelVariants;
+  /** The width of the left panel */
+  minHeight?: number;
 };
 
 export type ResizablePanelVariants = {

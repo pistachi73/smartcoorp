@@ -21,7 +21,7 @@ import { ColumnFilters } from './components/filter/column-filters';
 import { dateBetweenFilterFn } from './components/filter/date-filter';
 import { GlobalFilter, globalFilterFn } from './components/global-filter';
 import { Pagination } from './components/pagination/pagination';
-import { SelectedRows } from './components/selected-rows';
+import { SelectedRowsWidget } from './components/selected-rows-widget';
 import { Styled as S } from './table.styles';
 import { TableProps } from './table.types';
 
@@ -38,6 +38,8 @@ export const Table = <T,>({
   enableMultiSort = true,
   enableSelect = true,
   defaultColumnVisibility = {},
+  editUrl,
+  onRowsDelete,
 }: TableProps<T>) => {
   const [rowSelection, setRowSelection] = React.useState({});
   const [globalFilter, setGlobalFilter] = React.useState('');
@@ -154,7 +156,7 @@ export const Table = <T,>({
               size="small"
               icon={BiLayerPlus}
               variant="primary"
-              href={createUrl}
+              to={createUrl}
             >
               New
             </S.StyledButton>
@@ -263,12 +265,13 @@ export const Table = <T,>({
         </S.TableBody>
       </S.Table>
       <S.FooterContainer>
-        <SelectedRows
-          numberOfSelectedRows={table.getFilteredSelectedRowModel().rows.length}
-          numberOfTotalRows={table.getFilteredRowModel().rows.length}
-        />
         <Pagination table={table} />
       </S.FooterContainer>
+      <SelectedRowsWidget
+        table={table}
+        onRowsDelete={onRowsDelete}
+        editUrl={editUrl}
+      />
     </S.TableContainer>
   );
 };

@@ -32,57 +32,58 @@ export const Pagination = <T,>({ table }: PaginationProps<T>) => {
           defaultValue={table.getState().pagination.pageSize.toString()}
         />
       </div>
-
-      <TableStyles.StyledButton
-        variant="secondary"
-        size="small"
-        onClick={() => table.previousPage()}
-        disabled={!table.getCanPreviousPage()}
-      >
-        Prev
-      </TableStyles.StyledButton>
-      {paginationRange &&
-        paginationRange.map((pageNumber) => {
-          if (pageNumber === DOTS) {
+      <S.PaginationContainer>
+        <TableStyles.StyledButton
+          variant="secondary"
+          size="small"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Prev
+        </TableStyles.StyledButton>
+        {paginationRange &&
+          paginationRange.map((pageNumber) => {
+            if (pageNumber === DOTS) {
+              return (
+                <TableStyles.StyledButton
+                  key={pageNumber}
+                  size="small"
+                  variant="secondary"
+                  disabled
+                  style={{ maxWidth: 36, padding: 0 }}
+                >
+                  &#8230;
+                </TableStyles.StyledButton>
+              );
+            }
             return (
               <TableStyles.StyledButton
                 key={pageNumber}
+                variant={
+                  parseInt(pageNumber as string) - 1 ===
+                  table.getState().pagination.pageIndex
+                    ? 'primary'
+                    : 'secondary'
+                }
                 size="small"
-                variant="secondary"
-                disabled
-                style={{ maxWith: 36, padding: 0 }}
+                style={{ maxWidth: 36, padding: 0 }}
+                onClick={() =>
+                  table.setPageIndex(parseInt(pageNumber as string) - 1)
+                }
               >
-                &#8230;
+                {pageNumber}
               </TableStyles.StyledButton>
             );
-          }
-          return (
-            <TableStyles.StyledButton
-              key={pageNumber}
-              variant={
-                parseInt(pageNumber as string) - 1 ===
-                table.getState().pagination.pageIndex
-                  ? 'primary'
-                  : 'secondary'
-              }
-              size="small"
-              style={{ maxWith: 36, padding: 0 }}
-              onClick={() =>
-                table.setPageIndex(parseInt(pageNumber as string) - 1)
-              }
-            >
-              {pageNumber}
-            </TableStyles.StyledButton>
-          );
-        })}
-      <TableStyles.StyledButton
-        variant="secondary"
-        size="small"
-        onClick={() => table.nextPage()}
-        disabled={!table.getCanNextPage()}
-      >
-        Next
-      </TableStyles.StyledButton>
+          })}
+        <TableStyles.StyledButton
+          variant="secondary"
+          size="small"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </TableStyles.StyledButton>
+      </S.PaginationContainer>
     </S.Container>
   );
 };

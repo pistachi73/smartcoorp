@@ -31,7 +31,7 @@ export const ColumnFilters = ({
   );
 
   return (
-    <ResizablePanel>
+    <ResizablePanel minHeight={36}>
       <S.LeftTableActionsContainer key={filters.length}>
         {filters.length ? (
           <S.RemoveButton

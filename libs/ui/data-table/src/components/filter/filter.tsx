@@ -35,7 +35,7 @@ export const Filter: FC<FilterProps> = ({ column, table }) => {
           variant="secondary"
           iconSize={18}
           icon={BiFilter}
-          $isFilteredColumn={isFilteredColumn}
+          $isFilteredColumn={Boolean(isFilteredColumn)}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}
         />
       </PopoverTrigger>

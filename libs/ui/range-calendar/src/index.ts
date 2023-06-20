@@ -1,5 +1,5 @@
 export { RangeCalendar } from './range-calendar';
-export {
+export type {
   RangeCalendarProps,
   RangeCustomValuesOptions,
 } from './range-calendar.types';

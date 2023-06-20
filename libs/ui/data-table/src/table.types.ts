@@ -13,4 +13,8 @@ export type TableProps<T> = {
   enableSelect?: boolean;
   /** Default Column visibility columns */
   defaultColumnVisibility?: Record<string, boolean>;
+  /** @callback */
+  onRowsDelete?: (rows: T[]) => void;
+  /** Edit instance path */
+  editUrl?: string;
 };

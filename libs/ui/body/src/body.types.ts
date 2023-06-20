@@ -39,7 +39,7 @@ type CommonProps = {
 };
 
 export type BodyProps = StyledComponentProps<
-  'button' | 'a',
+  'p',
   any,
   CommonProps,
   never // `never` optional'ed attributes from .attrs

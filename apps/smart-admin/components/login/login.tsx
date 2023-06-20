@@ -13,7 +13,6 @@ import { Headline } from '@smartcoorp/ui/headline';
 
 import {
   InputContainer,
-  Layout,
   LoginContainer,
   LoginForm,
   LogoContainer,
@@ -41,57 +40,55 @@ export const Login = () => {
     if (response?.error) {
       setError('Invalid credentials');
     } else {
-      router.push('/dashboard');
+      router.push('/home');
     }
 
     setLoading(false);
   };
 
   return (
-    <Layout>
-      <LoginContainer onSubmit={handleSubmit(onSubmit)}>
-        <LoginForm>
-          <LogoContainer>
-            <Image src="/big-logo-inverted.svg" alt="Smart Admin" fill />
-          </LogoContainer>
-          <Headline size="xxlarge" noMargin style={{ marginBottom: '4px' }}>
-            Sign in
-          </Headline>
-          <Body variant="neutral" size="xsmall">
-            Welcome to Smart Admin
+    <LoginContainer onSubmit={handleSubmit(onSubmit)}>
+      <LoginForm>
+        <LogoContainer>
+          <Image src="/big-logo-inverted.svg" alt="Smart Admin" fill />
+        </LogoContainer>
+        <Headline size="xxlarge" noMargin style={{ marginBottom: '4px' }}>
+          Sign in
+        </Headline>
+        <Body variant="neutral" size="xsmall">
+          Welcome to Smart Admin
+        </Body>
+        <InputContainer>
+          <RHFFormField
+            id="login-email"
+            label="Email"
+            type="email"
+            placeholder="Type your email..."
+            name="email"
+            control={control}
+            rules={{ required: 'This field is required' }}
+          />
+        </InputContainer>
+        <InputContainer>
+          <RHFFormField
+            id="login-password"
+            label="Password"
+            name="password"
+            type="password"
+            placeholder="Type your password..."
+            control={control}
+            rules={{ required: 'This field is required' }}
+          />
+        </InputContainer>
+        {error && (
+          <Body size="xsmall" variant="error">
+            {error}
           </Body>
-          <InputContainer>
-            <RHFFormField
-              id="login-email"
-              label="Email"
-              type="email"
-              placeholder="Type your email..."
-              name="email"
-              control={control}
-              rules={{ required: 'This field is required' }}
-            />
-          </InputContainer>
-          <InputContainer>
-            <RHFFormField
-              id="login-password"
-              label="Password"
-              name="password"
-              type="password"
-              placeholder="Type your password..."
-              control={control}
-              rules={{ required: 'This field is required' }}
-            />
-          </InputContainer>
-          {error && (
-            <Body size="xsmall" variant="error">
-              {error}
-            </Body>
-          )}
-          <Button style={{ width: '100%' }} type="submit" loading={loading}>
-            Login
-          </Button>
-        </LoginForm>
-      </LoginContainer>
-    </Layout>
+        )}
+        <Button style={{ width: '100%' }} type="submit" loading={loading}>
+          Login
+        </Button>
+      </LoginForm>
+    </LoginContainer>
   );
 };

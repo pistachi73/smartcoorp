@@ -8,8 +8,8 @@ import { Button } from '@smartcoorp/ui/button';
 import {
   borderRadiusXS,
   gray100,
-  primary100,
-  primary400,
+  gray200,
+  gray900,
   spaceL,
   spaceM,
 } from '@smartcoorp/ui/tokens';
@@ -28,8 +28,8 @@ export const SidebarLinkButton = styled(Button)<{ $isActive: boolean }>`
   ${({ $isActive }) =>
     $isActive &&
     css`
-      background-color: ${primary100} !important;
-      color: ${primary400} !important;
+      background-color: ${gray200} !important;
+      color: ${gray900} !important;
       font-weight: 600;
     `}
 
