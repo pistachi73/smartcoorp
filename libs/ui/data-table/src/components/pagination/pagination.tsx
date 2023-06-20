@@ -50,7 +50,7 @@ export const Pagination = <T,>({ table }: PaginationProps<T>) => {
                   size="small"
                   variant="secondary"
                   disabled
-                  style={{ maxWith: 36, padding: 0 }}
+                  style={{ maxWidth: 36, padding: 0 }}
                 >
                   &#8230;
                 </TableStyles.StyledButton>
@@ -66,7 +66,7 @@ export const Pagination = <T,>({ table }: PaginationProps<T>) => {
                     : 'secondary'
                 }
                 size="small"
-                style={{ maxWith: 36, padding: 0 }}
+                style={{ maxWidth: 36, padding: 0 }}
                 onClick={() =>
                   table.setPageIndex(parseInt(pageNumber as string) - 1)
                 }

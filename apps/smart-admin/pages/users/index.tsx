@@ -1,5 +1,4 @@
 // @/src/pages/dashboard/index.tsx
-import { useQueryClient } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import type { NextPage } from 'next';
@@ -8,7 +7,7 @@ import { RouterOutputs, trpc } from '@smartcoorp/trpc';
 import { Body } from '@smartcoorp/ui/body';
 import { Table } from '@smartcoorp/ui/data-table';
 import { Headline } from '@smartcoorp/ui/headline';
-import { spaceS, spaceXS } from '@smartcoorp/ui/tokens';
+import { spaceXS } from '@smartcoorp/ui/tokens';
 
 import { requireAuth } from '../../server/common/require-auth';
 export const getServerSideProps = requireAuth(async (ctx) => {
