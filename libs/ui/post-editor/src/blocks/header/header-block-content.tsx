@@ -1,6 +1,8 @@
 import debounce from 'lodash.debounce';
 import React, { useCallback, useMemo } from 'react';
 
+import type { HeadlineSize } from '@smartcoorp/ui/headline';
+
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import { useRefsContext } from '../../contexts/refs-context';
 import { TextField } from '../../fields/text-field';
@@ -9,15 +11,17 @@ import { getBlockContainerAttributes } from '../../helpers/get-block-container-a
 import type { HeaderBlockProps } from '../../post-editor.types';
 import type { HeaderBlockContentProps } from '../blocks.types';
 
-const HEADLINE_SIZE_LEVELS: Record<HeaderBlockProps['data']['level'], string> =
-  {
-    1: 'xxxlarge',
-    2: 'xxlarge',
-    3: 'xlarge',
-    4: 'large',
-    5: 'medium',
-    6: 'small',
-  };
+const HEADLINE_SIZE_LEVELS: Record<
+  HeaderBlockProps['data']['level'],
+  HeadlineSize
+> = {
+  1: 'xxxlarge',
+  2: 'xxlarge',
+  3: 'xlarge',
+  4: 'large',
+  5: 'medium',
+  6: 'small',
+};
 
 export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({
   blockIndex,

@@ -2,29 +2,34 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import { spaceXL } from '@smartcoorp/ui/tokens';
+import { useBreakpoint } from '@smartcoorp/smart-hooks';
+import { scale130 } from '@smartcoorp/ui/tokens';
 
 import { ProfileInfo } from './components/profile-info';
 import { SidebarLink } from './components/sidebar-link';
 import { tabs } from './helpers';
-import { Divider, Nav, SidebarContainer } from './sidebar.styles';
+import {
+  Divider,
+  LogoContainer,
+  Nav,
+  SidebarContainer,
+} from './sidebar.styles';
 
 export const Sidebar = () => {
+  const { isWide } = useBreakpoint();
   return (
     <SidebarContainer>
-      <Image
-        src="/smart-admin-logo.svg"
-        alt="Smart Admin"
-        width="0"
-        height="0"
-        sizes="100vw"
-        style={{
-          width: '75%',
-          height: 'auto',
-          margin: `${spaceXL} 0`,
-          paddingInline: '16px',
-        }}
-      />
+      <LogoContainer>
+        <Image
+          src={isWide ? '/smart-admin-logo.svg' : '/logo.svg'}
+          alt="Smart Admin"
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{ width: 'auto', height: scale130 }} // optional
+        />
+      </LogoContainer>
+
       <Divider />
       <Nav>
         {tabs.map((tab) => (

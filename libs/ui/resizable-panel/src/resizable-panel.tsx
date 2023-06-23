@@ -25,7 +25,7 @@ export const ResizablePanel: FC<ResizablePanelProps> = ({
   return (
     <ResizableContainer
       animate={{
-        height: height || minHeight ? `${minHeight}px` : 'auto',
+        height: height ?? 'auto',
       }}
     >
       <AnimatePresence initial={false}>

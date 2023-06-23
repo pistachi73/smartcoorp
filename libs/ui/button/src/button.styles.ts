@@ -49,6 +49,7 @@ type InnerContentTransientProps = {
 
 const baseButton = css`
   border: none;
+  border: 1px solid transparent;
   font-weight: 600;
   color: black;
   border-radius: ${borderRadiusXS};

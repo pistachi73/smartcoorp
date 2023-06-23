@@ -41,10 +41,10 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
 
     const getUrlMetadata = async () => {
       const url: string | null = fieldRefs.current[blockIndex][0].textContent;
-      if (!url?.trim()) return;
+      if (!url?.trim() || !getMetaData) return;
 
       try {
-        const urlMetaData: MetaData = await getMetaData(url?.trim());
+        const urlMetaData = await getMetaData(url?.trim());
 
         if (
           !urlMetaData ||

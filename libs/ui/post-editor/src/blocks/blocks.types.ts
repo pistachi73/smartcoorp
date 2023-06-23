@@ -75,7 +75,7 @@ export type ListBlockContentProps = SharedBlockContentProps & {
 
 export type LinkBlockContentProps = SharedBlockContentProps & {
   block: LinkBlockProps;
-  getMetaData: any;
+  getMetaData?: any;
 };
 
 export type ImageBlockContentProps = SharedBlockContentProps & {

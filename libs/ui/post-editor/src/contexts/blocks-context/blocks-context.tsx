@@ -68,8 +68,6 @@ export const BlocksDBProvider = ({
     canUndo: false,
   });
 
-  const { setPrevCaretPosition, prevCaretPosition } = useRefsContext();
-
   const setFieldValue: SetFieldValue = ({
     blockId,
     field,

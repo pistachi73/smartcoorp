@@ -4,22 +4,27 @@ import styled, { css } from 'styled-components';
 
 import { useRouter } from 'next/router';
 
+import { useBreakpoint } from '@smartcoorp/smart-hooks';
 import { Button } from '@smartcoorp/ui/button';
 import {
   borderRadiusXS,
   gray100,
   gray200,
   gray900,
+  mediaWide,
   spaceL,
   spaceM,
+  spaceS,
 } from '@smartcoorp/ui/tokens';
 
 export const SidebarLinkButton = styled(Button)<{ $isActive: boolean }>`
   min-width: 100%;
-  padding: ${spaceM} ${spaceL};
+  padding: ${spaceS};
+
   width: 100%;
   display: flex;
-  justify-content: start !important;
+  align-items: center;
+  justify-content: center;
   border-radius: ${borderRadiusXS};
 
   border: 1px solid transparent;
@@ -36,6 +41,11 @@ export const SidebarLinkButton = styled(Button)<{ $isActive: boolean }>`
   &:hover {
     background-color: ${gray100};
   }
+
+  @media (${mediaWide}) {
+    padding: ${spaceM} ${spaceL};
+    justify-content: start !important;
+  }
 `;
 
 export type SidebarLinkProps = {
@@ -48,6 +58,7 @@ export const SidebarLink: FC<SidebarLinkProps> = ({
   icon: Icon,
   to,
 }) => {
+  const { isWide } = useBreakpoint();
   const router = useRouter();
   const isActive = router.pathname === to;
   return (
@@ -60,7 +71,7 @@ export const SidebarLink: FC<SidebarLinkProps> = ({
         icon={Icon}
         $isActive={isActive}
       >
-        {title}
+        {isWide && title}
       </SidebarLinkButton>
     </li>
   );

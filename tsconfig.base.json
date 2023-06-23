@@ -25,6 +25,7 @@
       "@smartcoorp/smart-types": ["libs/smart-types/src/index.ts"],
       "@smartcoorp/trpc": ["apps/smart-admin/utils/trpc.ts"],
       "@smartcoorp/ui/body": ["libs/ui/body/src/index.ts"],
+      "@smartcoorp/ui/breadcrumb": ["libs/ui/breadcrumb/src/index.ts"],
       "@smartcoorp/ui/button": ["libs/ui/button/src/index.ts"],
       "@smartcoorp/ui/caption": ["libs/ui/caption/src/index.ts"],
       "@smartcoorp/ui/checkbox": ["libs/ui/checkbox/src/index.ts"],

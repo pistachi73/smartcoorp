@@ -2,13 +2,16 @@ import styled, { css } from 'styled-components';
 
 import { Body } from '@smartcoorp/ui/body';
 import {
+  borderRadiusM,
   borderRadiusXS,
   motionEasingStandard,
   motionTimeS,
   scale030,
   space3XL,
+  space4XL,
   spaceL,
   spaceM,
+  spaceXXL,
   spaceXXS,
 } from '@smartcoorp/ui/tokens';
 
@@ -74,6 +77,10 @@ export const InputBox = styled(Body).attrs(() => ({ noMargin: true }))<{
 `;
 
 export const PostEditorContainer = styled.div`
+  padding: ${spaceXXL} ${space4XL};
+  background-color: white;
+  border: 1px solid ${({ theme }) => theme.form.placeholderColor};
+  border-radius: ${borderRadiusM};
   position: relative;
   max-width: 768px;
   min-height: 100vh;

@@ -8,6 +8,7 @@ import {
   primary,
   scale040,
   scale050,
+  scale060,
   scale070,
   scale080,
   scale100,
@@ -15,6 +16,7 @@ import {
   spaceM,
   spaceS,
   spaceXS,
+  spaceXXS,
 } from '@smartcoorp/ui/tokens';
 
 import { RadioGroupSize } from './radio-group.types';
@@ -43,6 +45,9 @@ export const sizes = {
       font-size: ${scale070};
       padding: ${spaceXS} ${spaceM};
     `,
+    radioGroupLabel: css`
+      font-size: ${scale060};
+    `,
   },
   medium: {
     checkbox: css`
@@ -57,6 +62,9 @@ export const sizes = {
     label: css`
       font-size: ${scale080};
       padding: ${spaceS} ${spaceM};
+    `,
+    radioGroupLabel: css`
+      font-size: ${scale070};
     `,
   },
 };
@@ -186,10 +194,41 @@ export const ItemContainer = styled.div`
   align-items: center;
 `;
 
+const RadioGroupLabel = styled.p<SizeProps>`
+  margin-bottom: ${spaceXXS};
+  padding: 0;
+  font-size: ${scale070};
+  color: ${({ theme }) => theme.form.neutralColor};
+
+  /** Size styles */
+  ${({ $size }) =>
+    $size &&
+    css`
+      ${sizes[$size].radioGroupLabel}
+    `}
+
+  ${({ $sizeConfined }) =>
+    $sizeConfined &&
+    css`
+      @media ${mediaConfined} {
+        ${sizes[$sizeConfined].radioGroupLabel}
+      }
+    `};
+
+  ${({ $sizeWide }) =>
+    $sizeWide &&
+    css`
+      @media ${mediaWide} {
+        ${$sizeWide && sizes[$sizeWide].radioGroupLabel}
+      }
+    `};
+`;
+
 export const Styled = {
   Root,
   Label,
   Indicator,
   Item,
   ItemContainer,
+  RadioGroupLabel,
 };

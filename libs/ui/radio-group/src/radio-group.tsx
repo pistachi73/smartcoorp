@@ -14,6 +14,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       sizeConfined,
       sizeWide,
       options,
+      label,
     },
     forwardedRef
   ) => {
@@ -26,6 +27,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
         $disabled={isDisabled}
         onValueChange={onChange}
       >
+        {label && <S.RadioGroupLabel>{label}</S.RadioGroupLabel>}
         {options.map(({ label, value }) => (
           <RadioGroupItem
             key={value}

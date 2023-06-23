@@ -1,10 +1,17 @@
 import styled from 'styled-components';
 
-import { gray100, scale360, space3XL } from '@smartcoorp/ui/tokens';
+import {
+  gray100,
+  mediaWide,
+  scale190,
+  scale360,
+  space3XL,
+} from '@smartcoorp/ui/tokens';
 
 import { Sidebar } from '../sidebar/sidebar';
 
-const sidebarWitdh = scale360;
+const sidebarWitdh = scale190;
+const sidebarWidthWide = scale360;
 
 export const SidebarLayoutContainer = styled.main`
   width: 100vw;
@@ -25,11 +32,15 @@ const ContentContainer = styled.div`
   padding: ${space3XL};
   margin-left: ${sidebarWitdh};
   overflow-y: auto;
+
+  @media (${mediaWide}) {
+    margin-left: ${sidebarWidthWide};
+  }
 `;
 
 const Content = styled.div`
   width: 100%;
-  max-width: 1300px;
+  max-width: 1100px;
   margin: 0 auto;
   position: relative;
 `;
@@ -41,6 +52,10 @@ const SidebarContainer = styled.div`
   flex: 1;
   position: fixed;
   width: ${sidebarWitdh};
+
+  @media (${mediaWide}) {
+    width: ${sidebarWidthWide};
+  }
 `;
 
 export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
@@ -50,7 +65,7 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
         <Sidebar />
       </SidebarContainer>
       <ContentContainer>
-        <Content>{children}</Content>
+        <Content id="sidebar-content">{children}</Content>
       </ContentContainer>
     </SidebarLayoutContainer>
   );

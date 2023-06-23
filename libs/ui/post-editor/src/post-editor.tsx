@@ -18,8 +18,6 @@ export const PostEditor: FC<PostEditorProps> = ({
   setBlocksDB,
   getMetaData,
 }) => {
-  if (!blocksDB) return null;
-
   return (
     <BlocksDBProvider blocksDB={blocksDB} setBlocksDB={setBlocksDB}>
       <RefsProvider>

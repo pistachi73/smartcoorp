@@ -1,8 +1,17 @@
 import styled from 'styled-components';
 
-import { gray300, spaceL, spaceM, spaceXS } from '@smartcoorp/ui/tokens';
+import {
+  gray300,
+  mediaWide,
+  spaceL,
+  spaceM,
+  spaceXS,
+} from '@smartcoorp/ui/tokens';
 
 const borderColor = gray300;
+
+const xSpacing = spaceM;
+const xSpacingWide = spaceL;
 
 export const SidebarContainer = styled.div`
   display: flex;
@@ -14,8 +23,19 @@ export const SidebarContainer = styled.div`
   border-right: 1px solid ${borderColor};
 `;
 
+export const LogoContainer = styled.div`
+  margin: ${xSpacing};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media (${mediaWide}) {
+    margin: ${xSpacingWide};
+    display: block;
+  }
+`;
+
 export const Nav = styled.nav`
-  padding: ${spaceL};
+  padding: ${xSpacing};
   display: flex;
   flex: 1;
   gap: ${spaceXS};
@@ -25,11 +45,21 @@ export const Nav = styled.nav`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media (${mediaWide}) {
+    padding: ${xSpacingWide};
+  }
 `;
 
 export const Divider = styled.div`
-  width: calc(100% - ${spaceL} * 2);
+  width: calc(100% - (${xSpacing} * 2));
+
   height: 1px;
   background-color: ${borderColor};
-  margin: 0 ${spaceL};
+  margin: 0 ${xSpacing};
+
+  @media (${mediaWide}) {
+    width: calc(100% - (${xSpacingWide} * 2));
+    margin: 0 ${xSpacingWide};
+  }
 `;
