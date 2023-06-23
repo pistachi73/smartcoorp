@@ -169,7 +169,12 @@ export const Table = <T,>({
             <S.TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <S.TableHeader key={header.id}>
+                  <S.TableHeader
+                    key={header.id}
+                    style={{
+                      ...(header.id === 'select' ? { width: '50px' } : {}),
+                    }}
+                  >
                     {header.isPlaceholder ? null : (
                       <S.TableHeaderWrapper
                         $sortingEnabled={header.column.getCanSort()}

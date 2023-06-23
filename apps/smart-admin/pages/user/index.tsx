@@ -2,18 +2,40 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import type { NextPage } from 'next';
+import styled from 'styled-components';
 
 import { RouterOutputs, trpc } from '@smartcoorp/trpc';
 import { Body } from '@smartcoorp/ui/body';
 import { Table } from '@smartcoorp/ui/data-table';
 import { Headline } from '@smartcoorp/ui/headline';
-import { spaceXS } from '@smartcoorp/ui/tokens';
+import {
+  blue100,
+  blue500,
+  borderRadiusXS,
+  primary,
+  primary100,
+  scale210,
+  space3XL,
+  spaceL,
+  spaceXS,
+  spaceXXL,
+} from '@smartcoorp/ui/tokens';
 
 import { requireAuth } from '../../server/common/require-auth';
 export const getServerSideProps = requireAuth(async (ctx) => {
   return { props: {} };
 });
 
+const RoleBadge = styled(Body)<{ role: 'ADMIN' | 'BASIC' }>`
+  padding: ${spaceXS} ${spaceL};
+  border-radius: ${borderRadiusXS};
+  background-color: ${({ role }) => (role === 'ADMIN' ? primary100 : blue100)};
+  color: ${({ role }) => (role === 'ADMIN' ? primary : blue500)};
+  border: 1px solid ${({ role }) => (role === 'ADMIN' ? primary : blue500)};
+
+  text-align: center;
+  max-width: ${scale210};
+`;
 const Users: NextPage = () => {
   const utils = trpc.useContext();
   const users = trpc.user.getAllUsers.useQuery();
@@ -32,7 +54,7 @@ const Users: NextPage = () => {
       accessorKey: 'id',
       header: 'ID',
       cell: (info) => (
-        <Body variant="neutral" size="small">
+        <Body variant="neutral" size="small" noMargin>
           {info.getValue() as string}
         </Body>
       ),
@@ -52,11 +74,15 @@ const Users: NextPage = () => {
     {
       accessorKey: 'role',
       cell: (info) => {
-        const val = info.getValue();
+        const val = info.getValue() as string;
         return val === 'ADMIN' ? (
-          <Body noMargin>{val}</Body>
+          <RoleBadge role="ADMIN" size="xsmall" noMargin>
+            {val}
+          </RoleBadge>
         ) : (
-          <Body noMargin>Noob</Body>
+          <RoleBadge role="BASIC" size="xsmall" noMargin>
+            {val}
+          </RoleBadge>
         );
       },
       header: 'ROLE',
@@ -86,17 +112,17 @@ const Users: NextPage = () => {
       >
         Smartcoorp Users
       </Headline>
-      <Body variant="neutral" size="small">
+      <Body variant="neutral" size="small" style={{ marginBottom: spaceXXL }}>
         View and Manage smartcoorp users.
       </Body>
       <Table
         data={data}
         columnDefs={tableColumns}
-        createUrl="/users/new"
+        createUrl="/user/new"
         onRowsDelete={(rows) => {
           deleteUsers.mutate({ ids: rows.map((row) => row.id) });
         }}
-        editUrl="/users"
+        editUrl="/user"
       />
     </>
   );

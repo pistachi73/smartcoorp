@@ -10,12 +10,13 @@ export const Blocks = ({ getMetaData }: { getMetaData: any }) => {
 
   return (
     <PostEditorContainer
+      id="post-editor"
       onMouseDown={handleSharedClickDown}
       onKeyDown={handleSharedKeyDown}
     >
       <Tools />
 
-      <BlockChain chainId="main" />
+      <BlockChain chainId="main" getMetaData={getMetaData} />
 
       <DragSelection />
     </PostEditorContainer>

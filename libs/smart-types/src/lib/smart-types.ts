@@ -6,4 +6,4 @@ export function ObjectEntries<T extends object>(t: T): Entries<T>[] {
 
 export const isDate = (value: any): value is Date => value instanceof Date;
 export const isNumber = (value: any): value is number =>
-  typeof value === 'number';
+  typeof value === 'number' || !isNaN(parseInt(value));

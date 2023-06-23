@@ -1,4 +1,4 @@
-import { BiHomeAlt, BiUserCircle } from 'react-icons/bi';
+import { BiBook, BiHomeAlt, BiUserCircle } from 'react-icons/bi';
 
 import { SidebarLinkProps } from './components/sidebar-link';
 
@@ -11,6 +11,11 @@ export const tabs: SidebarLinkProps[] = [
   {
     title: 'Users',
     icon: BiUserCircle,
-    to: '/users',
+    to: '/user',
+  },
+  {
+    title: 'Blog Posts',
+    icon: BiBook,
+    to: '/blog-post',
   },
 ];

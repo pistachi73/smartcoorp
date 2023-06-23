@@ -8,8 +8,8 @@ import { useRouter } from 'next/router';
 
 import { GlobalStyles, ThemeProvider } from '@smartcoorp/ui/global-styles';
 
-import { FullScreenLayout } from '../components/layout/full-screen-layout';
-import { SidebarLayout } from '../components/layout/sidebar-layout';
+import { FullScreenLayout } from '../components/layout/full-screen.layout';
+import { SidebarLayout } from '../components/layout/sidebar.layout';
 import { trpc } from '../utils/trpc';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {

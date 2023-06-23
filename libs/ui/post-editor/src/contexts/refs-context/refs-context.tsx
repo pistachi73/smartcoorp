@@ -99,7 +99,6 @@ export const useRefsContext = (): {
 
   const setPrevCaretPosition = useCallback(
     (ref: HTMLElement | number) => {
-      console.log('setPrevCaretPosition', ref, typeof ref === 'number');
       if (typeof ref === 'number') {
         prevCaretPosition.current = ref;
       } else {
@@ -140,6 +139,7 @@ export const useRefsContext = (): {
 
   const focusField: FocusField = useCallback(
     ([blockIndex, fieldIndex], caretPosition) => {
+      if (!fieldRefs.current || !fieldRefs.current[blockIndex]) return;
       const focusableElement = fieldRefs.current[blockIndex][fieldIndex];
 
       let position: number;

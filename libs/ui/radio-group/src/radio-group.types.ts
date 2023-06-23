@@ -9,6 +9,8 @@ type RadioGroupOptions = {
 };
 
 export type RadioGroupProps = {
+  /** Radio group label */
+  label?: string;
   /**The value of the radio item that should be checked when initially rendered. Use when you do not need to control the state of the radio items. */
   defaultValue?: string;
   /**The controlled value of the radio item to check. Should be used in conjunction with onValueChange. */

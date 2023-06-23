@@ -25,7 +25,10 @@ export const useDragSelection = (): UseDragSelectionResult => {
   const { blockRefs } = useRefsContext();
 
   const { DragSelection } = useSelectionContainer({
-    eventsElement: document.getElementById('root'),
+    eventsElement: null,
+    // typeof document !== undefined
+    //   ? document?.getElementById('post-editor')
+    //   : null,
 
     onSelectionChange: (box) => {
       const scrollAwareBox: Box = {
