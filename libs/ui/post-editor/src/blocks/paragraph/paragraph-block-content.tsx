@@ -41,7 +41,7 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
   const onTextChange = useCallback(
     (text: string) => {
       const currentCaretPosition = getCaretPosition(
-        fieldRefs.current[blockIndex][0]
+        fieldRefs.current[blockIndex][0] ?? null
       );
 
       setFieldValue({

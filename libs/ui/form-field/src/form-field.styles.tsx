@@ -223,7 +223,7 @@ const Textarea = styled.textarea<SizeProps>`
   width: 100%;
   outline: none;
   border: none;
-
+  resize: vertical;
   background-color: transparent;
 
   color: ${({ theme }) => theme.color.neutral};

@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 
 import { Styled } from './select.styles';
 import { Option, SelectProps, isOption } from './select.types';
@@ -23,9 +23,11 @@ export const Select = forwardRef<any, SelectProps>(
     },
     ref
   ) => {
-    const [flattenedOptions] = useState(
+    const [flattenedOptions, setFlattenedOptions] = useState<
+      Option[] | undefined
+    >(
       options
-        .map((option) => {
+        ?.map((option) => {
           if (isOption(option)) {
             return option;
           } else {
@@ -34,6 +36,20 @@ export const Select = forwardRef<any, SelectProps>(
         })
         .flat()
     );
+
+    useEffect(() => {
+      setFlattenedOptions(
+        options
+          ?.map((option) => {
+            if (isOption(option)) {
+              return option;
+            } else {
+              return option.options;
+            }
+          })
+          .flat()
+      );
+    }, [options]);
 
     const onChangeHandler = (val: any, actionMeta: any) => {
       if (!onChange || !val) return;
@@ -55,12 +71,12 @@ export const Select = forwardRef<any, SelectProps>(
       if (!findValue) return;
 
       return isMulti
-        ? (value as string[])?.map((v) => flattenedOptions.find(findOption(v)))
-        : flattenedOptions.find(findOption(findValue as string));
+        ? (value as string[])?.map((v) => flattenedOptions?.find(findOption(v)))
+        : flattenedOptions?.find(findOption(findValue as string));
     };
 
     return (
-      <Styled.SelectContainer $disabled={isDisabled}>
+      <Styled.SelectContainer $disabled={isDisabled || !options?.length}>
         {label && (
           <Styled.SingleSelectLabel
             $size={size}
@@ -74,15 +90,15 @@ export const Select = forwardRef<any, SelectProps>(
           ref={ref}
           classNamePrefix={'react-select'}
           placeholder={placeholder}
-          options={options}
+          options={options ?? [{ label: 'Loading options', value: 'loading' }]}
           onChange={onChangeHandler}
-          value={findSelectedOptions(value)}
-          defaultValue={findSelectedOptions(defaultValue)}
+          value={findSelectedOptions(value) ?? 'loading'}
+          defaultValue={findSelectedOptions(defaultValue) ?? 'loading'}
           unstyled={true}
           isClearable={isMulti ? true : false}
           closeMenuOnSelect={isMulti ? false : true}
           isMulti={isMulti}
-          isDisabled={isDisabled}
+          isDisabled={isDisabled || !options?.length}
           menuPlacement={menuPlacement}
           $error={isError}
           $size={size}

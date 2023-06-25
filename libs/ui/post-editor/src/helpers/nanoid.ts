@@ -1,4 +1,4 @@
 import { customAlphabet } from 'nanoid';
 const alphabet =
-  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
+  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 export const nanoid = customAlphabet(alphabet, 10);

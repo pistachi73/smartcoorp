@@ -19,16 +19,16 @@ export const PostEditor: FC<PostEditorProps> = ({
   getMetaData,
 }) => {
   return (
-    <BlocksDBProvider blocksDB={blocksDB} setBlocksDB={setBlocksDB}>
-      <RefsProvider>
-        <BlockSelectionProvider>
-          <ToolControlProvider>
+    <RefsProvider>
+      <BlockSelectionProvider>
+        <ToolControlProvider>
+          <BlocksDBProvider blocksDB={blocksDB} setBlocksDB={setBlocksDB}>
             {/* <InlineTools postEditorRef={postEditorContainerRef} /> */}
 
             <Blocks getMetaData={getMetaData} />
-          </ToolControlProvider>
-        </BlockSelectionProvider>
-      </RefsProvider>
-    </BlocksDBProvider>
+          </BlocksDBProvider>
+        </ToolControlProvider>
+      </BlockSelectionProvider>
+    </RefsProvider>
   );
 };

@@ -37,10 +37,14 @@ export type DialogControl =
 export type DialoglRootProps = DialogControl & {
   /** Content of the modal */
   children: React.ReactNode;
+  /** The open state of the dialog when it is initially rendered. Use when you do not need to control its open state. */
+  defaultOpen?: boolean;
 };
 
 export type DialogContentProps = CancelProps &
   ActionProps & {
+    /** Dialog content variant */
+    variant?: 'danger' | 'warning' | 'success' | 'info';
     /** Content of the modal */
     children: React.ReactNode;
     /** An accessible title to be announced when the dialog is opened.  */

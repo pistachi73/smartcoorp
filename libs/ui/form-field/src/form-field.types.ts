@@ -1,3 +1,5 @@
+import { StyledComponentProps } from 'styled-components';
+
 import { sizes } from './form-field.styles';
 
 export type FormFieldSize = keyof typeof sizes;
@@ -29,6 +31,8 @@ type CommonProps = {
   value?: string | number;
   /** The defaultValue of the input */
   defaultValue?: string | number;
+  /** Render a textarea */
+  isMultiline?: boolean;
   /** Add leading icon */
   icon?: React.FC<{ size: number }>;
   /** @callback */
@@ -43,16 +47,13 @@ type CommonProps = {
   ) => void;
 };
 
-type InputProps = CommonProps & {
-  /** FormField type */
-  type?: HTMLInputElement['type'];
-  /** Render a textarea */
-  isMultiline?: never;
+export type FormFieldProps = StyledComponentProps<
+  'input' | 'textarea' | 'p',
+  any,
+  CommonProps,
+  never // `never` optional'ed attributes from .attrs
+> & {
+  // Add `as` and `forwardedAs` polymorphic props
+  as?: string | React.ComponentType<any> | undefined;
+  forwardedAs?: string | React.ComponentType<any> | undefined;
 };
-
-type TextareaProps = CommonProps & {
-  /** Render a textarea */
-  isMultiline?: boolean;
-};
-
-export type FormFieldProps = InputProps | TextareaProps;

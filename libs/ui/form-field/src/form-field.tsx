@@ -100,7 +100,7 @@ export const FormField = forwardRef<
               $size={size}
               $sizeConfined={sizeConfined}
               $sizeWide={sizeWide}
-              onChange={(e) => onChange(e.target.value)}
+              onChange={(e: any) => onChange(e.target.value)}
               onFocus={onFocus}
               onBlur={onBlur}
               value={value as string}
@@ -117,7 +117,7 @@ export const FormField = forwardRef<
               $sizeConfined={sizeConfined}
               $sizeWide={sizeWide}
               $hasIcon={!!Icon || inputType === 'number'}
-              onChange={(e) => onChange(e.target.value)}
+              onChange={(e: any) => onChange(e.target.value)}
               onFocus={onFocus}
               onBlur={onBlur}
               value={value}
