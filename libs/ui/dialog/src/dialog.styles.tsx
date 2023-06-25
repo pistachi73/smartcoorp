@@ -6,6 +6,7 @@ import {
   borderRadiusS,
   scale170,
   scale280,
+  scale420,
   spaceL,
   spaceM,
   spaceXL,
@@ -16,8 +17,11 @@ type DialogActionsContainerTransientProps = {
 };
 
 const DialogContent = styled(motion(DialogAlertPrimitives.AlertDialogContent))`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   min-width: ${scale280};
-  max-width: 500px;
+  max-width: ${scale420};
   padding: ${spaceXL};
   min-height: ${scale170};
   max-height: 60vh;

@@ -68,6 +68,7 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
       cancelLabel,
       disabled,
       loading,
+      variant = 'info',
       ...props
     },
     forwardedRef: React.Ref<HTMLDivElement>
@@ -119,8 +120,6 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
                   disabled={disabled || loading}
                   variant="secondary"
                   size="small"
-                  sizeConfined="medium"
-                  sizeWide="medium"
                   {...onCancelClick}
                 >
                   {cancelLabel}
@@ -132,9 +131,8 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
                 loading={loading}
                 disabled={disabled || loading}
                 variant="primary"
+                color={variant === 'danger' ? 'error' : 'primary'}
                 size="small"
-                sizeConfined="medium"
-                sizeWide="medium"
                 {...onActionClick}
               >
                 {actionLabel}
@@ -150,10 +148,13 @@ export const Dialog: FC<DialoglRootProps> = ({
   children,
   open,
   onOpenChange,
+  defaultOpen,
 }) => {
   const controlledProps = onOpenChange ? { open, onOpenChange } : {};
   return (
-    <DialogPrimitive.Root {...controlledProps}>{children}</DialogPrimitive.Root>
+    <DialogPrimitive.Root defaultOpen={defaultOpen} {...controlledProps}>
+      {children}
+    </DialogPrimitive.Root>
   );
 };
 export const DialogTrigger = DialogPrimitive.Trigger;

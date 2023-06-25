@@ -33,7 +33,12 @@ const EditUser = () => {
   const createUser = trpc.user.createUser.useMutation();
   const updateUser = trpc.user.updateUser.useMutation();
 
-  const { control, reset, handleSubmit } = useForm<UserData>({
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { isDirty },
+  } = useForm<UserData>({
     defaultValues: {
       username: '',
       email: '',
@@ -55,6 +60,7 @@ const EditUser = () => {
         router.push(`/user/${createdUser.id}`);
       } else {
         await updateUser.mutateAsync({ id: userId, ...data });
+        reset({}, { keepValues: true });
       }
     } catch (e) {
       if (e instanceof TRPCError) console.log(e.message);
@@ -112,10 +118,13 @@ const EditUser = () => {
   return (
     <EditEntryLayout
       title="User"
-      entryId={router.query.id as string}
+      entryId={userId}
       onSave={handleSubmit(onSave)}
       onDelete={onDelete}
-      isLoading={createUser.isLoading || updateUser.isLoading}
+      isLoading={
+        createUser.isLoading || updateUser.isLoading || deleteUsers.isLoading
+      }
+      isDirty={isDirty}
     >
       {content}
     </EditEntryLayout>

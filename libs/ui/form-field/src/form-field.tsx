@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+import { InputHTMLAttributes } from 'react-day-picker';
 import { BiHide, BiMinus, BiPlus, BiShow } from 'react-icons/bi';
 import { v4 as uuid } from 'uuid';
 
@@ -27,6 +28,8 @@ export const FormField = forwardRef<
       onChange,
       onFocus,
       onBlur,
+      className,
+      height,
       ...props
     },
     ref?: React.Ref<HTMLElement>
@@ -95,21 +98,26 @@ export const FormField = forwardRef<
           {isMultiline ? (
             <S.Textarea
               ref={ref as React.Ref<HTMLTextAreaElement>}
+              className={className}
               placeholder={placeholder}
               disabled={isDisabled}
-              $size={size}
-              $sizeConfined={sizeConfined}
-              $sizeWide={sizeWide}
-              onChange={(e) => onChange(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                onChange(e.target.value)
+              }
               onFocus={onFocus}
               onBlur={onBlur}
               value={value as string}
               {...props}
+              $size={size}
+              $sizeConfined={sizeConfined}
+              $sizeWide={sizeWide}
+              $height={height}
             />
           ) : (
             <S.Input
               id={inputId}
               ref={ref as React.Ref<HTMLInputElement>}
+              className={className}
               placeholder={placeholder}
               type={inputType}
               disabled={isDisabled}
@@ -117,7 +125,9 @@ export const FormField = forwardRef<
               $sizeConfined={sizeConfined}
               $sizeWide={sizeWide}
               $hasIcon={!!Icon || inputType === 'number'}
-              onChange={(e) => onChange(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                onChange(e.target.value)
+              }
               onFocus={onFocus}
               onBlur={onBlur}
               value={value}

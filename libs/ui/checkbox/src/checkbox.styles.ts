@@ -63,7 +63,6 @@ export const Root = styled(Checkbox.Root)<SizeProps>`
   justify-content: center;
 
   border: 1px solid ${({ theme }) => theme.form.neutralColor};
-  box-shadow: ${({ theme }) => theme.shadow.shadowS};
   border-radius: ${borderRadiusXS};
 
   /** Size styles */

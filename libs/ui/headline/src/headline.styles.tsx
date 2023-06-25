@@ -9,8 +9,8 @@ import {
   scale100,
   scale110,
   scale130,
-  spaceL,
   spaceM,
+  spaceS,
 } from '@smartcoorp/ui/tokens';
 
 import { HeadlineSize } from './headline.types';
@@ -52,27 +52,27 @@ const ellipsis = css`
 export const sizes = {
   small: css`
     font-size: ${scale070};
-    margin-bottom: ${spaceM};
+    margin-bottom: ${spaceS};
   `,
   medium: css`
     font-size: ${scale080};
-    margin-bottom: ${spaceM};
+    margin-bottom: ${spaceS};
   `,
   large: css`
     font-size: ${scale090};
-    margin-bottom: ${spaceL};
+    margin-bottom: ${spaceM};
   `,
   xlarge: css`
     font-size: ${scale100};
-    margin-bottom: ${spaceL};
+    margin-bottom: ${spaceM};
   `,
   xxlarge: css`
     font-size: ${scale110};
-    margin-bottom: ${spaceL};
+    margin-bottom: ${spaceM};
   `,
   xxxlarge: css`
     font-size: ${scale130};
-    margin-bottom: ${spaceL};
+    margin-bottom: ${spaceM};
   `,
 };
 

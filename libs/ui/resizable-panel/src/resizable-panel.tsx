@@ -16,9 +16,11 @@ const RefContainer = styled.div<{ $hasHeight?: boolean }>`
 `;
 
 export const ResizablePanel: FC<ResizablePanelProps> = ({
+  className,
   children,
   variants,
-  minHeight,
+  duration = 0.2,
+  animationKey,
 }) => {
   const [ref, { height }] = useMeasure();
 
@@ -27,10 +29,17 @@ export const ResizablePanel: FC<ResizablePanelProps> = ({
       animate={{
         height: height ?? 'auto',
       }}
+      transition={{
+        duration,
+        ease: 'easeInOut',
+      }}
+      className={className}
     >
       <AnimatePresence initial={false}>
         <motion.div
-          key={JSON.stringify(children, ignoreCircularReferences())}
+          key={
+            animationKey ?? JSON.stringify(children, ignoreCircularReferences())
+          }
           {...variants}
           style={{
             width: '100%',

@@ -20,7 +20,7 @@ export const DebounceFormField: React.FC<DebounceFormFieldProps> = ({
     return debounce(onChange, debounceTime);
   }, [debounceTime, onChange]);
 
-  const handleDebouncedOnChange = (value: FormFieldProps['value']) => {
+  const handleDebouncedOnChange = (value: string | number) => {
     setInputValue(value);
     debouncedOnChange(value);
   };

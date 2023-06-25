@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useCallback, useMemo, useReducer } from 'react';
+import React, {
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+} from 'react';
 
 import { useRefsContext } from '../refs-context';
 
@@ -67,6 +73,10 @@ export const BlocksDBProvider = ({
     canRedo: false,
     canUndo: false,
   });
+
+  useEffect(() => {
+    setBlocksDB({ blocks: blocksDB.blocks, chains: blocksDB.chains });
+  }, [blocksDB, setBlocksDB]);
 
   const setFieldValue: SetFieldValue = ({
     blockId,

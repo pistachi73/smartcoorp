@@ -161,6 +161,7 @@ const HelperText = styled.span<HelperTextProps>`
 `;
 
 const SingleSelectLabel = styled.p<SelectLabelProps>`
+  margin-top: 0;
   margin-bottom: ${spaceXXS};
   padding: 0;
   font-size: ${scale070};

@@ -206,6 +206,7 @@ export const useBlockSelection = () => {
     chainBlockIndex: number,
     chainId: string
   ) => {
+    console.log(clipboardBlocks);
     if (!clipboardBlocks) return;
 
     e.preventDefault();
@@ -302,6 +303,7 @@ export const useBlockSelection = () => {
     }
 
     if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+      console.log('metakey v');
       handleMetakeyV(e, chainBlockIndex, chainId);
       return;
     }

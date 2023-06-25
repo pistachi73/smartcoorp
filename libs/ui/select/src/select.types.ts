@@ -3,7 +3,7 @@ export type SelectSizes = keyof typeof sizes;
 
 export type Option = {
   label: string;
-  value: string;
+  value: string | number;
 };
 
 type OptionsGroup = {
@@ -18,7 +18,7 @@ export type SelectOptions = (Option | OptionsGroup)[];
 
 export type SelectProps = {
   /** Select options */
-  options: SelectOptions;
+  options?: SelectOptions;
   /** Select @callback */
   onChange: (...props: any) => void;
   /** Select value */

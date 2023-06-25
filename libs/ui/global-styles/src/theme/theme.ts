@@ -40,10 +40,11 @@ import {
   red400,
   red500,
   red600,
-  red600_RGBA,
   red700,
+  red700_RGBA,
   red800,
   red800_RGBA,
+  red900,
   yellow400,
   yellow500,
   yellow500_RGBA,
@@ -101,10 +102,10 @@ export const lightTheme: ThemeType = {
       activeTextColor: 'black',
     },
     error: {
-      buttonColor: red600,
-      buttonColorRGBA: red600_RGBA,
-      hoverColor: red700,
-      activeColor: red800,
+      buttonColor: red700,
+      buttonColorRGBA: red700_RGBA,
+      hoverColor: red800,
+      activeColor: red900,
       activeTextColor: 'black',
     },
     success: {
@@ -161,7 +162,7 @@ export const lightTheme: ThemeType = {
   form: {
     neutralColor: gray400,
     placeholderColor: gray300,
-    hoverColor: gray200,
+    hoverColor: gray100,
     errorColor: red500,
     backgroundColor: 'white',
     select: {

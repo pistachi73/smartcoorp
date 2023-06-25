@@ -1,3 +1,5 @@
+import { MutableRefObject } from 'react';
+
 import { FlattenUnion, KeysOfUnion } from '@smartcoorp/smart-types';
 
 import type { BlocksDB } from './contexts/blocks-context/blocks-context.types';

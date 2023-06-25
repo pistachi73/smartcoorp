@@ -1,12 +1,14 @@
+import { StyledComponentProps } from 'styled-components';
+
 import { sizes } from './form-field.styles';
 
 export type FormFieldSize = keyof typeof sizes;
 
 type CommonProps = {
+  /** Styles */
+  className?: string;
   /** Id */
   id?: string;
-  /** Ref object */
-  innerRef?: any;
   /** Formfield placeholder */
   placeholder?: string;
   /** FormField type */
@@ -29,6 +31,8 @@ type CommonProps = {
   value?: string | number;
   /** The defaultValue of the input */
   defaultValue?: string | number;
+  /** Render a textarea */
+  isMultiline?: boolean;
   /** Add leading icon */
   icon?: React.FC<{ size: number }>;
   /** @callback */
@@ -36,7 +40,7 @@ type CommonProps = {
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   /** @callback */
-  onChange: (val: any) => void;
+  onChange: (value: any) => void;
   /** @callback */
   onFocus?: (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -48,11 +52,15 @@ type InputProps = CommonProps & {
   type?: HTMLInputElement['type'];
   /** Render a textarea */
   isMultiline?: never;
+  /** Initiañ height of the text area */
+  height?: never;
 };
 
 type TextareaProps = CommonProps & {
   /** Render a textarea */
   isMultiline?: boolean;
+  /** Initial height of the text area */
+  height?: number;
 };
 
 export type FormFieldProps = InputProps | TextareaProps;

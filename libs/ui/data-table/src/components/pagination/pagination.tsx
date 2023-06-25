@@ -30,6 +30,7 @@ export const Pagination = <T,>({ table }: PaginationProps<T>) => {
           options={setPageSizeOptions}
           onChange={(v) => table.setPageSize(parseInt(v))}
           defaultValue={table.getState().pagination.pageSize.toString()}
+          value={table.getState().pagination.pageSize.toString()}
         />
       </div>
       <S.PaginationContainer>
