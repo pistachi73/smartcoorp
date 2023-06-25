@@ -38,7 +38,6 @@ export const RHFFormField = <FormValues extends FieldValues>({
       defaultValue={defaultValue}
       render={({ field: { ref, ...field }, fieldState: { error } }) => (
         <FormField
-          innerRef={ref}
           {...field}
           {...props}
           isError={props.isError ?? Boolean(error)}

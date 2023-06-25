@@ -5,10 +5,10 @@ import { sizes } from './form-field.styles';
 export type FormFieldSize = keyof typeof sizes;
 
 type CommonProps = {
+  /** Styles */
+  className?: string;
   /** Id */
   id?: string;
-  /** Ref object */
-  innerRef?: any;
   /** Formfield placeholder */
   placeholder?: string;
   /** FormField type */
@@ -40,20 +40,27 @@ type CommonProps = {
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   /** @callback */
-  onChange: (val: any) => void;
+  onChange: (value: any) => void;
   /** @callback */
   onFocus?: (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
 };
 
-export type FormFieldProps = StyledComponentProps<
-  'input' | 'textarea' | 'p',
-  any,
-  CommonProps,
-  never // `never` optional'ed attributes from .attrs
-> & {
-  // Add `as` and `forwardedAs` polymorphic props
-  as?: string | React.ComponentType<any> | undefined;
-  forwardedAs?: string | React.ComponentType<any> | undefined;
+type InputProps = CommonProps & {
+  /** FormField type */
+  type?: HTMLInputElement['type'];
+  /** Render a textarea */
+  isMultiline?: never;
+  /** Initiañ height of the text area */
+  height?: never;
 };
+
+type TextareaProps = CommonProps & {
+  /** Render a textarea */
+  isMultiline?: boolean;
+  /** Initial height of the text area */
+  height?: number;
+};
+
+export type FormFieldProps = InputProps | TextareaProps;

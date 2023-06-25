@@ -31,6 +31,10 @@ interface InputProps extends SizeProps {
   $hasIcon?: boolean;
 }
 
+interface TextAreaProps extends SizeProps {
+  $height?: number;
+}
+
 type WithError = {
   $error?: boolean;
 };
@@ -219,7 +223,7 @@ const Input = styled.input<InputProps>`
     -webkit-appearance: none;
   }
 `;
-const Textarea = styled.textarea<SizeProps>`
+const Textarea = styled.textarea<TextAreaProps>`
   width: 100%;
   outline: none;
   border: none;
@@ -234,6 +238,13 @@ const Textarea = styled.textarea<SizeProps>`
   &:focus {
     outline: none;
   }
+
+  ${({ $height }) =>
+    $height &&
+    css`
+      height: ${$height}px;
+    `}
+
   /** Size styles */
   ${({ $size }) =>
     $size &&

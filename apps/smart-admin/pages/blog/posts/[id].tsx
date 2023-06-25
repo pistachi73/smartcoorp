@@ -187,7 +187,7 @@ const EditUser = () => {
                   </Col>
                   <Col size={6}>
                     <RHFFormField
-                      style={{ height: scale360 }}
+                      height={269}
                       control={control}
                       name="description"
                       label="Description"

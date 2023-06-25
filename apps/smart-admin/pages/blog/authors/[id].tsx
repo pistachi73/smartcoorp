@@ -10,7 +10,6 @@ import { DotLoading } from '@smartcoorp/ui/dot-loading';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 import { Col, Grid, Row } from '@smartcoorp/ui/grid';
 import { Headline } from '@smartcoorp/ui/headline';
-import { scale330 } from '@smartcoorp/ui/tokens';
 
 import { EditEntryLayout } from '../../../components/layout/edit-entry.layout';
 
@@ -108,9 +107,7 @@ const EditAuthor = () => {
         <Row>
           <Col size={12}>
             <RHFFormField
-              style={{
-                height: scale330,
-              }}
+              height={222}
               control={control}
               name="bio"
               label="Bio"
