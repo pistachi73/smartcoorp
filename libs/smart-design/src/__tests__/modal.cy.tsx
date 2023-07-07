@@ -1,13 +1,17 @@
 import React from 'react';
 
-import type { Theme } from '../../global-styles/theme/theme-provider';
-
-import { Modal, ModalContent, ModalTrigger } from './modal';
-import type { ModalControl } from './modal.types';
+import type { Theme } from '@smartcoorp/ui/global-styles';
+import {
+  Modal,
+  ModalContent,
+  ModalControl,
+  ModalTrigger,
+} from '@smartcoorp/ui/modal';
 
 const modalContentCyId = 'modal-content';
 const modalTriggerCyId = 'modal-trigger';
 const onOpenChange = () => {};
+
 const renderModal = (
   {
     modalControl,

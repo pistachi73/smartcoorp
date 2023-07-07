@@ -15,4 +15,5 @@
 
 // Import commands.ts using ES2015 syntax:
 import './commands';
-import '../../src/global-styles/fonts.css';
+import './fonts.css';
+import './chai';

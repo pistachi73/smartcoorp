@@ -83,6 +83,7 @@ export const PostEditorContainer = styled.div`
   border-radius: ${borderRadiusM};
   position: relative;
   max-width: 768px;
+  min-width: 768px;
   min-height: 100vh;
   margin: 0 auto;
   -webkit-backface-visibility: hidden !important;

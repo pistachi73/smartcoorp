@@ -1,5 +1,5 @@
 import { Command } from 'cmdk';
-import { memo, useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 
 import { ObjectEntries } from '@smartcoorp/smart-types';
 

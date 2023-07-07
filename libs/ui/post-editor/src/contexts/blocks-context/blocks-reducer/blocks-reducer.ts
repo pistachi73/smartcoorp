@@ -140,26 +140,25 @@ export const blocksDBReducer = (
             getBlockContainerAttributes(mergedBlockRef);
 
           const mergedFieldInnerHTML = mergedFieldRef.innerHTML;
-          const mergedFieldTextContentLength =
-            getElementTextContent(mergedFieldRef).length;
           const newHTML = `${mergedFieldInnerHTML}${removedInnerHTML}`.trim();
 
           (draft.blocks[mergedBlockId].data as EveryBlockFields)[mergedField] =
             newHTML as any;
 
-          draft.chains[removedChainId].splice(removedChainBlockIndex, 1);
           mergedFieldRef.innerHTML = newHTML;
 
-          setCaretPosition({
-            element: mergedFieldRef,
-            position: mergedFieldTextContentLength,
-          });
+          removeBlocks(draft, [
+            [
+              draft.chains[removedChainId][removedChainBlockIndex],
+              removedChainId,
+            ],
+          ]);
 
           if (!action.undo || !action.redo) break;
 
           // Update undo and redo actions
-          action.redo.payload.value = mergedFieldInnerHTML;
-          action.undo.payload.value = newHTML;
+          action.redo.payload.value = newHTML;
+          action.undo.payload.value = mergedFieldInnerHTML;
 
           break;
         }
