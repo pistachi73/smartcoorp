@@ -31,6 +31,7 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
 
       prevCaretPositionRef.current = caretPosition;
       fieldElement.innerHTML = value;
+
       setCaretPosition({ element: focusFieldElement, position: caretPosition });
 
       break;

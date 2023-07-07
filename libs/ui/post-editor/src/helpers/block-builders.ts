@@ -45,13 +45,16 @@ export const buildListBlock = (chainId: string): ListBlockProps => ({
   },
 });
 
-export const buildHeaderBlock = (chainId: string): HeaderBlockProps => ({
+export const buildHeaderBlock = (
+  chainId: string,
+  text = ''
+): HeaderBlockProps => ({
   id: nanoid(),
   chainId,
   type: 'header',
   data: {
     level: 3,
-    text: '',
+    text,
   },
 });
 

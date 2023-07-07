@@ -11,6 +11,7 @@ const pasteEvent = (e: any) => {
   const text = e.clipboardData.getData('text/plain');
   document.execCommand('insertText', false, text);
 };
+
 export const Blocks = ({ getMetaData }: { getMetaData: any }) => {
   const { DragSelection } = useDragSelection();
   const { handleSharedClickDown, handleSharedKeyDown } = useSharedEvents();

@@ -1,14 +1,19 @@
 import webpack from 'webpack';
+
+import alias from './webpack.config.alias';
+
 export default {
-  mode: 'development',
-  devtool: false,
+  mode: 'development' as const,
+  devtool: 'source-map',
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+    alias,
+    fallback: { path: require.resolve('path-browserify') },
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.ts?$/,
         exclude: [/node_modules/],
         use: [
           {
@@ -19,16 +24,19 @@ export default {
           },
         ],
       },
+
       {
         test: /\.?tsx$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
-            plugins: [
-              ['@babel/plugin-transform-modules-commonjs', { loose: true }],
+            presets: [
+              '@babel/preset-env',
+              ['@babel/preset-react', { runtime: 'automatic' }],
+              '@babel/preset-typescript',
             ],
+            plugins: [['@babel/plugin-transform-modules-commonjs']],
           },
         },
       },

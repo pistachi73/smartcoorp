@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { ListBlockProps } from '../../../post-editor.types';
 import type { ModifyBlockTool } from '../modify-block-tool.types';
 

@@ -1,9 +1,12 @@
 import React from 'react';
 
+import { Button } from '@smartcoorp/ui/button';
+
 import {
   useBlocksDBConsumerContext,
   useBlocksDBUpdaterContext,
 } from '../contexts/blocks-context/blocks-context';
+import { useRefsContext } from '../contexts/refs-context';
 import type { Block } from '../post-editor.types';
 
 import { Column } from './columns/column-block';
@@ -17,6 +20,7 @@ export const BlockChain = React.memo(
   ({ chainId, getMetaData }: { chainId: string; getMetaData: any }) => {
     const blocksDB = useBlocksDBConsumerContext();
 
+    const { fieldRefs } = useRefsContext();
     const { undo, redo } = useBlocksDBUpdaterContext();
 
     const chain = blocksDB.chains[chainId];
@@ -89,6 +93,10 @@ export const BlockChain = React.memo(
           marginLeft: '-48px',
         }}
       >
+        <Button onClick={() => console.log(blocksDB)}>Log blocks</Button>
+        <Button onClick={() => console.log(fieldRefs.current)}>
+          Field Refs
+        </Button>
         {chain ? renderBlockChain(chain, chainId, 0, 'root') : null}
       </div>
     );

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { HeaderBlockProps } from '../../../post-editor.types';
 import { ModifyBlockTool } from '../modify-block-tool.types';
 

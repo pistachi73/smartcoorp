@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { ModifyBlockTool } from '../modify-block-tool.types';
 
 import { DeleteIcon } from './icons/delete-icon';
