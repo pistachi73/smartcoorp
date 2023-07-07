@@ -8,6 +8,7 @@ const { withNx } = require('@nx/next/plugins/with-nx');
 const nextConfig = {
   experimental: {
     externalDir: true,
+    appDir: true,
     outputFileTracingExcludes: {
       '*': [
         'node_modules/@swc/core-linux-x64-gnu',
@@ -37,5 +38,4 @@ const nextConfig = {
     return config;
   },
 };
-
 module.exports = withNx(nextConfig);
