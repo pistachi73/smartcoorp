@@ -1,17 +1,11 @@
-import { getToken } from 'next-auth/jwt';
-
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // Thisasync  function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest) {
-  const secret = process.env.NEXTAUTH_SECRET;
+  const sessionToken = req.cookies.get('next-auth.session-token')?.value;
 
-  const session = await getToken({ req, secret, raw: true });
-
-  console.log('middleware', { session });
-
-  if (!session) {
+  if (!sessionToken) {
     const requestedPage = req.nextUrl.pathname;
     const url = req.nextUrl.clone();
     url.pathname = '/login';
