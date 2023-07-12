@@ -189,16 +189,19 @@ export const disabled = {
     background-color: ${({ theme }) => theme.common.disabledBackgroundColor};
     color: ${({ theme }) => theme.common.disabledSurfaceColor};
     cursor: not-allowed;
+    pointer-events: none;
   `,
   secondary: css`
     border: 1px solid ${({ theme }) => theme.common.disabledSurfaceColor};
     color: ${({ theme }) => theme.common.disabledSurfaceColor};
     cursor: not-allowed;
+    pointer-events: none;
   `,
   text: css`
     color: ${({ theme }) => theme.common.disabledSurfaceColor};
     padding: 0px !important;
     height: 100% !important;
+    pointer-events: none;
   `,
 };
 

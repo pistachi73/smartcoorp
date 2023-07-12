@@ -15,12 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@smartcoorp/smart-auth": ["libs/smart-auth/src/index.ts"],
+      "@smart-admin/components/*": ["apps/smart-admin/components/*"],
+      "@smart-admin/trpc": ["apps/smart-admin/utils/trpc/index.ts"],
+      "@smart-coaching/trpc": ["apps/smart-coaching/util/trpc/index.ts"],
+      "@smartcoorp/smart-api": ["libs/smart-api/src/index.ts"],
       "@smartcoorp/smart-backend/main": ["apps/smart-backend/src/main.ts"],
       "@smartcoorp/smart-design": ["libs/smart-design/src/index.ts"],
-      "@smartcoorp/smart-design/tokens": [
-        "libs/smart-design/src/tokens/index.ts"
-      ],
       "@smartcoorp/smart-hooks": ["libs/smart-hooks/src/index.ts"],
       "@smartcoorp/smart-types": ["libs/smart-types/src/index.ts"],
       "@smartcoorp/trpc": ["apps/smart-admin/utils/trpc.ts"],
@@ -62,6 +62,7 @@
       "@smartcoorp/ui/single-calendar": [
         "libs/ui/single-calendar/src/index.ts"
       ],
+      "@smartcoorp/ui/skeleton": ["libs/ui/skeleton/src/index.ts"],
       "@smartcoorp/ui/tabs": ["libs/ui/tabs/src/index.ts"],
       "@smartcoorp/ui/tokens": ["libs/ui/tokens/src/index.ts"],
       "@smartcoorp/ui/tooltip": ["libs/ui/tooltip/src/index.ts"],

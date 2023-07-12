@@ -8,7 +8,6 @@ type CommonProps = {
   items: string[];
   style: ListBlockProps['data']['style'];
   field: EveryBlockFieldKeys;
-  onInputChange: (e: React.ChangeEvent) => void;
 };
 
 type OLListFieldProps = React.ComponentProps<typeof OrderedList> & CommonProps;

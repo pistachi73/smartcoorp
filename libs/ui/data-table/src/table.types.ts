@@ -4,7 +4,7 @@ export type TableProps<T> = {
   /** Column definition */
   columnDefs: ColumnDef<T>[];
   /** Table data */
-  data: T[];
+  data?: T[];
   /** Enable creating new items in the table. Prop used as url to access the edit panel */
   createUrl?: string;
   /** Enable multisorting */

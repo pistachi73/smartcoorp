@@ -38,7 +38,7 @@ const ThemeBlock = styled.div<{ $largerStory?: boolean; $maxWidth?: boolean }>`
   width: 100%;
   height: ${({ $largerStory }) => ($largerStory ? '450px' : '100%')};
   padding: 32px;
-  background: ${(props) => props.theme.backgroundScreen};
+  background: ${(props) => props.theme['backgroundScreen']};
   display: flex;
   justify-content: center;
 `;

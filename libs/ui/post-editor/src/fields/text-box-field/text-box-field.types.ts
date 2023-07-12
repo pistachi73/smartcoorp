@@ -6,7 +6,6 @@ export type TextBoxFieldProps = React.ComponentProps<typeof TextBoxField> & {
   blockIndex: number;
   fieldIndex: number;
   placeholder: string;
-  onInputChange: (e: React.ChangeEvent) => void;
   loading?: boolean;
   error?: boolean;
 };

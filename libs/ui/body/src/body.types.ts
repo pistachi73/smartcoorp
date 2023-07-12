@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyledComponentProps } from 'styled-components';
 
 import { fontWeights, lineHeights, sizes } from './body.styles';
 
@@ -38,13 +37,5 @@ type CommonProps = {
   sizeWide?: BodyCopySize;
 };
 
-export type BodyProps = StyledComponentProps<
-  'p',
-  any,
-  CommonProps,
-  never // `never` optional'ed attributes from .attrs
-> & {
-  // Add `as` and `forwardedAs` polymorphic props
-  as?: string | React.ComponentType<any> | undefined;
-  forwardedAs?: string | React.ComponentType<any> | undefined;
-};
+export type BodyProps = CommonProps &
+  React.HTMLAttributes<HTMLParagraphElement>;

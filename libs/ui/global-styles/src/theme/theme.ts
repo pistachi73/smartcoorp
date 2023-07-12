@@ -9,13 +9,16 @@ import {
   dropShadowXL,
   gray100,
   gray200,
+  gray200_RGBA,
   gray300,
+  gray300_RGBA,
   gray400,
   gray400_RGBA,
   gray500,
   gray500_RGBA,
   gray600,
   gray700,
+  gray700_RGBA,
   gray800,
   gray800_RGBA,
   gray900,
@@ -191,6 +194,11 @@ export const lightTheme: ThemeType = {
     KBDBacgroundColor: primary100,
     KBDColor: primary,
   },
+
+  skeleton: {
+    baseColor: gray200,
+    highlightColor: `rgba(${gray300_RGBA}, 0.25)`,
+  },
 };
 
 export const darkTheme: ThemeType = {
@@ -325,5 +333,10 @@ export const darkTheme: ThemeType = {
   command: {
     KBDBacgroundColor: primary800,
     KBDColor: primary300,
+  },
+
+  skeleton: {
+    baseColor: gray800,
+    highlightColor: `rgba(${gray700_RGBA}, 0.25)`,
   },
 };

@@ -54,5 +54,5 @@ const fontsString = fonts
   .replace(/\n|^\s+/gm, '');
 
 export const FontStyles = createGlobalStyle`
-/* ${fontsString} */
+${fontsString}
 `;
