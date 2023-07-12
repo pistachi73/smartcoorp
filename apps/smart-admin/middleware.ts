@@ -5,8 +5,11 @@ import type { NextRequest } from 'next/server';
 
 // Thisasync  function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest) {
-  const secret = process.env.NEXT_AUTH_SECRET;
+  const secret = process.env.NEXTAUTH_SECRET;
+
   const session = await getToken({ req, secret, raw: true });
+
+  console.log('middleware', { session });
 
   if (!session) {
     const requestedPage = req.nextUrl.pathname;
