@@ -7,6 +7,12 @@ import { useState } from 'react';
 
 import { clientTRPC } from './client-api';
 
+const getBaseUrl = () => {
+  return (
+    process.env.VERCEL_URL || process.env.BASE_URL || `http://localhost:4200`
+  );
+};
+
 export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -17,9 +23,7 @@ export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
       })
   );
 
-  const url = process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : 'http://localhost:4200/api/trpc/';
+  const url = `${getBaseUrl()}/api/trpc`;
 
   const [trpcClient] = useState(() =>
     clientTRPC.createClient({
