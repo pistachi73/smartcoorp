@@ -39,9 +39,11 @@ export const Login = () => {
       redirect: false,
     });
 
+    console.log({ response });
     if (response?.error) {
       setError('Invalid credentials');
     } else {
+      console.log('HOla');
       router.push('/home');
     }
 
