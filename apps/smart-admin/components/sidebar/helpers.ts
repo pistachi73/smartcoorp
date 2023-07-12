@@ -1,3 +1,5 @@
+'use client';
+
 import { BiBook, BiHomeAlt, BiUserCircle } from 'react-icons/bi';
 
 import { SidebarLink, SidebarLinkGroup } from './components/sidebar-link';
@@ -8,10 +10,11 @@ export const tabs: (SidebarLink | SidebarLinkGroup)[] = [
     icon: BiHomeAlt,
     to: '/home',
   },
+
   {
     title: 'Users',
     icon: BiUserCircle,
-    to: '/user',
+    to: '/users',
   },
   {
     title: 'Blog',

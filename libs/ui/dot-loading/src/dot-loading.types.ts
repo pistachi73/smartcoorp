@@ -1,7 +1,7 @@
-import { Styled, sizes } from './dot-loading.styles';
+import { sizes } from './dot-loading.styles';
 
 export type DotLoadingSizes = keyof typeof sizes;
-export type DotLoadingProps = React.ComponentProps<typeof Styled.Loader> & {
+export type DotLoadingProps = {
   /** Custom styles */
   className?: string;
   /** Loader dimensions */

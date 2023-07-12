@@ -1,4 +1,5 @@
-// your-popover.jsx
+'use client';
+
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import React, { FC, forwardRef } from 'react';
 

@@ -25,7 +25,7 @@ export const ImageCaption = ({
 
   const fieldId = `${blockId}_${fieldIndex}`;
   const onCaptionChange = useCallback(
-    (e: React.ChangeEvent) => {
+    (e: any) => {
       const currentCaretPosition = getCaretPosition(
         fieldRefs.current[blockIndex][0]
       );
@@ -77,8 +77,7 @@ export const ImageCaption = ({
       fieldIndex={fieldIndex}
       placeholder="Caption"
       text={caption || ''}
-      name="caption"
-      onInputChange={deboucedOnCaptionChange}
+      onInput={deboucedOnCaptionChange}
       onKeyDown={handleKeyDown}
       data-field-type="image-caption"
     />

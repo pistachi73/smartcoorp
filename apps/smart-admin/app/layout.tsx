@@ -1,4 +1,10 @@
-import { ThemeWrapper } from './theme-wrapper';
+import { LayoutWrapper } from './layout-wrapper';
+
+export const metadata = {
+  icons: {
+    icon: '/logo.svg',
+  },
+};
 
 export default function RootLayout({
   children,
@@ -8,7 +14,7 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <ThemeWrapper>{children}</ThemeWrapper>
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );

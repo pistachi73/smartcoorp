@@ -1,5 +1,5 @@
 import { DayPickerRangeProps } from 'react-day-picker';
-import { DefaultTheme, StyledComponent } from 'styled-components';
+import { DefaultTheme } from 'styled-components';
 
 import { Select } from '@smartcoorp/ui/select';
 import { Caption, Day, Styled as S } from '@smartcoorp/ui/shared';
@@ -10,12 +10,7 @@ import type {
   RangeCustomValuesOptions,
 } from './range-calendar.types';
 
-const DayPicker = S.DayPicker as StyledComponent<
-  (props: DayPickerRangeProps) => JSX.Element,
-  DefaultTheme,
-  {},
-  never
->;
+const DayPicker = S.DayPicker as (props: DayPickerRangeProps) => JSX.Element;
 
 export const RangeCalendar = ({
   withBorder = true,
@@ -36,7 +31,6 @@ export const RangeCalendar = ({
     onSelect(newRange);
   };
 
-  console.log(props);
   return (
     <S.Container $withBorder={withBorder}>
       {withCustomValues && (

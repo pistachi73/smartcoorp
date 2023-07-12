@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 import { MetaData } from 'metadata-scraper';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { FormEvent, memo, useCallback, useMemo, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -71,7 +71,7 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
     };
 
     const onLinkChange = useCallback(
-      (e: React.ChangeEvent) => {
+      (e: any) => {
         const currentCaretPosition = getCaretPosition(
           fieldRefs.current[blockIndex][0]
         );
@@ -116,12 +116,11 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
           blockId={block.id}
           blockIndex={blockIndex}
           text={block.data.link}
-          field="link"
           fieldIndex={fieldIndex}
           placeholder="Write a URL (e.g. https://www.google.com)"
           loading={loading}
           error={error}
-          onInputChange={deboucedOnLinkChange}
+          onInput={deboucedOnLinkChange}
           onKeyDown={handleInputBoxKeyPress}
           data-block-type="link"
         />

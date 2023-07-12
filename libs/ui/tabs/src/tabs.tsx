@@ -11,7 +11,7 @@ export const Tabs: FC<TabsProps> = ({ defaultTab, tabs, onTabChange }) => {
   return (
     <S.Tabs
       defaultValue={defaultTab ?? tabs[0].id}
-      onValueChange={(t) => {
+      onValueChange={(t: string) => {
         setActiveTab(t);
         onTabChange && onTabChange();
       }}

@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import styled, { css } from 'styled-components';
 
@@ -38,7 +40,7 @@ type TableRowProps = {
 export const TableContainer = styled.div`
   width: 100%;
 `;
-export const Table = styled(motion.table)`
+export const Table = styled(motion.table)<{ $disabled?: boolean }>`
   width: 100%;
   border-spacing: 0px;
   overflow: hidden;
@@ -48,6 +50,12 @@ export const Table = styled(motion.table)`
   border-spacing: 0;
   outline: 1px solid ${({ theme }) => theme.form.placeholderColor};
   border-radius: ${borderRadiusXS};
+
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      pointer-events: none;
+    `}
 `;
 
 export const TableHead = styled.thead`
@@ -73,6 +81,7 @@ export const TableHeaderWrapper = styled.div<{ $sortingEnabled?: boolean }>`
   width: 100%;
   padding: 0 calc(${spaceL} - ${spaceXS});
   border-radius: ${borderRadiusXS};
+  min-height: 40px;
 
   transition-property: background-color, color;
   transition-duration: ${motionTimeXS};

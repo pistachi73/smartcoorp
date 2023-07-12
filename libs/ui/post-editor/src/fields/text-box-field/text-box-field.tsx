@@ -13,7 +13,7 @@ export const TextBoxField: React.FC<TextBoxFieldProps> = ({
   text,
   loading,
   error,
-  onInputChange,
+  onInput,
   ...props
 }) => {
   const [initialText] = useState(text);
@@ -25,8 +25,8 @@ export const TextBoxField: React.FC<TextBoxFieldProps> = ({
     noMargin: true,
     contentEditable: true,
     suppressContentEditableWarning: true,
-    dangerouslySetInnerHTML: { __html: initialText },
-    onInput: onInputChange,
+    dangerouslySetInnerHTML: { __html: initialText ?? '' },
+    onInput,
     'data-focus-index': fieldIndex,
     'data-placeholder': placeholder,
     $loading: loading,

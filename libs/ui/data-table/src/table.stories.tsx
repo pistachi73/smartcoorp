@@ -3,6 +3,8 @@ import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { useState } from 'react';
 
+import { TemplateProps } from '@smartcoorp/ui/shared';
+
 import { Person, makeData } from './helpers';
 import { Table } from './table';
 import { TableProps } from './table.types';
@@ -71,7 +73,7 @@ const Template: StoryFn<TableProps<Person>> = (args: TableProps<Person>) => {
 
   return (
     <Table
-      data={data}
+      data={args.data ?? data}
       columnDefs={columns}
       createUrl={createUrl}
       enableMultiSort={enableMultiSort}
@@ -85,28 +87,36 @@ const Template: StoryFn<TableProps<Person>> = (args: TableProps<Person>) => {
   );
 };
 
-export const Default = {
+export const Default: TemplateProps<TableProps<Person>> = {
   render: Template,
   args: {},
 };
 
-export const WithCreateUrl = {
+export const WithCreateUrl: TemplateProps<TableProps<Person>> = {
   render: Template,
   args: {
     createUrl: 'test',
   },
 };
 
-export const WithoutRowSelection = {
+export const WithoutRowSelection: TemplateProps<TableProps<Person>> = {
   render: Template,
   args: {
     enableSelect: false,
   },
 };
 
-export const WithoutMultiSort = {
+export const WithoutMultiSort: TemplateProps<TableProps<Person>> = {
   render: Template,
   args: {
     enableMultiSort: false,
+  },
+};
+
+export const WithoutData: TemplateProps<TableProps<Person>> = {
+  render: Template,
+  args: {
+    data: [],
+    createUrl: 'test',
   },
 };

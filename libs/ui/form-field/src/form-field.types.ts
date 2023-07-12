@@ -1,4 +1,3 @@
-import { StyledComponentProps } from 'styled-components';
 
 import { sizes } from './form-field.styles';
 

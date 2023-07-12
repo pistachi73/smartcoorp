@@ -118,7 +118,7 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
           sideOffset={15}
           animate={{ scale: 1 }}
           initial={{ scale: 0.95 }}
-          onCloseAutoFocus={(e) => e.preventDefault()}
+          onCloseAutoFocus={(e: Event) => e.preventDefault()}
         >
           <ScrollArea.Root>
             <Command

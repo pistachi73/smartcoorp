@@ -11,9 +11,6 @@ export const SortFilters = ({ column }: SortFilterProps) => {
   const isSortedAscending = column.getIsSorted() === 'asc';
   const isSortedDescending = column.getIsSorted() === 'desc';
 
-  console.log('isSortedAscending', isSortedAscending);
-  console.log('isSortedDescending', isSortedDescending);
-
   return (
     <>
       <S.StyledTextButton

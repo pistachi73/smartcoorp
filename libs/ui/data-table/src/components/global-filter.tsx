@@ -22,11 +22,13 @@ export const globalFilterFn = <T,>(
 type GlobalFilterProps = {
   globalFilter: string;
   setGlobalFilter: React.Dispatch<React.SetStateAction<string>>;
+  disabled?: boolean;
 };
 
 export const GlobalFilter: FC<GlobalFilterProps> = ({
   globalFilter,
   setGlobalFilter,
+  disabled,
 }) => {
   return (
     <S.GlobalFilterContainer>
@@ -38,6 +40,7 @@ export const GlobalFilter: FC<GlobalFilterProps> = ({
         onChange={setGlobalFilter}
         placeholder={`Search globally...`}
         debounceTime={400}
+        isDisabled={disabled}
       />
     </S.GlobalFilterContainer>
   );

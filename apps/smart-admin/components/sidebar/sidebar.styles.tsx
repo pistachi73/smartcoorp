@@ -1,3 +1,5 @@
+'use client';
+
 import styled from 'styled-components';
 
 import {
@@ -23,17 +25,6 @@ export const SidebarContainer = styled.div`
   border-right: 1px solid ${borderColor};
 `;
 
-export const LogoContainer = styled.div`
-  margin: ${xSpacing};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  @media (${mediaWide}) {
-    margin: ${xSpacingWide};
-    display: block;
-  }
-`;
-
 export const Nav = styled.nav`
   padding: ${xSpacing};
   display: flex;
@@ -48,6 +39,10 @@ export const Nav = styled.nav`
 
   @media (${mediaWide}) {
     padding: ${xSpacingWide};
+  }
+  ul {
+    padding: 0;
+    margin: 0;
   }
 `;
 

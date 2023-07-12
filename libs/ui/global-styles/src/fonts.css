@@ -3,7 +3,7 @@
   font-display: block;
   font-style: normal;
   font-weight: 400;
-  src: url('../assets/Inter-Regular.woff') format('woff');
+  src: url('./assets/Inter-Regular.woff') format('woff');
 }
 
 @font-face {
@@ -11,7 +11,7 @@
   font-display: block;
   font-style: normal;
   font-weight: 700;
-  src: url('../assets/Inter-Bold.woff') format('woff');
+  src: url('./assets/Inter-Bold.woff') format('woff');
 }
 
 @font-face {
@@ -19,7 +19,7 @@
   font-display: block;
   font-style: italic;
   font-weight: 400;
-  src: url('../assets/Inter-Italic.woff') format('woff');
+  src: url('./assets/Inter-Italic.woff') format('woff');
 }
 
 @font-face {
@@ -27,5 +27,5 @@
   font-display: block;
   font-style: italic;
   font-weight: 700;
-  src: url('../assets/Inter-BoldItalic.woff') format('woff');
+  src: url('./assets/Inter-BoldItalic.woff') format('woff');
 } ;

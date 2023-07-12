@@ -87,7 +87,7 @@ export const sizes = {
       min-height: ${scale230};
     `,
     placeholder: css`
-      font-size: ${scale050};
+      font-size: ${scale070};
     `,
 
     label: css`
@@ -188,13 +188,19 @@ const Input = styled.input<InputProps>`
     $size &&
     css`
       ${sizes[$size].input}
+      &::placeholder {
+        ${sizes[$size].placeholder}
+      }
     `}
 
   ${({ $sizeConfined }) =>
     $sizeConfined &&
     css`
       @media ${mediaConfined} {
-        ${sizes[$sizeConfined].input}
+        ${$sizeConfined && sizes[$sizeConfined].input}
+        &::placeholder {
+          ${$sizeConfined && sizes[$sizeConfined].placeholder}
+        }
       }
     `};
 
@@ -203,6 +209,9 @@ const Input = styled.input<InputProps>`
     css`
       @media ${mediaWide} {
         ${$sizeWide && sizes[$sizeWide].input}
+        &::placeholder {
+          ${$sizeWide && sizes[$sizeWide].placeholder}
+        }
       }
     `};
 

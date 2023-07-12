@@ -4,7 +4,7 @@ import { FC, useState } from 'react';
 import { IconType } from 'react-icons';
 import styled, { css } from 'styled-components';
 
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 import { useBreakpoint } from '@smartcoorp/smart-hooks';
 import { Button } from '@smartcoorp/ui/button';
@@ -28,8 +28,7 @@ export const SidebarLinkButton = styled(Button)<{
   $isGroupLink?: boolean;
 }>`
   min-width: 100%;
-  padding: ${spaceS};
-
+  padding: ${spaceM};
   width: 100%;
   display: flex;
   align-items: center;
@@ -50,7 +49,6 @@ export const SidebarLinkButton = styled(Button)<{
   ${({ $isGroupLink, $isActive }) =>
     $isGroupLink &&
     css`
-      border-radius: 0;
       padding: ${spaceS} ${spaceM};
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
@@ -106,14 +104,15 @@ const isLinkGroup = (
   return (link as SidebarLinkGroup).links !== undefined;
 };
 
-export const SidebarLink: FC<SidebarLink | SidebarLinkGroup> = (props) => {
+export const SidebarLinkComponent: FC<SidebarLink | SidebarLinkGroup> = (
+  props
+) => {
   const [isGroupOpen, setIsGroupOpen] = useState(false);
   const { isWide } = useBreakpoint();
-  const router = useRouter();
+  const pathname = usePathname();
 
   if (isLinkGroup(props)) {
     const { links, title, icon: Icon } = props;
-    console.log(router.pathname);
     return (
       <>
         <SidebarLinkButton
@@ -140,7 +139,7 @@ export const SidebarLink: FC<SidebarLink | SidebarLinkGroup> = (props) => {
                     size="small"
                     icon={Icon}
                     color="primary"
-                    $isActive={router.pathname.includes(to)}
+                    $isActive={pathname?.includes(to)}
                     $isGroupLink
                   >
                     {isWide && title}
@@ -163,7 +162,7 @@ export const SidebarLink: FC<SidebarLink | SidebarLinkGroup> = (props) => {
         variant="text"
         size="small"
         icon={Icon}
-        $isActive={router.pathname === to}
+        $isActive={pathname === to}
       >
         {isWide && title}
       </SidebarLinkButton>

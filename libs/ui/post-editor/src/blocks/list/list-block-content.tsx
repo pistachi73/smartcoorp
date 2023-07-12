@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce';
-import { useCallback, useMemo } from 'react';
+import { FormEvent, FormEventHandler, useCallback, useMemo } from 'react';
 
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import { useRefsContext } from '../../contexts/refs-context';
@@ -75,7 +75,7 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
     return debounce(onItemsChange, 300);
   }, [onItemsChange]);
 
-  const onInputChange = (e: React.ChangeEvent) => {
+  const onInputChange = (e: FormEvent<HTMLOListElement | HTMLUListElement>) => {
     setToolIndex(null);
 
     debouncedOnItemsChange(
@@ -169,7 +169,7 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
       fieldIndex={fieldIndex}
       items={block.data.items}
       style={block.data.style}
-      onInputChange={onInputChange}
+      onInput={onInputChange}
       data-block-type="list"
       onKeyDown={handleItemKeyPress}
     />

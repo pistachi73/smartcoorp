@@ -4,7 +4,7 @@ import { create } from '@storybook/theming';
 const theme = create({
   base: 'light',
   // Typography
-  fontBase: '"Inter", Montserrat',
+  fontBase: '"Inter", "Trebuchet MS", "Verdana"',
   fontCode: 'monospace',
 
   brandTitle: 'My custom Storybook',

@@ -69,7 +69,6 @@ export const dateBetweenFilterFn: FilterFn<any> = (
   id: string,
   filterValues: FilterValue
 ) => {
-  console.log(id);
   if (!filterValues) return true;
   const sd = new Date(filterValues[0]);
   const ed = new Date(filterValues[1]);

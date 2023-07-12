@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+'use client';
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,10 +14,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { AnimatePresence } from 'framer-motion';
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiLayerPlus, BiSortDown, BiSortUp } from 'react-icons/bi';
 
-import { Checkbox } from '@smartcoorp/ui/checkbox';
+import { Skeleton } from '@smartcoorp/ui/skeleton';
 
 import { ColumnToggler, Filter } from './components';
 import { ColumnFilters } from './components/filter/column-filters';
@@ -22,9 +25,9 @@ import { dateBetweenFilterFn } from './components/filter/date-filter';
 import { GlobalFilter, globalFilterFn } from './components/global-filter';
 import { Pagination } from './components/pagination/pagination';
 import { SelectedRowsWidget } from './components/selected-rows-widget';
+import { addOptionalColumns } from './helpers';
 import { Styled as S } from './table.styles';
 import { TableProps } from './table.types';
-
 declare module '@tanstack/table-core' {
   interface FilterFns {
     dateBetween: FilterFn<unknown>;
@@ -32,7 +35,7 @@ declare module '@tanstack/table-core' {
 }
 
 export const Table = <T,>({
-  data,
+  data = [],
   columnDefs,
   createUrl,
   enableMultiSort = true,
@@ -46,56 +49,16 @@ export const Table = <T,>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-
   const [sorting, setSorting] = React.useState<SortingState>([]);
-
-  const columnsWithSelect = useMemo<ColumnDef<T>[]>(() => {
-    if (!enableSelect) {
-      return columnDefs;
-    }
-    columnDefs.unshift({
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          intermediate={table.getIsSomePageRowsSelected()}
-          onChange={(v) => table.toggleAllPageRowsSelected(v)}
-          size="small"
-        />
-      ),
-
-      cell: ({ row }) => (
-        <Checkbox
-          size="small"
-          checked={row.getIsSelected()}
-          isDisabled={!row.getCanSelect()}
-          onChange={(v) => row.toggleSelected(v)}
-        />
-      ),
-    });
-
-    return columnDefs;
-  }, [columnDefs, enableSelect]);
-
-  const withMultipleSelectEnabledColumns = useMemo<ColumnDef<T>[]>(() => {
-    if (!enableMultiSort) {
-      return columnsWithSelect;
-    }
-    return columnsWithSelect.map((column) => {
-      if (column.id === 'select') {
-        return column;
-      }
-
-      return {
-        ...column,
-        enableMultiSort: true,
-      };
-    });
-  }, [columnsWithSelect, enableMultiSort]);
-
+  const [areOptionalColumnsAdded, setAreOptionalColumnsAdded] = useState(false);
+  const [columns, setColumns] = useState<ColumnDef<T>[]>(columnDefs);
+  useEffect(() => {
+    setColumns(addOptionalColumns(columnDefs, enableSelect, enableMultiSort));
+    setAreOptionalColumnsAdded(true);
+  }, []);
   const table = useReactTable({
     data,
-    columns: withMultipleSelectEnabledColumns,
+    columns,
     filterFns: {
       dateBetween: dateBetweenFilterFn,
     },
@@ -137,6 +100,7 @@ export const Table = <T,>({
     // getPaginationRowModel: getPaginationRowModel(),
   });
 
+  if (!areOptionalColumnsAdded) return null;
   return (
     <S.TableContainer>
       <S.TableActionsContainer>
@@ -149,6 +113,7 @@ export const Table = <T,>({
           <GlobalFilter
             globalFilter={globalFilter}
             setGlobalFilter={setGlobalFilter}
+            disabled={data.length === 0}
           />
           <ColumnToggler table={table} />
           {createUrl && (
@@ -157,13 +122,14 @@ export const Table = <T,>({
               icon={BiLayerPlus}
               variant="primary"
               to={createUrl}
+              disabled={data.length === 0}
             >
               New
             </S.StyledButton>
           )}
         </S.RightTableActionsContainer>
       </S.TableActionsContainer>
-      <S.Table>
+      <S.Table $disabled={data.length === 0}>
         <S.TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
             <S.TableRow key={headerGroup.id}>
@@ -179,59 +145,68 @@ export const Table = <T,>({
                       <S.TableHeaderWrapper
                         $sortingEnabled={header.column.getCanSort()}
                       >
-                        <S.TableHeaderText
-                          onClick={header.column.getToggleSortingHandler()}
-                        >
-                          <div
-                            style={{
-                              position: 'relative',
-                            }}
-                          >
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                            {header.column.getCanSort() && (
-                              <AnimatePresence>
-                                <S.TableHeaderSortIcon
-                                  key={header.column.getIsSorted() as string}
-                                  initial={{
-                                    y:
-                                      header.column.getIsSorted() === 'asc'
-                                        ? '5%'
-                                        : '-105%',
-                                    opacity: 0,
-                                  }}
-                                  animate={{ y: '-50%', opacity: 1 }}
-                                  exit={{
-                                    y:
-                                      header.column.getIsSorted() === 'asc'
-                                        ? '5%'
-                                        : '-105%',
-                                    opacity: 0,
-                                    transition: {
-                                      duration: 0.1,
-                                    },
-                                  }}
-                                  transition={{
-                                    duration: 0.2,
-                                    ease: 'easeInOut',
-                                  }}
-                                >
-                                  {{
-                                    asc: <BiSortUp size={18} />,
-                                    desc: <BiSortDown size={18} />,
-                                  }[header.column.getIsSorted() as string] ??
-                                    null}
-                                </S.TableHeaderSortIcon>
-                              </AnimatePresence>
-                            )}
-                          </div>
-                        </S.TableHeaderText>
+                        {data.length ? (
+                          <>
+                            <S.TableHeaderText
+                              onClick={header.column.getToggleSortingHandler()}
+                            >
+                              <div
+                                style={{
+                                  position: 'relative',
+                                }}
+                              >
+                                {flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                                {header.column.getCanSort() && (
+                                  <AnimatePresence>
+                                    <S.TableHeaderSortIcon
+                                      key={
+                                        header.column.getIsSorted() as string
+                                      }
+                                      initial={{
+                                        y:
+                                          header.column.getIsSorted() === 'asc'
+                                            ? '5%'
+                                            : '-105%',
+                                        opacity: 0,
+                                      }}
+                                      animate={{ y: '-50%', opacity: 1 }}
+                                      exit={{
+                                        y:
+                                          header.column.getIsSorted() === 'asc'
+                                            ? '5%'
+                                            : '-105%',
+                                        opacity: 0,
+                                        transition: {
+                                          duration: 0.1,
+                                        },
+                                      }}
+                                      transition={{
+                                        duration: 0.2,
+                                        ease: 'easeInOut',
+                                      }}
+                                    >
+                                      {{
+                                        asc: <BiSortUp size={18} />,
+                                        desc: <BiSortDown size={18} />,
+                                      }[
+                                        header.column.getIsSorted() as string
+                                      ] ?? null}
+                                    </S.TableHeaderSortIcon>
+                                  </AnimatePresence>
+                                )}
+                              </div>
+                            </S.TableHeaderText>
 
-                        {header.column.getCanFilter() ? (
-                          <Filter column={header.column} table={table} />
-                        ) : null}
+                            {header.column.getCanFilter() ? (
+                              <Filter column={header.column} table={table} />
+                            ) : null}
+                          </>
+                        ) : (
+                          <Skeleton width="100%" height="20px" />
+                        )}
                       </S.TableHeaderWrapper>
                     )}
                   </S.TableHeader>
@@ -241,7 +216,7 @@ export const Table = <T,>({
           ))}
         </S.TableHead>
         <S.TableBody>
-          {table.getRowModel().rows.length === 0 ? (
+          {table.getRowModel().rows.length === 0 && data.length ? (
             <S.TableRow>
               <S.TableCell
                 key={'no_results'}
@@ -251,7 +226,7 @@ export const Table = <T,>({
                 No results
               </S.TableCell>
             </S.TableRow>
-          ) : (
+          ) : data.length ? (
             table.getRowModel().rows.map((row) => {
               return (
                 <S.TableRow key={row.id} $selected={row.getIsSelected()}>
@@ -266,6 +241,25 @@ export const Table = <T,>({
                 </S.TableRow>
               );
             })
+          ) : (
+            Array.from(
+              { length: table.getState().pagination.pageSize },
+              (_, index) => (
+                <S.TableRow key={`row_${index}`}>
+                  {columnDefs
+                    .slice(
+                      0,
+                      columnDefs.length -
+                        Object.keys(defaultColumnVisibility).length
+                    )
+                    .map((_, cellIndex) => (
+                      <S.TableCell key={`row_${index}_${cellIndex}`}>
+                        <Skeleton width="100%" height="20px" />
+                      </S.TableCell>
+                    ))}
+                </S.TableRow>
+              )
+            )
           )}
         </S.TableBody>
       </S.Table>

@@ -123,7 +123,7 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
             sideOffset={5}
             animate={{ scale: 1 }}
             initial={{ scale: 0.95 }}
-            onCloseAutoFocus={(e) => e.preventDefault()}
+            onCloseAutoFocus={(e: Event) => e.preventDefault()}
           >
             <ScrollArea.Root>
               <Command>

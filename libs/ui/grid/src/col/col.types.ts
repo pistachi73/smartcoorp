@@ -1,9 +1,7 @@
-import { Col } from './col.styles';
-
 export type ColSizes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export type ColOffset = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
-export type ColProps = React.ComponentProps<typeof Col> & {
+export type ColProps = {
   /** Content of the col  */
   children: React.ReactNode;
   /** Custom classnames css */

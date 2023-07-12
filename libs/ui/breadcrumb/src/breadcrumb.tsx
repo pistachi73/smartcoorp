@@ -1,10 +1,12 @@
+'use client';
+
 import React, { FC, useEffect, useState } from 'react';
 import { BiChevronRight, BiHomeAlt } from 'react-icons/bi';
 
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 import { Styled as S } from './breadcrumb.styles';
-import { BreadcrumbProps } from './breadcrumb.types';
+import type { BreadcrumbItem, BreadcrumbProps } from './breadcrumb.types';
 
 const convertBreadcrumb = (string: string) => {
   return string
@@ -15,17 +17,13 @@ const convertBreadcrumb = (string: string) => {
     .replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
 };
 
-type Breadcrumb = {
-  breadcrumb: string;
-  href: string;
-};
 export const Breadcrumb: FC<BreadcrumbProps> = ({ homeUrl }) => {
-  const router = useRouter();
-  const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[] | null>(null);
+  const pathname = usePathname();
+  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbItem[] | null>(null);
 
   useEffect(() => {
-    if (router) {
-      const linkPath = router.asPath.split('/');
+    if (pathname) {
+      const linkPath = pathname.split('/');
       linkPath.shift();
 
       const pathArray = linkPath.map((path, i) => {
@@ -37,7 +35,7 @@ export const Breadcrumb: FC<BreadcrumbProps> = ({ homeUrl }) => {
 
       setBreadcrumbs(pathArray);
     }
-  }, [router]);
+  }, [pathname]);
 
   if (!breadcrumbs) {
     return <div>No breadcrumb</div>;

@@ -1,11 +1,13 @@
+'use client';
+
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
-import { ILogin } from '@smartcoorp/smart-auth';
+import { ILogin } from '@smartcoorp/smart-api';
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
@@ -37,9 +39,11 @@ export const Login = () => {
       redirect: false,
     });
 
+    console.log({ response });
     if (response?.error) {
       setError('Invalid credentials');
     } else {
+      console.log('HOla');
       router.push('/home');
     }
 
@@ -85,7 +89,7 @@ export const Login = () => {
             {error}
           </Body>
         )}
-        <Button style={{ width: '100%' }} type="submit" loading={loading}>
+        <Button style={{ width: '100%' }} loading={loading}>
           Login
         </Button>
       </LoginForm>

@@ -1,3 +1,5 @@
+'use client';
+
 import { signOut, useSession } from 'next-auth/react';
 import { BiLogOut } from 'react-icons/bi';
 import styled from 'styled-components';
@@ -8,6 +10,7 @@ import { useBreakpoint } from '@smartcoorp/smart-hooks';
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
 import { mediaWide, spaceL, spaceM, spaceS } from '@smartcoorp/ui/tokens';
+
 const xSpacing = spaceM;
 const xSpacingWide = spaceL;
 
@@ -15,9 +18,7 @@ export const ProfileContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   margin: ${xSpacing};
-
   @media (${mediaWide}) {
     margin: ${xSpacingWide};
   }
@@ -32,9 +33,11 @@ export const Info = styled.div`
 export const ProfileInfo = () => {
   const { isWide } = useBreakpoint();
   const { data: session } = useSession();
+
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: '/' });
+    await signOut({ callbackUrl: '/login' });
   };
+
   return (
     <ProfileContainer>
       {isWide ? (

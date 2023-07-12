@@ -14,7 +14,7 @@ export const ListField: React.FC<ListFieldProps> = memo(
     fieldIndex,
     items,
     style,
-    onInputChange,
+    onInput,
     ...props
   }) => {
     const { addFieldRef } = useRefsContext();
@@ -31,12 +31,12 @@ export const ListField: React.FC<ListFieldProps> = memo(
     );
 
     const commonProps = {
-      ref: addFieldRef(blockIndex, fieldIndex),
+      ref: addFieldRef(blockIndex, fieldIndex) as any,
       id: `${blockId}_${fieldIndex}`,
       contentEditable: true,
       suppressContentEditableWarning: true,
       'data-focus-index': fieldIndex,
-      onInput: onInputChange,
+      onInput,
       dangerouslySetInnerHTML: {
         __html: `${initialRender
           .map((item) => ReactDOMServer.renderToStaticMarkup(item))

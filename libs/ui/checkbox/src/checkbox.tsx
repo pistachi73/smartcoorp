@@ -28,7 +28,7 @@ export const Checkbox: FC<CheckboxProps> = ({
         checked={checked || intermediate}
         disabled={isDisabled}
         defaultChecked={defaultValue}
-        onCheckedChange={(v) => {
+        onCheckedChange={(v: boolean) => {
           if (intermediate && !checked) {
             onChange(true);
           } else {
