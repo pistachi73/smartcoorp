@@ -15,7 +15,6 @@ const UsersLayout = ({ children }: { children: React.ReactNode }) => {
       <Body variant="neutral" size="small">
         View and Manage smartcoorp users.
       </Body>
-      <Body>Vercel URL: {process.env.VERCEL_URL ?? 'localhost'}</Body>
       {children}
     </>
   );
