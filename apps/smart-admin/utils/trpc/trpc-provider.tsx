@@ -8,9 +8,9 @@ import { useState } from 'react';
 import { clientTRPC } from './client-api';
 
 const getBaseUrl = () => {
-  return (
-    process.env.VERCEL_URL || process.env.BASE_URL || `http://localhost:4200`
-  );
+  if (typeof window !== 'undefined') return ''; // browser should use relative url
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
+  return `http://localhost:${4200}`; // dev SSR should use localhost
 };
 
 export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
