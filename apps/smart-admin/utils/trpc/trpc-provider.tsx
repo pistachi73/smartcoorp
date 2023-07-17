@@ -38,6 +38,11 @@ export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
             return fetch(input, {
               ...init,
               credentials: 'include',
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST',
+                'Access-Control-Allow-Headers': '*',
+              },
             });
           },
         }),
