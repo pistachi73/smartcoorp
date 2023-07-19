@@ -23,7 +23,6 @@
       "@smartcoorp/smart-design": ["libs/smart-design/src/index.ts"],
       "@smartcoorp/smart-hooks": ["libs/smart-hooks/src/index.ts"],
       "@smartcoorp/smart-types": ["libs/smart-types/src/index.ts"],
-      "@smartcoorp/trpc": ["apps/smart-admin/utils/trpc.ts"],
       "@smartcoorp/ui/body": ["libs/ui/body/src/index.ts"],
       "@smartcoorp/ui/breadcrumb": ["libs/ui/breadcrumb/src/index.ts"],
       "@smartcoorp/ui/button": ["libs/ui/button/src/index.ts"],

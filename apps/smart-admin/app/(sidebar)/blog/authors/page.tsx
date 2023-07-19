@@ -1,16 +1,14 @@
 'use client';
 
+import { clientTRPC } from '@smart-admin/trpc';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import type { NextPage } from 'next';
 import styled from 'styled-components';
 
-import { RouterOutputs, trpc } from '@smartcoorp/trpc';
+import { RouterOutputs } from '@smartcoorp/smart-api';
 import { Body } from '@smartcoorp/ui/body';
 import { Table } from '@smartcoorp/ui/data-table';
-import { DotLoading } from '@smartcoorp/ui/dot-loading';
-import { Headline } from '@smartcoorp/ui/headline';
-import { spaceXS, spaceXXL } from '@smartcoorp/ui/tokens';
 
 const ClampedBody = styled(Body)`
   max-width: 250px;
@@ -22,13 +20,14 @@ const ClampedBody = styled(Body)`
 export type PostAuthor = RouterOutputs['blogPostAuthors']['getAll'][0];
 
 const BlogPostAuthors: NextPage = () => {
-  const utils = trpc.useContext();
-  const blogPostAuthors = trpc.blogPostAuthors.getAll.useQuery();
-  const deleteBlogPostAuthors = trpc.blogPostAuthors.deleteMany.useMutation({
-    onSuccess: () => {
-      utils.blogPostAuthors.getAll.invalidate();
-    },
-  });
+  const utils = clientTRPC.useContext();
+  const blogPostAuthors = clientTRPC.blogPostAuthors.getAll.useQuery();
+  const deleteBlogPostAuthors =
+    clientTRPC.blogPostAuthors.deleteMany.useMutation({
+      onSuccess: () => {
+        utils.blogPostAuthors.getAll.invalidate();
+      },
+    });
 
   const tableColumns: ColumnDef<PostAuthor>[] = [
     {
