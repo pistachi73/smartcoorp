@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { StyledComponentProps } from 'styled-components';
 
-import { sizes } from './headline.styles';
+import { Styled, sizes } from './headline.styles';
 
 export type HeadlineSize = keyof typeof sizes;
 export type CommonProps = {
@@ -21,13 +20,8 @@ export type CommonProps = {
   sizeWide?: HeadlineSize;
 };
 
-export type HeadlineProps = StyledComponentProps<
-  'h1',
-  any,
-  CommonProps,
-  never // `never` optional'ed attributes from .attrs
-> & {
-  // Add `as` and `forwardedAs` polymorphic props
-  as?: string | React.ComponentType<any> | undefined;
-  forwardedAs?: string | React.ComponentType<any> | undefined;
-};
+export type HeadlineProps = CommonProps &
+  React.ComponentPropsWithoutRef<'h1'> & {
+    as?: string | React.ComponentType<any> | undefined;
+    forwardedAs?: string | React.ComponentType<any> | undefined;
+  };

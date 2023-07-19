@@ -39,7 +39,6 @@ export const BlockChain = React.memo(
           blockIndex += blockType !== 'columns' ? 1 : 0;
 
           const sharedProps = {
-            key: block.id,
             blockIndex,
             chainBlockIndex,
             chainId,
@@ -50,16 +49,25 @@ export const BlockChain = React.memo(
 
           switch (blockType) {
             case 'header':
-              return <HeaderBlock {...sharedProps} block={block} />;
+              return (
+                <HeaderBlock key={block.id} {...sharedProps} block={block} />
+              );
             case 'paragraph':
-              return <ParagraphBlock {...sharedProps} block={block} />;
+              return (
+                <ParagraphBlock key={block.id} {...sharedProps} block={block} />
+              );
             case 'list':
-              return <ListBlock {...sharedProps} block={block} />;
+              return (
+                <ListBlock key={block.id} {...sharedProps} block={block} />
+              );
             case 'image':
-              return <ImageBlock {...sharedProps} block={block} />;
+              return (
+                <ImageBlock key={block.id} {...sharedProps} block={block} />
+              );
             case 'link':
               return (
                 <LinkBlock
+                  key={block.id}
                   {...sharedProps}
                   block={block}
                   getMetaData={getMetaData}

@@ -1,4 +1,6 @@
-import React, { FC } from 'react';
+'use client';
+
+import { FC } from 'react';
 
 import { Styled } from './dot-loading.styles';
 import { DotLoadingProps } from './dot-loading.types';

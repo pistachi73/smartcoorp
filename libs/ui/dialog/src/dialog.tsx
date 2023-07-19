@@ -75,9 +75,7 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
   ) => {
     const onActionClick = onAction
       ? {
-          onClick: (
-            e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
-          ) => {
+          onClick: (e: MouseEvent<any>) => {
             e.preventDefault();
             onAction(e);
           },
@@ -86,9 +84,7 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
 
     const onCancelClick = onCancel
       ? {
-          onClick: (
-            e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
-          ) => {
+          onClick: (e: MouseEvent<any>) => {
             e.preventDefault();
             onCancel(e);
           },

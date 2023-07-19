@@ -98,6 +98,11 @@ interface Command {
   KBDColor: string;
 }
 
+interface Skeleton {
+  baseColor: string;
+  highlightColor: string;
+}
+
 export interface ThemeType {
   color: ColorType;
   backgroundScreen: string;
@@ -134,4 +139,5 @@ export interface ThemeType {
   form: Form;
   table: Table;
   command: Command;
+  skeleton: Skeleton;
 }

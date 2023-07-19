@@ -1,5 +1,4 @@
 import { IconType } from 'react-icons';
-import { StyledComponentProps } from 'styled-components';
 
 import { sizes, variants } from './button.styles';
 export type ButtonSizes = keyof typeof sizes;
@@ -44,13 +43,6 @@ type CommonProps = {
   to?: string;
 };
 
-export type ButtonProps = StyledComponentProps<
-  'button' | 'a',
-  any,
-  CommonProps,
-  never // `never` optional'ed attributes from .attrs
-> & {
-  // Add `as` and `forwardedAs` polymorphic props
-  as?: string | React.ComponentType<any> | undefined;
-  forwardedAs?: string | React.ComponentType<any> | undefined;
-};
+export type ButtonProps = CommonProps &
+  React.ComponentPropsWithoutRef<'button'> &
+  React.ComponentPropsWithoutRef<'a'>;

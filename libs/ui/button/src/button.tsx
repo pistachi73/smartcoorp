@@ -1,9 +1,11 @@
-import React, { forwardRef } from 'react';
+'use client';
+
+import { forwardRef } from 'react';
 
 import { Styled } from './button.styles';
 import { ButtonProps } from './button.types';
 
-export const Button = forwardRef<any, ButtonProps>(
+export const Button = forwardRef(
   (
     {
       children,
@@ -24,8 +26,8 @@ export const Button = forwardRef<any, ButtonProps>(
       type,
       color = 'primary',
       ...props
-    },
-    forwardedRef: React.Ref<HTMLButtonElement | HTMLLinkElement>
+    }: ButtonProps,
+    ref: any
   ) => {
     const iconSize = iconSizePx ? iconSizePx : size === 'small' ? 18 : 24;
 
@@ -38,12 +40,11 @@ export const Button = forwardRef<any, ButtonProps>(
       $sizeConfined: sizeConfined,
       $sizeWide: sizeWide,
       $variant: variant,
-      'aria-label': loading ? 'loading' : null,
+      'aria-label': loading ? 'loading' : undefined,
       disabled: disabled || loading,
       $disabled: disabled || loading,
       $color: color,
       onClick,
-      ref: forwardedRef,
     };
 
     const buttonContent = (
@@ -71,25 +72,20 @@ export const Button = forwardRef<any, ButtonProps>(
 
     if (to) {
       return (
-        <Styled.NextLink href={to} {...commonProps} {...props}>
+        <Styled.NextLink href={to} {...commonProps} {...props} ref={ref}>
           {buttonContent}
         </Styled.NextLink>
       );
     }
     if (href) {
       return (
-        <Styled.LinkButton
-          {...commonProps}
-          {...props}
-          href={href}
-          ref={forwardRef}
-        >
+        <Styled.LinkButton {...commonProps} {...props} href={href} ref={ref}>
           {buttonContent}
         </Styled.LinkButton>
       );
     }
     return (
-      <Styled.Button {...commonProps} {...props}>
+      <Styled.Button {...commonProps} {...props} ref={ref}>
         {buttonContent}
       </Styled.Button>
     );

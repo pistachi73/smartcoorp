@@ -45,7 +45,7 @@ const Divider = styled.div`
   background-color: ${({ theme }) => theme.form.placeholderColor};
 `;
 
-export const SelectedRowsWidget = <T extends { id: number }>({
+export const SelectedRowsWidget = ({
   table,
   onRowsDelete,
   editUrl,
