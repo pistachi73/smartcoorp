@@ -106,7 +106,7 @@ const TabsList = styled(TabsPrimitive.List)`
 `;
 
 const VisibleResizablePanel = styled(ResizablePanel)`
-  overflow: visible;
+  /* overflow: visible; */
 `;
 
 export const Styled = {

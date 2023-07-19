@@ -9,6 +9,7 @@ const { withNx } = require('@nx/next/plugins/with-nx');
 const nextConfig = {
   experimental: {
     externalDir: true,
+    appDir: true,
   },
   nx: {
     // Set this to true if you would like to to use SVGR
