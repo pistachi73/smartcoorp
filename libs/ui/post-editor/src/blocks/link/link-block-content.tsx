@@ -1,6 +1,5 @@
 import debounce from 'lodash.debounce';
-import { MetaData } from 'metadata-scraper';
-import { FormEvent, memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 
 import Image from 'next/image';
 
