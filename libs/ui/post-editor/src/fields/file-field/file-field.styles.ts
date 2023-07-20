@@ -9,17 +9,8 @@ export const UploadFileButton = styled(TextBoxField)`
   margin: ${spaceS} 0;
   cursor: pointer;
 
-  :empty:before {
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  :hover,
-  :focus {
-    background-color: ${({ theme }) => theme.common.overBackgroundNeutral};
-    :empty:before {
-      color: ${({ theme }) => theme.common.backgroundColor};
-    }
+  &:hover,
+  &:focus {
+    background-color: ${({ theme }) => theme.common.backgroundColor};
   }
 `;

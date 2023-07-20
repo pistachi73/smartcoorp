@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { Body } from '@smartcoorp/ui/body';
-import { borderRadiusXS, spaceL, spaceM } from '@smartcoorp/ui/tokens';
+import { borderRadiusXS, spaceM } from '@smartcoorp/ui/tokens';
 
 export const TextBoxField = styled(Body).attrs(() => ({ noMargin: true }))<{
   $loading?: boolean;
@@ -10,12 +10,13 @@ export const TextBoxField = styled(Body).attrs(() => ({ noMargin: true }))<{
   position: relative;
   display: flex;
   align-items: center;
-  padding: ${spaceM} ${spaceL};
+  padding: ${spaceM};
   background-color: ${({ theme }) => theme.common.backgroundColor};
   border-radius: ${borderRadiusXS};
   margin-bottom: ${spaceM};
 
   overflow-wrap: anywhere;
+  outline: none;
 
   color: ${({ $loading, $error, theme }) =>
     $error
@@ -26,15 +27,11 @@ export const TextBoxField = styled(Body).attrs(() => ({ noMargin: true }))<{
   cursor: ${({ $loading }) => $loading && 'not-allowed'};
   pointer-events: ${({ $loading }) => $loading && 'none'};
 
-  :focus {
-    outline: none;
-  }
-
-  :empty:before {
+  &:empty:before {
     content: attr(data-placeholder);
     color: ${({ theme }) => theme.common.overBackgroundNeutral};
   }
-  :not(:empty) {
+  &:not(:empty) {
     background-color: ${({ $loading, $error, theme }) =>
       $error
         ? theme.postEditor.linkTool.errorBackgroundColor

@@ -1,8 +1,5 @@
-import React from 'react';
-
 import {
   BlocksDB,
-  PostEditor,
   buildColumnsBlock,
   buildHeaderBlock,
   buildParagraphBlock,

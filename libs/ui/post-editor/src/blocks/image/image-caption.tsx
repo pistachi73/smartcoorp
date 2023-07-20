@@ -72,6 +72,7 @@ export const ImageCaption = ({
 
   return (
     <TextBoxField
+      size="small"
       blockIndex={blockIndex}
       blockId={blockId}
       fieldIndex={fieldIndex}

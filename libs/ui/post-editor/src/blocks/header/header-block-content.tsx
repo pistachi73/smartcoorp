@@ -4,9 +4,10 @@ import React, { useCallback, useMemo } from 'react';
 import type { HeadlineSize } from '@smartcoorp/ui/headline';
 
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
+import { useDebounceContext } from '../../contexts/debounce-context/debounce-context';
 import { useRefsContext } from '../../contexts/refs-context';
 import { TextField } from '../../fields/text-field';
-import { debounceDelay, getCaretPosition } from '../../helpers';
+import { getCaretPosition } from '../../helpers';
 import { getBlockContainerAttributes } from '../../helpers/get-block-container-attributes';
 import type { HeaderBlockProps } from '../../post-editor.types';
 import type { HeaderBlockContentProps } from '../blocks.types';
@@ -45,12 +46,101 @@ export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({
     setPrevCaretPosition,
   } = useRefsContext();
 
+  const { debounceTime } = useDebounceContext();
+
   const size = useMemo(
     () => HEADLINE_SIZE_LEVELS[block.data.level],
     [block.data.level]
   );
 
   const fieldIndex = 0;
+  const fieldId = `${block.id}_${fieldIndex}`;
+
+  const onTextChange = useCallback(
+    (text: string) => {
+      const currentCaretPosition = getCaretPosition(
+        fieldRefs.current[blockIndex] ? fieldRefs.current[blockIndex][0] : null
+      );
+
+      setFieldValue({
+        blockId: block.id,
+        blockType: 'header',
+        field: 'text',
+        value: text,
+        undo: buildModifyFieldInnerHTMLAction({
+          fieldId,
+          caretPosition: prevCaretPosition.current,
+        }),
+        redo: buildModifyFieldInnerHTMLAction({
+          fieldId,
+          caretPosition: currentCaretPosition,
+        }),
+      });
+
+      setPrevCaretPosition(currentCaretPosition);
+    },
+    [
+      fieldRefs,
+      blockIndex,
+      prevCaretPosition,
+      setFieldValue,
+      block.id,
+      buildModifyFieldInnerHTMLAction,
+      fieldId,
+      setPrevCaretPosition,
+    ]
+  );
+
+  const debouncedOnTextChange = useMemo(() => {
+    return debounce(onTextChange, debounceTime);
+  }, [debounceTime, onTextChange]);
+
+  const onInputChange = useCallback(
+    async (e: React.ChangeEvent) => {
+      const innerHTML = e.target.innerHTML;
+      const isTextSplit = innerHTML.includes('<div>');
+
+      if (isTextSplit) {
+        debouncedOnTextChange.cancel();
+
+        splitTextField({
+          blockId: block.id,
+          blockType: 'header',
+          field: 'text',
+          chainId,
+          chainBlockIndex,
+          innerHTML,
+          splitedBlockRef: fieldRefs.current[blockIndex][0],
+          undo: {
+            ...buildModifyFieldInnerHTMLAction({
+              fieldId: `${block.id}_${fieldIndex}`,
+              caretPosition: prevCaretPosition.current,
+            }),
+          },
+          redo: buildModifyFieldInnerHTMLAction({
+            fieldId: `${block.id}_${fieldIndex}`,
+            caretPosition: 0,
+          }),
+        });
+
+        setPrevCaretPosition(0);
+      } else {
+        debouncedOnTextChange(innerHTML);
+      }
+    },
+    [
+      debouncedOnTextChange,
+      splitTextField,
+      block.id,
+      chainId,
+      chainBlockIndex,
+      fieldRefs,
+      blockIndex,
+      buildModifyFieldInnerHTMLAction,
+      prevCaretPosition,
+      setPrevCaretPosition,
+    ]
+  );
 
   const handleKeyDown = async (e: React.KeyboardEvent) => {
     if (e.key === 'Backspace') {
@@ -88,96 +178,6 @@ export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({
       }
     }
   };
-
-  const onTextChange = useCallback(
-    (text: string) => {
-      const currentCaretPosition = getCaretPosition(
-        fieldRefs.current[blockIndex][0]
-      );
-
-      setFieldValue({
-        blockId: block.id,
-        blockType: 'header',
-        field: 'text',
-        value: text,
-        undo: buildModifyFieldInnerHTMLAction({
-          fieldId: `${block.id}_${fieldIndex}`,
-          caretPosition: prevCaretPosition.current,
-        }),
-        redo: buildModifyFieldInnerHTMLAction({
-          fieldId: `${block.id}_${fieldIndex}`,
-          caretPosition: currentCaretPosition,
-        }),
-      });
-
-      setPrevCaretPosition(currentCaretPosition);
-    },
-    [
-      fieldRefs,
-      blockIndex,
-      setFieldValue,
-      block.id,
-      buildModifyFieldInnerHTMLAction,
-      prevCaretPosition,
-      setPrevCaretPosition,
-    ]
-  );
-
-  const debouncedOnTextChange = useMemo(() => {
-    return debounce(onTextChange, debounceDelay);
-  }, [onTextChange]);
-
-  const onInputChange = useCallback(
-    async (e: React.ChangeEvent) => {
-      const innerHTML = e.target.innerHTML;
-      const isTextSplit = innerHTML.includes('<div>');
-
-      if (isTextSplit) {
-        debouncedOnTextChange.cancel();
-
-        const currentCaretPosition = prevCaretPosition.current;
-        console.log(currentCaretPosition);
-
-        console.log('SPlit text field', prevCaretPosition);
-
-        splitTextField({
-          blockId: block.id,
-          blockType: 'header',
-          field: 'text',
-          chainId,
-          chainBlockIndex,
-          innerHTML,
-          splitedBlockRef: fieldRefs.current[blockIndex][0],
-          undo: {
-            ...buildModifyFieldInnerHTMLAction({
-              fieldId: `${block.id}_${fieldIndex}`,
-              caretPosition: currentCaretPosition,
-            }),
-          },
-          redo: buildModifyFieldInnerHTMLAction({
-            fieldId: `${block.id}_${fieldIndex}`,
-            caretPosition: 0,
-          }),
-        });
-
-        setPrevCaretPosition(0);
-      } else {
-        debouncedOnTextChange(innerHTML);
-      }
-    },
-    [
-      debouncedOnTextChange,
-      splitTextField,
-      block.id,
-      chainId,
-      chainBlockIndex,
-      fieldRefs,
-      blockIndex,
-      buildModifyFieldInnerHTMLAction,
-      prevCaretPosition,
-      setPrevCaretPosition,
-    ]
-  );
 
   return (
     <TextField

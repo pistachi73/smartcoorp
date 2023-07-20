@@ -12,7 +12,8 @@ const MAX_DEEP_LEVEL = 3;
 export const removeBlocks = async (
   draft: WritableDraft<BlocksDBReducerState>,
   /**[blockId, chainId] */
-  blocksData: [string, string][]
+  blocksData: [string, string][],
+  blockParagraphAdded = false
 ) => {
   if (!blocksData.length) return;
 
@@ -137,7 +138,10 @@ export const removeBlocks = async (
     }
   }
 
-  if (removedBlockIds.size === Object.keys(original(draft)!.blocks).length) {
+  if (
+    !blockParagraphAdded &&
+    removedBlockIds.size === Object.keys(original(draft)!.blocks).length
+  ) {
     draft.chains = {
       main: ['placeholder'],
     };

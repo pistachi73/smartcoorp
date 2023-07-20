@@ -73,7 +73,7 @@ export const blocksDBReducer = (
 
         case ReducerTypes.REPLACE_BLOCKS: {
           addBlocks(draft, action.payload.toAddBlocks);
-          removeBlocks(draft, action.payload.toRemoveBlocks);
+          removeBlocks(draft, action.payload.toRemoveBlocks, true);
           break;
         }
 
@@ -332,7 +332,6 @@ export const blocksDBReducer = (
         undo: { patch: inversePatches, action: undoAction },
         redo: { patch: patches, action: redoAction },
       };
-      console.log(changes);
 
       delete changes[currentVersion + 1];
       delete changes[currentVersion - noOfVersionsSupported];

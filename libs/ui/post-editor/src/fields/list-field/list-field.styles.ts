@@ -9,9 +9,7 @@ export const OrderedList = styled.ol`
   margin-bottom: 0;
   overflow-wrap: anywhere;
 
-  :focus {
-    outline: none;
-  }
+  outline: none;
 `;
 
 export const UnorderedList = styled.ul`
@@ -21,9 +19,7 @@ export const UnorderedList = styled.ul`
   margin-bottom: 0;
   overflow-wrap: anywhere;
 
-  :focus {
-    outline: none;
-  }
+  outline: none;
 `;
 
 export const ListItem = styled.li`
