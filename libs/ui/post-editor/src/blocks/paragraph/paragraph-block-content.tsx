@@ -1,6 +1,7 @@
 import debounce from 'lodash.debounce';
 import React, { useCallback, useMemo } from 'react';
 
+import { useBlockSelectionConsumerContext } from '../../contexts/block-selection-context';
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import { useDebounceContext } from '../../contexts/debounce-context/debounce-context';
 import { useRefsContext } from '../../contexts/refs-context';
@@ -26,6 +27,8 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
     buildModifyFieldInnerHTMLAction,
     buildFocusFieldAction,
   } = useBlocksDBUpdaterContext();
+
+  const { selectedBlocks } = useBlockSelectionConsumerContext();
 
   const {
     fieldRefs,
@@ -127,6 +130,7 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
 
   const handleKeyDown = useCallback(
     async (e: React.KeyboardEvent) => {
+      if (selectedBlocks) return;
       const element = e.target as HTMLElement;
       const caretPosition = getCaretPosition(element);
 
@@ -205,6 +209,7 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
       }
     },
     [
+      selectedBlocks,
       fieldRefs,
       blockIndex,
       debouncedOnTextChange,

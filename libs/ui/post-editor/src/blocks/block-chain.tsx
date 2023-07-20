@@ -101,10 +101,6 @@ export const BlockChain = React.memo(
           marginLeft: '-48px',
         }}
       >
-        <Button onClick={() => console.log(blocksDB)}>Log blocks</Button>
-        <Button onClick={() => console.log(fieldRefs.current)}>
-          Field Refs
-        </Button>
         {chain ? renderBlockChain(chain, chainId, 0, 'root') : null}
       </div>
     );
