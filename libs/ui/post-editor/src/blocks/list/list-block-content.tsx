@@ -1,11 +1,21 @@
 import debounce from 'lodash.debounce';
-import { FormEvent, FormEventHandler, useCallback, useMemo } from 'react';
+import { FormEvent, useCallback, useMemo } from 'react';
 
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
+import {
+  ToAddBlock,
+  ToRemoveBlock,
+} from '../../contexts/blocks-context/blocks-reducer';
+import { useDebounceContext } from '../../contexts/debounce-context/debounce-context';
 import { useRefsContext } from '../../contexts/refs-context';
 import { useToolBlockIndexUpdaterContext } from '../../contexts/tool-control-context/tool-control-context';
 import { ListField } from '../../fields/list-field';
-import { getBlockContainerAttributes, getCaretPosition } from '../../helpers';
+import {
+  buildListBlock,
+  buildParagraphBlock,
+  getCaretPosition,
+  waitForElement,
+} from '../../helpers';
 import { getElementTextContent } from '../../helpers/get-element-textcontent';
 import type { ListBlockContentProps } from '../blocks.types';
 
@@ -17,28 +27,21 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
 }) => {
   const {
     setFieldValue,
-    removeBlocks,
-    removeLastListItem,
+    replaceBlocks,
     buildFocusFieldAction,
     buildModifyListInnerHTMLAction,
   } = useBlocksDBUpdaterContext();
-  const {
-    fieldRefs,
-    setPrevCaretPosition,
-    prevCaretPosition,
-    getNextFocusableField,
-    focusField,
-    blockRefs,
-  } = useRefsContext();
+  const { fieldRefs, setPrevCaretPosition, prevCaretPosition } =
+    useRefsContext();
   const setToolIndex = useToolBlockIndexUpdaterContext();
-
+  const { debounceTime } = useDebounceContext();
   const fieldIndex = 0;
   const fieldId = `${block.id}_${fieldIndex}`;
 
   const onItemsChange = useCallback(
     (items: string[]) => {
       const currentCaretPosition = getCaretPosition(
-        fieldRefs.current[blockIndex][0]
+        fieldRefs.current[blockIndex] ? fieldRefs.current[blockIndex][0] : null
       );
 
       setFieldValue({
@@ -72,8 +75,8 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
   );
 
   const debouncedOnItemsChange = useMemo(() => {
-    return debounce(onItemsChange, 300);
-  }, [onItemsChange]);
+    return debounce(onItemsChange, debounceTime);
+  }, [debounceTime, onItemsChange]);
 
   const onInputChange = (e: FormEvent<HTMLOListElement | HTMLUListElement>) => {
     setToolIndex(null);
@@ -85,79 +88,71 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
     );
   };
 
-  const handleItemKeyPress = (e: React.KeyboardEvent) => {
+  const handleItemKeyPress = async (e: React.KeyboardEvent) => {
     const element = e.target;
 
     const caretPosition = getCaretPosition(element);
     const textContent = getElementTextContent(element);
-    if (e.key === 'Enter') {
-      const items = [].slice
-        .call(e.currentTarget.children)
-        .map((node: Element) => node.innerHTML.trim());
-
-      if (
-        caretPosition === textContent.length &&
-        items[items.length - 1] === '<br>'
-      ) {
-        // Remove last item if empty and create paragraph block
-        debouncedOnItemsChange.cancel();
-        e.preventDefault();
-        e.stopPropagation();
-
-        removeLastListItem({
-          blockId: block.id,
-          blockType: 'list',
-          field: 'items',
-          chainId,
-          chainBlockIndex,
-          fieldId,
-          items,
-          undo: buildModifyListInnerHTMLAction({
-            fieldId,
-            caretPosition: prevCaretPosition.current,
-          }),
-          redo: buildModifyListInnerHTMLAction({
-            fieldId,
-            caretPosition: 0,
-          }),
-        });
-
-        setToolIndex(null);
-      }
-    }
+    const items = [].slice
+      .call(e.currentTarget.children)
+      .map((node: Element) => node.innerHTML.trim());
 
     if (
-      e.key === 'Backspace' &&
-      caretPosition === 0 &&
-      textContent.length === 0
+      (e.key === 'Enter' || e.key === 'Backspace') &&
+      ((caretPosition === 0 && items[0] === '<br>') ||
+        (caretPosition === textContent.length &&
+          items[items.length - 1] === '<br>'))
     ) {
+      // Split list item
       debouncedOnItemsChange.cancel();
       e.preventDefault();
       e.stopPropagation();
 
-      const prevFocusableBlock = getNextFocusableField(
-        blockIndex,
-        fieldIndex,
-        -1
-      );
+      const modifiedIndex = caretPosition === 0 ? 0 : items.length - 1;
+      const afterListItems = items.slice(modifiedIndex + 1);
+      const beforeListItems = items.slice(0, modifiedIndex);
 
-      const { blockId: contiguousBlockId } = getBlockContainerAttributes(
-        blockRefs.current[prevFocusableBlock[0]]
-      );
+      const afterListBlock =
+        afterListItems.length > 0
+          ? [buildListBlock(chainId, afterListItems, block.data.style)]
+          : [];
+      const beforeListBlock =
+        beforeListItems.length > 0
+          ? [buildListBlock(chainId, beforeListItems, block.data.style)]
+          : [];
 
-      removeBlocks({
-        toRemoveBlocks: [[block.id, chainId]],
+      const paragraphBlock = buildParagraphBlock(chainId);
+
+      const toBlocksData = [
+        ...beforeListBlock,
+        paragraphBlock,
+        ...afterListBlock,
+      ];
+
+      const toAddBlocks: ToAddBlock[] = toBlocksData.map((blockData, index) => [
+        blockData,
+        chainId,
+        chainBlockIndex + index,
+      ]);
+
+      console.log({ toAddBlocks });
+      const toRemoveBlocks: ToRemoveBlock[] = [[block.id, chainId]];
+
+      replaceBlocks({
+        toAddBlocks,
+        toRemoveBlocks,
         undo: buildFocusFieldAction({
-          fieldId,
+          fieldId: fieldId,
           position: prevCaretPosition.current,
         }),
         redo: buildFocusFieldAction({
-          fieldId: `${contiguousBlockId}_${prevFocusableBlock[1]}`,
-          position: 'end',
+          fieldId: `${paragraphBlock.id}_0`,
+          position: 0,
         }),
       });
 
-      focusField(prevFocusableBlock, 'end');
+      (await waitForElement(`${paragraphBlock.id}_0`))?.focus();
+      setPrevCaretPosition(0);
     }
   };
 

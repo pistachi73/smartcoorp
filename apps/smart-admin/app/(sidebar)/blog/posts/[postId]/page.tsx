@@ -148,7 +148,7 @@ const EditPost = ({ params }: EditPostProps) => {
       isLoading={
         createPost.isLoading || updatePost.isLoading || deletePost.isLoading
       }
-      isDirty={false}
+      isDirty={true}
     >
       <Tabs
         defaultTab="post-info"

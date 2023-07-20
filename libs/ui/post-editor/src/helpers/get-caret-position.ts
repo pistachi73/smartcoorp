@@ -1,7 +1,7 @@
 export const getCaretPosition = (element: any) => {
   if (!element) return 0;
 
-  let caretOffset = null;
+  let caretOffset = 0;
   const doc = element.ownerDocument || element.document;
   const win = doc.defaultView || doc.parentWindow;
   let sel;

@@ -7,6 +7,7 @@
     "jsx": "react",
     "sourceMap": false
   },
+
   "include": [
     "support/**/*.ts",
     "../cypress.config.ts",
@@ -17,6 +18,7 @@
     "../**/*.d.ts",
     "support/commands.tsx",
     "support/component.tsx",
-    "../src/components/multiple-select/multiple-select.tsx"
+    "../src/__tests__/post-editor/helpers.tsx",
+    "../src/__tests__/post-editor/helpers.tsx"
   ]
 }

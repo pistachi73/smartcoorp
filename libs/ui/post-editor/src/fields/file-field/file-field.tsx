@@ -42,13 +42,15 @@ export const FileField: React.FC<FileFieldProps> = ({
       />
 
       <S.UploadFileButton
+        size="small"
         id={`${blockId}_${fieldIndex}`}
         ref={addFieldRef(blockIndex, fieldIndex)}
-        data-placeholder={placeholder}
         onClick={handleOpenUploadFile}
         onKeyDown={handleKeyDown}
         tabIndex={1}
-      />
+      >
+        {placeholder}
+      </S.UploadFileButton>
     </>
   );
 };

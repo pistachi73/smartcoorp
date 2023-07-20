@@ -1,5 +1,5 @@
 export { SingleCalendar } from './single-calendar';
-export {
+export type {
   SingleCalendarProps,
   SingleCustomValuesOptions,
 } from './single-calendar.types';

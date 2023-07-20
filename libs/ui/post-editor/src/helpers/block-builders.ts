@@ -35,23 +35,30 @@ export const buildLinkBlock = (chainId: string): LinkBlockProps => ({
   data: {},
 });
 
-export const buildListBlock = (chainId: string): ListBlockProps => ({
+export const buildListBlock = (
+  chainId: string,
+  items: string[] = ['<br>'],
+  style: 'unordered' | 'ordered' = 'unordered'
+): ListBlockProps => ({
   id: nanoid(),
   chainId,
   type: 'list',
   data: {
-    style: 'unordered',
-    items: [''],
+    style,
+    items,
   },
 });
 
-export const buildHeaderBlock = (chainId: string): HeaderBlockProps => ({
+export const buildHeaderBlock = (
+  chainId: string,
+  text = ''
+): HeaderBlockProps => ({
   id: nanoid(),
   chainId,
   type: 'header',
   data: {
     level: 3,
-    text: '',
+    text,
   },
 });
 

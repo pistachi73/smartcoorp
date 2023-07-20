@@ -303,7 +303,6 @@ export const useBlockSelection = () => {
     }
 
     if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
-      console.log('metakey v');
       handleMetakeyV(e, chainBlockIndex, chainId);
       return;
     }

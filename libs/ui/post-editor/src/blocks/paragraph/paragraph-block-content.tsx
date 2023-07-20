@@ -1,7 +1,9 @@
 import debounce from 'lodash.debounce';
 import React, { useCallback, useMemo } from 'react';
 
+import { useBlockSelectionConsumerContext } from '../../contexts/block-selection-context';
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
+import { useDebounceContext } from '../../contexts/debounce-context/debounce-context';
 import { useRefsContext } from '../../contexts/refs-context';
 import { TextField } from '../../fields/text-field';
 import {
@@ -26,6 +28,8 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
     buildFocusFieldAction,
   } = useBlocksDBUpdaterContext();
 
+  const { selectedBlocks } = useBlockSelectionConsumerContext();
+
   const {
     fieldRefs,
     blockRefs,
@@ -35,13 +39,15 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
     getNextFocusableField,
   } = useRefsContext();
 
+  const { debounceTime } = useDebounceContext();
+
   const fieldIndex = 0;
   const fieldId = `${block.id}_${fieldIndex}`;
 
   const onTextChange = useCallback(
     (text: string) => {
       const currentCaretPosition = getCaretPosition(
-        fieldRefs.current[blockIndex][0] ?? null
+        fieldRefs.current[blockIndex] ? fieldRefs.current[blockIndex][0] : null
       );
 
       setFieldValue({
@@ -73,8 +79,8 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
   );
 
   const debouncedOnTextChange = useMemo(() => {
-    return debounce(onTextChange, 300);
-  }, [onTextChange]);
+    return debounce(onTextChange, debounceTime);
+  }, [debounceTime, onTextChange]);
 
   const onInputChange = useCallback(
     async (e: React.ChangeEvent) => {
@@ -124,6 +130,7 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
 
   const handleKeyDown = useCallback(
     async (e: React.KeyboardEvent) => {
+      if (selectedBlocks) return;
       const element = e.target as HTMLElement;
       const caretPosition = getCaretPosition(element);
 
@@ -171,10 +178,14 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
 
           const prevBlock = blockRefs.current[blockIndex - 1];
           const prevFieldRef = fieldRefs.current[blockIndex - 1][0];
+          console.log('prevFieldRef', prevFieldRef);
           const prevFieldContentLength =
             getElementTextContent(prevFieldRef).length;
 
-          mergeTextFields({
+          /**
+           * We need the await in order to succedd with the focusField action
+           */
+          await mergeTextFields({
             blockType: 'paragraph',
             mergedField: 'text',
             mergedFieldRef: prevFieldRef,
@@ -193,11 +204,12 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
             }),
           });
 
-          setPrevCaretPosition(prevFieldContentLength);
+          focusField([blockIndex - 1, 0], prevFieldContentLength);
         }
       }
     },
     [
+      selectedBlocks,
       fieldRefs,
       blockIndex,
       debouncedOnTextChange,
@@ -213,7 +225,6 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
       chainBlockIndex,
       buildModifyFieldInnerHTMLAction,
       fieldId,
-      setPrevCaretPosition,
     ]
   );
 

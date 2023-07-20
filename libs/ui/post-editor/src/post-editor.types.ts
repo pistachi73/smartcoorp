@@ -93,4 +93,6 @@ export type PostEditorProps = {
   blocksDB: BlocksDB;
   setBlocksDB: any;
   getMetaData?: Promise<Function> | any;
+  /** Time for the debounce changes */
+  debounceTime?: number;
 };

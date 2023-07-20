@@ -10,9 +10,6 @@ import { RouterOutputs } from '@smartcoorp/smart-api';
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
 import { Table } from '@smartcoorp/ui/data-table';
-import { DotLoading } from '@smartcoorp/ui/dot-loading';
-import { Headline } from '@smartcoorp/ui/headline';
-import { spaceXS, spaceXXL } from '@smartcoorp/ui/tokens';
 
 const ClampedBody = styled(Body)`
   max-width: 250px;

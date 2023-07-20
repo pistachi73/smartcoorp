@@ -9,9 +9,11 @@ import type { BlockChainDB } from '../blocks-context.types';
 import type { BlocksDBReducerState, ToAddBlock } from './blocks-reducer.types';
 const MAX_DEEP_LEVEL = 3;
 
-export const removeBlocks = (
+export const removeBlocks = async (
   draft: WritableDraft<BlocksDBReducerState>,
-  blocksData: [string, string][]
+  /**[blockId, chainId] */
+  blocksData: [string, string][],
+  blockParagraphAdded = false
 ) => {
   if (!blocksData.length) return;
 
@@ -136,49 +138,10 @@ export const removeBlocks = (
     }
   }
 
-  // ObjectEntries(draft.blocks).forEach(([blockId, block]) => {
-  //   if (block.type !== 'columns') return;
-  //   const isModified = block.data.chains.some((id) => removedChainIds.has(id));
-  //   if (!isModified) return;
-
-  //   const numberOfCols = block.data.chains.length;
-
-  //   const numberOfRemovedCols = block.data.chains.reduce((acc, chainId) => {
-  //     if (removedChainIds.has(chainId)) return acc + 1;
-  //     return acc;
-  //   }, 0);
-
-  //   if (numberOfCols - numberOfRemovedCols === 1) {
-  //     const remainingChainIndex = block.data.chains.findIndex(
-  //       (id) => !removedChainIds.has(id)
-  //     );
-
-  //     const otherChainId = block.data.chains[remainingChainIndex];
-  //     const otherChain = draft.chains[otherChainId];
-  //     const columnBlockChainIndex =
-  //       draft.chains[block.chainId].indexOf(blockId);
-
-  //     otherChain.forEach((id) => {
-  //       const block_ = draft.blocks[id];
-  //       block_.chainId = block.chainId.replace(otherChainId, block.chainId);
-  //     });
-
-  //     draft.chains[block.chainId].splice(
-  //       columnBlockChainIndex,
-  //       1,
-  //       ...otherChain
-  //     );
-
-  //     delete draft.chains[otherChainId];
-  //     delete draft.blocks[blockId];
-  //   } else {
-  //     block.data.chains = block.data.chains.filter(
-  //       (id) => !removedChainIds.has(id)
-  //     );
-  //   }
-  // });
-
-  if (removedBlockIds.size === Object.keys(original(draft)!.blocks).length) {
+  if (
+    !blockParagraphAdded &&
+    removedBlockIds.size === Object.keys(original(draft)!.blocks).length
+  ) {
     draft.chains = {
       main: ['placeholder'],
     };

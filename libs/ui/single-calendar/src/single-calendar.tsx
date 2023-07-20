@@ -1,7 +1,6 @@
 import { DayPickerSingleProps } from 'react-day-picker';
 import { DefaultTheme, StyledComponent } from 'styled-components';
 
-import { ResizablePanel } from '@smartcoorp/smart-design';
 import { Select } from '@smartcoorp/ui/select';
 import { Caption, Day, Styled as S } from '@smartcoorp/ui/shared';
 

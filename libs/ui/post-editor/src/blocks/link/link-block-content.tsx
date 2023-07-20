@@ -1,6 +1,5 @@
 import debounce from 'lodash.debounce';
-import { MetaData } from 'metadata-scraper';
-import { FormEvent, memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -113,6 +112,7 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
     return !block.data.title ? (
       <S.Container>
         <TextBoxField
+          size="small"
           blockId={block.id}
           blockIndex={blockIndex}
           text={block.data.link}
