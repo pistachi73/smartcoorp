@@ -9,7 +9,6 @@ import {
   dropShadowXL,
   gray100,
   gray200,
-  gray200_RGBA,
   gray300,
   gray300_RGBA,
   gray400,
@@ -43,6 +42,7 @@ import {
   red400,
   red500,
   red600,
+  red600_RGBA,
   red700,
   red700_RGBA,
   red800,
@@ -199,6 +199,13 @@ export const lightTheme: ThemeType = {
     baseColor: gray200,
     highlightColor: `rgba(${gray300_RGBA}, 0.25)`,
   },
+
+  fileUpload: {
+    dragActiveColor: green500,
+    dragActiveBackgroundColor: `rgba(${green500_RGBA}, 0.25)`,
+    dragRejectColor: red600,
+    dragRejectBackgroundColor: `rgba(${red600_RGBA}, 0.25)`,
+  },
 };
 
 export const darkTheme: ThemeType = {
@@ -338,5 +345,11 @@ export const darkTheme: ThemeType = {
   skeleton: {
     baseColor: gray800,
     highlightColor: `rgba(${gray700_RGBA}, 0.25)`,
+  },
+  fileUpload: {
+    dragActiveColor: green800,
+    dragActiveBackgroundColor: `rgba(${green800_RGBA}, 0.25)`,
+    dragRejectColor: red800,
+    dragRejectBackgroundColor: `rgba(${red800_RGBA}, 0.25)`,
   },
 };
