@@ -29,7 +29,7 @@ export const Button = forwardRef(
     }: ButtonProps,
     ref: any
   ) => {
-    const iconSize = iconSizePx ? iconSizePx : size === 'small' ? 18 : 24;
+    const iconSize = iconSizePx ? iconSizePx : size === 'small' ? 16 : 22;
 
     const iconOnly = !children;
 

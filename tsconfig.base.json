@@ -39,6 +39,7 @@
       "@smartcoorp/ui/dialog": ["libs/ui/dialog/src/index.ts"],
       "@smartcoorp/ui/dot-loading": ["libs/ui/dot-loading/src/index.ts"],
       "@smartcoorp/ui/dropdown-menu": ["libs/ui/dropdown-menu/src/index.ts"],
+      "@smartcoorp/ui/file-upload": ["libs/ui/file-upload/src/index.ts"],
       "@smartcoorp/ui/form-field": ["libs/ui/form-field/src/index.ts"],
       "@smartcoorp/ui/global-styles": ["libs/ui/global-styles/src/index.ts"],
       "@smartcoorp/ui/grid": ["libs/ui/grid/src/index.ts"],

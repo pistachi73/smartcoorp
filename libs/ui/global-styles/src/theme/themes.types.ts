@@ -103,6 +103,13 @@ interface Skeleton {
   highlightColor: string;
 }
 
+interface FileUpload {
+  dragActiveColor: string;
+  dragActiveBackgroundColor: string;
+  dragRejectColor: string;
+  dragRejectBackgroundColor: string;
+}
+
 export interface ThemeType {
   color: ColorType;
   backgroundScreen: string;
@@ -140,4 +147,5 @@ export interface ThemeType {
   table: Table;
   command: Command;
   skeleton: Skeleton;
+  fileUpload: FileUpload;
 }
