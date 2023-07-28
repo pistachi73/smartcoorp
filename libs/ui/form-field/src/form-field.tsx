@@ -56,14 +56,16 @@ export const FormField = forwardRef<
     return (
       <S.Container $disabled={isDisabled}>
         {label && (
-          <S.Label
-            htmlFor={inputId}
-            $size={size}
-            $sizeConfined={sizeConfined}
-            $sizeWide={sizeWide}
-          >
-            {label}
-          </S.Label>
+          <S.LabelContainer>
+            <S.Label
+              htmlFor={inputId}
+              $size={size}
+              $sizeConfined={sizeConfined}
+              $sizeWide={sizeWide}
+            >
+              {label}
+            </S.Label>
+          </S.LabelContainer>
         )}
         <S.InputContainer
           forwardedAs={'button'}

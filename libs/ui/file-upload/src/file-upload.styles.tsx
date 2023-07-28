@@ -16,18 +16,14 @@ import {
   spaceL,
   spaceM,
   spaceS,
+  spaceXXS,
 } from '@smartcoorp/ui/tokens';
 
 type DropzoneContainerTranseitnProps = {
   $isDragActive?: boolean;
   $isDragReject?: boolean;
+  $isSingleFileUploaded?: boolean;
 };
-
-const Label = styled.label`
-  font-size: ${scale070};
-  color: ${({ theme }) => theme.form.neutralColor};
-  font-weight: 500;
-`;
 
 const Container = styled.div<{ $isDisabled?: boolean }>`
   width: 100%;
@@ -63,6 +59,13 @@ const DropzoneContainer = styled.div<DropzoneContainerTranseitnProps>`
     background-color: ${({ theme }) => theme.form.hoverColor};
     border-color: ${({ theme }) => theme.form.neutralColor};
   }
+
+  ${({ $isSingleFileUploaded, theme }) =>
+    $isSingleFileUploaded &&
+    css`
+      border-color: ${theme.fileUpload.isSingleFileUploadedColor};
+      background-color: ${theme.fileUpload.isSingleFileUploadedBackgroundColor};
+    `}
   ${({ $isDragActive, theme }) =>
     $isDragActive &&
     css`
@@ -127,12 +130,19 @@ const PreviewInfoContainer = styled.div`
   gap: ${spaceM};
 `;
 
-const PreviewImage = styled.div`
+const PreviewImageContainer = styled.div`
   max-width: ${scale180};
   min-height: 100%;
   border-radius: ${borderRadiusXS};
 
   color: ${({ theme }) => theme.color.neutral};
+`;
+
+const PreviewImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
 `;
 
 const PreviewDeleteButton = styled.button`
@@ -179,7 +189,7 @@ const RejectedFilesClose = styled(Button)`
 `;
 
 const SinglePreviewContiner = styled.div`
-  max-width: 85%;
+  max-width: 100%;
   height: 100%;
 `;
 
@@ -216,6 +226,16 @@ const HelperText = styled.span<{ $isError?: boolean }>`
   /** Size styles */
 `;
 
+const Label = styled.label`
+  font-size: ${scale070};
+  color: ${({ theme }) => theme.form.neutralColor};
+  font-weight: 500;
+`;
+
+const LabelContainer = styled.div`
+  margin-bottom: ${spaceXXS};
+`;
+
 export const Styled = {
   Container,
   DropzoneContainer,
@@ -226,6 +246,7 @@ export const Styled = {
   PreviewList,
   PreviewListItem,
   PreviewInfoContainer,
+  PreviewImageContainer,
   PreviewImage,
   PreviewDeleteButton,
 
@@ -239,6 +260,7 @@ export const Styled = {
   SinglePreviewInfoContainer,
 
   //EXTRA
+  LabelContainer,
   Label,
   HelperText,
 };

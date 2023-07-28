@@ -8,6 +8,8 @@ const getBaseUrl = () => {
   return `http://localhost:${4200}`; // dev SSR should use localhost
 };
 
-export const serverTRPC = createTRPCProxyClient<AppRouter>({
-  links: [httpBatchLink({ url: `${getBaseUrl()}/api/trpc` })],
-} as any);
+// export const serverTRPC = createTRPCProxyClient<AppRouter>({
+//   links: [httpBatchLink({ url: `${getBaseUrl()}/api/trpc` })],
+// } as any);
+
+export const serverTRPC = '';

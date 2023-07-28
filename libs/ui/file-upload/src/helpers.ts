@@ -1,4 +1,8 @@
-import type { AcceptedFileTypes } from './file-upload.types';
+import type {
+  AcceptedFileTypes,
+  FilePreview,
+  FileType,
+} from './file-upload.types';
 
 export const formatBytes = (bytes: number, decimals = 2) => {
   if (!+bytes) return '0 Bytes';
@@ -40,3 +44,24 @@ export const getSupportedFileTypesSnippet = (
 
   return `Supported ${firstTypes} and ${lastType} files`;
 };
+
+export const getFileInfo = (file: File | string): FilePreview | string => {
+  console.log('getFileInfo', { file });
+
+  if (typeof file === 'string') return file;
+
+  const { name, size, type } = file;
+  const fileType = type.split('/')[0] as FileType;
+  return {
+    name,
+    size,
+    fileType,
+    preview: URL.createObjectURL(file),
+  };
+};
+
+export const fileFilter =
+  (fileName: string) => (file: FilePreview | File | string) => {
+    if (typeof file === 'string') return file !== fileName;
+    return file.name !== fileName;
+  };

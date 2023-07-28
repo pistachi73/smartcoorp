@@ -27,6 +27,7 @@ export const userRouter = router({
         username: z.string(),
         email: z.string().email(),
         role: z.nativeEnum(Role),
+        profileImageUrl: z.nullable(z.string()).optional(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -45,6 +46,7 @@ export const userRouter = router({
           username: true,
           email: true,
           role: true,
+          profileImageUrl: true,
         },
       });
 
@@ -86,6 +88,7 @@ export const userRouter = router({
         email: z.string().email(),
         role: z.nativeEnum(Role),
         password: z.string().min(8).max(32),
+        profileImageUrl: z.nullable(z.string()).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -118,6 +121,7 @@ export const userRouter = router({
         email: z.string().email().optional(),
         role: z.enum(['ADMIN', 'USER'] as const).optional(),
         password: z.string().min(8).max(32).optional(),
+        profileImageUrl: z.nullable(z.string()).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {

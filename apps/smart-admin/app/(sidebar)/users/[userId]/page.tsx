@@ -1,22 +1,29 @@
 'use client';
 
+import { User } from '@prisma/client';
 import { EditEntryLayout } from '@smart-admin/components/layout';
+import { useSingleFileUpload } from '@smart-admin/hooks';
 import { clientTRPC } from '@smart-admin/trpc';
 import { TRPCError } from '@trpc/server';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { styled } from 'styled-components';
 
 import { useRouter } from 'next/navigation';
 
-import { RouterOutputs } from '@smartcoorp/smart-api';
 import { isNumber } from '@smartcoorp/smart-types';
-import { DotLoading } from '@smartcoorp/ui/dot-loading';
+import { RHFFileUpload } from '@smartcoorp/ui/file-upload';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 import { Col, Grid, Row } from '@smartcoorp/ui/grid';
-import { Headline } from '@smartcoorp/ui/headline';
 import { RHFRadioGroup } from '@smartcoorp/ui/radio-group';
 
-type UserData = RouterOutputs['user']['getUserById'];
+const FormFieldContainer = styled.div`
+  margin-bottom: 1rem;
+`;
+
+type FormData = Pick<User, 'email' | 'role' | 'username'> & {
+  profileImageUrl?: File | string | null;
+};
 
 type EditUserProps = {
   params: {
@@ -25,6 +32,8 @@ type EditUserProps = {
 };
 
 const EditUser = ({ params }: EditUserProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
   const userId = useMemo(() => {
     if (isNumber(params.userId)) {
@@ -39,7 +48,6 @@ const EditUser = ({ params }: EditUserProps) => {
       enabled: userId !== -1,
     }
   );
-
   const deleteUsers = clientTRPC.user.deleteUsers.useMutation();
   const createUser = clientTRPC.user.createUser.useMutation();
   const updateUser = clientTRPC.user.updateUser.useMutation();
@@ -47,35 +55,48 @@ const EditUser = ({ params }: EditUserProps) => {
   const {
     control,
     reset,
+    setValue,
     handleSubmit,
     formState: { isDirty },
-  } = useForm<UserData>({
+  } = useForm<FormData>({
     defaultValues: {
       username: '',
       email: '',
       role: 'USER',
+      profileImageUrl: '',
     },
   });
 
+  const { setCurrentFile: setProfileImage, handleSingleFileUpload } =
+    useSingleFileUpload({ folder: 'user-images' });
+
   useEffect(() => {
     reset(data);
-  }, [data, reset]);
+    setProfileImage(data?.profileImageUrl);
+  }, [data, reset, setProfileImage]);
 
-  const onSave = async (data: UserData) => {
+  const onSave = async (data: FormData) => {
+    setIsLoading(true);
+    const profileImageUrl = await handleSingleFileUpload(data.profileImageUrl);
+    const userData = { ...data, profileImageUrl };
+
     try {
       if (userId === -1) {
         const createdUser = await createUser.mutateAsync({
-          ...data,
+          ...userData,
           password: process.env.NEXT_PUBLIC_DEFAULT_PASSWORD as string,
         });
         router.push(`/users/${createdUser.id}`);
       } else {
-        await updateUser.mutateAsync({ id: userId, ...data });
+        await updateUser.mutateAsync({ id: userId, ...userData });
         reset({}, { keepValues: true });
       }
     } catch (e) {
       if (e instanceof TRPCError) console.log(e.message);
     }
+
+    setValue('profileImageUrl', profileImageUrl);
+    setIsLoading(false);
   };
 
   const onDelete = async () => {
@@ -87,6 +108,9 @@ const EditUser = ({ params }: EditUserProps) => {
     }
   };
 
+  const isFormLoading =
+    isLoading || updateUser.isLoading || createUser.isLoading;
+
   return (
     <EditEntryLayout
       title="User"
@@ -95,40 +119,60 @@ const EditUser = ({ params }: EditUserProps) => {
       onDelete={onDelete}
       status={status}
       fetchStatus={fetchStatus}
-      isLoading={
-        createUser.isLoading || updateUser.isLoading || deleteUsers.isLoading
-      }
+      isLoading={isFormLoading}
       isDirty={isDirty}
     >
       <Grid>
         <Row>
           <Col size={6}>
-            <RHFFormField
+            <FormFieldContainer>
+              <RHFFormField
+                control={control}
+                name="email"
+                label="Email"
+                type="email"
+                rules={{ required: 'This field is required' }}
+                defaultValue={''}
+                isDisabled={isFormLoading}
+              />
+            </FormFieldContainer>
+            <FormFieldContainer>
+              <RHFFormField
+                control={control}
+                name="username"
+                label="Username"
+                rules={{ required: 'This field is required' }}
+                defaultValue={''}
+                isDisabled={isFormLoading}
+              />
+            </FormFieldContainer>
+            <RHFRadioGroup
               control={control}
-              name="email"
-              label="Email"
-              type="email"
-              rules={{ required: 'This field is required' }}
+              label="Role"
+              name="role"
+              options={[
+                { label: 'Admin', value: 'ADMIN' },
+                { label: 'User', value: 'USER' },
+              ]}
+              defaultValue={'USER'}
+              isDisabled={isFormLoading}
             />
           </Col>
           <Col size={6}>
-            <RHFFormField
+            <RHFFileUpload
               control={control}
-              name="username"
-              label="Username"
-              rules={{ required: 'This field is required' }}
+              name="profileImageUrl"
+              label="Profile Image"
+              singleFilePreview={true}
+              acceptedFileTypes={{
+                'image/jpeg': [],
+                'image/jpg': [],
+                'image/png': [],
+              }}
+              isDisabled={isFormLoading}
             />
           </Col>
         </Row>
-        <RHFRadioGroup
-          control={control}
-          label="Role"
-          name="role"
-          options={[
-            { label: 'Admin', value: 'ADMIN' },
-            { label: 'User', value: 'USER' },
-          ]}
-        />
       </Grid>
     </EditEntryLayout>
   );

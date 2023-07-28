@@ -1,9 +1,13 @@
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
 
 import { AppRouter, appRouter } from './trpc/router/_app';
-export { nextAuthOptions } from './common/next-auth-configuration';
+export * from './common';
 
-export { createContext, createTRPCContext } from './trpc/context';
+export {
+  createContext,
+  createTRPCContext,
+  createContextInner,
+} from './trpc/context';
 export { publicProcedure, authorizedProcedure, trpc } from './trpc/trpc';
 
 // AUTH TYPES

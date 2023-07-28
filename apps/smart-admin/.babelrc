@@ -1,7 +1,8 @@
 {
-  "presets": ["next/babel"],
+  "presets": ["@nrwl/react/babel"],
   "plugins": [
     ["styled-components", { "ssr": true }],
-    ["@babel/plugin-proposal-private-methods"]
+    ["@babel/plugin-proposal-private-methods"],
+    ["@babel/plugin-proposal-class-properties"]
   ]
 }

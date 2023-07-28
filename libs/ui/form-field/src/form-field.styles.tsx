@@ -16,6 +16,7 @@ import {
   scale230,
   spaceM,
   spaceS,
+  spaceXS,
   spaceXXS,
 } from '@smartcoorp/ui/tokens';
 
@@ -304,10 +305,11 @@ const HelperText = styled.span<SizeProps & WithError>`
     `};
 `;
 
-const Label = styled.label<SizeProps>`
+const LabelContainer = styled.div`
   margin-bottom: ${spaceXXS};
-  padding: 0;
-  font-size: ${scale070};
+`;
+
+const Label = styled.label<SizeProps>`
   color: ${({ theme }) => theme.form.neutralColor};
   /* font-weight: 500; */
 
@@ -382,5 +384,6 @@ export const Styled = {
   Input,
   Textarea,
   Label,
+  LabelContainer,
   HelperText,
 };

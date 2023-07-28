@@ -10,6 +10,9 @@
   "private": true,
   "dependencies": {
     "@air/react-drag-to-select": "^5.0.5",
+    "@aws-sdk/client-s3": "^3.374.0",
+    "@aws-sdk/s3-presigned-post": "^3.374.0",
+    "@aws-sdk/signature-v4-crt": "^3.370.0",
     "@hookform/resolvers": "^3.1.1",
     "@prisma/client": "^4.15.0",
     "@radix-ui/react-alert-dialog": "^1.0.3",
@@ -31,6 +34,7 @@
     "@trpc/next": "^10.0.0",
     "@trpc/react-query": "^10.0.0",
     "@trpc/server": "^10.0.0",
+    "aws-crt": "^1.15.22",
     "aws-sdk": "^2.1248.0",
     "babel-plugin-styled-components": "^2.1.4",
     "bcrypt": "^5.1.0",
