@@ -14,6 +14,7 @@ export const userRouter = router({
         createdAt: true,
         updatedAt: true,
         role: true,
+        profileImageUrl: true,
       },
     });
 

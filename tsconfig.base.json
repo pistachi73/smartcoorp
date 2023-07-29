@@ -18,7 +18,7 @@
       "@smart-admin/components/*": ["apps/smart-admin/components/*"],
       "@smart-admin/trpc": ["apps/smart-admin/utils/trpc/index.ts"],
       "@smart-admin/media": ["apps/smart-admin/utils/media/index.ts"],
-      "@smart-admin/hooks": ["apps/smart-admin/app/hooks/index.ts"],
+      "@smart-admin/hooks": ["apps/smart-admin/hooks/index.ts"],
       "@smart-coaching/trpc": ["apps/smart-coaching/util/trpc/index.ts"],
       "@smartcoorp/smart-api": ["libs/smart-api/src/index.ts"],
       "@smartcoorp/smart-backend/main": ["apps/smart-backend/src/main.ts"],

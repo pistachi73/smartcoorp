@@ -27,6 +27,7 @@ export const RHFFileUpload = <FormValues extends FieldValues>({
   rules,
   name,
   defaultValue,
+  multiple,
   ...props
 }: RHFFileUploadProps<FormValues>) => {
   return (
@@ -39,6 +40,7 @@ export const RHFFileUpload = <FormValues extends FieldValues>({
         <FileUpload
           {...field}
           {...props}
+          multiple={multiple as any}
           isError={props.isError ?? Boolean(error)}
           helperText={error ? error.message : props?.helperText}
         />
