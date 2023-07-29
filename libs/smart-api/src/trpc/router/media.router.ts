@@ -3,7 +3,7 @@ import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
-import { authorizedProcedure, router } from '../trpc';
+import { authorizedProcedure, publicProcedure, router } from '../trpc';
 
 const s3 = new S3Client({
   apiVersion: '2006-03-01',
@@ -17,7 +17,7 @@ const s3 = new S3Client({
 const UPLOAD_MAX_FILE_SIZE = 1000000;
 
 export const mediaRouter = router({
-  createPresignedUrl: authorizedProcedure
+  createPresignedUrl: publicProcedure
     .input(
       z.object({
         folder: z.string(),
