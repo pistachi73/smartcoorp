@@ -12,3 +12,7 @@ export const isDate = (value: any): value is Date => {
 };
 export const isNumber = (value: any): value is number =>
   typeof value === 'number' || !isNaN(parseInt(value));
+
+export const isFile = (value: any): value is File => {
+  return value instanceof File;
+};

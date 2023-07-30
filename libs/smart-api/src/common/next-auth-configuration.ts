@@ -2,7 +2,7 @@ import * as bcrypt from 'bcrypt';
 import { NextAuthOptions } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 
-import { prisma } from '../db/client';
+import prisma from '../db/client';
 import { loginSchema } from '../trpc/router/auth.router';
 
 export const nextAuthOptions: NextAuthOptions = {

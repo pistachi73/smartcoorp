@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { authorizedProcedure, router } from '../../trpc';
+import { authorizedProcedure, router } from '../trpc';
 
 export const blogAuthorsRouter = router({
   getAll: authorizedProcedure.query(async ({ ctx }) => {

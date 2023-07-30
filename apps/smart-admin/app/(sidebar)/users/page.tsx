@@ -3,6 +3,7 @@
 import { clientTRPC } from '@smart-admin/trpc';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import { RouterOutputs } from '@smartcoorp/smart-api';

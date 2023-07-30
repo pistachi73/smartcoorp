@@ -2,7 +2,7 @@ import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 
 import { type NextRequest } from 'next/server';
 
-import { appRouter, createTRPCContext } from '@smartcoorp/smart-api';
+import { appRouter, createContext } from '@smartcoorp/smart-api';
 
 // this is the server RPC API handler
 
@@ -14,7 +14,7 @@ const handler = (request: NextRequest) => {
     endpoint: '/api/trpc',
     req: request,
     router: appRouter,
-    createContext: createTRPCContext,
+    createContext,
   });
 };
 

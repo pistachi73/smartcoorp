@@ -108,6 +108,9 @@ interface FileUpload {
   dragActiveBackgroundColor: string;
   dragRejectColor: string;
   dragRejectBackgroundColor: string;
+
+  isSingleFileUploadedColor: string;
+  isSingleFileUploadedBackgroundColor: string;
 }
 
 export interface ThemeType {

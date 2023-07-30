@@ -31,11 +31,13 @@ import {
   primary,
   primary100,
   primary200,
+  primary200_RGBA,
   primary300,
   primary400,
   primary600,
   primary700,
   primary800,
+  primary800_RGBA,
   primary900,
   primary_RGBA,
   red100,
@@ -205,6 +207,8 @@ export const lightTheme: ThemeType = {
     dragActiveBackgroundColor: `rgba(${green500_RGBA}, 0.25)`,
     dragRejectColor: red600,
     dragRejectBackgroundColor: `rgba(${red600_RGBA}, 0.25)`,
+    isSingleFileUploadedColor: primary,
+    isSingleFileUploadedBackgroundColor: `rgba(${primary_RGBA}, 0.025)`,
   },
 };
 
@@ -351,5 +355,7 @@ export const darkTheme: ThemeType = {
     dragActiveBackgroundColor: `rgba(${green800_RGBA}, 0.25)`,
     dragRejectColor: red800,
     dragRejectBackgroundColor: `rgba(${red800_RGBA}, 0.25)`,
+    isSingleFileUploadedColor: primary800,
+    isSingleFileUploadedBackgroundColor: `rgba(${primary800_RGBA}, 0.1)`,
   },
 };
