@@ -1,9 +1,9 @@
 import { User } from '@prisma/client';
 
-export const usersDataMock: User[] = [
+export const mockUsers: User[] = [
   {
     id: 1,
-    email: 'email1',
+    email: 'email1@email.com',
     username: 'username1',
     role: 'USER',
     createdAt: new Date(),
@@ -13,7 +13,7 @@ export const usersDataMock: User[] = [
   },
   {
     id: 2,
-    email: 'email2',
+    email: 'email2@email.com',
     username: 'username2',
     role: 'USER',
     createdAt: new Date(),

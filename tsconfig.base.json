@@ -68,7 +68,10 @@
       "@smartcoorp/ui/tabs": ["libs/ui/tabs/src/index.ts"],
       "@smartcoorp/ui/tokens": ["libs/ui/tokens/src/index.ts"],
       "@smartcoorp/ui/tooltip": ["libs/ui/tooltip/src/index.ts"],
-      "@smartcoorp/ui/width-limiter": ["libs/ui/width-limiter/src/index.ts"]
+      "@smartcoorp/ui/width-limiter": ["libs/ui/width-limiter/src/index.ts"],
+
+      //SMART API PATHS
+      "@smart-api/test/*": ["libs/smart-api/src/utils/test/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

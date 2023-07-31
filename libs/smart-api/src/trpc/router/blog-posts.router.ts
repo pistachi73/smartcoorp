@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { authorizedProcedure, router } from '../trpc';
+import { authorizedProcedure, publicProcedure, router } from '../trpc';
 
 export const blogPostRouter = router({
   getAll: authorizedProcedure.query(async ({ ctx }) => {
@@ -11,7 +11,7 @@ export const blogPostRouter = router({
     return posts;
   }),
 
-  getById: authorizedProcedure
+  getById: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
       const { prisma } = ctx;
@@ -87,7 +87,7 @@ export const blogPostRouter = router({
       if (!post) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'Post to update not found',
+          message: 'Post not found',
         });
       }
 
@@ -112,7 +112,7 @@ export const blogPostRouter = router({
       if (!content) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'Content is required',
+          message: 'Post content is required',
         });
       }
       const author = await prisma.blogPostAuthor.findUnique({
@@ -137,7 +137,7 @@ export const blogPostRouter = router({
       if (!post) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: 'Author not created',
+          message: 'An error happened while creating post',
         });
       }
 

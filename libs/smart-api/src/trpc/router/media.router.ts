@@ -1,11 +1,12 @@
 import { DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
+import { TRPCError } from '@trpc/server';
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
 import { authorizedProcedure, publicProcedure, router } from '../trpc';
 
-const s3 = new S3Client({
+export const s3 = new S3Client({
   apiVersion: '2006-03-01',
   region: process.env['AWS_REGION'],
   credentials: {
@@ -15,6 +16,14 @@ const s3 = new S3Client({
 });
 
 const UPLOAD_MAX_FILE_SIZE = 1000000;
+
+const hasFileExtension = (fileName?: string) => {
+  if (!fileName) return false;
+
+  const lastDotIndex = fileName.lastIndexOf('.');
+
+  return lastDotIndex !== -1 && lastDotIndex !== fileName.length - 1;
+};
 
 export const mediaRouter = router({
   createPresignedUrl: publicProcedure
@@ -32,11 +41,18 @@ export const mediaRouter = router({
 
       const Fields = {};
 
-      const Key = `${folder}/${
-        fileUrl ? fileUrl.split('/').pop() : `${fileId}.${fileExtension}`
-      }`;
+      const fileName = fileUrl?.split('/').pop();
 
-      console.log({ Key });
+      if (fileUrl && !hasFileExtension(fileName)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid file url',
+        });
+      }
+
+      const Key = `${folder}/${
+        fileUrl ? fileName : `${fileId}.${fileExtension}`
+      }`;
 
       const presignedUrl = await createPresignedPost(s3, {
         Bucket: process.env['AWS_S3_BUCKET_NAME'] as string,
@@ -51,7 +67,7 @@ export const mediaRouter = router({
 
       return {
         ...presignedUrl,
-        fileUrl: `${presignedUrl.url}${presignedUrl.fields['key']}`,
+        fileUrl: `${presignedUrl?.url}${presignedUrl?.fields?.['key']}`,
       };
     }),
 
