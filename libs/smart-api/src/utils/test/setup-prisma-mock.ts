@@ -9,7 +9,6 @@ jest.mock('./../../db/client', () => ({
 }));
 
 beforeEach(() => {
-  console.log({ prismaMock });
   mockReset(prismaMock);
 });
 

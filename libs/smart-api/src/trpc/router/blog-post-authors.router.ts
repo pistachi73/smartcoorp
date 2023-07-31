@@ -84,7 +84,7 @@ export const blogAuthorsRouter = router({
       if (!author) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'Author to update not found',
+          message: 'Author not found',
         });
       }
 
@@ -102,8 +102,6 @@ export const blogAuthorsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { prisma } = ctx;
       const { name, bio, website } = input;
-
-      console.log(input);
 
       const author = await prisma.blogPostAuthor.create({
         data: {

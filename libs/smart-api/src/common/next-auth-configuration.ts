@@ -1,9 +1,43 @@
+import { Role } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { NextAuthOptions } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 
 import prisma from '../db/client';
 import { loginSchema } from '../trpc/router/auth.router';
+
+export const authorize = async (
+  credentials: Record<'email' | 'password', string> | undefined,
+  roleCheck?: Role
+) => {
+  const creds = await loginSchema.parseAsync(credentials);
+
+  const user = await prisma.user.findFirst({
+    where: { email: creds.email },
+  });
+
+  if (!user) {
+    return null;
+  }
+
+  if (roleCheck && user.role !== roleCheck) {
+    return null;
+  }
+
+  const isValidPassword = await bcrypt.compare(creds.password, user.password);
+
+  if (!isValidPassword) {
+    return null;
+  }
+
+  return {
+    id: user.id,
+    email: user.email,
+    username: user.username,
+    role: user.role,
+    profileImageUrl: user.profileImageUrl,
+  };
+};
 
 export const nextAuthOptions: NextAuthOptions = {
   providers: [
@@ -20,32 +54,7 @@ export const nextAuthOptions: NextAuthOptions = {
       },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
-      authorize: async (credentials, request) => {
-        const creds = await loginSchema.parseAsync(credentials);
-
-        const user = await prisma.user.findFirst({
-          where: { email: creds.email },
-        });
-
-        if (!user) {
-          return null;
-        }
-
-        const isValidPassword = await bcrypt.compare(
-          creds.password,
-          user.password
-        );
-
-        if (!isValidPassword || user.role !== 'USER') {
-          return null;
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-        };
-      },
+      authorize: async (credentials) => authorize(credentials),
     }),
     Credentials({
       id: 'admin-credentials',
@@ -60,33 +69,7 @@ export const nextAuthOptions: NextAuthOptions = {
       },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
-      authorize: async (credentials) => {
-        const creds = await loginSchema.parseAsync(credentials);
-
-        const user = await prisma.user.findFirst({
-          where: { email: creds.email },
-        });
-
-        if (!user) {
-          return null;
-        }
-
-        const isValidPassword = await bcrypt.compare(
-          creds.password,
-          user.password
-        );
-
-        if (!isValidPassword || user.role !== 'ADMIN') {
-          return null;
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-          role: user.role,
-        };
-      },
+      authorize: async (credentials) => authorize(credentials, Role.ADMIN),
     }),
   ],
   callbacks: {

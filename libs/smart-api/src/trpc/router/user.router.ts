@@ -21,24 +21,17 @@ export const userRouter = router({
     return users;
   }),
 
-  getUserById: publicProcedure
+  getUserById: authorizedProcedure
     .input(z.number())
     .output(
       z.object({
         username: z.string(),
-        email: z.string().email(),
+        email: z.string().email().optional(),
         role: z.nativeEnum(Role),
         profileImageUrl: z.nullable(z.string()).optional(),
       })
     )
     .query(async ({ ctx, input }) => {
-      if (input === -1)
-        return {
-          username: '',
-          email: '',
-          role: 'USER',
-        };
-
       const user = await ctx.prisma.user.findUnique({
         where: {
           id: input,
@@ -120,7 +113,7 @@ export const userRouter = router({
         id: z.number(),
         username: z.string().optional(),
         email: z.string().email().optional(),
-        role: z.enum(['ADMIN', 'USER'] as const).optional(),
+        role: z.nativeEnum(Role).optional(),
         password: z.string().min(8).max(32).optional(),
         profileImageUrl: z.nullable(z.string()).optional(),
       })
@@ -135,7 +128,7 @@ export const userRouter = router({
 
       if (!exists) {
         throw new TRPCError({
-          code: 'CONFLICT',
+          code: 'BAD_REQUEST',
           message: "User doesn't already exists.",
         });
       }
