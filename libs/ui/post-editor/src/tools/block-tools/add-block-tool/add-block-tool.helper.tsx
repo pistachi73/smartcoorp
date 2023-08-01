@@ -1,12 +1,12 @@
-import { buildHeaderBlock, waitForElement } from '../../helpers';
+import { buildHeaderBlock, waitForElement } from '../../../helpers';
 import {
   buildColumnsBlock,
   buildImageBlock,
   buildLinkBlock,
   buildListBlock,
   buildParagraphBlock,
-} from '../../helpers/block-builders';
-import { Block, BlockType } from '../../post-editor.types';
+} from '../../../helpers/block-builders';
+import { Block, BlockType } from '../../../post-editor.types';
 
 export type DropdownItemTypes =
   | Exclude<BlockType, 'columns'>
@@ -22,24 +22,24 @@ export const dropdownItems: {
     items: {
       paragraph: {
         label: 'Paragraph',
-        snippet: 'hello this is a test text',
+        snippet: 'Just start typing here...',
       },
 
       header: {
         label: 'Header',
-        snippet: 'hello this is a test text',
+        snippet: 'Section heading',
       },
       list: {
         label: 'List',
-        snippet: 'hello this is a test text',
+        snippet: 'Create a simple bulleted list',
       },
       image: {
         label: 'Image',
-        snippet: 'hello this is a test text',
+        snippet: 'Upload an image',
       },
       link: {
         label: 'Link',
-        snippet: 'hello this is a test text',
+        snippet: 'Link to an external website',
       },
     },
   },

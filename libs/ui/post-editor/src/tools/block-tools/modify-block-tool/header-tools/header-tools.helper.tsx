@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HeaderBlockProps } from '../../../post-editor.types';
+import { HeaderBlockProps } from '../../../../post-editor.types';
 import { ModifyBlockTool } from '../modify-block-tool.types';
 
 import { H1Icon, H2Icon, H3Icon, H4Icon, H5Icon, H6Icon } from './icons';

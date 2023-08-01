@@ -10,16 +10,20 @@ import { Caption } from '@smartcoorp/ui/caption';
 import { spaceXS } from '@smartcoorp/ui/tokens';
 import { Tooltip } from '@smartcoorp/ui/tooltip';
 
-import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
-import type { ToAddBlock } from '../../contexts/blocks-context/blocks-reducer/blocks-reducer.types';
-import { useRefsContext } from '../../contexts/refs-context/refs-context';
+import { useBlocksDBUpdaterContext } from '../../../contexts/blocks-context';
+import type { ToAddBlock } from '../../../contexts/blocks-context/blocks-reducer/blocks-reducer.types';
+import { useRefsContext } from '../../../contexts/refs-context/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
   useToolControlConsumerContext,
   useToolControlUpdaterContext,
-} from '../../contexts/tool-control-context/tool-control-context';
-import type { Block } from '../../post-editor.types';
-import { DropdownContent, DropdownTrigger, Separator } from '../tools.styles';
+} from '../../../contexts/tool-control-context/tool-control-context';
+import type { Block } from '../../../post-editor.types';
+import {
+  DropdownContent,
+  DropdownTrigger,
+  Separator,
+} from '../block-tools.styles';
 
 import { AddBlockItem } from './add-block-tool-item';
 import {

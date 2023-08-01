@@ -4,9 +4,9 @@ export type TooltipProps = {
   /** The open state of the tooltip when it is initially rendered. Use when you do not need to control its open state. */
   defaultOpen?: boolean;
   /** The controlled open state of the tooltip. Must be used in conjunction with onOpenChange. */
-  open: boolean;
+  open?: boolean;
   /** Event handler called when the open state of the tooltip changes. */
-  onOpenChange: (open: boolean) => void;
+  onOpenChange?: (open: boolean) => void;
   /** Tooltip content component */
   content: React.ReactNode;
   /** Tooltip trigger component */
@@ -17,6 +17,9 @@ export type TooltipProps = {
   sideOffset?: number;
   /** The preferred alignment against the trigger. May change when collisions occur. */
   align?: React.ComponentProps<typeof Tooltip.Content>['align'];
+
+  /** As child prop for trigger */
+  triggerAsChild?: boolean;
 };
 
 export type TooltipTransitionProps = {

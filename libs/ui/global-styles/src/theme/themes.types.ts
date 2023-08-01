@@ -49,6 +49,12 @@ interface PostEditor {
   imageTool: {
     hoverBackgroundColor: string;
   };
+
+  toolbar: {
+    iconColor: string;
+    formattedIconColor: string;
+    tooltipCommandBackgroundColor: string;
+  };
 }
 
 /**Tooltip */

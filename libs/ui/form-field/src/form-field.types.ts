@@ -1,4 +1,3 @@
-
 import { sizes } from './form-field.styles';
 
 export type FormFieldSize = keyof typeof sizes;
@@ -44,6 +43,8 @@ type CommonProps = {
   onFocus?: (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  /** @callback */
+  onKeyDown?: (e: React.KeyboardEvent) => void;
 };
 
 type InputProps = CommonProps & {

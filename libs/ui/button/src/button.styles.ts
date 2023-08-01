@@ -201,7 +201,6 @@ export const disabled = {
   `,
   text: css`
     color: ${({ theme }) => theme.common.disabledSurfaceColor};
-    padding: 0px !important;
     height: 100% !important;
     pointer-events: none;
   `,

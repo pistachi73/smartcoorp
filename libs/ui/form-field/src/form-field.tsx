@@ -54,7 +54,7 @@ export const FormField = forwardRef<
     const inputType = type === 'password' ? passwordType : type;
 
     return (
-      <S.Container $disabled={isDisabled}>
+      <S.Container $disabled={isDisabled} className={className}>
         {label && (
           <S.LabelContainer>
             <S.Label
@@ -100,7 +100,6 @@ export const FormField = forwardRef<
           {isMultiline ? (
             <S.Textarea
               ref={ref as React.Ref<HTMLTextAreaElement>}
-              className={className}
               placeholder={placeholder}
               disabled={isDisabled}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
@@ -119,7 +118,6 @@ export const FormField = forwardRef<
             <S.Input
               id={inputId}
               ref={ref as React.Ref<HTMLInputElement>}
-              className={className}
               placeholder={placeholder}
               type={inputType}
               disabled={isDisabled}
