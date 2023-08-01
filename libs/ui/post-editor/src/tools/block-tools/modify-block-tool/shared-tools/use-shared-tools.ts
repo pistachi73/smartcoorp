@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import { useBlockSelectionUpdaterContext } from '../../../contexts/block-selection-context';
-import { useBlocksDBUpdaterContext } from '../../../contexts/blocks-context';
-import { ToRemoveBlock } from '../../../contexts/blocks-context/blocks-reducer';
-import { useRefsContext } from '../../../contexts/refs-context';
+import { useBlockSelectionUpdaterContext } from '../../../../contexts/block-selection-context';
+import { useBlocksDBUpdaterContext } from '../../../../contexts/blocks-context';
+import { ToRemoveBlock } from '../../../../contexts/blocks-context/blocks-reducer';
+import { useRefsContext } from '../../../../contexts/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
   useToolControlUpdaterContext,
-} from '../../../contexts/tool-control-context/tool-control-context';
-import { getBlockContainerAttributes } from '../../../helpers/get-block-container-attributes';
+} from '../../../../contexts/tool-control-context/tool-control-context';
+import { getBlockContainerAttributes } from '../../../../helpers/get-block-container-attributes';
 
 type UseSharedToolsProps = {
   blockIndex: number;

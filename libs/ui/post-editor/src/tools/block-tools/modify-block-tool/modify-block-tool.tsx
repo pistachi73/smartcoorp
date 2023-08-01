@@ -13,15 +13,15 @@ import { Caption } from '@smartcoorp/ui/caption';
 import { spaceXS } from '@smartcoorp/ui/tokens';
 import { Tooltip } from '@smartcoorp/ui/tooltip';
 
-import { useBlockSelectionUpdaterContext } from '../../contexts/block-selection-context/block-selection-context';
-import { useRefsContext } from '../../contexts/refs-context/refs-context';
+import { useBlockSelectionUpdaterContext } from '../../../contexts/block-selection-context/block-selection-context';
+import { useRefsContext } from '../../../contexts/refs-context/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
   useToolControlConsumerContext,
   useToolControlUpdaterContext,
-} from '../../contexts/tool-control-context/tool-control-context';
-import type { BlockType } from '../../post-editor.types';
-import { DropdownContent, DropdownTrigger } from '../tools.styles';
+} from '../../../contexts/tool-control-context/tool-control-context';
+import type { BlockType } from '../../../post-editor.types';
+import { DropdownContent, DropdownTrigger } from '../block-tools.styles';
 
 import { HeaderTools } from './header-tools/header-tools';
 import { ListTools } from './list-tools/list-tools';

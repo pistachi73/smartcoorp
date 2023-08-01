@@ -149,6 +149,11 @@ export const lightTheme: ThemeType = {
     imageTool: {
       hoverBackgroundColor: gray500,
     },
+    toolbar: {
+      iconColor: gray600,
+      tooltipCommandBackgroundColor: gray800,
+      formattedIconColor: primary,
+    },
   },
 
   tooltip: {
@@ -298,6 +303,11 @@ export const darkTheme: ThemeType = {
     },
     imageTool: {
       hoverBackgroundColor: gray300,
+    },
+    toolbar: {
+      iconColor: gray400,
+      tooltipCommandBackgroundColor: gray300,
+      formattedIconColor: primary,
     },
   },
   tooltip: {

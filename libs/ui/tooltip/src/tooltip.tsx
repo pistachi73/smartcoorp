@@ -12,6 +12,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   sideOffset = 5,
   align = 'center',
   defaultOpen,
+  triggerAsChild = false,
   ...props
 }) => {
   const contentAnimation = useMemo<TooltipTransitionProps>(() => {
@@ -63,7 +64,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
         defaultOpen={defaultOpen}
         onOpenChange={onOpenChange}
       >
-        <TooltipPrimitive.Trigger>{trigger}</TooltipPrimitive.Trigger>
+        <TooltipPrimitive.Trigger asChild={triggerAsChild}>
+          {trigger}
+        </TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
           <TooltipContet
             {...contentAnimation}

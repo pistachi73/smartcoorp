@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { Body } from '@smartcoorp/ui/body';
 import {
   borderRadiusM,
+  borderRadiusS,
   borderRadiusXS,
   motionEasingStandard,
   motionTimeS,
@@ -77,10 +78,9 @@ export const InputBox = styled(Body).attrs(() => ({ noMargin: true }))<{
 `;
 
 export const PostEditorContainer = styled.div`
-  padding: ${spaceXXL} ${space4XL};
-  background-color: white;
+  background-color: ${({ theme }) => theme.color.invertedNeutral};
   border: 1px solid ${({ theme }) => theme.form.placeholderColor};
-  border-radius: ${borderRadiusM};
+  border-radius: ${borderRadiusS};
   position: relative;
   max-width: 768px;
   min-width: 768px;
@@ -89,4 +89,8 @@ export const PostEditorContainer = styled.div`
   -webkit-backface-visibility: hidden !important;
   backface-visibility: hidden !important;
   /* overflow: hidden; */
+`;
+
+export const BlockChainContainer = styled.div`
+  padding: ${spaceXXL} ${space4XL};
 `;

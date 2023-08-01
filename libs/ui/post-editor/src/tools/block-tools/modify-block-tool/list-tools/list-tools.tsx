@@ -3,14 +3,14 @@ import React, { memo, useCallback, useMemo } from 'react';
 
 import { ObjectEntries } from '@smartcoorp/smart-types';
 
-import { useBlockSelectionUpdaterContext } from '../../../contexts/block-selection-context';
-import { useBlocksDBUpdaterContext } from '../../../contexts/blocks-context';
-import { useRefsContext } from '../../../contexts/refs-context/refs-context';
+import { useBlockSelectionUpdaterContext } from '../../../../contexts/block-selection-context';
+import { useBlocksDBUpdaterContext } from '../../../../contexts/blocks-context';
+import { useRefsContext } from '../../../../contexts/refs-context/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
   useToolControlUpdaterContext,
-} from '../../../contexts/tool-control-context/tool-control-context';
-import type { ListBlockProps } from '../../../post-editor.types';
+} from '../../../../contexts/tool-control-context/tool-control-context';
+import type { ListBlockProps } from '../../../../post-editor.types';
 import { ModifyBlockToolItem } from '../modify-block-tool-item';
 import type { ModifyBlockToolProps } from '../modify-block-tool.types';
 

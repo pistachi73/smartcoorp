@@ -1,8 +1,12 @@
 import { useEffect } from 'react';
 
 import { useDragSelection, useSharedEvents } from '../hooks';
-import { PostEditorContainer } from '../post-editor.styles';
-import { Tools } from '../tools/tools';
+import {
+  BlockChainContainer,
+  PostEditorContainer,
+} from '../post-editor.styles';
+import { BlockTools } from '../tools/block-tools';
+import { Toolbar } from '../tools/toolbar';
 
 import { BlockChain } from './block-chain';
 
@@ -30,11 +34,12 @@ export const Blocks = ({ getMetaData }: { getMetaData: any }) => {
       onMouseDown={handleSharedClickDown}
       onKeyDown={handleSharedKeyDown}
     >
-      <Tools />
-
-      <BlockChain chainId="main" getMetaData={getMetaData} />
-
       <DragSelection />
+      <BlockTools />
+      <Toolbar />
+      <BlockChainContainer>
+        <BlockChain chainId="main" getMetaData={getMetaData} />
+      </BlockChainContainer>
     </PostEditorContainer>
   );
 };

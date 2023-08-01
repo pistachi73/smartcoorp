@@ -1,15 +1,15 @@
 import { AnimatePresence, Transition } from 'framer-motion';
 import { useMemo } from 'react';
 
-import { useRefsContext } from '../contexts/refs-context';
-import { useToolBlockIndexConsumerContext } from '../contexts/tool-control-context/tool-control-context';
-import { getBlockContainerAttributes } from '../helpers/get-block-container-attributes';
+import { useRefsContext } from '../../contexts/refs-context';
+import { useToolBlockIndexConsumerContext } from '../../contexts/tool-control-context/tool-control-context';
+import { getBlockContainerAttributes } from '../../helpers/get-block-container-attributes';
 
 import { AddBlockTool } from './add-block-tool/add-block-tool';
+import { ToolsContainer } from './block-tools.styles';
 import { ModifyBlockTool } from './modify-block-tool/modify-block-tool';
-import { ToolsContainer } from './tools.styles';
 
-export const Tools = () => {
+export const BlockTools = () => {
   const toolBlockIndex = useToolBlockIndexConsumerContext();
   const { blockRefs } = useRefsContext();
 

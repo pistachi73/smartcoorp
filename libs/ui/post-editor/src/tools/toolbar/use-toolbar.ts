@@ -1,17 +1,18 @@
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 
-type UseInlineToolsResult = {
+type UseToolbarResult = {
   onBold: () => void;
   onItalic: () => void;
   onUnderline: () => void;
+  onStrikeThrough: () => void;
   onLink: (url: string) => void;
   removeFormat: () => void;
   removeWrapper: (range: Range) => void;
-  prevRanges: Range[];
-  setPrevRanges: Dispatch<SetStateAction<Range[]>>;
+  prevRange: Range | null;
+  setPrevRange: Dispatch<SetStateAction<Range | null>>;
 };
-export const useInlineTools = (): UseInlineToolsResult => {
-  const [prevRanges, setPrevRanges] = useState<Range[]>([]);
+export const useToolbar = (): UseToolbarResult => {
+  const [prevRange, setPrevRange] = useState<Range | null>(null);
 
   const removeWrapper = useCallback((range: Range) => {
     const rangeContents = range.extractContents();
@@ -40,6 +41,11 @@ export const useInlineTools = (): UseInlineToolsResult => {
     []
   );
 
+  const onStrikeThrough = useCallback(
+    () => document.execCommand('strikeThrough', false, ''),
+    []
+  );
+
   const removeFormat = useCallback(() => {
     document.execCommand('removeFormat');
     document.execCommand('unlink');
@@ -50,9 +56,10 @@ export const useInlineTools = (): UseInlineToolsResult => {
     onItalic,
     onUnderline,
     onLink,
+    onStrikeThrough,
     removeFormat,
     removeWrapper,
-    prevRanges,
-    setPrevRanges,
+    prevRange,
+    setPrevRange,
   };
 };

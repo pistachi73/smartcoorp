@@ -130,7 +130,8 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
 
   const handleKeyDown = useCallback(
     async (e: React.KeyboardEvent) => {
-      if (selectedBlocks) return;
+      if (selectedBlocks.length) return;
+
       const element = e.target as HTMLElement;
       const caretPosition = getCaretPosition(element);
 

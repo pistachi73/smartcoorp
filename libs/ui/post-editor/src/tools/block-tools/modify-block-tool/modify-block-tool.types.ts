@@ -1,4 +1,4 @@
-import { BlockType } from '../../post-editor.types';
+import { BlockType } from '../../../post-editor.types';
 
 export type ModifyBlockTool = {
   label: string;
