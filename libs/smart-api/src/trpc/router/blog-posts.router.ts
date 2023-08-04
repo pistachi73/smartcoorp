@@ -73,6 +73,7 @@ export const blogPostRouter = router({
         published: z.boolean().optional(),
         readTime: z.number().optional(),
         content: z.any(),
+        portraitImageUrl: z.nullable(z.string()).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -103,6 +104,7 @@ export const blogPostRouter = router({
         published: z.boolean(),
         readTime: z.number(),
         content: z.any(),
+        portraitImageUrl: z.nullable(z.string()).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {

@@ -4,7 +4,7 @@ import { getFileExtension, uploadFileToS3 } from '@smart-admin/media';
 import { clientTRPC } from '@smart-admin/trpc';
 import { useState } from 'react';
 
-type SingleFileUpload = File | string | undefined | null;
+export type SingleFileUpload = File | string | null | undefined;
 
 type Props = {
   folder: string;
