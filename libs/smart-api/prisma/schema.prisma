@@ -21,16 +21,17 @@ model User {
 }
 
 model BlogPost {
-  id          Int            @id @default(autoincrement())
-  title       String
-  description String         @db.VarChar(1400)
-  readTime    Int
-  published   Boolean        @default(false)
-  content     Json
-  author      BlogPostAuthor @relation(fields: [authorId], references: [id])
-  authorId    Int
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  id               Int            @id @default(autoincrement())
+  title            String
+  description      String         @db.VarChar(1400)
+  readTime         Int
+  published        Boolean        @default(false)
+  content          Json
+  author           BlogPostAuthor @relation(fields: [authorId], references: [id])
+  authorId         Int
+  portraitImageUrl String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 
   @@index([authorId])
 }
