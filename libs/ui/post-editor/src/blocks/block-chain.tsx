@@ -20,9 +20,6 @@ export const BlockChain = React.memo(
   ({ chainId, getMetaData }: { chainId: string; getMetaData: any }) => {
     const blocksDB = useBlocksDBConsumerContext();
 
-    const { fieldRefs } = useRefsContext();
-    const { undo, redo } = useBlocksDBUpdaterContext();
-
     const chain = blocksDB.chains[chainId];
     let blockIndex = -1;
 

@@ -135,7 +135,6 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
         chainBlockIndex + index,
       ]);
 
-      console.log({ toAddBlocks });
       const toRemoveBlocks: ToRemoveBlock[] = [[block.id, chainId]];
 
       replaceBlocks({

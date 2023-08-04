@@ -93,6 +93,11 @@ export const BlockContainer = ({
     [handlePrevTextSelectionOnKeyUp]
   );
 
+  const isSelected = React.useMemo(
+    () => selectedBlocks.includes(blockIndex),
+    [selectedBlocks, blockIndex]
+  );
+
   return (
     <StyledBlockContainer
       ref={addBlockRef(blockIndex)}
@@ -106,13 +111,12 @@ export const BlockContainer = ({
       data-chain-id={chainId}
       data-chain-level={chainLevel}
       data-block-index={blockIndex}
+      data-block-selected={isSelected}
       data-chain-block-index={chainBlockIndex}
       data-chain-length={chainLength}
       data-parent-chain-id={parentChainId}
     >
-      <BlockContent $selected={selectedBlocks.includes(blockIndex)}>
-        {children}
-      </BlockContent>
+      <BlockContent $selected={isSelected}>{children}</BlockContent>
     </StyledBlockContainer>
   );
 };

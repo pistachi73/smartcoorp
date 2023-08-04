@@ -23,7 +23,7 @@ export const Button = forwardRef(
       iconSize: iconSizePx,
       iconAfter,
       to,
-      type,
+      type = 'button',
       color = 'primary',
       ...props
     }: ButtonProps,
@@ -45,6 +45,7 @@ export const Button = forwardRef(
       $disabled: disabled || loading,
       $color: color,
       onClick,
+      type,
     };
 
     const buttonContent = (

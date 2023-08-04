@@ -22,7 +22,7 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
     const { setFieldValue, setLinkData, buildModifyFieldInnerHTMLAction } =
       useBlocksDBUpdaterContext();
 
-    const { fieldRefs, setPrevCaretPosition, prevCaretPosition } =
+    const { fieldRefs, setPrevCaretPosition, prevCaretPosition, addFieldRef } =
       useRefsContext();
 
     const fieldIndex = 0;
@@ -127,7 +127,11 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
         {loading ? <S.DotLoading disabled /> : null}
       </S.Container>
     ) : (
-      <S.MetaDataContainer href={block.data.link} target={'_blank'}>
+      <S.MetaDataContainer
+        href={block.data.link}
+        target={'_blank'}
+        ref={addFieldRef(blockIndex, fieldIndex)}
+      >
         <Grid>
           <Row noMargin>
             <Col size={8}>

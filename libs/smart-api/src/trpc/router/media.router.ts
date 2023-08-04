@@ -32,18 +32,19 @@ export const mediaRouter = router({
         folder: z.string(),
         fileExtension: z.string(),
         fileUrl: z.nullable(z.string().optional()),
+        fileName: z.nullable(z.string().optional()),
       })
     )
     .mutation(async ({ input }) => {
-      const { folder, fileExtension, fileUrl } = input;
+      const { folder, fileExtension, fileUrl, fileName } = input;
 
       const fileId = nanoid();
 
       const Fields = {};
 
-      const fileName = fileUrl?.split('/').pop();
+      const fileNameFromUrl = fileUrl?.split('/').pop();
 
-      if (fileUrl && !hasFileExtension(fileName)) {
+      if (fileUrl && !hasFileExtension(fileNameFromUrl)) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Invalid file url',
@@ -51,7 +52,7 @@ export const mediaRouter = router({
       }
 
       const Key = `${folder}/${
-        fileUrl ? fileName : `${fileId}.${fileExtension}`
+        fileUrl ? fileNameFromUrl : `${fileName ?? fileId}.${fileExtension}`
       }`;
 
       const presignedUrl = await createPresignedPost(s3, {

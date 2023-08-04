@@ -87,7 +87,6 @@ export const undoRedoDispatcher = async (action: UndoRedoAction) => {
       const { fieldId, position, prevCaretPositionRef } = action.payload;
       const field = await waitForElement(fieldId);
       const fieldElement = document.getElementById(fieldId);
-      console.log('Hola');
 
       let caretPosition: number;
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { EditEntryLayout } from '@smart-admin/components/layout';
+import { defaultBlobPostContent, usePostEditor } from '@smart-admin/hooks';
 import { clientTRPC } from '@smart-admin/trpc';
 import { TRPCError } from '@trpc/server';
 import { useEffect, useMemo, useState } from 'react';
@@ -25,22 +26,6 @@ const FormFieldContainer = styled.div`
 
 type PostData = RouterOutputs['blogPost']['getById'];
 
-const defaultBlobPostContent: BlocksDB = {
-  blocks: {
-    '0': {
-      id: '0',
-      chainId: 'main',
-      type: 'header',
-      data: {
-        level: 3,
-        text: 'Write your blog',
-      },
-    },
-  },
-  chains: {
-    main: ['0'],
-  },
-};
 type EditPostProps = {
   params: {
     postId: string;
@@ -48,17 +33,25 @@ type EditPostProps = {
 };
 
 const EditPost = ({ params }: EditPostProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const [postBlocks, setPostBlocks] = useState<BlocksDB>(
-    defaultBlobPostContent
-  );
   const blogPostId = useMemo(() => {
     if (isNumber(params.postId)) {
       return parseInt(params.postId as unknown as string);
     }
     return -1;
   }, [params.postId]);
+  const {
+    postBlocks,
+    setPostBlocks,
+    handleImages,
+    currentUploadedImages,
+    setImagesToHandle,
+    setInitialUploadedImages,
+  } = usePostEditor({
+    blogPostId: blogPostId.toString(),
+  });
 
   const createPost = clientTRPC.blogPost.create.useMutation();
   const updatePost = clientTRPC.blogPost.update.useMutation();
@@ -86,12 +79,7 @@ const EditPost = ({ params }: EditPostProps) => {
     [authors]
   );
 
-  const {
-    control,
-    reset,
-    handleSubmit,
-    formState: { isDirty },
-  } = useForm<Omit<PostData, 'content'>>({
+  const { control, reset, handleSubmit } = useForm<Omit<PostData, 'content'>>({
     defaultValues: {
       title: '',
       published: false,
@@ -103,11 +91,14 @@ const EditPost = ({ params }: EditPostProps) => {
   useEffect(() => {
     reset(data);
     setPostBlocks((data?.content as BlocksDB) ?? defaultBlobPostContent);
-  }, [data, reset]);
+    setInitialUploadedImages(
+      (data?.content as BlocksDB)?.blocks ?? defaultBlobPostContent
+    );
+  }, [data, reset, setInitialUploadedImages, setPostBlocks]);
 
   const onSave = async (data: Omit<PostData, 'content'>) => {
-    console.log(data);
-    console.log(postBlocks);
+    setIsLoading(true);
+    const postBlocks = await handleImages();
 
     try {
       if (blogPostId === -1) {
@@ -123,6 +114,8 @@ const EditPost = ({ params }: EditPostProps) => {
     } catch (e) {
       if (e instanceof TRPCError) console.log(e.message);
     }
+
+    setIsLoading(false);
   };
 
   const onDelete = async () => {
@@ -137,6 +130,12 @@ const EditPost = ({ params }: EditPostProps) => {
   const { mutateAsync: getMetaDataMutate } =
     clientTRPC.metadata.getByUrl.useMutation();
 
+  const isFormLoading =
+    isLoading ||
+    createPost.isLoading ||
+    updatePost.isLoading ||
+    deletePost.isLoading;
+
   return (
     <EditEntryLayout
       title="Blog Post"
@@ -145,9 +144,7 @@ const EditPost = ({ params }: EditPostProps) => {
       onDelete={onDelete}
       status={status}
       fetchStatus={fetchStatus}
-      isLoading={
-        createPost.isLoading || updatePost.isLoading || deletePost.isLoading
-      }
+      isLoading={isFormLoading}
       isDirty={true}
     >
       <Tabs
@@ -221,6 +218,8 @@ const EditPost = ({ params }: EditPostProps) => {
                 blocksDB={postBlocks}
                 setBlocksDB={setPostBlocks}
                 getMetaData={getMetaDataMutate}
+                currentUploadedImages={currentUploadedImages}
+                setImagesToHandle={setImagesToHandle}
               />
             ),
           },

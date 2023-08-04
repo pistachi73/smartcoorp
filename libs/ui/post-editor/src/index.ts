@@ -1,6 +1,11 @@
 export { PostEditor } from './post-editor';
 export type { BlocksDB } from './contexts/blocks-context';
-export type { Block, BlockByType, PostEditorProps } from './post-editor.types';
+export type {
+  Block,
+  BlockByType,
+  PostEditorProps,
+  ImageBlockProps,
+} from './post-editor.types';
 
 export {
   buildColumnsBlock,
@@ -12,3 +17,9 @@ export {
   setCaretPosition,
   getCaretPosition,
 } from './helpers';
+
+export type {
+  ImageWithFile,
+  ImageWithUrl,
+  ImagesToHandle,
+} from './contexts/blocks-context';

@@ -1,11 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useReducer } from 'react';
 
 import { useRefsContext } from '../refs-context';
 
@@ -29,12 +23,15 @@ import type {
 import type { BlocksDBReducerState } from './blocks-reducer';
 import { ReducerTypes } from './blocks-reducer';
 import { blocksDBReducer } from './blocks-reducer/blocks-reducer';
+import { ImageWithUrl, ImagesToHandle, getImagesFromBlocks } from './helpers';
 import { UndoRedoTypes } from './undo-redo-reducer';
 
 type BlockDataDBContextProps = {
   children: React.ReactNode;
   blocksDB: BlocksDB;
   setBlocksDB: any;
+  currentUploadedImages?: ImageWithUrl[];
+  setImagesToHandle?: (imagesToHandle: ImagesToHandle) => void;
 };
 
 const BlocksDBConsumerContext = React.createContext<BlocksDBReducerState>({
@@ -67,6 +64,8 @@ export const BlocksDBProvider = ({
   children,
   blocksDB: initialBlocksDB,
   setBlocksDB,
+  currentUploadedImages,
+  setImagesToHandle,
 }: BlockDataDBContextProps) => {
   const [blocksDB, dispatchBlocksDB] = useReducer(blocksDBReducer, {
     ...initialBlocksDB,
@@ -75,8 +74,17 @@ export const BlocksDBProvider = ({
   });
 
   useEffect(() => {
+    if (currentUploadedImages && setImagesToHandle) {
+      setImagesToHandle(
+        getImagesFromBlocks({
+          blocks: blocksDB.blocks,
+          currentUploadedImages,
+        })
+      );
+    }
+
     setBlocksDB({ blocks: blocksDB.blocks, chains: blocksDB.chains });
-  }, [blocksDB, setBlocksDB]);
+  }, [blocksDB, currentUploadedImages, setBlocksDB, setImagesToHandle]);
 
   const setFieldValue: SetFieldValue = ({
     blockId,

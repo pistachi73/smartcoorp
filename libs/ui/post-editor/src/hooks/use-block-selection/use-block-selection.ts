@@ -206,7 +206,6 @@ export const useBlockSelection = () => {
     chainBlockIndex: number,
     chainId: string
   ) => {
-    console.log(clipboardBlocks);
     if (!clipboardBlocks) return;
 
     e.preventDefault();

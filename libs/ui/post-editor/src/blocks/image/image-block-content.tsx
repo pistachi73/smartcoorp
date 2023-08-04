@@ -13,21 +13,18 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
   ({ blockIndex, block }) => {
     const { setFieldValue } = useBlocksDBUpdaterContext();
     const { setPrevCaretPosition } = useRefsContext();
-    const [imagePreview, setImagePreview] = useState<
-      string | ArrayBuffer | null
-    >();
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
 
     const captionFieldId = `${block.id}_0`;
 
     useEffect(() => {
-      if (block.data.file) {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
-          setImagePreview(reader.result);
-        });
-        reader.readAsDataURL(block.data.file);
+      if (imagePreview) return;
+      if (block.data.file instanceof File) {
+        setImagePreview(URL.createObjectURL(block.data.file));
+      } else if (block.data.url) {
+        setImagePreview(block.data.url);
       } else setImagePreview(null);
-    }, [block.data.file]);
+    }, [block, imagePreview]);
 
     const handleUploadImage = useCallback(
       async (e: React.ChangeEvent<HTMLInputElement>) => {

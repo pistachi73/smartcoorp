@@ -8,3 +8,5 @@ export type {
   BlockChainDB,
   BlockDataDB,
 } from './blocks-context.types';
+
+export type { ImageWithFile, ImageWithUrl, ImagesToHandle } from './helpers';
