@@ -15,6 +15,7 @@ import {
   borderRadiusXS,
   primary,
   primary100,
+  scale150,
   scale210,
   spaceL,
   spaceXS,
@@ -30,6 +31,21 @@ const RoleBadge = styled(Body)<{ role: 'ADMIN' | 'BASIC' }>`
   max-width: ${scale210};
 `;
 
+const ProfileImageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: ${scale150};
+  height: ${scale150};
+`;
+const ProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
 type User = RouterOutputs['user']['getAllUsers'][0];
 
 const Users = () => {
@@ -43,6 +59,27 @@ const Users = () => {
   });
 
   const tableColumns: ColumnDef<User>[] = [
+    {
+      accessorKey: 'profileImageUrl',
+      header: 'IMAGE',
+      enableColumnFilter: false,
+      enableSorting: false,
+      cell: (imageUrl) => {
+        const info = imageUrl.getValue();
+        return (
+          <ProfileImageContainer>
+            {info ? (
+              <ProfileImage
+                src={`${info as string}?${new Date().getTime()}`}
+                alt="User profile Image"
+              />
+            ) : (
+              <ProfileImage src={'avatar.png'} alt="Default profile image" />
+            )}
+          </ProfileImageContainer>
+        );
+      },
+    },
     {
       accessorKey: 'id',
       header: 'ID',

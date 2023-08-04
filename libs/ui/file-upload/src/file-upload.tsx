@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { RxCross2 } from 'react-icons/rx';
 
@@ -9,8 +9,8 @@ import { RejectedFilePreview } from './components/rejected-file-preview';
 import { SingleFilePreview } from './components/single-file-preview';
 import { UploadDropzoneInformation } from './components/upload-dropzone-information';
 import { Styled as S } from './file-upload.styles';
-import type { FilePreview, FileUploadProps } from './file-upload.types';
-import { fileFilter, getFileInfo } from './helpers';
+import type { FileUploadProps } from './file-upload.types';
+import { fileFilter } from './helpers';
 export const FileUpload = ({
   className,
   acceptedFileTypes,
