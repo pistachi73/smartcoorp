@@ -2,17 +2,22 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   AiOutlineBold,
   AiOutlineItalic,
+  AiOutlineRedo,
   AiOutlineStrikethrough,
   AiOutlineUnderline,
+  AiOutlineUndo,
 } from 'react-icons/ai';
 import { GrBlog } from 'react-icons/gr';
 import { MdFormatClear, MdLink } from 'react-icons/md';
 
 import { Body } from '@smartcoorp/ui/body';
-import { primary100, primary200, primary500_RGBA } from '@smartcoorp/ui/tokens';
+import { primary500_RGBA } from '@smartcoorp/ui/tokens';
 import { Tooltip } from '@smartcoorp/ui/tooltip';
 
-import { useBlocksDBConsumerContext } from '../../contexts/blocks-context';
+import {
+  useBlocksDBConsumerContext,
+  useBlocksDBUpdaterContext,
+} from '../../contexts/blocks-context';
 import { waitForElement } from '../../helpers';
 
 import {
@@ -54,6 +59,8 @@ export const Toolbar = () => {
   } = useToolbar();
 
   const blocksDB = useBlocksDBConsumerContext();
+  const { undo, redo } = useBlocksDBUpdaterContext();
+  const { canUndo, canRedo } = useBlocksDBConsumerContext();
 
   useEffect(() => {
     const isLinkEnabled = (): boolean | void => {
@@ -181,7 +188,7 @@ export const Toolbar = () => {
             <Body size="xsmall" noMargin>
               Bold
               <TooltipCaption noMargin as={'span'}>
-                &#8984;B
+                &#8984;+B
               </TooltipCaption>
             </Body>
           }
@@ -202,7 +209,7 @@ export const Toolbar = () => {
             <Body size="xsmall" noMargin>
               Italic
               <TooltipCaption noMargin as={'span'}>
-                &#8984;I
+                &#8984;+I
               </TooltipCaption>
             </Body>
           }
@@ -223,7 +230,7 @@ export const Toolbar = () => {
             <Body size="xsmall" noMargin>
               Underline
               <TooltipCaption noMargin as={'span'}>
-                &#8984;U
+                &#8984;+U
               </TooltipCaption>
             </Body>
           }
@@ -297,6 +304,48 @@ export const Toolbar = () => {
         <Separator />
       </IconsContainer>
       <IconsContainer>
+        <Tooltip
+          sideOffset={0}
+          triggerAsChild
+          trigger={
+            <IconButton
+              variant="text"
+              disabled={!canUndo}
+              onClick={() => undo()}
+              icon={AiOutlineUndo}
+              iconSize={14}
+            />
+          }
+          content={
+            <Body size="xsmall" noMargin>
+              Undo
+              <TooltipCaption noMargin as={'span'}>
+                &#8984;+Z
+              </TooltipCaption>
+            </Body>
+          }
+        />
+        <Tooltip
+          sideOffset={0}
+          triggerAsChild
+          trigger={
+            <IconButton
+              variant="text"
+              disabled={!canRedo}
+              onClick={() => redo()}
+              icon={AiOutlineRedo}
+              iconSize={14}
+            />
+          }
+          content={
+            <Body size="xsmall" noMargin>
+              Redo
+              <TooltipCaption noMargin as={'span'}>
+                &#8984;+Shift+Z
+              </TooltipCaption>
+            </Body>
+          }
+        />
         <Separator />
         <Tooltip
           sideOffset={0}

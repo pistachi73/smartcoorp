@@ -89,7 +89,7 @@ export const Login = () => {
             {error}
           </Body>
         )}
-        <Button style={{ width: '100%' }} loading={loading}>
+        <Button style={{ width: '100%' }} loading={loading} type="submit">
           Login
         </Button>
       </LoginForm>

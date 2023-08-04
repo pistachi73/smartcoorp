@@ -1,7 +1,6 @@
 import debounce from 'lodash.debounce';
 import React, { useCallback, useMemo } from 'react';
 
-import { useBlockSelectionConsumerContext } from '../../contexts/block-selection-context';
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
 import { useDebounceContext } from '../../contexts/debounce-context/debounce-context';
 import { useRefsContext } from '../../contexts/refs-context';
@@ -27,8 +26,6 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
     buildModifyFieldInnerHTMLAction,
     buildFocusFieldAction,
   } = useBlocksDBUpdaterContext();
-
-  const { selectedBlocks } = useBlockSelectionConsumerContext();
 
   const {
     fieldRefs,
@@ -130,12 +127,14 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
 
   const handleKeyDown = useCallback(
     async (e: React.KeyboardEvent) => {
-      if (selectedBlocks.length) return;
-
       const element = e.target as HTMLElement;
       const caretPosition = getCaretPosition(element);
 
-      if (e.key === 'Backspace' && caretPosition === 0) {
+      if (
+        e.key === 'Backspace' &&
+        caretPosition === 0 &&
+        document.querySelectorAll('[data-block-selected="true"]').length === 0
+      ) {
         if (element.textContent?.length === 0) {
           // Remove block and focus previous block
           debouncedOnTextChange.cancel();
@@ -168,18 +167,19 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
         }
         if (
           element.textContent?.length !== 0 &&
+          fieldRefs.current[blockIndex - 1] &&
           fieldRefs.current[blockIndex - 1][0].getAttribute(
             'data-field-type'
           ) === 'paragraph'
         ) {
           // Merge with previous paragraph block
+          const scrollY = window.scrollY;
           debouncedOnTextChange.cancel();
           e.preventDefault();
           e.stopPropagation();
 
           const prevBlock = blockRefs.current[blockIndex - 1];
           const prevFieldRef = fieldRefs.current[blockIndex - 1][0];
-          console.log('prevFieldRef', prevFieldRef);
           const prevFieldContentLength =
             getElementTextContent(prevFieldRef).length;
 
@@ -206,11 +206,12 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
           });
 
           focusField([blockIndex - 1, 0], prevFieldContentLength);
+
+          window.scrollTo(0, scrollY);
         }
       }
     },
     [
-      selectedBlocks,
       fieldRefs,
       blockIndex,
       debouncedOnTextChange,

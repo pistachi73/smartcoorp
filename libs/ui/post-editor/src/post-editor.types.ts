@@ -1,7 +1,6 @@
-import { MutableRefObject } from 'react';
-
 import { FlattenUnion, KeysOfUnion } from '@smartcoorp/smart-types';
 
+import { ImageWithUrl, ImagesToHandle } from './contexts/blocks-context';
 import type { BlocksDB } from './contexts/blocks-context/blocks-context.types';
 
 type SharedBlockProps = {
@@ -95,4 +94,6 @@ export type PostEditorProps = {
   getMetaData?: Promise<Function> | any;
   /** Time for the debounce changes */
   debounceTime?: number;
+  currentUploadedImages?: ImageWithUrl[];
+  setImagesToHandle?: (imagesToHandle: ImagesToHandle) => void;
 };

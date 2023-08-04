@@ -19,13 +19,20 @@ export const PostEditor: FC<PostEditorProps> = ({
   setBlocksDB,
   getMetaData,
   debounceTime = 300,
+  currentUploadedImages,
+  setImagesToHandle,
 }) => {
   return (
     <DebounceProvider debounceTime={debounceTime}>
       <RefsProvider>
         <BlockSelectionProvider>
           <ToolControlProvider>
-            <BlocksDBProvider blocksDB={blocksDB} setBlocksDB={setBlocksDB}>
+            <BlocksDBProvider
+              blocksDB={blocksDB}
+              setBlocksDB={setBlocksDB}
+              currentUploadedImages={currentUploadedImages}
+              setImagesToHandle={setImagesToHandle}
+            >
               {/* <InlineTools postEditorRef={postEditorContainerRef} /> */}
 
               <Blocks getMetaData={getMetaData} />

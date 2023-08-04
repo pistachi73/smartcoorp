@@ -46,19 +46,40 @@ export const useBlockNavigation = (
     }
   };
 
-  const handleArrowUpLeftBackspace = (e: React.KeyboardEvent) => {
+  const handleArrowUpLeft = (e: React.KeyboardEvent) => {
     const target = e.target as HTMLElement;
     const caretPosition = getCaretPosition(target);
 
     if (selectedBlocks.length > 0) {
       e.preventDefault();
       focusField([selectedBlocks[0], 0], 'end');
-      setSelectedBlocks([]);
       return;
     }
 
     if (caretPosition === 0) {
       e.preventDefault();
+      setToolIndex(null);
+      const nextFocusIndexes = getNextFocusableField(
+        blockIndex,
+        parseInt(target.getAttribute('data-focus-index') as string),
+        -1
+      );
+
+      if (!nextFocusIndexes) return;
+
+      focusField(nextFocusIndexes, 'end');
+    }
+  };
+
+  const handleBackspace = (e: React.KeyboardEvent) => {
+    if (selectedBlocks.length > 0) return;
+
+    const target = e.target as HTMLElement;
+    const caretPosition = getCaretPosition(target);
+
+    if (caretPosition === 0) {
+      e.preventDefault();
+
       setToolIndex(null);
       const nextFocusIndexes = getNextFocusableField(
         blockIndex,
@@ -79,11 +100,12 @@ export const useBlockNavigation = (
       handleArrowDownRight(e);
     }
 
-    if (
-      sharedCondition &&
-      (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'Backspace')
-    ) {
-      handleArrowUpLeftBackspace(e);
+    if (sharedCondition && (e.key === 'ArrowUp' || e.key === 'ArrowLeft')) {
+      handleArrowUpLeft(e);
+    }
+
+    if (sharedCondition && e.key === 'Backspace') {
+      handleBackspace(e);
     }
   };
 

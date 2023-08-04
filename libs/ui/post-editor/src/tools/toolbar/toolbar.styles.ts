@@ -3,9 +3,7 @@ import { css, styled } from 'styled-components';
 
 import { Button } from '@smartcoorp/ui/button';
 import { Caption } from '@smartcoorp/ui/caption';
-import { FormField } from '@smartcoorp/ui/form-field';
 import {
-  borderRadiusXS,
   borderRadiusXXS,
   getFocusShadow,
   motionEasingStandard,
@@ -13,17 +11,9 @@ import {
   primary,
   primary_RGBA,
   scale060,
-  scale070,
-  scale080,
-  scale090,
-  scale110,
   scale130,
   scale140,
-  scale150,
-  scale210,
   scale380,
-  spaceL,
-  spaceM,
   spaceS,
   spaceXS,
   spaceXXS,
@@ -75,6 +65,7 @@ export const IconButton = styled(Button)<{ $formatted?: boolean }>`
 
 export const TooltipCaption = styled(Caption)`
   padding: ${spaceXXS};
+  margin-left: ${spaceXXS};
   border-radius: ${borderRadiusXXS};
   background-color: ${({ theme }) =>
     theme.postEditor.toolbar.tooltipCommandBackgroundColor};
