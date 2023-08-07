@@ -120,10 +120,10 @@ export const variants = (color: ButtonColors) => ({
         background-color: ${theme.button[color].hoverColor};
       }
       &:focus-visible {
-        ${getFocusShadow(
-          theme.button[color].buttonColor,
-          theme.button[color].buttonColorRGBA
-        )}
+        ${getFocusShadow({
+          color: theme.button[color].buttonColor,
+          colorRGBA: theme.button[color].buttonColorRGBA,
+        })}
       }
       &:active {
         color: ${theme.button[color].activeTextColor};
@@ -150,10 +150,10 @@ export const variants = (color: ButtonColors) => ({
       }
 
       &:focus-visible {
-        ${getFocusShadow(
-          theme.button[color].buttonColor,
-          theme.button[color].buttonColorRGBA
-        )}
+        ${getFocusShadow({
+          color: theme.button[color].buttonColor,
+          colorRGBA: theme.button[color].buttonColorRGBA,
+        })}
       }
       &:active {
         color: ${theme.button.shared.secondaryHoverColor};
@@ -177,10 +177,10 @@ export const variants = (color: ButtonColors) => ({
         ? theme.color.neutral
         : theme.button[color].buttonColor};
       &:focus-visible {
-        ${getFocusShadow(
-          theme.button[color].buttonColor,
-          theme.button[color].buttonColorRGBA
-        )}
+        ${getFocusShadow({
+          color: theme.button[color].buttonColor,
+          colorRGBA: theme.button[color].buttonColorRGBA,
+        })}
       }
     `}
   `,
