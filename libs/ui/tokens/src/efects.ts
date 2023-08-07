@@ -21,11 +21,15 @@ export const focusShadow = css`
   border-color: ${primary} !important;
 `;
 
-export const getFocusShadow = (
-  color: string = primary,
-  colorRGBA: string = primary_RGBA,
-  shadowWidth?: number
-) => css`
+export const getFocusShadow = ({
+  color = primary,
+  colorRGBA = primary_RGBA,
+  shadowWidth,
+}: {
+  color?: string;
+  colorRGBA?: string;
+  shadowWidth?: number;
+}) => css`
   transition-property: box-shadow;
   transition-duration: ${motionTimeXXS};
   transition-timing-function: ${motionEasingStandard};

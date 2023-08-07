@@ -87,6 +87,11 @@ export const usePostEditor = ({ blogPostId }: Input): Output => {
   const deleteFile = clientTRPC.media.deleteFile.useMutation();
 
   const handleImages = async () => {
+    if (+blogPostId === -1) {
+      console.log('Blog post id is not valid');
+      return;
+    }
+
     const newPostBlocks = JSON.parse(JSON.stringify(postBlocks));
 
     const newImagesUploadedUrls = new Map<string, string>();

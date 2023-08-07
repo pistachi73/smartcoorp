@@ -97,7 +97,7 @@ export const LinkInputContainer = styled.div`
   &:focus-within {
     outline: none;
     border: none;
-    ${getFocusShadow(primary, primary_RGBA, 2)}
+    ${getFocusShadow({ shadowWidth: 2 })}
   }
 `;
 export const LinkInput = styled.input`

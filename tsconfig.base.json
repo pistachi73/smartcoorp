@@ -16,9 +16,10 @@
     "baseUrl": ".",
     "paths": {
       "@smart-admin/components/*": ["apps/smart-admin/components/*"],
-      "@smart-admin/trpc": ["apps/smart-admin/utils/trpc/index.ts"],
-      "@smart-admin/media": ["apps/smart-admin/utils/media/index.ts"],
       "@smart-admin/hooks": ["apps/smart-admin/hooks/index.ts"],
+      "@smart-admin/media": ["apps/smart-admin/utils/media/index.ts"],
+      "@smart-admin/trpc": ["apps/smart-admin/utils/trpc/index.ts"],
+      "@smart-api/test/*": ["libs/smart-api/src/utils/test/*"],
       "@smart-coaching/trpc": ["apps/smart-coaching/util/trpc/index.ts"],
       "@smartcoorp/smart-api": ["libs/smart-api/src/index.ts"],
       "@smartcoorp/smart-backend/main": ["apps/smart-backend/src/main.ts"],
@@ -52,6 +53,7 @@
         "libs/ui/multiple-calendar/src/index.ts"
       ],
       "@smartcoorp/ui/popover": ["libs/ui/popover/src/index.ts"],
+      "@smartcoorp/ui/post": ["libs/ui/post/src/index.ts"],
       "@smartcoorp/ui/post-editor": ["libs/ui/post-editor/src/index.ts"],
       "@smartcoorp/ui/radio-group": ["libs/ui/radio-group/src/index.ts"],
       "@smartcoorp/ui/range-calendar": ["libs/ui/range-calendar/src/index.ts"],
@@ -68,10 +70,7 @@
       "@smartcoorp/ui/tabs": ["libs/ui/tabs/src/index.ts"],
       "@smartcoorp/ui/tokens": ["libs/ui/tokens/src/index.ts"],
       "@smartcoorp/ui/tooltip": ["libs/ui/tooltip/src/index.ts"],
-      "@smartcoorp/ui/width-limiter": ["libs/ui/width-limiter/src/index.ts"],
-
-      //SMART API PATHS
-      "@smart-api/test/*": ["libs/smart-api/src/utils/test/*"]
+      "@smartcoorp/ui/width-limiter": ["libs/ui/width-limiter/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

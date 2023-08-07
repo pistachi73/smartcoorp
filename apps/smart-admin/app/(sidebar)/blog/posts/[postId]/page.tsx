@@ -244,7 +244,7 @@ const EditPost = ({ params }: EditPostProps) => {
                         'image/jpg': [],
                         'image/png': [],
                       }}
-                      isDisabled={isFormLoading}
+                      isDisabled={isFormLoading || blogPostId === -1}
                     />
                   </Col>
                 </Row>

@@ -13,7 +13,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import { PostEditor as PostEditorComponent } from './post-editor';
 
 export default {
-  title: 'Editor/PostEditor',
+  title: 'Post/Editor',
   component: PostEditorComponent,
 
   parameters: {

@@ -2,7 +2,7 @@
 //@ts-nocheck
 import { createGlobalStyle, css } from 'styled-components';
 
-import { scale080, scale100 } from '@smartcoorp/ui/tokens';
+import { primary, primary300, scale080, scale100 } from '@smartcoorp/ui/tokens';
 
 export const BaseStyles = createGlobalStyle`
   
@@ -69,6 +69,11 @@ export const BaseStyles = createGlobalStyle`
   
   a {
     text-decoration: none;
+    color:currentColor;
+    border-bottom: 1px solid ${primary};
+    &:focus{
+    outline-color: ${primary300} 
+    }
   }
   
   button{
