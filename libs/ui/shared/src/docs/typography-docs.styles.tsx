@@ -13,6 +13,7 @@ export const PropContainer = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
   grid-column-gap: ${space4XL};
+  align-items: center;
   padding: ${spaceM} 0;
 `;
 export const TypeContainer = styled.div`

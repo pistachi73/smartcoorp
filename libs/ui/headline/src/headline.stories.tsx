@@ -39,12 +39,12 @@ export const Default = {
 export const Sizes = {
   render: () => {
     const sizePx: any = {
-      small: '14px',
-      medium: '16px',
-      large: '18px',
-      xlarge: '20px',
-      xxlarge: '24px',
-      xxxlarge: '32px',
+      small: '16px',
+      medium: '18px',
+      large: '24px',
+      xlarge: '30px',
+      xxlarge: '36px',
+      xxxlarge: '48px',
     };
 
     const headlineSizes = Object.keys(sizes);
@@ -54,12 +54,12 @@ export const Sizes = {
         {headlineSizes.map((key) => (
           <TypographyDocs.PropContainer>
             <TypographyDocs.TypeContainer>
-              <Headline size={key as HeadlineSize} noMargin>
+              <Headline size={'small'} noMargin>
                 {sizePx[key]}
               </Headline>
             </TypographyDocs.TypeContainer>
             <Headline size={key as HeadlineSize} noMargin>
-              This is a Smartcookie Headline
+              Headline
             </Headline>
           </TypographyDocs.PropContainer>
         ))}

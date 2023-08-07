@@ -53,7 +53,7 @@ export const Header = ({ data, id }: HeaderBlockProps) => {
   return (
     <StyledHeadling
       size={size}
-      as={tag}
+      forwardedAs={tag}
       id={id}
       dangerouslySetInnerHTML={{ __html: purifiedText }}
     />

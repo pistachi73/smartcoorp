@@ -1,7 +1,7 @@
 import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 
-import { Hero } from '@smartcoorp/ui/hero';
+import { Headline } from '@smartcoorp/ui/headline';
 
 import { WidthLimiter } from './width-limiter';
 import type { WidthLimiterProps } from './width-limiter.types';
@@ -30,6 +30,6 @@ export const Default = {
   render: Template,
 
   args: {
-    children: <Hero size="xlarge">Container for content</Hero>,
+    children: <Headline size="xlarge">Container for content</Headline>,
   },
 };
