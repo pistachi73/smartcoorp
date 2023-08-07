@@ -5,12 +5,11 @@ import styled, { css } from 'styled-components';
 import {
   mediaConfined,
   mediaWide,
-  scale070,
   scale080,
   scale090,
-  scale100,
   scale110,
-  scale130,
+  scale140,
+  scale160,
   spaceM,
   spaceS,
 } from '@smartcoorp/ui/tokens';
@@ -34,6 +33,7 @@ const baseHeadline = css`
   margin-right: 0;
   margin-top: 0;
   padding: 0;
+  letter-spacing: -0.05em;
 `;
 
 const noMargin = css`
@@ -53,27 +53,27 @@ const ellipsis = css`
 // *** Sizes ***
 export const sizes = {
   small: css`
-    font-size: ${scale070};
-    margin-bottom: ${spaceS};
-  `,
-  medium: css`
     font-size: ${scale080};
     margin-bottom: ${spaceS};
   `,
-  large: css`
+  medium: css`
     font-size: ${scale090};
-    margin-bottom: ${spaceM};
+    margin-bottom: ${spaceS};
   `,
-  xlarge: css`
-    font-size: ${scale100};
-    margin-bottom: ${spaceM};
-  `,
-  xxlarge: css`
+  large: css`
     font-size: ${scale110};
     margin-bottom: ${spaceM};
   `,
+  xlarge: css`
+    font-size: 30px;
+    margin-bottom: ${spaceM};
+  `,
+  xxlarge: css`
+    font-size: ${scale140};
+    margin-bottom: ${spaceM};
+  `,
   xxxlarge: css`
-    font-size: ${scale130};
+    font-size: ${scale160};
     margin-bottom: ${spaceM};
   `,
 };

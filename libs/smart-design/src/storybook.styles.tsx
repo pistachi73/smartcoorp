@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 import { useHeadings, useScrollSpy } from '@smartcoorp/smart-hooks';
 import { Body } from '@smartcoorp/ui/body';
-import { Hero } from '@smartcoorp/ui/hero';
+import { Headline } from '@smartcoorp/ui/headline';
 import {
   gray300,
   gray500,
@@ -17,7 +17,7 @@ import {
   spaceXXL,
 } from '@smartcoorp/ui/tokens';
 
-export const Title = styled(Hero)`
+export const Title = styled(Headline)`
   margin-bottom: ${spaceM};
   font-size: ${scale100};
 `;
@@ -132,7 +132,7 @@ export const TableOfContent = () => {
 };
 
 export const Styled = {
-  Hero,
+  Headline,
   Title,
   SelectContainer,
   Divider,

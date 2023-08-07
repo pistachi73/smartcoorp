@@ -47,7 +47,6 @@
       "@smartcoorp/ui/global-styles": ["libs/ui/global-styles/src/index.ts"],
       "@smartcoorp/ui/grid": ["libs/ui/grid/src/index.ts"],
       "@smartcoorp/ui/headline": ["libs/ui/headline/src/index.ts"],
-      "@smartcoorp/ui/hero": ["libs/ui/hero/src/index.ts"],
       "@smartcoorp/ui/modal": ["libs/ui/modal/src/index.ts"],
       "@smartcoorp/ui/multiple-calendar": [
         "libs/ui/multiple-calendar/src/index.ts"
