@@ -1,13 +1,15 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { MagnifyingGlassIcon, PlusIcon } from '@radix-ui/react-icons';
-import * as ScrollArea from '@radix-ui/react-scroll-area';
-import { Command } from 'cmdk';
+import { PlusIcon } from '@radix-ui/react-icons';
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Caption } from '@smartcoorp/ui/caption';
-import { spaceXS } from '@smartcoorp/ui/tokens';
+import { Command, CommandGroup, CommandItem } from '@smartcoorp/ui/command';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+} from '@smartcoorp/ui/dropdown-menu';
+import { scale380, spaceXS } from '@smartcoorp/ui/tokens';
 import { Tooltip } from '@smartcoorp/ui/tooltip';
 
 import { useBlocksDBUpdaterContext } from '../../../contexts/blocks-context';
@@ -19,11 +21,7 @@ import {
   useToolControlUpdaterContext,
 } from '../../../contexts/tool-control-context/tool-control-context';
 import type { Block } from '../../../post-editor.types';
-import {
-  DropdownContent,
-  DropdownTrigger,
-  Separator,
-} from '../block-tools.styles';
+import { DropdownTrigger } from '../block-tools.styles';
 
 import { AddBlockItem } from './add-block-tool-item';
 import {
@@ -32,7 +30,6 @@ import {
   buildBlocksMapping,
   dropdownItems,
 } from './add-block-tool.helper';
-
 type AddBlockToolProps = {
   chainId: string;
   chainBlockIndex: number;
@@ -90,7 +87,7 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
     };
 
     return (
-      <DropdownMenu.Root
+      <DropdownMenu
         open={isAddBlockMenuOpened}
         onOpenChange={(isOpen) => {
           setIsAddBlockMenuOpened(isOpen);
@@ -103,8 +100,9 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
         <Tooltip
           open={isTooltipOpen}
           onOpenChange={setIsTooltipOpen}
+          triggerAsChild
           trigger={
-            <DropdownTrigger asChild>
+            <DropdownTrigger>
               <PlusIcon height={16} width={16} />
             </DropdownTrigger>
           }
@@ -119,66 +117,44 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
             </TooltipContentContainer>
           }
         />
-
-        <DropdownMenu.Portal>
-          <DropdownContent
-            side="bottom"
-            align="start"
-            sideOffset={5}
-            animate={{ scale: 1 }}
-            initial={{ scale: 0.95 }}
-            onCloseAutoFocus={(e: Event) => e.preventDefault()}
+        <DropdownMenuContent
+          side="bottom"
+          align="start"
+          sideOffset={5}
+          onCloseAutoFocus={(e: Event) => e.preventDefault()}
+          style={{
+            width: scale380,
+          }}
+        >
+          <Command
+            label="Filter actions..."
+            size="small"
+            onKeyDown={(e) => {
+              if (e.key !== 'Escape') e.stopPropagation();
+            }}
           >
-            <ScrollArea.Root>
-              <Command>
-                <div cmdk-input-wrapper="">
-                  <MagnifyingGlassIcon
-                    aria-hidden={!isAddBlockMenuOpened}
-                    width="20px"
-                    height="20px"
-                  />
-                  <Command.Input placeholder="Filter blocks..." autoFocus />
-                </div>
-                <ScrollArea.Viewport
-                  key={`addBlockTOolViewport${chainId}${chainBlockIndex}`}
-                >
-                  <Command.List>
-                    <Command.Empty>No results found.</Command.Empty>
-                    {dropdownItems.map(({ groupName, items }) => (
-                      <React.Fragment key={groupName}>
-                        <Command.Group heading={groupName}>
-                          {Object.entries(items).map(
-                            ([key, { label, snippet }]) => (
-                              <Command.Item
-                                key={`${label}_${key}`}
-                                value={key}
-                                onSelect={(val) =>
-                                  addBlock(val as DropdownItemTypes)
-                                }
-                              >
-                                <AddBlockItem
-                                  type={key as DropdownItemTypes}
-                                  label={label}
-                                  snippet={snippet}
-                                />
-                              </Command.Item>
-                            )
-                          )}
-                        </Command.Group>
-                        <Separator />
-                      </React.Fragment>
-                    ))}
-                  </Command.List>
-                </ScrollArea.Viewport>
-              </Command>
-
-              <ScrollArea.Scrollbar orientation="vertical">
-                <ScrollArea.Thumb />
-              </ScrollArea.Scrollbar>
-            </ScrollArea.Root>
-          </DropdownContent>
-        </DropdownMenu.Portal>
-      </DropdownMenu.Root>
+            {dropdownItems.map(({ groupName, items }) => (
+              <React.Fragment key={groupName}>
+                <CommandGroup heading={groupName}>
+                  {Object.entries(items).map(([key, { label, snippet }]) => (
+                    <CommandItem
+                      key={`${label}_${key}`}
+                      value={key}
+                      onSelect={(val) => addBlock(val as DropdownItemTypes)}
+                    >
+                      <AddBlockItem
+                        type={key as DropdownItemTypes}
+                        label={label}
+                        snippet={snippet}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </React.Fragment>
+            ))}
+          </Command>
+        </DropdownMenuContent>
+      </DropdownMenu>
     );
   }
 );

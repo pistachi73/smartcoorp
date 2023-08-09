@@ -1,7 +1,11 @@
-import { Command } from 'cmdk';
-import React, { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 
 import { ObjectEntries } from '@smartcoorp/smart-types';
+import {
+  CommandGroup,
+  CommandItem,
+  DefaultCommandItemContent,
+} from '@smartcoorp/ui/command';
 
 import { useBlockSelectionUpdaterContext } from '../../../../contexts/block-selection-context';
 import { useBlocksDBUpdaterContext } from '../../../../contexts/blocks-context';
@@ -11,7 +15,6 @@ import {
   useToolControlUpdaterContext,
 } from '../../../../contexts/tool-control-context/tool-control-context';
 import type { ListBlockProps } from '../../../../post-editor.types';
-import { ModifyBlockToolItem } from '../modify-block-tool-item';
 import type { ModifyBlockToolProps } from '../modify-block-tool.types';
 
 import { listModifyBlockToolsMap } from './list-tools.helper';
@@ -66,20 +69,28 @@ export const ListTools = memo<ModifyBlockToolProps>(
     );
 
     return (
-      <Command.Group heading={'List block actions'}>
-        {ObjectEntries(listModifyBlockToolsMap).map(([style, tool]) => {
-          const current = style === currentStyle;
-          return (
-            <Command.Item
-              key={`listTools-${style}`}
-              aria-current={current ? 'true' : 'false'}
-              onSelect={() => updateListStyle(style)}
-            >
-              <ModifyBlockToolItem tool={tool} current={current} />
-            </Command.Item>
-          );
-        })}
-      </Command.Group>
+      <CommandGroup heading={'List block actions'}>
+        {ObjectEntries(listModifyBlockToolsMap).map(
+          ([style, { icon, label, command }]) => {
+            const current = style === currentStyle;
+
+            return (
+              <CommandItem
+                key={`listTools-${style}`}
+                onSelect={() => updateListStyle(style)}
+                aria-current={current ? 'true' : 'false'}
+              >
+                <DefaultCommandItemContent
+                  label={label}
+                  command={command}
+                  icon={icon}
+                  size="small"
+                ></DefaultCommandItemContent>
+              </CommandItem>
+            );
+          }
+        )}
+      </CommandGroup>
     );
   }
 );

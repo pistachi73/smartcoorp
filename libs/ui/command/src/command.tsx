@@ -1,7 +1,6 @@
 import { Command as CommandPrimitive } from 'cmdk';
-import { FC, useEffect, useMemo } from 'react';
+import { FC } from 'react';
 
-import { ResizablePanel } from '@smartcoorp/smart-design';
 import { ScrollArea } from '@smartcoorp/ui/scroll-area';
 
 import { Styled as S } from './command.styles';
@@ -60,32 +59,38 @@ export const DefaultCommandItemContent: React.FC<DefaultCommandItemProps> = ({
   sizeConfined,
   sizeWide,
 }) => {
-  const commandKeyCodes = useMemo(
-    () => command?.map((key) => keyMapping[key] || key.toLowerCase()),
-    [command]
-  );
+  // const commandKeyCodes = useMemo(
+  //   () => command?.map((key) => keyMapping[key] || key.toLowerCase()),
+  //   [command]
+  // );
 
-  useEffect(() => {
-    if (command && onCommandPress) {
-      const handleKeyDown = (e: KeyboardEvent) => {
-        const isMetaKeyPressed = e.ctrlKey || e.metaKey;
-        const key = keyMapping[e.key.toLowerCase()] ?? e.key.toLowerCase();
-        const keysPressed = [...(isMetaKeyPressed ? ['meta'] : []), key];
-        const shouldTriggerOnCommandPress =
-          commandKeyCodes?.every((key) => keysPressed.includes(key)) ?? false;
+  // useEffect(() => {
+  //   if (command && onCommandPress) {
+  //     const handleKeyDown = (e: KeyboardEvent) => {
+  //       const isMetaKeyPressed = e.ctrlKey || e.metaKey;
+  //       const key = keyMapping[e.key.toLowerCase()] ?? e.key.toLowerCase();
+  //       const keysPressed = [...(isMetaKeyPressed ? ['meta'] : []), key];
+  //       const shouldTriggerOnCommandPress =
+  //         commandKeyCodes?.every((key) => keysPressed.includes(key)) ?? false;
 
-        if (shouldTriggerOnCommandPress) {
-          e.preventDefault();
-          e.stopPropagation();
-          onCommandPress();
-        }
-      };
-      document.addEventListener('keydown', handleKeyDown);
-      return () => {
-        document.removeEventListener('keydown', handleKeyDown);
-      };
-    }
-  }, [command, onCommandPress, commandKeyCodes]);
+  //       console.log({
+  //         shouldTriggerOnCommandPress,
+  //         command,
+  //         key: e.key,
+  //         meta: e.metaKey || e.ctrlKey,
+  //       });
+  //       if (shouldTriggerOnCommandPress) {
+  //         e.preventDefault();
+  //         e.stopPropagation();
+  //         onCommandPress();
+  //       }
+  //     };
+  //     document.addEventListener('keydown', handleKeyDown);
+  //     return () => {
+  //       document.removeEventListener('keydown', handleKeyDown);
+  //     };
+  //   }
+  // }, [command, onCommandPress, commandKeyCodes]);
 
   return (
     <S.ItemContainer>

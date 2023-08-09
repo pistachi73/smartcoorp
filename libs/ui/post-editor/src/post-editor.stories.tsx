@@ -17,28 +17,14 @@ export default {
   component: PostEditorComponent,
 
   parameters: {
+    maxWidth: true,
     docs: {
-      page: () => (
-        <>
-          <Title>Post Editor</Title>
-          <Subtitle>Post Editor component for SC projects</Subtitle>
-          <Description>##Overview</Description>
-          <Description>
-            Basic `PostEditor` component to perform blog post editing.
-          </Description>
-          <Description>##Usage</Description>
-          <Source
-            language="tsx"
-            code={`import { PostEditor } from '@smartcoorp/smart-design';`}
-          />
-          <Description>###Example</Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories title="References" />
-        </>
-      ),
+      description: {
+        component: 'Basic `PostEditor` component to perform blog post editing.',
+      },
     },
   },
+
   argTypes: {},
 } as Meta<typeof PostEditorComponent>;
 
