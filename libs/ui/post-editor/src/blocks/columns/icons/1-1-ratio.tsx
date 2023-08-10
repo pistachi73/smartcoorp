@@ -1,0 +1,77 @@
+import React from 'react';
+
+import { IconProps } from './icon.types';
+export const OneOneRatioIcon: React.FC<IconProps> = ({ width }) => (
+  <svg
+    width={width}
+    preserveAspectRatio="xMidYMid meet"
+    viewBox="0 0 62 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect
+      x="35.7466"
+      y="5.96198"
+      width="25.9635"
+      height="1.5"
+      rx="0.5"
+      fill="#D3D4DA"
+    />
+    <rect
+      x="35.7466"
+      y="10.962"
+      width="25.9635"
+      height="1.5"
+      rx="0.5"
+      fill="#D3D4DA"
+    />
+    <rect
+      x="35.7466"
+      y="15.962"
+      width="25.9635"
+      height="1.5"
+      rx="0.5"
+      fill="#D3D4DA"
+    />
+    <rect
+      x="35.7466"
+      y="0.961975"
+      width="25.9635"
+      height="1.5"
+      rx="0.5"
+      fill="#D3D4DA"
+    />
+    <rect
+      x="0.289673"
+      y="5.96198"
+      width="27.4569"
+      height="1.5"
+      rx="0.5"
+      fill="#D3D4DA"
+    />
+    <rect
+      x="0.289673"
+      y="0.961975"
+      width="27.4569"
+      height="1.5"
+      rx="0.5"
+      fill="#D3D4DA"
+    />
+    <rect
+      x="0.289673"
+      y="10.962"
+      width="27.4569"
+      height="1.5"
+      rx="0.5"
+      fill="#D3D4DA"
+    />
+    <rect
+      x="0.289673"
+      y="15.962"
+      width="27.4569"
+      height="1.5"
+      rx="0.5"
+      fill="#D3D4DA"
+    />
+  </svg>
+);

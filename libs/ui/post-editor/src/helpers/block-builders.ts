@@ -75,6 +75,9 @@ export const buildColumnsBlock = (
       chains: Array(columns)
         .fill(0)
         .map(() => `${blockId}-${nanoid()}`),
+      distribution: Array(columns)
+        .fill(0)
+        .map((_) => 1),
     },
   };
 };

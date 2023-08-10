@@ -17,11 +17,14 @@ export type CommandProps = {
   className?: string;
   /** Input placeholder */
   inputPlaceholder?: string;
+  /**@callback */
+  onKeyDown?: (e: React.KeyboardEvent) => void;
 };
 
 export type DefaultCommandItemProps = {
   /** Label of the command */
   label: string;
+
   /** Icon of the command */
   icon?: JSX.Element;
   /** Keys to be pressed */

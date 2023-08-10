@@ -1,10 +1,18 @@
-import { Command } from 'cmdk';
 import { memo } from 'react';
 
-import { ModifyBlockToolItem } from '../modify-block-tool-item';
+import { ObjectEntries } from '@smartcoorp/smart-types';
+import {
+  CommandGroup,
+  CommandItem,
+  DefaultCommandItemContent,
+} from '@smartcoorp/ui/command';
+
 import type { ModifyBlockToolProps } from '../modify-block-tool.types';
 
-import { sharedModifyBlockToolsMap } from './shared-tools.helper';
+import {
+  SharedModifyBlockTools,
+  sharedModifyBlockToolsMap,
+} from './shared-tools.helper';
 import { useSharedTools } from './use-shared-tools';
 
 export const SharedTools = memo<ModifyBlockToolProps>(
@@ -21,22 +29,38 @@ export const SharedTools = memo<ModifyBlockToolProps>(
       blockId,
     });
 
-    return (
-      <Command.Group>
-        <Command.Item onSelect={onMoveUp} disabled={isMoveUpDisabled}>
-          <ModifyBlockToolItem tool={sharedModifyBlockToolsMap.up} />
-        </Command.Item>
+    const onSelectMapping: Record<SharedModifyBlockTools, () => void> = {
+      up: onMoveUp,
+      down: onMoveDown,
+      delete: onDelete,
+      duplicate: onDuplicate,
+    };
 
-        <Command.Item onSelect={onDelete}>
-          <ModifyBlockToolItem tool={sharedModifyBlockToolsMap.delete} />
-        </Command.Item>
-        <Command.Item onSelect={onMoveDown} disabled={isMoveDownDisabled}>
-          <ModifyBlockToolItem tool={sharedModifyBlockToolsMap.down} />
-        </Command.Item>
-        <Command.Item onSelect={onDuplicate}>
-          <ModifyBlockToolItem tool={sharedModifyBlockToolsMap.duplicate} />
-        </Command.Item>
-      </Command.Group>
+    return (
+      <CommandGroup heading="Shared tools">
+        {ObjectEntries(sharedModifyBlockToolsMap).map(
+          ([key, { icon, label, command }]) => {
+            const disabled =
+              (key === 'up' && isMoveUpDisabled) ||
+              (key === 'down' && isMoveDownDisabled);
+            return (
+              <CommandItem
+                key={key}
+                onSelect={onSelectMapping[key]}
+                disabled={disabled}
+              >
+                <DefaultCommandItemContent
+                  label={label}
+                  command={command}
+                  icon={icon}
+                  onCommandPress={onSelectMapping[key]}
+                  size="small"
+                ></DefaultCommandItemContent>
+              </CommandItem>
+            );
+          }
+        )}
+      </CommandGroup>
     );
   }
 );

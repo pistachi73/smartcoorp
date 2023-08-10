@@ -20,7 +20,6 @@ export const sharedModifyBlockToolsMap: Record<
   },
   down: {
     label: 'Move down',
-
     command: ['&#8984;', '&#8595;'], // ⌘ ↓
     icon: <DownIcon width={10} />,
   },

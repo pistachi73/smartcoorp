@@ -33,9 +33,7 @@ export const BlockContent = styled.div<{ $selected?: boolean }>`
     `}
 `;
 
-export const BlockContainer = styled.div`
-  padding-left: ${space3XL};
-`;
+export const BlockContainer = styled.div``;
 
 export const InputBox = styled(Body).attrs(() => ({ noMargin: true }))<{
   $loading?: boolean;
@@ -82,8 +80,9 @@ export const PostEditorContainer = styled.div`
   border: 1px solid ${({ theme }) => theme.form.placeholderColor};
   border-radius: ${borderRadiusS};
   position: relative;
-  max-width: 768px;
-  min-width: 768px;
+  max-width: 1200px;
+  width: 100%;
+  /* min-width: 768px; */
   min-height: 100vh;
   margin: 0 auto;
   -webkit-backface-visibility: hidden !important;

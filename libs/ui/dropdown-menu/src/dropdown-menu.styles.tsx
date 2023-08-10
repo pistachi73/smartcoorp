@@ -23,7 +23,7 @@ const itemSpacing = `${spaceM} ${spaceM}`;
 const labelSpacing = `${spaceXS} ${spaceL}`;
 
 const Content = styled(DropdownMenu.Content)`
-  min-width: ${scale320};
+  /* min-width: ${scale320};
 
   width: 100%;
   padding: ${contentSpacing};
@@ -35,7 +35,7 @@ const Content = styled(DropdownMenu.Content)`
   border-width: 1px;
   border-style: solid;
   border-color: ${({ theme }) => theme.form.placeholderColor};
-  box-shadow: ${({ theme }) => theme.shadow.shadowM};
+  box-shadow: ${({ theme }) => theme.shadow.shadowM}; */
 
   /** Animation styles */
   animation-duration: ${motionTimeM};

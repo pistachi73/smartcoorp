@@ -12,8 +12,8 @@ import {
 export const ItemContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: ${spaceXS} ${spaceM};
+  margin-block: ${spaceXS};
+  width: 100%;
 `;
 export const IconContainer = styled.div`
   width: 45px;

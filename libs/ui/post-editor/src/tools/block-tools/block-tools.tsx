@@ -41,7 +41,7 @@ export const BlockTools = () => {
       <ToolsContainer
         style={{
           top: blockRefs.current[toolBlockIndex].offsetTop + 8,
-          left: blockRefs.current[toolBlockIndex].offsetLeft,
+          left: blockRefs.current[toolBlockIndex].offsetLeft - 44,
         }}
         animate={{ opacity: 1 }}
         initial={{ opacity: 0 }}

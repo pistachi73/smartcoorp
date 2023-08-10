@@ -14,7 +14,7 @@ export const DropdownMenuContent = React.forwardRef<
     <DropdownMenuPrimitive.Portal>
       <S.Content {...props} ref={forwardedRef}>
         {children}
-        <DropdownMenuPrimitive.Arrow />
+        {/* <DropdownMenuPrimitive.Arrow /> */}
       </S.Content>
     </DropdownMenuPrimitive.Portal>
   );
@@ -66,7 +66,7 @@ export const DropdownMenuSubContent = React.forwardRef<
         ref={forwardedRef}
       >
         {children}
-        <DropdownMenuPrimitive.Arrow />
+        {/* <DropdownMenuPrimitive.Arrow /> */}
       </S.SubContent>
     </DropdownMenuPrimitive.DropdownMenuPortal>
   );

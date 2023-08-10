@@ -53,7 +53,7 @@ export const sizes = {
     `,
 
     defaultCommandIconContainer: css`
-      width: ${scale110};
+      min-width: ${scale110};
       height: ${scale110};
     `,
   },
@@ -72,7 +72,7 @@ export const sizes = {
       padding: ${spaceXS} ${spaceM};
     `,
     defaultCommandIconContainer: css`
-      width: ${scale120};
+      min-width: ${scale120};
       height: ${scale120};
     `,
   },

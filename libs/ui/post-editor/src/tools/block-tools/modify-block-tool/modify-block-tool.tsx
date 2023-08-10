@@ -1,15 +1,14 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import {
-  DragHandleDots2Icon,
-  MagnifyingGlassIcon,
-} from '@radix-ui/react-icons';
-import * as ScrollArea from '@radix-ui/react-scroll-area';
-import { Command } from 'cmdk';
+import { DragHandleDots2Icon } from '@radix-ui/react-icons';
 import React, { NamedExoticComponent, useState } from 'react';
 import styled from 'styled-components';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Caption } from '@smartcoorp/ui/caption';
+import { Command } from '@smartcoorp/ui/command';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+} from '@smartcoorp/ui/dropdown-menu';
 import { spaceXS } from '@smartcoorp/ui/tokens';
 import { Tooltip } from '@smartcoorp/ui/tooltip';
 
@@ -21,7 +20,7 @@ import {
   useToolControlUpdaterContext,
 } from '../../../contexts/tool-control-context/tool-control-context';
 import type { BlockType } from '../../../post-editor.types';
-import { DropdownContent, DropdownTrigger } from '../block-tools.styles';
+import { DropdownTrigger } from '../block-tools.styles';
 
 import { HeaderTools } from './header-tools/header-tools';
 import { ListTools } from './list-tools/list-tools';
@@ -78,7 +77,7 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
   return (
-    <DropdownMenu.Root
+    <DropdownMenu
       open={isModifyBlockMenuOpened}
       onOpenChange={(isOpen) => {
         setIsModifyBlockMenuOpened(isOpen);
@@ -94,9 +93,10 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
       <Tooltip
         open={isTooltipOpen}
         onOpenChange={setIsTooltipOpen}
+        triggerAsChild
         trigger={
-          <DropdownTrigger asChild>
-            <DragHandleDots2Icon height={8} width={8} />
+          <DropdownTrigger>
+            <DragHandleDots2Icon height={16} width={16} />
           </DropdownTrigger>
         }
         content={
@@ -110,56 +110,28 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
           </TooltipContentContainer>
         }
       />
-
-      <DropdownMenu.Portal>
-        <DropdownContent
-          side="bottom"
-          align="start"
-          sideOffset={15}
-          animate={{ scale: 1 }}
-          initial={{ scale: 0.95 }}
-          onCloseAutoFocus={(e: Event) => e.preventDefault()}
+      <DropdownMenuContent
+        side="bottom"
+        align="start"
+        sideOffset={5}
+        onCloseAutoFocus={(e: Event) => e.preventDefault()}
+      >
+        <Command
+          label="Filter actions..."
+          size="small"
+          onKeyDown={(e) => {
+            if (e.key !== 'Escape') e.stopPropagation();
+            handleSharedToolsKeyDown(e);
+          }}
         >
-          <ScrollArea.Root>
-            <Command
-              label="Filter actions..."
-              onKeyDown={(e) => {
-                if (e.key !== 'Escape') e.stopPropagation();
-                handleSharedToolsKeyDown(e);
-              }}
-            >
-              <div cmdk-input-wrapper="">
-                <MagnifyingGlassIcon
-                  aria-hidden={!isModifyBlockMenuOpened}
-                  width="20px"
-                  height="20px"
-                />
-                <Command.Input placeholder="Filter actions..." autoFocus />
-              </div>
-              <ScrollArea.Viewport>
-                <Command.List>
-                  <Command.Empty>No results found</Command.Empty>
-                  {blockToolMapping[blockType].map((tool) => {
-                    const Tool = toolMapping[tool];
-                    return (
-                      <Tool
-                        key={tool}
-                        blockId={blockId}
-                        blockIndex={blockIndex}
-                      />
-                    );
-                  })}
-                </Command.List>
-              </ScrollArea.Viewport>
-            </Command>
-
-            <ScrollArea.Scrollbar orientation="vertical">
-              <ScrollArea.Thumb />
-            </ScrollArea.Scrollbar>
-            <ScrollArea.Corner />
-          </ScrollArea.Root>
-        </DropdownContent>
-      </DropdownMenu.Portal>
-    </DropdownMenu.Root>
+          {blockToolMapping[blockType].map((tool) => {
+            const Tool = toolMapping[tool];
+            return (
+              <Tool key={tool} blockId={blockId} blockIndex={blockIndex} />
+            );
+          })}
+        </Command>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
