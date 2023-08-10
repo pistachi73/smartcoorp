@@ -75,7 +75,12 @@ export const BlockChain = React.memo(
                 (chainId) => blocksDB.chains[chainId]
               );
               return (
-                <Column key={block.id} columns={chains.length} chains={chains}>
+                <Column
+                  key={block.id}
+                  blockId={block.id}
+                  columns={chains.length as 2 | 3}
+                  distribution={block.data.distribution}
+                >
                   {chains.map((chain, i) => {
                     return renderBlockChain(
                       chain,
@@ -93,13 +98,7 @@ export const BlockChain = React.memo(
     );
 
     return (
-      <div
-        style={{
-          marginLeft: '-48px',
-        }}
-      >
-        {chain ? renderBlockChain(chain, chainId, 0, 'root') : null}
-      </div>
+      <div>{chain ? renderBlockChain(chain, chainId, 0, 'root') : null}</div>
     );
   }
 );

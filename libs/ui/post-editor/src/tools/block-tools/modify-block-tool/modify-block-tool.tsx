@@ -22,7 +22,6 @@ import {
 import type { BlockType } from '../../../post-editor.types';
 import { DropdownTrigger } from '../block-tools.styles';
 
-import { ColumnTools } from './column-tools/column-tools';
 import { HeaderTools } from './header-tools/header-tools';
 import { ListTools } from './list-tools/list-tools';
 import {
@@ -40,12 +39,10 @@ const toolMapping: Record<
   shared: SharedTools,
   header: HeaderTools,
   list: ListTools,
-  '2-columns': ColumnTools,
-  '3-columns': ColumnTools,
 };
 
 const blockToolMapping: Record<
-  Exclude<BlockType, 'columns'> | '2-columns' | '3-columns',
+  Exclude<BlockType, 'columns'>,
   AvailableTools[]
 > = {
   header: ['shared', 'header'],
@@ -53,8 +50,6 @@ const blockToolMapping: Record<
   paragraph: ['shared'],
   image: ['shared'],
   link: ['shared'],
-  '2-columns': ['2-columns'],
-  '3-columns': ['3-columns'],
 };
 
 const TooltipContentContainer = styled.div`
@@ -90,8 +85,7 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
           setSelectedBlocks([blockIndex]);
         } else {
           setSelectedBlocks([]);
-          if (blockType !== '2-columns' && blockType !== '3-columns')
-            focusField([blockIndex, 0], 'end');
+          focusField([blockIndex, 0], 'end');
           setToolBlockIndex(-1);
         }
       }}

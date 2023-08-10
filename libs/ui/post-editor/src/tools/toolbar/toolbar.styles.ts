@@ -4,12 +4,11 @@ import { css, styled } from 'styled-components';
 import { Button } from '@smartcoorp/ui/button';
 import { Caption } from '@smartcoorp/ui/caption';
 import {
+  borderRadiusS,
   borderRadiusXXS,
   getFocusShadow,
   motionEasingStandard,
   motionTimeXS,
-  primary,
-  primary_RGBA,
   scale060,
   scale130,
   scale140,
@@ -24,9 +23,16 @@ export const Container = styled.div`
 
   height: ${scale140};
 
+  position: sticky;
+  top: 0;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  background-color: white;
+  border-top-left-radius: ${borderRadiusS};
+  border-top-right-radius: ${borderRadiusS};
 
   ${({ theme }) =>
     css`

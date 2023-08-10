@@ -59,6 +59,7 @@ export type ColumnBlock = SharedBlockProps & {
   type: 'columns';
   data: {
     chains: string[];
+    distribution?: number[];
   };
 };
 

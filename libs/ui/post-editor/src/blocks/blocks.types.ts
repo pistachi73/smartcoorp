@@ -50,8 +50,9 @@ export type LinkBlockContainerProps = SharedBlockContainerProps & {
 };
 
 export type ColumnBlockProps = {
-  columns: number;
-  chains?: string[][];
+  columns: 2 | 3;
+  blockId: string;
+  distribution?: number[];
   children: React.ReactNode;
 };
 
