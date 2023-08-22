@@ -12,9 +12,9 @@ export const Grid: FC<GridProps> = ({
 }) => {
   if (gridRuler) {
     return (
-      <div style={{ position: 'relative' }}>
+      <div className={className} style={{ position: 'relative' }}>
         <GridRuler />
-        <Styled.Grid>{children}</Styled.Grid>
+        <Styled.Grid className={className}>{children}</Styled.Grid>
       </div>
     );
   }

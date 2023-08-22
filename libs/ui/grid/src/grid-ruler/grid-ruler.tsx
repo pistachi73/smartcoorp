@@ -16,6 +16,7 @@ const StyledGridRuler = styled.div`
   display: grid;
   width: 100%;
   min-height: 50vh;
+  height: 100%;
   grid-template-columns: repeat(12, 1fr);
 
   column-gap: calc(${scale020} * 2);

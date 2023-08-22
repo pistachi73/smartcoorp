@@ -2,6 +2,8 @@
 
 import { Block } from 'libs/ui/post-editor/src/post-editor.types';
 
+import { Grid } from '@smartcoorp/ui/grid';
+
 import { Column } from './components/columns';
 import { Header } from './components/header';
 import { Image } from './components/image';
@@ -15,7 +17,7 @@ export const Post = ({ title, content }: PostProps) => {
   const chain = content?.chains?.['main'];
 
   const renderBlockChain = (chain: string[]) => (
-    <div>
+    <>
       {chain.map((blockId) => {
         const block: Block = content.blocks[blockId];
         const blockType = block.type;
@@ -37,16 +39,20 @@ export const Post = ({ title, content }: PostProps) => {
               chainId,
             }));
             return (
-              <Column key={block.id} columns={chains.length}>
+              <Column
+                key={block.id}
+                columns={chains.length}
+                distribution={block.data.distribution}
+              >
                 {chains.map(({ chain, chainId }, i) => {
-                  return <div key={chainId}>{renderBlockChain(chain)}</div>;
+                  return renderBlockChain(chain);
                 })}
               </Column>
             );
           }
         }
       })}
-    </div>
+    </>
   );
 
   return (

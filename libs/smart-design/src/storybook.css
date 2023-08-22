@@ -33,3 +33,7 @@
 .css-11xgcgt {
   z-index: 0 !important;
 }
+
+a {
+  border: none !important;
+}

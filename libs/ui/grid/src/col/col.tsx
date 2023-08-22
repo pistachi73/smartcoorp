@@ -12,6 +12,9 @@ export const Col: FC<ColProps> = ({
   offset,
   offsetConfined,
   offsetWide,
+  columnSpacing,
+  columnSpacingConfined,
+  columnSpacingWide,
 }) => {
   return (
     <StyledCol
@@ -22,6 +25,9 @@ export const Col: FC<ColProps> = ({
       $offset={offset}
       $offsetConfined={offsetConfined}
       $offsetWide={offsetWide}
+      $columnSpacing={columnSpacing}
+      $columnSpacingConfined={columnSpacingConfined}
+      $columnSpacingWide={columnSpacingWide}
     >
       {children}
     </StyledCol>

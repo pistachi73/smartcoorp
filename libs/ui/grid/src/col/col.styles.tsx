@@ -17,6 +17,9 @@ type ColTransientProps = {
   $offset?: ColOffset;
   $offsetConfined?: ColOffset;
   $offsetWide?: ColOffset;
+  $columnSpacing?: `${string}px`;
+  $columnSpacingConfined?: `${string}px`;
+  $columnSpacingWide?: `${string}px`;
 };
 
 export const Col = styled.div<ColTransientProps>`
@@ -29,16 +32,12 @@ export const Col = styled.div<ColTransientProps>`
   ${({ $offset }) =>
     $offset &&
     css`
-      margin-left: ${($offset / 12) * 100}% !important;
+      margin-left: ${($offset / 12) * 100}%;
     `}
 
-  padding-left: ${scale020};
-  padding-right: ${scale020};
+  padding-inline : ${({ $columnSpacing }) => $columnSpacing || scale020};
 
   @media ${mediaConfined} {
-    padding-left: ${scale040};
-    padding-right: ${scale040};
-
     ${({ $sizeConfined }) =>
       $sizeConfined &&
       css`
@@ -50,6 +49,10 @@ export const Col = styled.div<ColTransientProps>`
       css`
         margin-left: ${($offsetConfined / 12) * 100}%;
       `}
+
+
+      padding-inline: ${({ $columnSpacingConfined }) =>
+      $columnSpacingConfined || scale040}
   }
 
   @media ${mediaWide} {
@@ -67,5 +70,8 @@ export const Col = styled.div<ColTransientProps>`
       css`
         margin-left: ${($offsetWide / 12) * 100}%;
       `}
+
+      padding-inline: ${({ $columnSpacingWide }) =>
+      $columnSpacingWide || scale060}
   }
 `;

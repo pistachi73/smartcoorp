@@ -33,6 +33,7 @@ export const getFocusShadow = ({
   transition-property: box-shadow;
   transition-duration: ${motionTimeXXS};
   transition-timing-function: ${motionEasingStandard};
+
   border-width: 1px;
   border-style: solid;
 

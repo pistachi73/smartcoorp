@@ -28,7 +28,7 @@ export const StyledSkeleton = styled.div<TransientSkeletonProps>`
   width: ${({ $width }) => $width};
   height: ${({ $height }) => $height};
   border-radius: 0.25rem;
-  display: inline-flex;
+  /* display: inline-flex; */
   line-height: 1;
 
   position: relative;
