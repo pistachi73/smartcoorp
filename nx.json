@@ -54,7 +54,6 @@
     ],
     "sharedGlobals": ["{workspaceRoot}/babel.config.json"]
   },
-  "defaultProject": "smart-backend",
   "generators": {
     "@nx/react": {
       "application": {

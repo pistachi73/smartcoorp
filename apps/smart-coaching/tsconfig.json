@@ -12,7 +12,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "types": ["jest", "node"],
+    "types": [
+      "jest",
+      "node"
+    ],
     "plugins": [
       {
         "name": "next"
@@ -25,8 +28,11 @@
     "**/*.js",
     "**/*.jsx",
     "next-env.d.ts",
-    "../../apps/smart-coaching/.next/types/**/*.ts"
+    "../../apps/smart-coaching/.next/types/**/*.ts",
+    "../../dist/apps/smart-coaching/.next/types/**/*.ts"
   ],
-
-  "exclude": ["node_modules", "jest.config.ts"]
+  "exclude": [
+    "node_modules",
+    "jest.config.ts"
+  ]
 }
