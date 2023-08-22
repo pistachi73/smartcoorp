@@ -109,6 +109,14 @@ export const Default: TemplateProps<PostProps> = {
           type: 'paragraph',
           chainId: 'main',
         },
+        HlppPBm8oH: {
+          id: 'HlppPBm8oH',
+          data: {
+            url: 'https://smartcoorp.s3.eu-north-1.amazonaws.com/blog-post-images/2/HlppPBm8oH.jpg',
+          },
+          type: 'image',
+          chainId: 'dSiw8KETKQ-qgjmJ96IXQ',
+        },
         QB8v7i9N7Q: {
           id: 'QB8v7i9N7Q',
           data: {
@@ -126,13 +134,13 @@ export const Default: TemplateProps<PostProps> = {
           type: 'paragraph',
           chainId: 'main',
         },
-        R4dsDjNV1d: {
-          id: 'R4dsDjNV1d',
+        QtqL7nKdgG: {
+          id: 'QtqL7nKdgG',
           data: {
-            text: '',
+            url: 'https://smartcoorp.s3.eu-north-1.amazonaws.com/blog-post-images/2/QtqL7nKdgG.jpg',
           },
-          type: 'paragraph',
-          chainId: '2IuO7yysrt-wRT7D2Ag6z',
+          type: 'image',
+          chainId: 'main',
         },
         RE9FBLOIPY: {
           id: 'RE9FBLOIPY',
@@ -140,19 +148,6 @@ export const Default: TemplateProps<PostProps> = {
             text: '<a href="google.com">InVision</a> is a top collaboration and workflow platform, and as such, they take their blog’s design very seriously. On the whole, this a very clean blog, with ample use of negative space, tasteful animations (such as the use of a parallax header), and readable, well-set typography.',
           },
           type: 'paragraph',
-          chainId: 'main',
-        },
-        UR0ICCmY9q: {
-          id: 'UR0ICCmY9q',
-          data: {
-            items: [
-              'Add Text Widget',
-              'Switch on Drop Cap',
-              'Customize the Drop Cap style',
-            ],
-            style: 'ordered',
-          },
-          type: 'list',
           chainId: 'main',
         },
         WxgdbnwZQ4: {
@@ -169,6 +164,28 @@ export const Default: TemplateProps<PostProps> = {
             text: 'Fortunately, high-performing blogs are a great source of inspiration when you’re looking for design ideas. In addition, you don’t have to be a design professional to replicate and incorporate these elements into your own blog. Instead, you can use Elementor to make your job quick and easy.',
           },
           type: 'paragraph',
+          chainId: 'main',
+        },
+        dSiw8KETKQ: {
+          id: 'dSiw8KETKQ',
+          data: {
+            chains: ['dSiw8KETKQ-qgjmJ96IXQ', 'dSiw8KETKQ-VXLeK0B9f3'],
+            distribution: [1, 1],
+          },
+          type: 'columns',
+          chainId: 'main',
+        },
+        ddl7HAPILY: {
+          id: 'ddl7HAPILY',
+          data: {
+            items: [
+              'Add Text Widget',
+              'Switch on Drop Cap',
+              'Customize the Drop Cap style',
+            ],
+            style: 'ordered',
+          },
+          type: 'list',
           chainId: 'main',
         },
         iTrAEtlN5O: {
@@ -197,14 +214,6 @@ export const Default: TemplateProps<PostProps> = {
           type: 'image',
           chainId: 'main',
         },
-        qYd8YwuvfP: {
-          id: 'qYd8YwuvfP',
-          data: {
-            text: '',
-          },
-          type: 'paragraph',
-          chainId: '2IuO7yysrt-wRT7D2Ag6z',
-        },
         qzqrkYB4Y0: {
           id: 'qzqrkYB4Y0',
           data: {
@@ -212,6 +221,14 @@ export const Default: TemplateProps<PostProps> = {
           },
           type: 'paragraph',
           chainId: 'main',
+        },
+        sOWqzwbtjA: {
+          id: 'sOWqzwbtjA',
+          data: {
+            url: 'https://smartcoorp.s3.eu-north-1.amazonaws.com/blog-post-images/2/sOWqzwbtjA.jpg',
+          },
+          type: 'image',
+          chainId: 'dSiw8KETKQ-VXLeK0B9f3',
         },
         xeO9HhlacE: {
           id: 'xeO9HhlacE',
@@ -251,8 +268,10 @@ export const Default: TemplateProps<PostProps> = {
           'QakljlE7Z9',
           '2JWcNZYt1E',
           'qzqrkYB4Y0',
-          'UR0ICCmY9q',
+          'ddl7HAPILY',
           '2IuO7yysrt',
+          'QtqL7nKdgG',
+          'dSiw8KETKQ',
         ],
         '2IuO7yysrt-EQp02oryAy': ['zC7rYu5BN2', 'E2hn3AkLf0', '6hXXbJqtEw'],
         '2IuO7yysrt-wRT7D2Ag6z': [
@@ -260,9 +279,9 @@ export const Default: TemplateProps<PostProps> = {
           '95YkJFkyOY',
           'xeO9HhlacE',
           '9brKrdsQ2S',
-          'R4dsDjNV1d',
-          'qYd8YwuvfP',
         ],
+        'dSiw8KETKQ-qgjmJ96IXQ': ['HlppPBm8oH'],
+        'dSiw8KETKQ-VXLeK0B9f3': ['sOWqzwbtjA'],
       },
     },
   },

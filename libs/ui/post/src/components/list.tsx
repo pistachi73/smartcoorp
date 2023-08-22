@@ -5,15 +5,9 @@ import { css, styled } from 'styled-components';
 import { Body } from '@smartcoorp/ui/body';
 import {
   gray800,
-  primary,
   primary_RGBA,
+  scale080,
   scale090,
-  scale100,
-  scale120,
-  scale130,
-  scale140,
-  scale150,
-  scale200,
   space3XL,
   space4XL,
   spaceL,
@@ -24,20 +18,18 @@ import {
 
 const OrderedList = styled.ol<{ $listId: string }>`
   list-style: none;
-  margin: ${spaceXL} 0;
-  margin-top: ${spaceXXL};
+  margin: ${spaceL} 0;
   counter-reset: ${(props) => props.$listId};
-  padding-left: ${space4XL};
+  padding-left: ${space3XL};
 `;
 const UnorderedList = styled.ul`
   list-style: none;
-  margin: ${spaceXL} 0;
-  padding-left: ${space4XL};
+  margin: ${spaceL} 0;
+  padding-left: ${space3XL};
 `;
 
 const ListItem = styled.li<{ $listId?: string }>`
-  font-size: ${scale090};
-  margin-bottom: ${spaceL};
+  margin-bottom: ${spaceM};
   color: ${gray800};
   align-items: center;
 
@@ -54,11 +46,14 @@ const ListItem = styled.li<{ $listId?: string }>`
     `}
 
   &::before {
-    color: rgba(${primary_RGBA}, 0.8);
+    font-size: ${scale080};
+
+    color: rgba(${primary_RGBA}, 1);
     margin-left: -1.5em;
     position: absolute;
-    top: 1px;
+    top: 0;
     content: ${({ $listId }) => ($listId ? `counter(${$listId}) '. '` : `'•'`)};
+    line-height: 1.7;
   }
 `;
 

@@ -81,6 +81,8 @@ const TableOfContentsLink = styled.a<{ $selected?: boolean }>`
       color: ${$selected ? primary : gray500} !important;
     }
   `}
+
+  border: none;
 `;
 
 const TableOfCntentsList = styled.ul`

@@ -88,7 +88,7 @@ export const lineHeights = {
     line-height: 1.25;
   `,
   increased: css`
-    line-height: 1.65;
+    line-height: 1.7;
   `,
 };
 
