@@ -21,7 +21,7 @@
       "@smart-admin/trpc": ["apps/smart-admin/utils/trpc/index.ts"],
       "@smart-api/test/*": ["libs/smart-api/src/utils/test/*"],
       "@smart-coaching/trpc": ["apps/smart-coaching/util/trpc/index.ts"],
-      "@smart-coaching/utils/*": ["apps/smart-admin/utils/*"],
+      "@smart-coaching/utils/*": ["apps/smart-coaching/utils/*"],
       "@smartcoorp/smart-api": ["libs/smart-api/src/index.ts"],
       "@smartcoorp/smart-design": ["libs/smart-design/src/index.ts"],
       "@smartcoorp/smart-hooks": ["libs/smart-hooks/src/index.ts"],
