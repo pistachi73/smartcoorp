@@ -1,12 +1,20 @@
 'use client';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { getFetch, httpBatchLink, loggerLink } from '@trpc/client';
 import { useState } from 'react';
-import superjson from 'superjson';
 
 import { clientTRPC } from './client-api';
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') return ''; // browser should use relative url
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
+  return `http://localhost:${4201}`; // dev SSR should use localhost
+};
 
 export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -14,13 +22,16 @@ export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
   const [queryClient] = useState(
     () =>
       new QueryClient({
-        defaultOptions: { queries: { staleTime: 5000 } },
+        defaultOptions: {
+          queries: { staleTime: 5000, refetchOnWindowFocus: false },
+        },
+        queryCache: new QueryCache({
+          onError: (error) => console.log(error),
+        }),
       })
   );
 
-  const url = process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : 'http://localhost:4201/api/trpc/';
+  const url = `${getBaseUrl()}/api/trpc`;
 
   const [trpcClient] = useState(() =>
     clientTRPC.createClient({
@@ -35,6 +46,11 @@ export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
             return fetch(input, {
               ...init,
               credentials: 'include',
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST',
+                'Access-Control-Allow-Headers': '*',
+              },
             });
           },
         }),
