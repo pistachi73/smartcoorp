@@ -20,7 +20,7 @@
       "@smart-admin/media": ["apps/smart-admin/utils/media/index.ts"],
       "@smart-admin/trpc": ["apps/smart-admin/utils/trpc/index.ts"],
       "@smart-api/test/*": ["libs/smart-api/src/utils/test/*"],
-      "@smart-coaching/trpc": ["apps/smart-coaching/util/trpc/index.ts"],
+      "@smart-coaching/types": ["apps/smart-coaching/types/index.ts"],
       "@smart-coaching/utils/*": ["apps/smart-coaching/utils/*"],
       "@smartcoorp/smart-api": ["libs/smart-api/src/index.ts"],
       "@smartcoorp/smart-design": ["libs/smart-design/src/index.ts"],
@@ -39,6 +39,7 @@
       "@smartcoorp/ui/date-single-picker": [
         "libs/ui/date-single-picker/src/index.ts"
       ],
+      "@smartcoorp/ui/device-only": ["libs/ui/device-only/src/index.ts"],
       "@smartcoorp/ui/dialog": ["libs/ui/dialog/src/index.ts"],
       "@smartcoorp/ui/dot-loading": ["libs/ui/dot-loading/src/index.ts"],
       "@smartcoorp/ui/dropdown-menu": ["libs/ui/dropdown-menu/src/index.ts"],
