@@ -33,6 +33,10 @@
       "@smartcoorp/ui/checkbox": ["libs/ui/checkbox/src/index.ts"],
       "@smartcoorp/ui/command": ["libs/ui/command/src/index.ts"],
       "@smartcoorp/ui/data-table": ["libs/ui/data-table/src/index.ts"],
+      "@smart-editor/components/*": ["apps/smart-editor/components/*"],
+      "@smart-editor/utils/*": ["apps/smart-editor/utils/*"],
+      "@smart-editor/types": ["apps/smart-editor/types/index.ts"],
+
       "@smartcoorp/ui/date-range-picker": [
         "libs/ui/date-range-picker/src/index.ts"
       ],
