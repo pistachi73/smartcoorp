@@ -1,4 +1,3 @@
-import { Role } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { NextAuthOptions } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
@@ -6,9 +5,8 @@ import Credentials from 'next-auth/providers/credentials';
 import prisma from '../db/client';
 import { loginSchema } from '../trpc/router/auth.router';
 
-export const authorize = async (
-  credentials: Record<'email' | 'password', string> | undefined,
-  roleCheck?: Role
+const authorize = async (
+  credentials: Record<'email' | 'password', string> | undefined
 ) => {
   const creds = await loginSchema.parseAsync(credentials);
 
@@ -17,10 +15,6 @@ export const authorize = async (
   });
 
   if (!user) {
-    return null;
-  }
-
-  if (roleCheck && user.role !== roleCheck) {
     return null;
   }
 
@@ -34,12 +28,11 @@ export const authorize = async (
     id: user.id,
     email: user.email,
     username: user.username,
-    role: user.role,
     profileImageUrl: user.profileImageUrl,
   };
 };
 
-export const nextAuthOptions: NextAuthOptions = {
+export const smartEditorAuthConfig: NextAuthOptions = {
   providers: [
     Credentials({
       id: 'credentials',
@@ -56,21 +49,6 @@ export const nextAuthOptions: NextAuthOptions = {
       //@ts-ignore
       authorize: async (credentials) => authorize(credentials),
     }),
-    Credentials({
-      id: 'admin-credentials',
-      name: 'admin-credentials',
-      credentials: {
-        email: {
-          label: 'Email',
-          type: 'email',
-          placeholder: 'jsmith@gmail.com',
-        },
-        password: { label: 'Password', type: 'password' },
-      },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
-      authorize: async (credentials) => authorize(credentials, Role.ADMIN),
-    }),
   ],
 
   callbacks: {
@@ -79,7 +57,6 @@ export const nextAuthOptions: NextAuthOptions = {
         token.id = user.id;
         token.email = user.email;
         token.username = user.username;
-        token.role = user.role;
       }
 
       return token;
@@ -88,7 +65,6 @@ export const nextAuthOptions: NextAuthOptions = {
       if (token) {
         session.id = token.id;
         session.user.username = token.username;
-        session.user.role = token.role;
       }
 
       return session;
@@ -107,6 +83,4 @@ export const nextAuthOptions: NextAuthOptions = {
     signIn: '/login',
     newUser: '/sign-up',
   },
-
-  // ...
 };
