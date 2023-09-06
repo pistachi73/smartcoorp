@@ -329,6 +329,7 @@ const Loading = styled(DotLoading)`
 const Text = styled.span<TextTransientProps>`
   display: inline-flex;
   margin: 0;
+  letter-spacing: -0.05em;
 
   ${({ $loading }) =>
     $loading &&

@@ -3,4 +3,5 @@ export {
   type DeviceType,
   DeviceOnlyProvider,
   useDeviceType,
+  SCREENS,
 } from './device-only-provider';

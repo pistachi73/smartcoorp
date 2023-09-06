@@ -1,16 +1,19 @@
+'use client';
+
 import styled from 'styled-components';
 
-import { spaceL } from '@smartcoorp/ui/tokens';
+import { mediaConfined, spaceL, spaceS } from '@smartcoorp/ui/tokens';
 
-const WidthLimiter = styled.div`
+export const WidthLimiter = styled.div`
   margin: 0 auto;
-  max-width: 1320px;
+  max-width: 1200px;
   width: 100%;
 
-  padding-left: ${spaceL};
-  padding-right: ${spaceL};
-`;
+  padding-left: ${spaceS};
+  padding-right: ${spaceS};
 
-export const Styled = {
-  WidthLimiter,
-};
+  @media (${mediaConfined}) {
+    padding-left: ${spaceL};
+    padding-right: ${spaceL};
+  }
+`;

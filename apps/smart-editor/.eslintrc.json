@@ -13,7 +13,8 @@
         "@next/next/no-html-link-for-pages": [
           "error",
           "apps/smart-editor/pages"
-        ]
+        ],
+        "@next/next/no-img-element": "off"
       }
     },
     {
