@@ -7,7 +7,7 @@ import { DeviceOnlyProvider } from '@smartcoorp/ui/device-only';
 import { Test } from '../components/test-component';
 
 const Page = async () => {
-  const { deviceType } = getHeaders(headers());
+  const { deviceType } = getHeaders();
   return (
     <>
       Hello cookie coaching

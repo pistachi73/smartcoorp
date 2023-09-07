@@ -24,7 +24,7 @@ export const focusShadow = css`
 export const getFocusShadow = ({
   color = primary,
   colorRGBA = primary_RGBA,
-  shadowWidth,
+  shadowWidth = 3,
 }: {
   color?: string;
   colorRGBA?: string;
