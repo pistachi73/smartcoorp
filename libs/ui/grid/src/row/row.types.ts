@@ -7,4 +7,10 @@ export type RowProps = React.ComponentProps<typeof Row> & {
   className?: string;
   /** Remove margin-bottom from row */
   noMargin?: boolean;
+  /** The gap spacing of the gap on mobile screens or larger */
+  gap?: `${string}px`;
+  /** The gap spacing of the gap on tablet screens or larger */
+  gapConfined?: `${string}px`;
+  /** The gap spacing of the gap on desktop screens or larger */
+  gapWide?: `${string}px`;
 };

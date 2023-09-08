@@ -25,7 +25,7 @@ export const RelativeWidthLimiter = styled(WidthLimiter)`
   overflow: hidden;
 `;
 
-export const FooterContainer = styled.div`
+export const FooterContainer = styled.footer`
   position: relative;
 
   ${({ theme: { SmartEditor } }) => css`

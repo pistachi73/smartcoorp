@@ -1,24 +1,21 @@
-import { FC } from 'react';
-
 import { GridRuler } from '../grid-ruler';
 
-import { Styled } from './grid.styles';
+import { GridContainer } from './grid.styles';
 import { GridProps } from './grid.types';
 
-export const Grid: FC<GridProps> = ({
-  children,
-  gridRuler = false,
-  className,
-}) => {
+export const Grid = ({ children, gridRuler = false, className }: GridProps) => {
   if (gridRuler) {
     return (
-      <div className={className} style={{ position: 'relative' }}>
+      <div
+        className={className}
+        style={{ position: 'relative', width: '100%' }}
+      >
         <GridRuler />
-        <Styled.Grid className={className}>{children}</Styled.Grid>
+        <GridContainer className={className}>{children}</GridContainer>
       </div>
     );
   }
-  return <Styled.Grid className={className}>{children}</Styled.Grid>;
+  return <GridContainer className={className}>{children}</GridContainer>;
 };
 
 Grid.displayName = 'Grid';

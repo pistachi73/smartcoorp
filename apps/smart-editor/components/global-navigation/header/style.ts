@@ -2,11 +2,11 @@
 
 import { css, styled } from 'styled-components';
 
-import { scale170, scale190, spaceL } from '@smartcoorp/ui/tokens';
+import { scale180, spaceL } from '@smartcoorp/ui/tokens';
 import { WidthLimiter } from '@smartcoorp/ui/width-limiter';
 
-export const HeaderContainer = styled.div`
-  height: ${scale190};
+export const HeaderContainer = styled.header`
+  height: ${scale180};
   display: flex;
   align-items: center;
 

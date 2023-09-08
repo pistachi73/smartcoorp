@@ -18,10 +18,10 @@ export type ColProps = {
   offsetConfined?: ColOffset;
   /** The offset of the column on desktop screens or larger (1 - 12 columns) */
   offsetWide?: ColOffset;
-  /** The column spacing of the column on mobile screens or larger */
-  columnSpacing?: `${string}px`;
-  /** The column spacing of the column on tablet screens or larger */
-  columnSpacingConfined?: `${string}px`;
-  /** The column spacing of the column on desktop screens or larger */
-  columnSpacingWide?: `${string}px`;
+  /** The gap spacing of the gap on mobile screens or larger */
+  gap?: `${string}px`;
+  /** The gap spacing of the gap on tablet screens or larger */
+  gapConfined?: `${string}px`;
+  /** The gap spacing of the gap on desktop screens or larger */
+  gapWide?: `${string}px`;
 };

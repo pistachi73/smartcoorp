@@ -1,3 +1,5 @@
+'use client';
+
 import styled, { css } from 'styled-components';
 
 import {
@@ -6,44 +8,52 @@ import {
   scale020,
   scale040,
   scale060,
+  spaceL,
+  spaceM,
+  spaceXL,
 } from '@smartcoorp/ui/tokens';
 
 type RowTransientProps = {
   $noMargin?: boolean;
+  $gap?: `${string}px`;
+  $gapConfined?: `${string}px`;
+  $gapWide?: `${string}px`;
+};
+
+export const defaultGapSpacing = {
+  small: spaceM,
+  confined: spaceL,
+  wide: spaceXL,
 };
 
 export const Row = styled.div<RowTransientProps>`
+  max-width: 100%;
   display: flex;
   flex-wrap: wrap;
 
-  margin-left: -${scale020};
-  margin-right: -${scale020};
+  gap: ${({ $gap }) => $gap || defaultGapSpacing.small};
 
   ${({ $noMargin }) =>
     !$noMargin &&
     css`
-      margin-bottom: calc(${scale020} * 2);
+      margin-bottom: calc(${defaultGapSpacing.small} * 2);
     `};
 
   @media ${mediaConfined} {
-    margin-left: -${scale040};
-    margin-right: -${scale040};
-
     ${({ $noMargin }) =>
       !$noMargin &&
       css`
-        margin-bottom: calc(${scale040} * 2);
+        margin-bottom: calc(${defaultGapSpacing.confined} * 2);
       `};
+    gap: ${({ $gapConfined }) => $gapConfined || defaultGapSpacing.confined};
   }
 
   @media ${mediaWide} {
-    margin-left: -${scale060};
-    margin-right: -${scale060};
-
     ${({ $noMargin }) =>
       !$noMargin &&
       css`
-        margin-bottom: calc(${scale060} * 2);
+        margin-bottom: calc(${defaultGapSpacing.wide} * 2);
       `};
+    gap: ${({ $gapWide }) => $gapWide || defaultGapSpacing.wide};
   }
 `;

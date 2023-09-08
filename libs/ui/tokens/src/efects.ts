@@ -2,12 +2,8 @@
 
 import { css } from 'styled-components';
 
-import {
-  motionEasingStandard,
-  motionTimeXXS,
-  primary,
-  primary_RGBA,
-} from './index';
+import { primary, primary_RGBA } from './color';
+import { motionEasingStandard, motionTimeXXS } from './motion';
 
 export const focusShadow = css`
   transition-property: box-shadow;

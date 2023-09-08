@@ -1,12 +1,10 @@
+'use client';
+
 import styled, { css } from 'styled-components';
 
-import {
-  mediaConfined,
-  mediaWide,
-  scale020,
-  scale040,
-  scale060,
-} from '@smartcoorp/ui/tokens';
+import { mediaConfined, mediaWide } from '@smartcoorp/ui/tokens';
+
+import { defaultGapSpacing } from '../row/row.styles';
 
 import { ColOffset, ColSizes } from './col.types';
 
@@ -17,31 +15,33 @@ type ColTransientProps = {
   $offset?: ColOffset;
   $offsetConfined?: ColOffset;
   $offsetWide?: ColOffset;
-  $columnSpacing?: `${string}px`;
-  $columnSpacingConfined?: `${string}px`;
-  $columnSpacingWide?: `${string}px`;
+  $gap?: `${string}px`;
+  $gapConfined?: `${string}px`;
+  $gapWide?: `${string}px`;
 };
 
 export const Col = styled.div<ColTransientProps>`
   display: block;
 
-  ${({ $size }) => css`
-    flex-basis: ${($size / 12) * 100}%;
+  ${({ $size, $gap }) => css`
+    flex-basis: calc(
+      ${($size / 12) * 100}% - calc(${$gap || defaultGapSpacing.small} / 2)
+    );
   `}
 
   ${({ $offset }) =>
     $offset &&
     css`
       margin-left: ${($offset / 12) * 100}%;
-    `}
-
-  padding-inline : ${({ $columnSpacing }) => $columnSpacing || scale020};
+    `};
 
   @media ${mediaConfined} {
-    ${({ $sizeConfined }) =>
-      $sizeConfined &&
+    ${({ $size, $sizeConfined, $gapConfined }) =>
       css`
-        flex-basis: ${($sizeConfined / 12) * 100}%;
+        flex-basis: calc(
+          ${(($sizeConfined || $size) / 12) * 100}% -
+            calc(${$gapConfined || defaultGapSpacing.confined} / 2)
+        );
       `}
 
     ${({ $offsetConfined }) =>
@@ -49,20 +49,15 @@ export const Col = styled.div<ColTransientProps>`
       css`
         margin-left: ${($offsetConfined / 12) * 100}%;
       `}
-
-
-      padding-inline: ${({ $columnSpacingConfined }) =>
-      $columnSpacingConfined || scale040}
   }
 
   @media ${mediaWide} {
-    padding-left: ${scale060};
-    padding-right: ${scale060};
-
-    ${({ $sizeWide }) =>
-      $sizeWide &&
+    ${({ $sizeWide, $size, $sizeConfined, $gapConfined }) =>
       css`
-        flex-basis: ${($sizeWide / 12) * 100}%;
+        flex-basis: calc(
+          ${(($sizeWide || $sizeConfined || $size) / 12) * 100}% -
+            calc(${$gapConfined || defaultGapSpacing.wide} / 2)
+        );
       `}
 
     ${({ $offsetWide }) =>
@@ -70,8 +65,5 @@ export const Col = styled.div<ColTransientProps>`
       css`
         margin-left: ${($offsetWide / 12) * 100}%;
       `}
-
-      padding-inline: ${({ $columnSpacingWide }) =>
-      $columnSpacingWide || scale060}
   }
 `;
