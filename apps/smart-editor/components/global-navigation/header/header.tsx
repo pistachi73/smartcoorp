@@ -12,12 +12,12 @@ export const Header = () => {
       <StyledWidthLimiter>
         <img width={80} src={'logo_by_pul_light.svg'} alt="SmartEditor Logo" />
         <AccountButtonsContainer>
-          {/* <Button variant="text" size="small" to="/login">
+          <Button variant="text" size="small" to="/login">
             Log in
           </Button>
           <Button size="small" to="/signup">
             Get Started
-          </Button> */}
+          </Button>
         </AccountButtonsContainer>
       </StyledWidthLimiter>
     </HeaderContainer>
