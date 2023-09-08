@@ -41,7 +41,6 @@ const baseBodyCopy = css`
   margin-right: 0;
   margin-top: 0;
   padding: 0;
-  text-align: left;
 `;
 
 const noMargin = css`

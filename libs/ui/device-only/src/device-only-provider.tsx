@@ -32,7 +32,6 @@ export const DeviceOnlyProvider = ({
 
   useEffect(() => {
     const handleResize = () => {
-      console.log('hola');
       if (window.innerWidth) {
         setDeviceType(getIsMobileUsingViewport(Number(window.innerWidth)));
       }

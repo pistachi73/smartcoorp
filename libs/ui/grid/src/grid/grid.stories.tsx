@@ -12,6 +12,7 @@ export default {
   title: 'Component/Grid',
   component: Grid,
   parameters: {
+    maxWidth: true,
     docs: {
       description: {
         component:
@@ -19,6 +20,7 @@ export default {
       },
     },
   },
+
   argTypes: {
     theme: { table: { disable: true } },
     as: { table: { disable: true } },
@@ -59,7 +61,7 @@ const Box: React.FC<{ offset?: ColOffset; size: ColSizes }> = ({
 
 const Template: StoryFn<typeof Grid> = (args) => {
   return (
-    <Grid {...args}>
+    <Grid {...args} gridRuler>
       <Row>
         <Col size={6}>
           <Box size={6} />

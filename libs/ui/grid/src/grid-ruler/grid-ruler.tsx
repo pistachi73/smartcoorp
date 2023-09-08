@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import styled from 'styled-components';
 
@@ -8,6 +10,9 @@ import {
   scale020,
   scale040,
   scale060,
+  spaceL,
+  spaceM,
+  spaceXL,
 } from '@smartcoorp/ui/tokens';
 
 const StyledGridRuler = styled.div`
@@ -19,14 +24,14 @@ const StyledGridRuler = styled.div`
   height: 100%;
   grid-template-columns: repeat(12, 1fr);
 
-  column-gap: calc(${scale020} * 2);
+  column-gap: ${spaceM};
 
   @media ${mediaConfined} {
-    column-gap: calc(${scale040} * 2);
+    column-gap: ${spaceL};
   }
 
   @media ${mediaWide} {
-    column-gap: calc(${scale060} * 2);
+    column-gap: ${spaceXL};
   }
 `;
 

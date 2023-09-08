@@ -1,7 +1,13 @@
-import { Headline } from '@smartcoorp/ui/headline';
+import { Features } from '@smart-editor/components/landing-page/features';
+import { Hero } from '@smart-editor/components/landing-page/hero';
 
 const Page = async () => {
-  return <Headline size="xxxlarge">Hello smart editor</Headline>;
+  return (
+    <>
+      <Hero />
+      <Features />
+    </>
+  );
 };
 
 export default Page;

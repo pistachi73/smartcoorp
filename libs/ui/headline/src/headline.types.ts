@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Styled, sizes } from './headline.styles';
+import { sizes } from './headline.styles';
 
 export type HeadlineSize = keyof typeof sizes;
 export type CommonProps = {
