@@ -1,6 +1,4 @@
-import { Styled } from './grid.styles';
-
-export type GridProps = React.ComponentProps<typeof Styled.Grid> & {
+export type GridProps = React.HTMLAttributes<HTMLDivElement> & {
   /** Content of the Grid */
   children: React.ReactNode;
   /** Custom classnames css */
