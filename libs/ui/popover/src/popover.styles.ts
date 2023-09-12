@@ -14,6 +14,7 @@ export const Content = styled(PopoverPrimitive.Content)`
   animation-timing-function: ${motionEasingEnter};
   will-change: transform, opacity;
   animation-name: ${slideUpAndFadeIn};
+  z-index: 9999;
 `;
 
 export const Styled = { Content };

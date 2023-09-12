@@ -2,8 +2,8 @@ import debounce from 'lodash.debounce';
 import React, { useCallback, useMemo } from 'react';
 
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
-import { useDebounceContext } from '../../contexts/debounce-context/debounce-context';
 import { useRefsContext } from '../../contexts/refs-context';
+import { useUtilContext } from '../../contexts/util-context';
 import { TextField } from '../../fields/text-field';
 import {
   getBlockContainerAttributes,
@@ -36,7 +36,7 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
     getNextFocusableField,
   } = useRefsContext();
 
-  const { debounceTime } = useDebounceContext();
+  const { debounceTime } = useUtilContext();
 
   const fieldIndex = 0;
   const fieldId = `${block.id}_${fieldIndex}`;
@@ -87,6 +87,12 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
       if (isTextSplit) {
         debouncedOnTextChange.cancel();
 
+        console.log({
+          blockIndex,
+          fieldRefs: fieldRefs.current,
+        });
+        console.log(fieldRefs.current[blockIndex]?.[0]);
+
         splitTextField({
           blockType: 'paragraph',
           blockId: block.id,
@@ -94,7 +100,7 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
           field: 'text',
           chainBlockIndex,
           innerHTML,
-          splitedBlockRef: fieldRefs.current[blockIndex][0],
+          splitedBlockRef: fieldRefs.current[blockIndex]?.[0],
           undo: buildModifyFieldInnerHTMLAction({
             fieldId,
             caretPosition: prevCaretPosition.current,

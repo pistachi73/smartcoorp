@@ -11,8 +11,8 @@ export const StyledBody = styled(Body)`
 `;
 
 export const StyledHeadline = styled(Headline)`
-  display: block;
-
+  width: 100%;
+  overflow-wrap: anywhere;
   outline: none;
 
   :empty:before {

@@ -23,3 +23,5 @@ export type {
   ImageWithUrl,
   ImagesToHandle,
 } from './contexts/blocks-context';
+
+export { RenderBlocksJSON } from './utils/render-blocks-json';

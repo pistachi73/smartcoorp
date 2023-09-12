@@ -4,9 +4,10 @@ import { MainLayoutWrapper } from '@smart-editor/components/main-layout-wrapper'
 import { getHeaders } from '@smart-editor/utils/get-headers';
 
 import { DeviceOnlyProvider } from '@smartcoorp/ui/device-only';
-import { gray100 } from '@smartcoorp/ui/tokens';
 
 export const metadata = {
+  title: 'SmartEditor: Content to JSON',
+  description: 'SmartEditor',
   icons: {
     icon: [
       {
@@ -35,13 +36,7 @@ export default function RootLayout({
         <MainLayoutWrapper>
           <DeviceOnlyProvider deviceType={deviceType}>
             <Header />
-            <main
-              style={{
-                background: gray100,
-              }}
-            >
-              {children}
-            </main>
+            <main>{children}</main>
             <Footer />
           </DeviceOnlyProvider>
         </MainLayoutWrapper>

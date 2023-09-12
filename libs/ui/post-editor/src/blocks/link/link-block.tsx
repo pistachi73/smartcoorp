@@ -13,8 +13,6 @@ export const LinkBlock = React.memo<LinkBlockContainerProps>(
     block,
     getMetaData,
     chainLength,
-    chainLevel,
-    parentChainId,
   }) => {
     return (
       <BlockContainer
@@ -22,9 +20,7 @@ export const LinkBlock = React.memo<LinkBlockContainerProps>(
         chainBlockIndex={chainBlockIndex}
         blockId={block.id}
         chainId={chainId}
-        chainLevel={chainLevel}
         chainLength={chainLength}
-        parentChainId={parentChainId}
         blockType="link"
       >
         <LinkBlockContent

@@ -6,24 +6,14 @@ import { ListBlockContainerProps } from '../blocks.types';
 import { ListBlockContent } from './list-block-content';
 
 export const ListBlock = React.memo<ListBlockContainerProps>(
-  ({
-    blockIndex,
-    chainBlockIndex,
-    chainId,
-    chainLevel,
-    block,
-    chainLength,
-    parentChainId,
-  }) => {
+  ({ blockIndex, chainBlockIndex, chainId, block, chainLength }) => {
     return (
       <BlockContainer
         blockIndex={blockIndex}
         chainBlockIndex={chainBlockIndex}
         blockId={block.id}
         chainId={chainId}
-        chainLevel={chainLevel}
         chainLength={chainLength}
-        parentChainId={parentChainId}
         blockType="list"
       >
         <ListBlockContent

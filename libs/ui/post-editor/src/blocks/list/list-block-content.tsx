@@ -6,9 +6,9 @@ import {
   ToAddBlock,
   ToRemoveBlock,
 } from '../../contexts/blocks-context/blocks-reducer';
-import { useDebounceContext } from '../../contexts/debounce-context/debounce-context';
 import { useRefsContext } from '../../contexts/refs-context';
 import { useToolBlockIndexUpdaterContext } from '../../contexts/tool-control-context/tool-control-context';
+import { useUtilContext } from '../../contexts/util-context';
 import { ListField } from '../../fields/list-field';
 import {
   buildListBlock,
@@ -34,7 +34,7 @@ export const ListBlockContent: React.FC<ListBlockContentProps> = ({
   const { fieldRefs, setPrevCaretPosition, prevCaretPosition } =
     useRefsContext();
   const setToolIndex = useToolBlockIndexUpdaterContext();
-  const { debounceTime } = useDebounceContext();
+  const { debounceTime } = useUtilContext();
   const fieldIndex = 0;
   const fieldId = `${block.id}_${fieldIndex}`;
 
