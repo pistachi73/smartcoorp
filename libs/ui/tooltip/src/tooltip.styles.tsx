@@ -10,6 +10,7 @@ export const TooltipContet = styled(motion(Tooltip.Content))`
 
   background-color: ${({ theme }) => theme.tooltip.contentBackgroundColor};
   box-shadow: ${({ theme }) => theme.shadow.shadowM};
+  z-index: 9999;
 
   user-select: none;
   & p {

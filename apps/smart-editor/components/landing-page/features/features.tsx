@@ -11,8 +11,9 @@ import { Headline } from '@smartcoorp/ui/headline';
 import { space3XL } from '@smartcoorp/ui/tokens';
 import { WidthLimiter } from '@smartcoorp/ui/width-limiter';
 
+import { SectionContainer } from '../shared-styled-components';
+
 import { Feature } from './feature';
-import { FeaturesContainer } from './style';
 
 export type FeatureType = {
   title: string;
@@ -49,42 +50,44 @@ export const features: FeatureType[] = [
 
 export const Features = () => {
   return (
-    <FeaturesContainer>
-      <div
-        style={{
-          textAlign: 'center',
-        }}
-      >
-        <Headline size="large" sizeConfined="xxlarge" forwardedAs="h2">
-          Transform and Customise Your Content
-        </Headline>
-        <Body
-          size="medium"
-          sizeConfined="large"
-          variant="neutral"
+    <SectionContainer>
+      <WidthLimiter>
+        <div
           style={{
-            marginBottom: space3XL,
+            textAlign: 'center',
           }}
         >
-          Elevate Your Content with Chain-Based JSON Rendering
-        </Body>
-      </div>
-      <Grid>
-        <Row>
-          {features.map((feature, index) => (
-            <Col
-              size={12}
-              sizeConfined={6}
-              sizeWide={5}
-              offset={0}
-              offsetWide={index % 2 === 0 ? 1 : 0}
-              key={feature.title}
-            >
-              <Feature {...feature} />
-            </Col>
-          ))}
-        </Row>
-      </Grid>
-    </FeaturesContainer>
+          <Headline size="large" sizeConfined="xxlarge" forwardedAs="h2">
+            Transform and Customise Your Content
+          </Headline>
+          <Body
+            size="medium"
+            sizeConfined="large"
+            variant="neutral"
+            style={{
+              marginBottom: space3XL,
+            }}
+          >
+            Elevate Your Content with Chain-Based JSON Rendering
+          </Body>
+        </div>
+        <Grid>
+          <Row>
+            {features.map((feature, index) => (
+              <Col
+                size={12}
+                sizeConfined={6}
+                sizeWide={5}
+                offset={0}
+                offsetWide={index % 2 === 0 ? 1 : 0}
+                key={feature.title}
+              >
+                <Feature {...feature} />
+              </Col>
+            ))}
+          </Row>
+        </Grid>
+      </WidthLimiter>
+    </SectionContainer>
   );
 };

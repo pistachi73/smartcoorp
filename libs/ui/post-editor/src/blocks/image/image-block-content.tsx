@@ -61,7 +61,7 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
       </S.ImagePreviewContainer>
     ) : (
       <FileField
-        acceptedFileTypes="image/png,image/gif,image/jpeg"
+        acceptedFileTypes="image/*"
         blockId={block.id}
         blockIndex={blockIndex}
         fieldIndex={0}

@@ -2,7 +2,6 @@
 
 import { styled } from 'styled-components';
 
-import { Col } from '@smartcoorp/ui/grid';
 import {
   borderRadiusS,
   motionEasingStandard,
@@ -10,19 +9,9 @@ import {
   primary,
   primary100,
   primary_RGBA,
-  space4XL,
   spaceM,
   spaceXL,
 } from '@smartcoorp/ui/tokens';
-import { WidthLimiter } from '@smartcoorp/ui/width-limiter';
-
-export const FeaturesContainer = styled(WidthLimiter)`
-  padding-block: ${space4XL};
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
 export const FeatureContainer = styled.div`
   height: 100%;

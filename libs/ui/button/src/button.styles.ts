@@ -39,6 +39,7 @@ type IconContainerTransientProps = {
   $loading: boolean;
   $iconSize?: number;
   $iconAfter?: boolean;
+  $iconOnly?: boolean;
 };
 type TextTransientProps = {
   $ellipsis?: boolean;
@@ -208,8 +209,10 @@ export const disabled = {
 
 // *** Icon ***
 const IconContainer = styled.div<IconContainerTransientProps>`
-  margin-right: ${({ $iconAfter }) => !$iconAfter && spaceS};
-  margin-left: ${({ $iconAfter }) => $iconAfter && spaceS};
+  margin-right: ${({ $iconAfter, $iconOnly }) =>
+    !$iconAfter && !$iconOnly && spaceS};
+  margin-left: ${({ $iconAfter, $iconOnly }) =>
+    $iconAfter && !$iconOnly && spaceS};
   display: flex;
   align-items: center;
   justify-content: center;

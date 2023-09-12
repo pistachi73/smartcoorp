@@ -56,15 +56,21 @@ export const Button = forwardRef(
           </Styled.LoadingContainer>
         )}
         {Icon && !iconAfter && (
-          <Styled.IconContainer $loading={loading}>
+          <Styled.IconContainer $loading={loading} $iconOnly={iconOnly}>
             <Icon size={iconSize} />
           </Styled.IconContainer>
         )}
-        <Styled.Text $loading={loading} data-cy="button-text">
-          {children}
-        </Styled.Text>
+        {children && (
+          <Styled.Text $loading={loading} data-cy="button-text">
+            {children}
+          </Styled.Text>
+        )}
         {Icon && iconAfter && (
-          <Styled.IconContainer $loading={loading} $iconAfter>
+          <Styled.IconContainer
+            $loading={loading}
+            $iconAfter
+            $iconOnly={iconOnly}
+          >
             <Icon size={iconSize} />
           </Styled.IconContainer>
         )}

@@ -3,7 +3,6 @@ import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 
 import { Body } from '@smartcoorp/ui/body';
-import { Caption } from '@smartcoorp/ui/caption';
 import { Command, CommandGroup, CommandItem } from '@smartcoorp/ui/command';
 import {
   DropdownMenu,
@@ -21,6 +20,7 @@ import {
   useToolControlUpdaterContext,
 } from '../../../contexts/tool-control-context/tool-control-context';
 import type { Block } from '../../../post-editor.types';
+import { TooltipCaption } from '../../toolbar/toolbar.styles';
 import { DropdownTrigger } from '../block-tools.styles';
 
 import { AddBlockItem } from './add-block-tool-item';
@@ -110,10 +110,10 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
             <TooltipContentContainer>
               <Body size="xsmall" noMargin>
                 Add block
+                <TooltipCaption noMargin as={'span'}>
+                  &#8984; B
+                </TooltipCaption>
               </Body>
-              <Caption noMargin as={'span'}>
-                &#8984; I
-              </Caption>
             </TooltipContentContainer>
           }
         />

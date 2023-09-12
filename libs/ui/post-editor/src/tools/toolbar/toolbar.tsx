@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
-  AiOutlineBold,
-  AiOutlineItalic,
-  AiOutlineRedo,
-  AiOutlineStrikethrough,
-  AiOutlineUnderline,
-  AiOutlineUndo,
-} from 'react-icons/ai';
-import { GrBlog } from 'react-icons/gr';
-import { MdFormatClear, MdLink } from 'react-icons/md';
+  BsArrowClockwise,
+  BsArrowCounterclockwise,
+  BsBoundingBox,
+  BsLink,
+  BsTerminal,
+  BsTypeBold,
+  BsTypeItalic,
+  BsTypeStrikethrough,
+  BsTypeUnderline,
+} from 'react-icons/bs';
+import { MdFormatClear } from 'react-icons/md';
 
 import { Body } from '@smartcoorp/ui/body';
 import { primary500_RGBA } from '@smartcoorp/ui/tokens';
@@ -18,6 +20,10 @@ import {
   useBlocksDBConsumerContext,
   useBlocksDBUpdaterContext,
 } from '../../contexts/blocks-context';
+import {
+  useUtilContext,
+  useUtilsUpdaterContext,
+} from '../../contexts/util-context/util-context';
 import { waitForElement } from '../../helpers';
 
 import {
@@ -35,6 +41,7 @@ import { useToolbar } from './use-toolbar';
 
 export const Toolbar = () => {
   const [linkTool, setLinkTool] = useState({ isOpen: false, value: '' });
+
   const [selectionFormat, setSelectionFormat] = useState({
     bold: false,
     italic: false,
@@ -61,6 +68,8 @@ export const Toolbar = () => {
   const blocksDB = useBlocksDBConsumerContext();
   const { undo, redo } = useBlocksDBUpdaterContext();
   const { canUndo, canRedo } = useBlocksDBConsumerContext();
+  const { setViewBlocks } = useUtilsUpdaterContext();
+  const { viewBlocks } = useUtilContext();
 
   useEffect(() => {
     const isLinkEnabled = (): boolean | void => {
@@ -179,8 +188,8 @@ export const Toolbar = () => {
             <IconButton
               variant="text"
               onClick={onBold}
-              icon={AiOutlineBold}
-              iconSize={16}
+              icon={BsTypeBold}
+              iconSize={18}
               $formatted={selectionFormat.bold}
             />
           }
@@ -200,8 +209,8 @@ export const Toolbar = () => {
             <IconButton
               variant="text"
               onClick={onItalic}
-              icon={AiOutlineItalic}
-              iconSize={16}
+              icon={BsTypeItalic}
+              iconSize={18}
               $formatted={selectionFormat.italic}
             />
           }
@@ -221,8 +230,8 @@ export const Toolbar = () => {
             <IconButton
               variant="text"
               onClick={onUnderline}
-              icon={AiOutlineUnderline}
-              iconSize={16}
+              icon={BsTypeUnderline}
+              iconSize={18}
               $formatted={selectionFormat.underline}
             />
           }
@@ -242,8 +251,8 @@ export const Toolbar = () => {
             <IconButton
               variant="text"
               onClick={onStrikeThrough}
-              icon={AiOutlineStrikethrough}
-              iconSize={16}
+              icon={BsTypeStrikethrough}
+              iconSize={18}
               $formatted={selectionFormat.strikeThrough}
             />
           }
@@ -263,7 +272,7 @@ export const Toolbar = () => {
               variant="text"
               onClick={removeFormat}
               icon={MdFormatClear}
-              iconSize={16}
+              iconSize={18}
             />
           }
           content={
@@ -277,8 +286,8 @@ export const Toolbar = () => {
           <IconButton
             variant="text"
             onClick={handleAddLinkClick}
-            icon={MdLink}
-            iconSize={16}
+            icon={BsLink}
+            iconSize={18}
             disabled={!selectionFormat.link.enabled}
             $formatted={selectionFormat.link.formatted}
             size="small"
@@ -312,7 +321,7 @@ export const Toolbar = () => {
               variant="text"
               disabled={!canUndo}
               onClick={() => undo()}
-              icon={AiOutlineUndo}
+              icon={BsArrowCounterclockwise}
               iconSize={14}
             />
           }
@@ -333,7 +342,7 @@ export const Toolbar = () => {
               variant="text"
               disabled={!canRedo}
               onClick={() => redo()}
-              icon={AiOutlineRedo}
+              icon={BsArrowClockwise}
               iconSize={14}
             />
           }
@@ -354,13 +363,31 @@ export const Toolbar = () => {
             <IconButton
               variant="text"
               onClick={() => console.log(blocksDB)}
-              icon={GrBlog}
+              icon={BsTerminal}
               iconSize={14}
             />
           }
           content={
             <Body size="xsmall" noMargin>
               Log blocks data
+            </Body>
+          }
+        />
+        <Tooltip
+          sideOffset={0}
+          triggerAsChild
+          trigger={
+            <IconButton
+              variant="text"
+              onClick={() => setViewBlocks((viewBlocks) => !viewBlocks)}
+              icon={BsBoundingBox}
+              iconSize={14}
+              $formatted={viewBlocks}
+            />
+          }
+          content={
+            <Body size="xsmall" noMargin>
+              View Blocks
             </Body>
           }
         />

@@ -25,6 +25,7 @@ export const Container = styled.div`
 
   position: sticky;
   top: 0;
+  z-index: 10;
 
   display: flex;
   align-items: center;
@@ -49,6 +50,7 @@ export const IconsContainer = styled.div`
 
 export const IconButton = styled(Button)<{ $formatted?: boolean }>`
   padding: ${spaceXS};
+  margin: 0 !important;
 
   height: ${scale130};
   min-width: ${scale130};
@@ -71,7 +73,7 @@ export const IconButton = styled(Button)<{ $formatted?: boolean }>`
 
 export const TooltipCaption = styled(Caption)`
   padding: ${spaceXXS};
-  margin-left: ${spaceXXS};
+  margin-left: ${spaceXS};
   border-radius: ${borderRadiusXXS};
   background-color: ${({ theme }) =>
     theme.postEditor.toolbar.tooltipCommandBackgroundColor};

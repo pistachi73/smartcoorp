@@ -4,8 +4,8 @@ import React, { useCallback, useMemo } from 'react';
 import type { HeadlineSize } from '@smartcoorp/ui/headline';
 
 import { useBlocksDBUpdaterContext } from '../../contexts/blocks-context';
-import { useDebounceContext } from '../../contexts/debounce-context/debounce-context';
 import { useRefsContext } from '../../contexts/refs-context';
+import { useUtilContext } from '../../contexts/util-context';
 import { TextField } from '../../fields/text-field';
 import { getCaretPosition } from '../../helpers';
 import { getBlockContainerAttributes } from '../../helpers/get-block-container-attributes';
@@ -46,7 +46,7 @@ export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({
     setPrevCaretPosition,
   } = useRefsContext();
 
-  const { debounceTime } = useDebounceContext();
+  const { debounceTime } = useUtilContext();
 
   const size = useMemo(
     () => HEADLINE_SIZE_LEVELS[block.data.level],

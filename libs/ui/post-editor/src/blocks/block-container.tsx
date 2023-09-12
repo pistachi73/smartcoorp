@@ -1,17 +1,21 @@
 import { useCallback, useEffect } from 'react';
 import * as React from 'react';
 
+import { gray900, gray900_RGBA } from '@smartcoorp/ui/tokens';
+
 import { useBlockSelectionConsumerContext } from '../contexts/block-selection-context/block-selection-context';
 import { useRefsContext } from '../contexts/refs-context';
 import {
   useToolBlockIndexUpdaterContext,
   useToolControlUpdaterContext,
 } from '../contexts/tool-control-context/tool-control-context';
+import { useUtilContext } from '../contexts/util-context';
 import { useBlockSelection } from '../hooks';
 import { useBlockNavigation } from '../hooks/use-block-navigation';
 import {
   BlockContent,
   BlockContainer as StyledBlockContainer,
+  ViewIdTag,
 } from '../post-editor.styles';
 
 import type { BlockContainerProps } from './blocks.types';
@@ -21,11 +25,9 @@ export const BlockContainer = ({
   chainBlockIndex,
   blockId,
   chainId,
-  chainLevel,
   blockType,
   children,
   chainLength,
-  parentChainId,
 }: BlockContainerProps) => {
   const setToolBlockIndex = useToolBlockIndexUpdaterContext();
   const { handleKeyboardBlockNavigation } = useBlockNavigation(blockIndex);
@@ -39,6 +41,8 @@ export const BlockContainer = ({
     handlePrevTextSelectionOnFocus,
     handlePrevTextSelectionOnKeyUp,
   } = useRefsContext();
+
+  const { viewBlocks } = useUtilContext();
 
   useEffect(() => {
     return () => {
@@ -72,7 +76,7 @@ export const BlockContainer = ({
         handleKeyboardBlockSelection(e, blockIndex, chainBlockIndex, chainId);
         handleKeyboardBlockNavigation(e);
 
-        if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
           e.preventDefault();
           setToolBlockIndex(blockIndex);
           setIsAddBlockMenuOpened(true);
@@ -109,14 +113,19 @@ export const BlockContainer = ({
       data-block-type={blockType}
       data-block-id={blockId}
       data-chain-id={chainId}
-      data-chain-level={chainLevel}
       data-block-index={blockIndex}
       data-block-selected={isSelected}
       data-chain-block-index={chainBlockIndex}
       data-chain-length={chainLength}
-      data-parent-chain-id={parentChainId}
     >
-      <BlockContent $selected={isSelected}>{children}</BlockContent>
+      <BlockContent $selected={isSelected} $viewBlocks={viewBlocks}>
+        {viewBlocks && (
+          <ViewIdTag $position="right">
+            <b>Id:</b> {blockId}
+          </ViewIdTag>
+        )}
+        {children}
+      </BlockContent>
     </StyledBlockContainer>
   );
 };

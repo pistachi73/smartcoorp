@@ -3,9 +3,9 @@ import { FC } from 'react';
 import { Blocks } from './blocks/blocks';
 import { BlockSelectionProvider } from './contexts/block-selection-context/block-selection-context';
 import { BlocksDBProvider } from './contexts/blocks-context/blocks-context';
-import { DebounceProvider } from './contexts/debounce-context/debounce-context';
 import { RefsProvider } from './contexts/refs-context/refs-context';
 import { ToolControlProvider } from './contexts/tool-control-context/tool-control-context';
+import { UtilProvider } from './contexts/util-context/util-context';
 import { BlockType, PostEditorProps } from './post-editor.types';
 
 export type ToolProps = {
@@ -23,7 +23,7 @@ export const PostEditor: FC<PostEditorProps> = ({
   setImagesToHandle,
 }) => {
   return (
-    <DebounceProvider debounceTime={debounceTime}>
+    <UtilProvider debounceTime={debounceTime}>
       <RefsProvider>
         <BlockSelectionProvider>
           <ToolControlProvider>
@@ -33,13 +33,11 @@ export const PostEditor: FC<PostEditorProps> = ({
               currentUploadedImages={currentUploadedImages}
               setImagesToHandle={setImagesToHandle}
             >
-              {/* <InlineTools postEditorRef={postEditorContainerRef} /> */}
-
               <Blocks getMetaData={getMetaData} />
             </BlocksDBProvider>
           </ToolControlProvider>
         </BlockSelectionProvider>
       </RefsProvider>
-    </DebounceProvider>
+    </UtilProvider>
   );
 };

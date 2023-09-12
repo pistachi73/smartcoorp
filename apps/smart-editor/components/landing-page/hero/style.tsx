@@ -6,14 +6,11 @@ import { Body } from '@smartcoorp/ui/body';
 import { DeviceOnly } from '@smartcoorp/ui/device-only';
 import { Headline } from '@smartcoorp/ui/headline';
 import {
-  gray700,
   mediaConfined,
   mediaWide,
   primary,
   scale040,
-  scale220,
   scale310,
-  scale330,
   scale350,
   scale370,
   space3XL,
@@ -24,12 +21,6 @@ import {
   spaceXL,
   spaceXXL,
 } from '@smartcoorp/ui/tokens';
-import { WidthLimiter } from '@smartcoorp/ui/width-limiter';
-
-export const HeroContainer = styled(WidthLimiter)`
-  margin: 0 auto;
-  padding-block: ${space4XL};
-`;
 
 //------HERO TEXT SECTION-----
 

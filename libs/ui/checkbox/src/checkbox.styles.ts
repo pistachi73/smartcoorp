@@ -49,7 +49,6 @@ export const sizes = {
 export const Container = styled.div<{ $disabled?: boolean }>`
   display: flex;
   align-items: center;
-  width: 100%;
   ${({ $disabled }) =>
     $disabled &&
     css`
@@ -101,7 +100,6 @@ export const Root = styled(Checkbox.Root)<SizeProps>`
 `;
 
 export const Label = styled.label<SizeProps>`
-  width: 100%;
   color: ${({ theme }) => theme.color.neutral};
   cursor: pointer;
   /** Size styles */

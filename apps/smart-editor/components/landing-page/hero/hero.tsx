@@ -2,9 +2,10 @@ import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
 import { WidthLimiter } from '@smartcoorp/ui/width-limiter';
 
+import { SectionContainer } from '../shared-styled-components';
+
 import {
   ButtonsContainer,
-  HeroContainer,
   HeroContent,
   IllustrationContainer,
   IllustrationStick,
@@ -40,51 +41,53 @@ const illustrations: {
 
 export const Hero = () => {
   return (
-    <HeroContainer>
-      <HeroContent>
-        <div>
-          <StyledHeadline forwardedAs={'h1'} $colored>
-            Blogging redefined:
-          </StyledHeadline>
-          <StyledHeadline forwardedAs={'h1'}>
-            Seamlessly transition from words
-          </StyledHeadline>
-          <StyledHeadline forwardedAs={'h1'}>
-            to JSON-powered content.
-          </StyledHeadline>
-        </div>
-        <Subtitle
-          size="medium"
-          sizeConfined="large"
-          lineHeight="increased"
-          variant="neutral"
-          noMargin
-        >
-          Unlock limitless creative control to shape your story precisely as you
-          envision, revolutionising how you craft content.
-        </Subtitle>
-        <ButtonsContainer>
-          <Button href="#try-editor">Start Crafting</Button>
-          <Button href="#try-editor" variant="secondary">
-            Try the Editor!
-          </Button>
-        </ButtonsContainer>
-      </HeroContent>
-      <IllustrationsContainer>
-        {illustrations.map(({ src, title, sticks }) => (
-          <IllustrationContainer key={title}>
-            <ImgContainer>
-              <Img src={src} alt={title} />
-            </ImgContainer>
-            <IllustrationTitle size="medium" forwardedAs={'div'}>
-              <p>{title}</p>
-              {sticks.map((position) => (
-                <IllustrationStick key={position} position={position} />
-              ))}
-            </IllustrationTitle>
-          </IllustrationContainer>
-        ))}
-      </IllustrationsContainer>
-    </HeroContainer>
+    <SectionContainer>
+      <WidthLimiter>
+        <HeroContent>
+          <div>
+            <StyledHeadline forwardedAs={'h1'} $colored>
+              Blogging redefined:
+            </StyledHeadline>
+            <StyledHeadline forwardedAs={'h1'}>
+              Seamlessly transition from words
+            </StyledHeadline>
+            <StyledHeadline forwardedAs={'h1'}>
+              to JSON-powered content.
+            </StyledHeadline>
+          </div>
+          <Subtitle
+            size="medium"
+            sizeConfined="large"
+            lineHeight="increased"
+            variant="neutral"
+            noMargin
+          >
+            Unlock limitless creative control to shape your story precisely as
+            you envision, revolutionising how you craft content.
+          </Subtitle>
+          <ButtonsContainer>
+            <Button href="#try-editor">Start Crafting</Button>
+            <Button href="#try-editor" variant="secondary">
+              Try the Editor!
+            </Button>
+          </ButtonsContainer>
+        </HeroContent>
+        <IllustrationsContainer>
+          {illustrations.map(({ src, title, sticks }) => (
+            <IllustrationContainer key={title}>
+              <ImgContainer>
+                <Img src={src} alt={title} />
+              </ImgContainer>
+              <IllustrationTitle size="medium" forwardedAs={'div'}>
+                <p>{title}</p>
+                {sticks.map((position) => (
+                  <IllustrationStick key={position} position={position} />
+                ))}
+              </IllustrationTitle>
+            </IllustrationContainer>
+          ))}
+        </IllustrationsContainer>
+      </WidthLimiter>
+    </SectionContainer>
   );
 };

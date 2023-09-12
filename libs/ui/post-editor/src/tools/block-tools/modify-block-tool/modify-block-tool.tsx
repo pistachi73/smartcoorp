@@ -20,6 +20,7 @@ import {
   useToolControlUpdaterContext,
 } from '../../../contexts/tool-control-context/tool-control-context';
 import type { BlockType } from '../../../post-editor.types';
+import { TooltipCaption } from '../../toolbar/toolbar.styles';
 import { DropdownTrigger } from '../block-tools.styles';
 
 import { HeaderTools } from './header-tools/header-tools';
@@ -103,10 +104,10 @@ export const ModifyBlockTool: React.FC<ModifyBlockToolContainerProps> = ({
           <TooltipContentContainer>
             <Body size="xsmall" noMargin>
               Click to tune
+              <TooltipCaption noMargin as={'span'}>
+                ↹ Tab
+              </TooltipCaption>
             </Body>
-            <Caption noMargin as={'span'}>
-              ↹ Tab
-            </Caption>
           </TooltipContentContainer>
         }
       />

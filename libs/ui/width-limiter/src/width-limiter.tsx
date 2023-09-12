@@ -1,12 +1,7 @@
-import { FC } from 'react';
-
 import { WidthLimiter as StyledWidthLimiter } from './width-limiter.styles';
 import { WidthLimiterProps } from './width-limiter.types';
 
-export const WidthLimiter: FC<WidthLimiterProps> = ({
-  children,
-  className,
-}) => {
+export const WidthLimiter = ({ children, className }: WidthLimiterProps) => {
   return (
     <StyledWidthLimiter className={className}>{children}</StyledWidthLimiter>
   );
