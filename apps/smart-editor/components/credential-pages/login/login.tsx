@@ -21,13 +21,7 @@ import {
   Or,
 } from './login.styles';
 
-export const Login = async () => {
-  const session = await getServerSession(nextAuthOptions);
-
-  if (session) {
-    // redirect('/');
-  }
-
+export const Login = () => {
   return (
     <Container>
       <FormWrapper>

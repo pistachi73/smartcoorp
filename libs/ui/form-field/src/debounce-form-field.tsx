@@ -19,6 +19,10 @@ export const DebounceFormField: React.FC<DebounceFormFieldProps> = ({
   const [inputValue, setInputValue] = useState<FormFieldProps['value']>(value);
 
   const debouncedOnChange = useMemo(() => {
+    if (!onChange) {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      return () => {};
+    }
     return debounce(onChange, debounceTime);
   }, [debounceTime, onChange]);
 
