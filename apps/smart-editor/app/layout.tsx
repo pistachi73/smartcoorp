@@ -1,5 +1,3 @@
-import { Footer } from '@smart-editor/components/global-navigation/footer/footer';
-import { Header } from '@smart-editor/components/global-navigation/header';
 import { MainLayoutWrapper } from '@smart-editor/components/main-layout-wrapper';
 import { getHeaders } from '@smart-editor/utils/get-headers';
 

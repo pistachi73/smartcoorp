@@ -1,7 +1,6 @@
+import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
 import NextAuth from 'next-auth';
 
-import { smartEditorAuthConfig } from '@smartcoorp/smart-api';
-
-const handler = NextAuth(smartEditorAuthConfig);
+const handler = NextAuth(nextAuthConfig);
 
 export { handler as GET, handler as POST };
