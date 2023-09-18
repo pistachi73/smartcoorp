@@ -5,11 +5,12 @@ import { WidthLimiter } from '@smartcoorp/ui/width-limiter';
 import { SectionContainer } from '../shared-styled-components';
 
 import { PostEditorTrial } from './post-editor-trial';
-import { BackgroundReactangle } from './style';
+import { BackgroundReactangle } from './try-editor.styles';
 
 export const TryEditor = () => {
   return (
     <SectionContainer
+      id="try-editor"
       style={{
         position: 'relative',
       }}

@@ -3,7 +3,7 @@
 import { DeviceOnly } from '@smartcoorp/ui/device-only';
 import { scale320 } from '@smartcoorp/ui/tokens';
 
-import { Illustration as StyledIllustration } from './style';
+import { Illustration as StyledIllustration } from './footer.styles';
 
 export const Illustration = () => (
   <DeviceOnly allowedDevices={['desktop', 'tablet']}>

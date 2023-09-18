@@ -35,9 +35,7 @@ export default function RootLayout({
       <body>
         <MainLayoutWrapper>
           <DeviceOnlyProvider deviceType={deviceType}>
-            <Header />
-            <main>{children}</main>
-            <Footer />
+            {children}
           </DeviceOnlyProvider>
         </MainLayoutWrapper>
       </body>

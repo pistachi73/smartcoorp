@@ -13,7 +13,7 @@ import { WidthLimiter } from '@smartcoorp/ui/width-limiter';
 
 import { SectionContainer } from '../shared-styled-components';
 
-import { Feature } from './feature';
+import { FeatureContainer, FeatureIconContainer } from './features.styles';
 
 export type FeatureType = {
   title: string;
@@ -73,16 +73,29 @@ export const Features = () => {
         </div>
         <Grid>
           <Row>
-            {features.map((feature, index) => (
+            {features.map(({ icon, title, description }, index) => (
               <Col
                 size={12}
                 sizeConfined={6}
                 sizeWide={5}
                 offset={0}
                 offsetWide={index % 2 === 0 ? 1 : 0}
-                key={feature.title}
+                key={title}
               >
-                <Feature {...feature} />
+                <FeatureContainer>
+                  <FeatureIconContainer>{icon}</FeatureIconContainer>
+                  <Headline size="medium" sizeConfined="large" as="h3">
+                    {title}
+                  </Headline>
+                  <Body
+                    variant="neutral"
+                    noMargin
+                    size="small"
+                    sizeConfined="medium"
+                  >
+                    {description}
+                  </Body>
+                </FeatureContainer>
               </Col>
             ))}
           </Row>

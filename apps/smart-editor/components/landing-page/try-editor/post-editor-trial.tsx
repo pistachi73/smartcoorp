@@ -15,7 +15,7 @@ import {
   RenderBlockJSONContainer,
   RenderBlocksContainer,
   RenderBlocksToolbarContainer,
-} from './style';
+} from './try-editor.styles';
 
 export const PostEditorTrial = () => {
   const [blocks, setBlocks] = useState<BlocksDB>({

@@ -15,7 +15,7 @@ import {
   ImgContainer,
   StyledHeadline,
   Subtitle,
-} from './style';
+} from './hero.styles';
 
 const illustrations: {
   title: string;

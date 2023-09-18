@@ -1,3 +1,5 @@
+'use client';
+
 import debounce from 'lodash.debounce';
 import { useMemo, useState } from 'react';
 

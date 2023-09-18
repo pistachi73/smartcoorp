@@ -57,8 +57,13 @@ export const BaseStyles = createGlobalStyle`
     line-height: ${scale100};
     min-width: 320px;
     margin: 0;
+
+    user-select: text !important;
   }
   
+  html{
+    scroll-behavior: smooth;
+  }
   body {
     visibility: visible;
   }

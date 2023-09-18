@@ -38,4 +38,7 @@ type CommonProps = {
 };
 
 export type BodyProps = CommonProps &
-  React.HTMLAttributes<HTMLParagraphElement>;
+  React.HTMLAttributes<HTMLParagraphElement> & {
+    as?: string | React.ComponentType<any> | undefined;
+    forwardedAs?: string | React.ComponentType<any> | undefined;
+  };
