@@ -31,6 +31,8 @@ type CommonProps = {
   defaultValue?: string | number;
   /** Render a textarea */
   isMultiline?: boolean;
+  /** Name of the field */
+  name?: string;
   /** Add leading icon */
   icon?: React.FC<{ size: number }>;
   /** @callback */
@@ -38,7 +40,7 @@ type CommonProps = {
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   /** @callback */
-  onChange: (value: any) => void;
+  onChange?: (value: any) => void;
   /** @callback */
   onFocus?: (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -63,4 +65,8 @@ type TextareaProps = CommonProps & {
   height?: number;
 };
 
-export type FormFieldProps = InputProps | TextareaProps;
+export type FormFieldProps = (InputProps | TextareaProps) &
+  Omit<
+    React.HTMLAttributes<HTMLInputElement | HTMLTextAreaElement>,
+    'onChange'
+  >;

@@ -16,6 +16,7 @@ const nextConfig = {
     forceSwcTransforms: true,
     externalDir: true,
     appDir: true,
+    serverActions: true,
     outputFileTracingExcludes: {
       '*': [
         'node_modules/@swc/core-linux-x64-gnu',

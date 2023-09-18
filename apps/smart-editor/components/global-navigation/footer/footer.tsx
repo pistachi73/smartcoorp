@@ -2,7 +2,6 @@ import { Body } from '@smartcoorp/ui/body';
 import { Headline } from '@smartcoorp/ui/headline';
 import { spaceXL, spaceXS } from '@smartcoorp/ui/tokens';
 
-import { Illustration } from './illustration';
 import {
   ContactContainer,
   ContactImg,
@@ -10,7 +9,8 @@ import {
   FooterContainer,
   LogoContainer,
   RelativeWidthLimiter,
-} from './style';
+} from './footer.styles';
+import { Illustration } from './illustration';
 
 export const Footer = () => {
   return (

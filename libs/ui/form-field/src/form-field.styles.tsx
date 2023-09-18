@@ -60,7 +60,7 @@ export const sizes = {
     `,
 
     label: css`
-      font-size: ${scale060};
+      font-size: ${scale070};
     `,
     placeholder: css`
       font-size: ${scale060};
@@ -92,7 +92,7 @@ export const sizes = {
     `,
 
     label: css`
-      font-size: ${scale070};
+      font-size: ${scale080};
     `,
 
     helperText: css`
@@ -310,6 +310,7 @@ const LabelContainer = styled.div`
 `;
 
 const Label = styled.label<SizeProps>`
+  padding-bottom: ${spaceXS};
   color: ${({ theme }) => theme.form.neutralColor};
   /* font-weight: 500; */
 

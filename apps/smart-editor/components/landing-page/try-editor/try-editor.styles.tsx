@@ -6,14 +6,11 @@ import {
   borderRadiusS,
   gray300,
   gray900,
-  mediaConfined,
   mediaWide,
   scale140,
-  scale360,
-  space3XL,
   space4XL,
+  spaceL,
   spaceM,
-  spaceXL,
   spaceXS,
   spaceXXL,
 } from '@smartcoorp/ui/tokens';
@@ -37,6 +34,7 @@ export const BackgroundReactangle = styled.div`
 
 export const RenderBlockJSONContainer = styled.div`
   padding: ${spaceXXL};
+  padding-left: 0;
   font-family: Recursive, monospace;
 
   height: calc(100vh - 36px);
@@ -105,7 +103,7 @@ export const PostEditorAndRenderContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: ${spaceM};
+  gap: ${spaceL};
   padding-inline: ${spaceM};
 
   @media ${mediaWide} {

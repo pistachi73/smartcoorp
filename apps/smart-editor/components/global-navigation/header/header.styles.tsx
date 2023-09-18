@@ -2,13 +2,19 @@
 
 import { css, styled } from 'styled-components';
 
-import { scale180, spaceL } from '@smartcoorp/ui/tokens';
+import { gray100, scale180, spaceL } from '@smartcoorp/ui/tokens';
 import { WidthLimiter } from '@smartcoorp/ui/width-limiter';
 
 export const HeaderContainer = styled.header`
   height: ${scale180};
   display: flex;
   align-items: center;
+
+  position: sticky;
+  top: 0;
+  z-index: 99999;
+
+  background-color: ${gray100};
 
   ${({ theme: { SmartEditor } }) => css`
     background-color: ${SmartEditor.header.backgroundColor};

@@ -1,5 +1,10 @@
 import { delimetersMapping, getValueType } from './helpers';
-import { type Color, Container, Item, Value } from './style';
+import {
+  type Color,
+  Container,
+  Item,
+  Value,
+} from './render-blocks-json.styles';
 
 export const RenderBlocksJSON = ({
   obj,

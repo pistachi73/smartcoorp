@@ -1,3 +1,5 @@
+'use client';
+
 import React, { forwardRef } from 'react';
 import { InputHTMLAttributes } from 'react-day-picker';
 import { BiHide, BiMinus, BiPlus, BiShow } from 'react-icons/bi';
@@ -30,6 +32,7 @@ export const FormField = forwardRef<
       onBlur,
       className,
       height,
+      name,
       ...props
     },
     ref?: React.Ref<HTMLElement>
@@ -46,7 +49,7 @@ export const FormField = forwardRef<
 
     const handleNumberChange = (type: 'add' | 'minus') => () => {
       const input = document.getElementById(inputId) as HTMLInputElement;
-      onChange(Number(input.value) + (type === 'add' ? 1 : -1));
+      onChange && onChange(Number(input.value) + (type === 'add' ? 1 : -1));
     };
 
     const iconSize = 14;
@@ -102,9 +105,10 @@ export const FormField = forwardRef<
               ref={ref as React.Ref<HTMLTextAreaElement>}
               placeholder={placeholder}
               disabled={isDisabled}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                onChange(e.target.value)
-              }
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                if (!onChange) return;
+                return onChange(e.target.value);
+              }}
               onFocus={onFocus}
               onBlur={onBlur}
               value={value as string}
@@ -113,6 +117,7 @@ export const FormField = forwardRef<
               $sizeConfined={sizeConfined}
               $sizeWide={sizeWide}
               $height={height}
+              name={name}
             />
           ) : (
             <S.Input
@@ -125,12 +130,14 @@ export const FormField = forwardRef<
               $sizeConfined={sizeConfined}
               $sizeWide={sizeWide}
               $hasIcon={!!Icon || inputType === 'number'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                onChange(e.target.value)
-              }
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (!onChange) return;
+                return onChange(e.target.value);
+              }}
               onFocus={onFocus}
               onBlur={onBlur}
               value={value}
+              name={name}
               {...props}
             ></S.Input>
           )}
