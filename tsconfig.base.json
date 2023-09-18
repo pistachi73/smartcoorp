@@ -74,7 +74,8 @@
       "@smartcoorp/ui/width-limiter": ["libs/ui/width-limiter/src/index.ts"],
       "@smart-editor/components/*": ["apps/smart-editor/components/*"],
       "@smart-editor/utils/*": ["apps/smart-editor/utils/*"],
-      "@smart-editor/types": ["apps/smart-editor/types/index.ts"]
+      "@smart-editor/types": ["apps/smart-editor/types/index.ts"],
+      "@smartcoorp/prisma": ["prisma/prisma-client.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

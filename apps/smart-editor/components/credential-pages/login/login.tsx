@@ -1,12 +1,4 @@
-import { getServerSession } from 'next-auth';
-
-import Link from 'next/link';
-import { redirect } from 'next/navigation';
-
-import { nextAuthOptions } from '@smartcoorp/smart-api';
 import { Body } from '@smartcoorp/ui/body';
-import { Button } from '@smartcoorp/ui/button';
-import { FormField } from '@smartcoorp/ui/form-field';
 import { Headline } from '@smartcoorp/ui/headline';
 import { spaceS, spaceXL } from '@smartcoorp/ui/tokens';
 

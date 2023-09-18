@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import prisma from '@smartcoorp/prisma';
 import { ILogin } from '@smartcoorp/smart-api';
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
