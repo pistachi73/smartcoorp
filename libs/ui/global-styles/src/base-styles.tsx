@@ -74,11 +74,11 @@ export const BaseStyles = createGlobalStyle`
   
   a {
     text-decoration: none;
-    color:currentColor;
-    border-bottom: 1px solid ${primary};
-    &:focus{
-    outline-color: ${primary300} 
+    color: ${primary};
+    &:hover {
+      text-decoration: underline;
     }
+  
   }
   
   button{

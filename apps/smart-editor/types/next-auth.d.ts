@@ -4,7 +4,6 @@ import NextAuth from 'next-auth';
 declare module 'next-auth' {
   interface User {
     username?: string;
-    role: Prisma.Role;
   }
 
   interface Session {
@@ -20,6 +19,5 @@ declare module 'next-auth/jwt' {
     /** OpenID ID Token */
     idToken?: string;
     username?: string;
-    role: Prisma.Role;
   }
 }

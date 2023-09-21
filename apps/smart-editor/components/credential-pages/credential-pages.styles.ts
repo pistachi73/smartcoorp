@@ -5,13 +5,12 @@ import { styled } from 'styled-components';
 import { Button } from '@smartcoorp/ui/button';
 import {
   borderRadiusM,
-  borderRadiusS,
+  gray100,
   gray300,
   gray600,
   gray900,
   mediaWide,
   mediaXWide,
-  primary,
   space3XL,
   space4XL,
   space5XL,
@@ -24,19 +23,20 @@ export const Container = styled.div`
   height: 100vh;
   width: 100vw;
 
-  /* max-width: 1200px; */
-
   margin: auto;
   padding: ${spaceXXL};
 
   display: flex;
   gap: ${spaceXL};
 
+  background-color: ${gray100};
+
   @media ${mediaWide} {
     padding: ${space4XL};
   }
 `;
 
+// ------- SHARED COMPONENTS -------
 const Wrapper = styled.div`
   padding: ${space3XL};
 
@@ -54,11 +54,30 @@ const Wrapper = styled.div`
   }
 `;
 
-//------- FORM SECTION -------
+export const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: ${spaceXXL};
+  width: 100%;
 
+  @media ${mediaXWide} {
+    width: 75%;
+    min-width: 435px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: ${spaceXL};
+  }
+`;
+
+// ------- FORM SECTION -------
 export const FormWrapper = styled(Wrapper)`
   align-items: center;
   padding: ${space3XL};
+  position: relative;
 
   > div {
     display: flex;
@@ -74,41 +93,10 @@ export const FormWrapper = styled(Wrapper)`
   }
 `;
 
-export const GoogleButton = styled(Button)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-color: ${gray300};
-  background-color: white;
-
-  img {
-    margin-right: ${spaceL};
-  }
-
-  span {
-    font-weight: 400;
-    letter-spacing: 0em;
-  }
-`;
-
-export const Or = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: ${spaceL};
-  /* margin-top: ${spaceXL};
-  margin-bottom: ${spaceXL}; */
-
-  div {
-    width: 100%;
-    height: 1px;
-    background-color: ${gray300};
-  }
-
-  span {
-    color: ${gray600};
-  }
+export const LogoImg = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 //------- ILLUSTRATION SECTION -------
@@ -131,4 +119,41 @@ export const Illustration = styled.img`
   object-fit: contain;
   max-height: 100%;
   max-width: 100%;
+`;
+
+// ------- OR COMPONENT -------
+
+export const Or = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${spaceL};
+  /* margin-top: ${spaceXL};
+  margin-bottom: ${spaceXL}; */
+
+  div {
+    width: 100%;
+    height: 1px;
+    background-color: ${gray300};
+  }
+`;
+
+// ------- GOOGLE BUTTON COMPONENT -------
+
+export const GoogleButton = styled(Button)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-color: ${gray300};
+  background-color: white;
+
+  img {
+    margin-right: ${spaceL};
+  }
+
+  span {
+    font-weight: 400;
+    letter-spacing: 0em;
+  }
 `;

@@ -8,9 +8,9 @@ import { GoogleButton } from '../components/google-button';
 import { Or } from '../components/or';
 import { FormContainer } from '../credential-pages.styles';
 
-import { LoginForm } from './login-form';
+import { SignupForm } from './signup-form';
 
-export const Login = () => {
+export const Signup = () => {
   return (
     <FormContainer>
       <div>
@@ -22,17 +22,17 @@ export const Login = () => {
             marginBottom: spaceS,
           }}
         >
-          Welcome back!
+          Start crafting your story!
         </Headline>
         <Body size="xsmall" sizeWide="small" noMargin variant="neutral">
           Enter your credentials and start typing
         </Body>
       </div>
-      <GoogleButton action="login" />
+      <GoogleButton action="signup" />
       <Or />
-      <LoginForm />
+      <SignupForm />
       <Body size="xsmall" sizeWide="small" noMargin variant="neutral">
-        Don&apos;t have an account? <Link href="/signup">Sign up</Link>
+        Already a user? <Link href="/login">Log in</Link>
       </Body>
     </FormContainer>
   );

@@ -50,3 +50,26 @@ enum Role {
     USER
     ADMIN
 }
+
+model EUser {
+    id                  Int                   @id @default(autoincrement())
+    name                String
+    email               String                @unique
+    password            String?
+    picture             String?
+    createdAt           DateTime              @default(now())
+    updatedAt           DateTime              @updatedAt
+    EPasswordResetToken EPasswordResetToken[]
+}
+
+model EPasswordResetToken {
+    id        Int       @id @default(autoincrement())
+    token     String    @unique
+    createdAt DateTime  @default(now())
+    resetAt   DateTime?
+
+    user   EUser @relation(fields: [userId], references: [id])
+    userId Int
+
+    @@index([userId])
+}

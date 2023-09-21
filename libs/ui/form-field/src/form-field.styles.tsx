@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 
+import Link from 'next/link';
+
 import {
   borderRadiusXS,
   focusShadow,
@@ -60,7 +62,7 @@ export const sizes = {
     `,
 
     label: css`
-      font-size: ${scale070};
+      font-size: ${scale060};
     `,
     placeholder: css`
       font-size: ${scale060};
@@ -92,7 +94,7 @@ export const sizes = {
     `,
 
     label: css`
-      font-size: ${scale080};
+      font-size: ${scale070};
     `,
 
     helperText: css`
@@ -306,12 +308,14 @@ const HelperText = styled.span<SizeProps & WithError>`
 `;
 
 const LabelContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
   margin-bottom: ${spaceXXS};
 `;
 
 const Label = styled.label<SizeProps>`
-  padding-bottom: ${spaceXS};
   color: ${({ theme }) => theme.form.neutralColor};
+  /* padding-bottom: ${spaceXS}; */
   /* font-weight: 500; */
 
   /** Size styles */
@@ -378,6 +382,38 @@ const IconContainer = styled.div<IconContainerProps>`
     `};
 `;
 
+const ForgotPasswordLink = styled(Link)<SizeProps>`
+  display: block;
+  color: ${({ theme }) => theme.form.neutralColor};
+  text-decoration: none;
+
+  /** Size styles */
+  ${({ $size }) =>
+    $size &&
+    css`
+      ${sizes[$size].label}
+    `}
+
+  ${({ $sizeConfined }) =>
+    $sizeConfined &&
+    css`
+      @media ${mediaConfined} {
+        ${sizes[$sizeConfined].label}
+      }
+    `};
+
+  ${({ $sizeWide }) =>
+    $sizeWide &&
+    css`
+      @media ${mediaWide} {
+        ${$sizeWide && sizes[$sizeWide].label}
+      }
+    `};
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 export const Styled = {
   Container,
   InputContainer,
@@ -387,4 +423,5 @@ export const Styled = {
   Label,
   LabelContainer,
   HelperText,
+  ForgotPasswordLink,
 };
