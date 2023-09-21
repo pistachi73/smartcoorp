@@ -33,6 +33,8 @@ type CommonProps = {
   isMultiline?: boolean;
   /** Name of the field */
   name?: string;
+  /** Forgot Password HREF */
+  forgotPasswordHref?: string;
   /** Add leading icon */
   icon?: React.FC<{ size: number }>;
   /** @callback */

@@ -4,13 +4,11 @@ import { Body } from '@smartcoorp/ui/body';
 import { Headline } from '@smartcoorp/ui/headline';
 import { spaceS } from '@smartcoorp/ui/tokens';
 
-import { GoogleButton } from '../components/google-button';
-import { Or } from '../components/or';
 import { FormContainer } from '../credential-pages.styles';
 
-import { LoginForm } from './login-form';
+import { ForgotPasswordForm } from './forgot-password-form';
 
-export const Login = () => {
+export const ForgotPassword = () => {
   return (
     <FormContainer>
       <div>
@@ -22,18 +20,20 @@ export const Login = () => {
             marginBottom: spaceS,
           }}
         >
-          Welcome back!
+          Forgot password
         </Headline>
         <Body size="xsmall" sizeWide="small" noMargin variant="neutral">
-          Enter your credentials and start typing
+          Enter your email, and we will send you instructions on how to reset
+          your password
         </Body>
       </div>
-      <GoogleButton action="login" />
-      <Or />
-      <LoginForm />
-      <Body size="xsmall" sizeWide="small" noMargin variant="neutral">
-        Don&apos;t have an account? <Link href="/signup">Sign up</Link>
-      </Body>
+
+      <ForgotPasswordForm />
+      <Link href="/login">
+        <Body size="xsmall" sizeWide="small" noMargin variant="neutral">
+          Back to login
+        </Body>
+      </Link>
     </FormContainer>
   );
 };

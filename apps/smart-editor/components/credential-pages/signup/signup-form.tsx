@@ -1,6 +1,5 @@
 'use client';
 
-import { sendEmail } from '@smart-editor/actions/send-email';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -19,7 +18,7 @@ export const loginSchema = z.object({
 
 export type LoginFormData = z.infer<typeof loginSchema>;
 
-export const LoginForm = () => {
+export const SignupForm = () => {
   const { control, handleSubmit } = useForm<LoginFormData>({
     defaultValues: {
       email: '',
@@ -48,43 +47,33 @@ export const LoginForm = () => {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <RHFFormField
-          label="Email"
-          name="email"
-          control={control}
-          isDisabled={loading}
-          rules={{
-            required: 'Email is required',
-            pattern: {
-              value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-              message: 'Email address must be a valid address',
-            },
-          }}
-        />
-        <RHFFormField
-          label="Password"
-          name="password"
-          control={control}
-          isDisabled={loading}
-          type="password"
-          forgotPasswordHref="/forgot-password"
-          rules={{
-            required: 'Password is required',
-          }}
-        />
-        <Button type="submit" loading={loading}>
-          Login
-        </Button>
-      </form>
-      <Button
-        onClick={() =>
-          sendEmail('oscarpulido98@gmail.com', 'test subject', 'test body')
-        }
-      >
-        Send email
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <RHFFormField
+        label="Email"
+        name="email"
+        control={control}
+        isDisabled={loading}
+        rules={{
+          required: 'Email is required',
+          pattern: {
+            value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+            message: 'Email address must be a valid address',
+          },
+        }}
+      />
+      <RHFFormField
+        label="Password"
+        name="password"
+        control={control}
+        isDisabled={loading}
+        type="password"
+        rules={{
+          required: 'Password is required',
+        }}
+      />
+      <Button type="submit" loading={loading}>
+        Sign up
       </Button>
-    </>
+    </form>
   );
 };

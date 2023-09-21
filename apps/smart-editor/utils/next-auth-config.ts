@@ -1,8 +1,8 @@
 import { loginSchema } from '@smart-editor/components/credential-pages/login/login-form';
 import * as bcrypt from 'bcrypt';
-import NextAuth, { NextAuthOptions } from 'next-auth';
+import { NextAuthOptions } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import GoogleCredentials from 'next-auth/providers/google';
+import GoogleProvider from 'next-auth/providers/google';
 
 import prisma from '@smartcoorp/prisma';
 
@@ -50,9 +50,44 @@ export const nextAuthConfig: NextAuthOptions = {
       //@ts-ignore
       authorize: async (credentials) => authorize(credentials),
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+    }),
   ],
 
   callbacks: {
+    signIn: async ({ user, account, profile }) => {
+      if (account?.provider !== 'google') return true;
+
+      const existingUser = await prisma.eUser.findFirst({
+        where: { email: profile?.email },
+      });
+
+      if (existingUser) return true;
+
+      const { email, name, image } = user;
+
+      if (!email || !name || !image) return false;
+
+      await prisma.eUser.create({
+        data: {
+          email,
+          name,
+          picture: image,
+        },
+      });
+
+      return true;
+    },
+    session: ({ session, token }) => {
+      if (token) {
+        session.id = token.id;
+        session.user.name = token.name;
+      }
+
+      return session;
+    },
     jwt: ({ token, user }) => {
       if (user) {
         token.id = user.id;
@@ -61,14 +96,6 @@ export const nextAuthConfig: NextAuthOptions = {
       }
 
       return token;
-    },
-    session: ({ session, token }) => {
-      if (token) {
-        session.id = token.id;
-        session.user.username = token.username;
-      }
-
-      return session;
     },
   },
   secret: '77e0063d3d627244e84c6b8a9db7e7f6',

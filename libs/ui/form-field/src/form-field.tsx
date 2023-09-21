@@ -33,6 +33,7 @@ export const FormField = forwardRef<
       className,
       height,
       name,
+      forgotPasswordHref,
       ...props
     },
     ref?: React.Ref<HTMLElement>
@@ -56,20 +57,35 @@ export const FormField = forwardRef<
     const passwordType = showPassword ? 'text' : 'password';
     const inputType = type === 'password' ? passwordType : type;
 
+    const hasLabel = !!label;
+    const renderForgotPasswordLink = type === 'password' && forgotPasswordHref;
     return (
       <S.Container $disabled={isDisabled} className={className}>
-        {label && (
+        {(hasLabel || renderForgotPasswordLink) && (
           <S.LabelContainer>
-            <S.Label
-              htmlFor={inputId}
-              $size={size}
-              $sizeConfined={sizeConfined}
-              $sizeWide={sizeWide}
-            >
-              {label}
-            </S.Label>
+            {label && (
+              <S.Label
+                htmlFor={inputId}
+                $size={size}
+                $sizeConfined={sizeConfined}
+                $sizeWide={sizeWide}
+              >
+                {label}
+              </S.Label>
+            )}
+            {renderForgotPasswordLink && (
+              <S.ForgotPasswordLink
+                href={forgotPasswordHref}
+                $size={size}
+                $sizeConfined={sizeConfined}
+                $sizeWide={sizeWide}
+              >
+                Forgot password?
+              </S.ForgotPasswordLink>
+            )}
           </S.LabelContainer>
         )}
+
         <S.InputContainer
           forwardedAs={'button'}
           type="button"

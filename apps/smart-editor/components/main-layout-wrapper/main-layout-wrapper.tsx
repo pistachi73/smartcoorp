@@ -7,6 +7,8 @@ import { GlobalStyles, ThemeProvider } from '@smartcoorp/ui/global-styles';
 
 import { darkTheme, lightTheme } from '../../theme/theme';
 
+import { ToasterRenderer } from './toaster-renderer';
+
 export function MainLayoutWrapper({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
@@ -17,6 +19,7 @@ export function MainLayoutWrapper({ children }: { children: React.ReactNode }) {
       >
         <StyledComponentsRegistry>
           <GlobalStyles />
+          <ToasterRenderer />
           {children}
         </StyledComponentsRegistry>
       </ThemeProvider>

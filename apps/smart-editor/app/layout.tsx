@@ -1,4 +1,4 @@
-import { MainLayoutWrapper } from '@smart-editor/components/main-layout-wrapper';
+import { MainLayoutWrapper } from '@smart-editor/components/main-layout-wrapper/main-layout-wrapper';
 import { getHeaders } from '@smart-editor/utils/get-headers';
 
 import { DeviceOnlyProvider } from '@smartcoorp/ui/device-only';
