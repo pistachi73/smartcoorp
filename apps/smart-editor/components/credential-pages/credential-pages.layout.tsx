@@ -29,7 +29,7 @@ export const CredentialPagesLayout = ({
       <FormWrapper>
         {children}
         <Link href="/">
-          <LogoImg width={36} src="logo_light.svg" alt="SmartEditor Logo" />
+          <LogoImg width={36} src="/logo_light.svg" alt="SmartEditor Logo" />
         </Link>
       </FormWrapper>
       <IllustrationWrapper>
