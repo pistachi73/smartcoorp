@@ -19,8 +19,12 @@ const authorize = async (
     where: { email: creds.email },
   });
 
-  if (!user || !user.accountVerified) {
+  if (!user) {
     return null;
+  }
+
+  if (!user.accountVerified) {
+    throw new Error('Account not verified');
   }
 
   const isValidPassword = await bcrypt.compare(
@@ -29,7 +33,7 @@ const authorize = async (
   );
 
   if (!isValidPassword) {
-    return null;
+    throw new Error('Invalid password');
   }
 
   return {

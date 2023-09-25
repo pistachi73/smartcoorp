@@ -31,9 +31,8 @@ export const LoginForm = () => {
       redirect: false,
     });
 
-    console.log({ response });
     if (response?.error) {
-      toast.error('Invalid credentials');
+      toast.error(response.error);
     } else {
       router.push('/');
     }
