@@ -3,7 +3,8 @@ import NextAuth from 'next-auth';
 
 declare module 'next-auth' {
   interface User {
-    username?: string;
+    name?: string;
+    picture?: string;
   }
 
   interface Session {
@@ -18,6 +19,7 @@ declare module 'next-auth/jwt' {
     id: string;
     /** OpenID ID Token */
     idToken?: string;
-    username?: string;
+    name?: string;
+    picture?: string;
   }
 }

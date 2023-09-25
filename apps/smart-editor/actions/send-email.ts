@@ -2,32 +2,75 @@
 
 import nodemailer from 'nodemailer';
 
-export const sendEmail = async (
-  email: string,
-  subject: string,
-  body: string
-) => {
+type SendEmailProps = {
+  emailTo: string;
+  subject: string;
+  textBody?: string;
+  htmlBody?: string;
+};
+
+type MailOptions = {
+  from: string;
+  to: string;
+  subject: string;
+  body?: string;
+  html?: string;
+};
+
+export const sendEmail = async ({
+  emailTo,
+  subject,
+  textBody,
+  htmlBody,
+}: SendEmailProps) => {
+  if (!textBody && !htmlBody) {
+    throw new Error('You must provide either a text or html body');
+  }
+
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
     auth: {
       user: process.env.NODEMAILER_EMAIL,
       pass: process.env.NODEMAILER_PW,
     },
+    secure: true,
   });
-  const mailOptions = {
-    from: process.env.NODEMAILER_EMAIL,
-    to: email,
+
+  await new Promise((resolve, reject) => {
+    // verify connection configuration
+    transporter.verify(function (error, success) {
+      if (error) {
+        console.log(error);
+        reject(error);
+      } else {
+        console.log('Server is ready to take our messages');
+        resolve(success);
+      }
+    });
+  });
+
+  const mailOptions: MailOptions = {
+    from: process.env.NODEMAILER_EMAIL as string,
+    to: emailTo,
     subject: subject,
-    text: body,
   };
+
+  if (htmlBody) {
+    mailOptions['html'] = htmlBody;
+  } else if (!htmlBody && textBody) {
+    mailOptions['body'] = textBody;
+  }
 
   await new Promise((resolve, reject) => {
     // send mail
-    transporter.sendMail(mailOptions, (err, response) => {
+    transporter.sendMail(mailOptions, (err, info) => {
       if (err) {
+        console.error(err);
         reject(err);
       } else {
-        resolve(response);
+        console.log(info);
+        resolve(info);
       }
     });
   });
