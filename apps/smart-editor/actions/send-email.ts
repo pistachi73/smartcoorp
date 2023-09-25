@@ -17,9 +17,6 @@ type MailOptions = {
   html?: string;
 };
 
-const NODEMAILER_PW = 'jjnzpayuahdrxjtw';
-const NODEMAILER_EMAIL = 'scsmartcoorp@gmail.com';
-
 export const sendEmail = async ({
   emailTo,
   subject,
@@ -34,8 +31,8 @@ export const sendEmail = async ({
     host: 'smtp.gmail.com',
     port: 465,
     auth: {
-      user: NODEMAILER_EMAIL,
-      pass: NODEMAILER_PW,
+      user: process.env.NODEMAILER_EMAIL,
+      pass: process.env.NODEMAILER_PW,
     },
     secure: true,
   });
@@ -54,7 +51,7 @@ export const sendEmail = async ({
   });
 
   const mailOptions: MailOptions = {
-    from: NODEMAILER_EMAIL as string,
+    from: process.env.NODEMAILER_EMAIL as string,
     to: emailTo,
     subject: subject,
   };
