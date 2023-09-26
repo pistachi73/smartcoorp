@@ -12,7 +12,7 @@ import { Text } from '@react-email/text';
 import * as React from 'react';
 
 interface ResetPasswordEmailProps {
-  userFirstname: string;
+  name: string;
   resetPasswordLink: `/${string}`;
 }
 
@@ -21,7 +21,7 @@ const baseUrl = process.env.VERCEL_URL
   : 'http://localhost:5200';
 
 const ResetPasswordEmail = ({
-  userFirstname,
+  name,
   resetPasswordLink,
 }: ResetPasswordEmailProps) => {
   return (
@@ -47,7 +47,7 @@ const ResetPasswordEmail = ({
         </Section>
 
         <Section>
-          <Text style={text}>Hi {userFirstname},</Text>
+          <Text style={text}>Hi {name},</Text>
           <Text style={text}>
             Someone recently requested a password change for your SmartEditor
             account. If this was you, you can set a new password here:

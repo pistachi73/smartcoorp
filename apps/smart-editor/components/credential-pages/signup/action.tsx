@@ -2,10 +2,9 @@
 
 import { randomUUID } from 'crypto';
 
-import { render } from '@react-email/render';
-import { sendEmail } from '@smart-editor/actions/send-email';
 import VerifyAccountEmail from '@smart-editor/emails/activate-account-email';
 import * as bcrypt from 'bcrypt';
+import { Resend } from 'resend';
 
 import prisma from '@smartcoorp/prisma';
 
@@ -15,11 +14,14 @@ type Output = {
   error?: string;
 };
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export const signupAction = async ({
   email,
   password,
   name,
 }: SignupFormData): Promise<Output> => {
+  console.log(process.env.RESEND_API_KEY);
   const userExists = await prisma.eUser.findFirst({
     where: {
       email,
@@ -45,22 +47,19 @@ export const signupAction = async ({
     },
   });
 
-  const emailHtml = render(
-    <VerifyAccountEmail
-      name={createdUser.name}
-      activateAccountLink={`/activate-account/${activationToken.token}`}
-    />
-  );
-
   try {
-    sendEmail({
-      emailTo: email,
+    await resend.emails.send({
+      from: 'SmartEditor <noreply@cookiecoaching.com>',
+      to: [email],
       subject: 'Activate your account',
-      htmlBody: emailHtml,
+      react: VerifyAccountEmail({
+        name: createdUser.name,
+        activateAccountLink: `/activate-account/${activationToken.token}`,
+      }),
     });
-  } catch (e) {
+  } catch (err) {
     return {
-      error: 'Failed to send email',
+      error: 'Error sending email',
     };
   }
 

@@ -2,18 +2,18 @@
 
 import { randomUUID } from 'crypto';
 
-import { render } from '@react-email/render';
-import { sendEmail } from '@smart-editor/actions/send-email';
 import ResetPasswordEmail from '@smart-editor/emails/reset-password-email';
+import { Resend } from 'resend';
 
 import prisma from '@smartcoorp/prisma';
 
 import { ForgotPasswordFormData } from '../helpers';
 
 type Output = {
-  success: boolean;
   error?: string;
 };
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const forgotPasswordAction = async (
   data: ForgotPasswordFormData
@@ -28,7 +28,6 @@ export const forgotPasswordAction = async (
 
   if (!user) {
     return {
-      success: false,
       error: 'This email is not registered.',
     };
   }
@@ -40,27 +39,21 @@ export const forgotPasswordAction = async (
     },
   });
 
-  const emailHtml = render(
-    <ResetPasswordEmail
-      userFirstname={user.name}
-      resetPasswordLink={`/forgot-password/${token.token}`}
-    />
-  );
-
   try {
-    sendEmail({
-      emailTo: email,
+    await resend.emails.send({
+      from: 'SmartEditor <noreply@cookiecoaching.com>',
+      to: [email],
       subject: 'Reset your password',
-      htmlBody: emailHtml,
+      react: ResetPasswordEmail({
+        name: user.name,
+        resetPasswordLink: `/forgot-password/${token.token}`,
+      }),
     });
-  } catch (e) {
+  } catch (err) {
     return {
-      success: false,
-      error: 'Failed to send email',
+      error: 'Error sending email',
     };
   }
 
-  return {
-    success: true,
-  };
+  return {};
 };
