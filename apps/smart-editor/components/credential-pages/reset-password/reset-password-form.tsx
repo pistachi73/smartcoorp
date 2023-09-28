@@ -1,76 +1,66 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { z } from 'zod';
 
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 import { spaceXL } from '@smartcoorp/ui/tokens';
 
-export const resetPasswordSchema = z.object({
-  password: z.string().min(4).max(12),
-  confirmPassword: z.string().min(4).max(12),
-});
+import { type ResetPasswordFormData, passwordInputValidator } from '../helpers';
 
-export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+import { resetPasswordAction } from './action';
 
 export const ResetPasswordForm = () => {
+  const params = useParams();
   const { control, handleSubmit } = useForm<ResetPasswordFormData>({
     defaultValues: {
       password: '',
       confirmPassword: '',
     },
   });
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const onSubmit = async (data: ResetPasswordFormData) => {
-    router.push('/');
-    // setLoading(true);
-    // const response = await signIn('credentials', {
-    //   ...data,
-    //   redirect: false,
-    // });
-    // console.log({ response });
-    // if (response?.error) {
-    //   toast.error('Invalid credentials');
-    // } else {
-    //   router.push('/');
-    // }
-    // setLoading(false);
+    setLoading(true);
+
+    const { error } = await resetPasswordAction(data, params.token);
+
+    if (error) {
+      toast.error(error);
+    } else {
+      router.push('/login');
+    }
+
+    setLoading(false);
   };
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: spaceXL,
-      }}
-    >
+    <form onSubmit={handleSubmit(onSubmit)}>
       <RHFFormField
         label="Password"
         name="password"
         control={control}
-        //   isDisabled={loading}
+        isDisabled={loading}
         type="password"
-        rules={{
-          required: 'Password is required',
-        }}
+        rules={passwordInputValidator}
       />
       <RHFFormField
         label="Confirm password"
         name="confirmPassword"
         control={control}
-        //   isDisabled={loading}
+        isDisabled={loading}
         type="password"
-        rules={{
-          required: 'Password is required',
-        }}
+        rules={passwordInputValidator}
       />
-      <Button type="submit">Set new Password</Button>
+      <Button type="submit" loading={loading}>
+        Set new Password
+      </Button>
     </form>
   );
 };

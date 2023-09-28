@@ -1,60 +1,54 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import toast from 'react-hot-toast';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
-import { spaceXL } from '@smartcoorp/ui/tokens';
 
-export const forgotPasswordSchema = z.object({
-  password: z.string().min(4).max(12),
-});
+import { type ForgotPasswordFormData, emailnputValidator } from '../helpers';
 
-export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+import { forgotPasswordAction } from './action';
 
 export const ForgotPasswordForm = () => {
+  const [loading, setLoading] = useState(false);
   const { control, handleSubmit } = useForm<ForgotPasswordFormData>({
     defaultValues: {
-      password: '',
+      email: '',
     },
   });
 
   const router = useRouter();
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
-    router.push('/forgot-password/success');
-    // setLoading(true);
-    // const response = await signIn('credentials', {
-    //   ...data,
-    //   redirect: false,
-    // });
-    // console.log({ response });
-    // if (response?.error) {
-    //   toast.error('Invalid credentials');
-    // } else {
-    //   router.push('/');
-    // }
-    // setLoading(false);
+    setLoading(true);
+
+    const { error } = await forgotPasswordAction(data);
+
+    if (error) {
+      toast.error(error);
+    } else {
+      router.push('/forgot-password/success');
+    }
+
+    setLoading(false);
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <RHFFormField
-        label="Password"
-        name="password"
+        label="Email"
+        name="email"
         control={control}
-        //   isDisabled={loading}
-        type="password"
-        rules={{
-          required: 'Password is required',
-        }}
+        isDisabled={loading}
+        type="email"
+        rules={emailnputValidator}
       />
-      <Button type="submit">Reset Password</Button>
-      {/* <Link href="/login">Back to login</Link> */}
+      <Button type="submit" loading={loading}>
+        Reset Password
+      </Button>
     </form>
   );
 };

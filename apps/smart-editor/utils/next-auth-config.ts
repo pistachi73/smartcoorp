@@ -1,4 +1,4 @@
-import { loginSchema } from '@smart-editor/components/credential-pages/login/login-form';
+import { LoginFormSchema } from '@smart-editor/components/credential-pages/helpers';
 import * as bcrypt from 'bcrypt';
 import { NextAuthOptions } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
@@ -9,9 +9,13 @@ import prisma from '@smartcoorp/prisma';
 const authorize = async (
   credentials: Record<'email' | 'password', string> | undefined
 ) => {
-  const creds = await loginSchema.parseAsync(credentials);
+  console.log(credentials);
+  const creds = await LoginFormSchema.parseAsync({
+    email: credentials?.email,
+    password: credentials?.password,
+  });
 
-  const user = await prisma.user.findFirst({
+  const user = await prisma.eUser.findFirst({
     where: { email: creds.email },
   });
 
@@ -19,17 +23,24 @@ const authorize = async (
     return null;
   }
 
-  const isValidPassword = await bcrypt.compare(creds.password, user.password);
+  if (!user.accountVerified) {
+    throw new Error('Account not verified');
+  }
+
+  const isValidPassword = await bcrypt.compare(
+    creds.password,
+    user.password ?? ''
+  );
 
   if (!isValidPassword) {
-    return null;
+    throw new Error('Invalid password');
   }
 
   return {
     id: user.id,
     email: user.email,
-    username: user.username,
-    profileImageUrl: user.profileImageUrl,
+    name: user.name,
+    picture: user.picture,
   };
 };
 
@@ -92,7 +103,7 @@ export const nextAuthConfig: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.username = user.username;
+        token.name = user.name;
       }
 
       return token;

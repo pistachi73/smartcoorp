@@ -75,6 +75,7 @@
       "@smart-editor/components/*": ["apps/smart-editor/components/*"],
       "@smart-editor/utils/*": ["apps/smart-editor/utils/*"],
       "@smart-editor/actions/*": ["apps/smart-editor/actions/*"],
+      "@smart-editor/emails/*": ["apps/smart-editor/emails/*"],
       "@smart-editor/types": ["apps/smart-editor/types/index.ts"],
       "@smartcoorp/prisma": ["prisma/prisma-client.ts"]
     }

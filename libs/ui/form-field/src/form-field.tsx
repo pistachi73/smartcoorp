@@ -79,6 +79,7 @@ export const FormField = forwardRef<
                 $size={size}
                 $sizeConfined={sizeConfined}
                 $sizeWide={sizeWide}
+                tabIndex={-1}
               >
                 Forgot password?
               </S.ForgotPasswordLink>

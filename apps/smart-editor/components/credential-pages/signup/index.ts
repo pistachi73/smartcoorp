@@ -1,3 +1,4 @@
 import { Signup } from './signup';
+import { SignupSuccess } from './signup-success';
 
-export { Signup };
+export { Signup, SignupSuccess };

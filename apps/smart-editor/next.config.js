@@ -25,6 +25,7 @@ const nextConfig = {
         'node_modules/webpack/lib',
       ],
     },
+    serverComponentsExternalPackages: ['@prisma/client', 'bcrypt'],
   },
 
   compiler: {

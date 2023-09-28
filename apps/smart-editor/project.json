@@ -63,6 +63,9 @@
       "options": {
         "lintFilePatterns": ["apps/smart-editor/**/*.{ts,tsx,js,jsx}"]
       }
+    },
+    "email": {
+      "command": "email dev --dir apps/smart-editor/emails"
     }
   },
   "tags": []

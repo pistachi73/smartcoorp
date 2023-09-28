@@ -11,16 +11,18 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 
-export const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(4).max(12),
-});
+import {
+  type SignupFormData,
+  emailnputValidator,
+  passwordInputValidator,
+} from '../helpers';
 
-export type LoginFormData = z.infer<typeof loginSchema>;
+import { signupAction } from './action';
 
 export const SignupForm = () => {
-  const { control, handleSubmit } = useForm<LoginFormData>({
+  const { control, handleSubmit } = useForm<SignupFormData>({
     defaultValues: {
+      name: '',
       email: '',
       password: '',
     },
@@ -28,19 +30,15 @@ export const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = async (data: SignupFormData) => {
     setLoading(true);
 
-    const response = await signIn('credentials', {
-      ...data,
-      redirect: false,
-    });
+    const { error } = await signupAction(data);
 
-    console.log({ response });
-    if (response?.error) {
-      toast.error('Invalid credentials');
+    if (error) {
+      toast.error(error);
     } else {
-      router.push('/');
+      router.push('/signup/success');
     }
 
     setLoading(false);
@@ -49,17 +47,20 @@ export const SignupForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <RHFFormField
+        label="Name"
+        name="name"
+        control={control}
+        isDisabled={loading}
+        rules={{
+          required: 'Name is required',
+        }}
+      />
+      <RHFFormField
         label="Email"
         name="email"
         control={control}
         isDisabled={loading}
-        rules={{
-          required: 'Email is required',
-          pattern: {
-            value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-            message: 'Email address must be a valid address',
-          },
-        }}
+        rules={emailnputValidator}
       />
       <RHFFormField
         label="Password"
@@ -67,9 +68,7 @@ export const SignupForm = () => {
         control={control}
         isDisabled={loading}
         type="password"
-        rules={{
-          required: 'Password is required',
-        }}
+        rules={passwordInputValidator}
       />
       <Button type="submit" loading={loading}>
         Sign up

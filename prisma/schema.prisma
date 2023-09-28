@@ -52,14 +52,16 @@ enum Role {
 }
 
 model EUser {
-    id                  Int                   @id @default(autoincrement())
-    name                String
-    email               String                @unique
-    password            String?
-    picture             String?
-    createdAt           DateTime              @default(now())
-    updatedAt           DateTime              @updatedAt
-    EPasswordResetToken EPasswordResetToken[]
+    id                        Int                         @id @default(autoincrement())
+    name                      String
+    email                     String                      @unique
+    password                  String?
+    picture                   String?
+    accountVerified           Boolean                     @default(false)
+    createdAt                 DateTime                    @default(now())
+    updatedAt                 DateTime                    @updatedAt
+    EPasswordResetToken       EPasswordResetToken[]
+    EAccountVerificationToken EAccountVerificationToken[]
 }
 
 model EPasswordResetToken {
@@ -68,8 +70,20 @@ model EPasswordResetToken {
     createdAt DateTime  @default(now())
     resetAt   DateTime?
 
-    user   EUser @relation(fields: [userId], references: [id])
+    user   EUser @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId Int
+
+    @@index([userId])
+}
+
+model EAccountVerificationToken {
+    id          Int       @id @default(autoincrement())
+    token       String    @unique
+    activatedAt DateTime?
+
+    createdAt DateTime @default(now())
+    user      EUser    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    Int
 
     @@index([userId])
 }
