@@ -34,11 +34,6 @@ export const Signup = () => {
       <Body size="xsmall" sizeWide="small" noMargin variant="neutral">
         Already a user? <Link href="/login">Log in</Link>
       </Body>
-
-      {JSON.stringify({
-        user: process.env.NODEMAILER_EMAIL,
-        pass: process.env.NODEMAILER_PW,
-      })}
     </FormContainer>
   );
 };

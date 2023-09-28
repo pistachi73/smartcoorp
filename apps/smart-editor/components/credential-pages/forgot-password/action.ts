@@ -13,12 +13,12 @@ type Output = {
   error?: string;
 };
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export const forgotPasswordAction = async (
   data: ForgotPasswordFormData
 ): Promise<Output> => {
   const { email } = data;
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   const user = await prisma.eUser.findUnique({
     where: {
@@ -38,6 +38,12 @@ export const forgotPasswordAction = async (
       token: `${randomUUID()}${randomUUID()}`.replace(/-/g, ''),
     },
   });
+
+  if (!token) {
+    return {
+      error: 'Error creating password reset token',
+    };
+  }
 
   try {
     await resend.emails.send({

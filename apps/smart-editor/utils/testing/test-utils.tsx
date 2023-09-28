@@ -6,7 +6,7 @@ import React, { ReactElement } from 'react';
 import { DeviceOnlyProvider, SCREENS } from '@smartcoorp/ui/device-only';
 import { ThemeProvider } from '@smartcoorp/ui/global-styles';
 
-import { darkTheme, lightTheme } from '../theme/theme';
+import { darkTheme, lightTheme } from '../../theme/theme';
 
 const AllTheProviders = ({
   children,

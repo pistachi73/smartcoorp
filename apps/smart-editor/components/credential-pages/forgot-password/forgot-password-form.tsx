@@ -3,14 +3,13 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { z } from 'zod';
 
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 
-import { type ForgotPasswordFormData } from '../helpers';
+import { type ForgotPasswordFormData, emailnputValidator } from '../helpers';
 
 import { forgotPasswordAction } from './action';
 
@@ -45,9 +44,7 @@ export const ForgotPasswordForm = () => {
         control={control}
         isDisabled={loading}
         type="email"
-        rules={{
-          required: 'Email is required',
-        }}
+        rules={emailnputValidator}
       />
       <Button type="submit" loading={loading}>
         Reset Password

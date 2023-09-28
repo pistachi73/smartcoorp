@@ -3,7 +3,7 @@ import {
   render,
   screen,
   waitFor,
-} from '@smart-editor/utils/test-utils';
+} from '@smart-editor/utils/testing/test-utils';
 import { signIn } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
 

@@ -11,7 +11,7 @@ import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 import { spaceXL } from '@smartcoorp/ui/tokens';
 
-import type { ResetPasswordFormData } from '../helpers';
+import { type ResetPasswordFormData, passwordInputValidator } from '../helpers';
 
 import { resetPasswordAction } from './action';
 
@@ -41,23 +41,14 @@ export const ResetPasswordForm = () => {
     setLoading(false);
   };
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: spaceXL,
-      }}
-    >
+    <form onSubmit={handleSubmit(onSubmit)}>
       <RHFFormField
         label="Password"
         name="password"
         control={control}
         isDisabled={loading}
         type="password"
-        rules={{
-          required: 'Password is required',
-        }}
+        rules={passwordInputValidator}
       />
       <RHFFormField
         label="Confirm password"
@@ -65,9 +56,7 @@ export const ResetPasswordForm = () => {
         control={control}
         isDisabled={loading}
         type="password"
-        rules={{
-          required: 'Password is required',
-        }}
+        rules={passwordInputValidator}
       />
       <Button type="submit" loading={loading}>
         Set new Password

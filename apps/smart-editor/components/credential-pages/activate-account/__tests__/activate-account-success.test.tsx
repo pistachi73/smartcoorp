@@ -1,4 +1,4 @@
-import { render, screen } from '@smart-editor/utils/test-utils';
+import { render, screen } from '@smart-editor/utils/testing/test-utils';
 
 import { ActivateAccountSuccess } from '../activate-account-success';
 

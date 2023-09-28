@@ -14,14 +14,13 @@ type Output = {
   error?: string;
 };
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export const signupAction = async ({
   email,
   password,
   name,
 }: SignupFormData): Promise<Output> => {
-  console.log(process.env.RESEND_API_KEY);
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
   const userExists = await prisma.eUser.findFirst({
     where: {
       email,
@@ -40,12 +39,24 @@ export const signupAction = async ({
     data: { name, email, password: hashedPassword },
   });
 
+  if (!createdUser) {
+    return {
+      error: 'Error creating user.',
+    };
+  }
+
   const activationToken = await prisma.eAccountVerificationToken.create({
     data: {
       userId: createdUser.id,
       token: `${randomUUID()}${randomUUID()}`.replace(/-/g, ''),
     },
   });
+
+  if (!activationToken) {
+    return {
+      error: 'Error creating activation token.',
+    };
+  }
 
   try {
     await resend.emails.send({
