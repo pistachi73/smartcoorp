@@ -45,6 +45,8 @@
     "@trpc/next": "^10.0.0",
     "@trpc/react-query": "^10.0.0",
     "@trpc/server": "^10.0.0",
+    "@upstash/ratelimit": "^0.4.4",
+    "@upstash/redis": "^1.22.0",
     "aws-crt": "^1.15.22",
     "aws-sdk": "^2.1248.0",
     "babel-plugin-styled-components": "^2.1.4",
