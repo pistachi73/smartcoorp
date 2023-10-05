@@ -1,3 +1,5 @@
+'use server';
+
 import { S3Client } from '@aws-sdk/client-s3';
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
 import { nanoid } from 'nanoid';
@@ -27,6 +29,7 @@ const InputSchema = z.object({
   fileExtension: z.string(),
   fileUrl: z.nullable(z.string().optional()),
   fileName: z.nullable(z.string().optional()),
+  key: z.string().optional(),
 });
 
 type Input = z.infer<typeof InputSchema>;
@@ -36,6 +39,7 @@ export const createPresignedUrl = async ({
   fileExtension,
   fileUrl,
   fileName,
+  key,
 }: Input) => {
   const fileId = nanoid();
 
@@ -50,6 +54,10 @@ export const createPresignedUrl = async ({
   const Key = `${folder}/${
     fileUrl ? fileNameFromUrl : `${fileName ?? fileId}.${fileExtension}`
   }`;
+
+  const Key_ = key
+    ? decodeURIComponent(key)
+    : `${folder}/${fileId}.${fileExtension}`;
 
   const presignedUrl = await createPresignedPost(s3, {
     Bucket: process.env['NEXT_PUBLIC_AWS_S3_BUCKET_NAME'] as string,

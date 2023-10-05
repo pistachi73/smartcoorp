@@ -15,23 +15,25 @@ export async function GET(request: NextRequest) {
   const query = new URL(url).searchParams;
   const key = query.get('key');
 
-  const notFoundImagePath = path.resolve('.', 'public/image-not-found.png');
-  const notFoundImageBlog = fs.readFileSync(notFoundImagePath);
+  // const notFoundImagePath = path.resolve('.', 'public/image-not-found.png');
+  // const notFoundImageBlog = fs.readFileSync(notFoundImagePath);
 
-  const notFoundImageResponse = new Response(notFoundImageBlog, {
-    headers: {
-      'Content-Type': 'image/png',
-    },
-  });
+  // const notFoundImageResponse = new Response(notFoundImageBlog, {
+  //   headers: {
+  //     'Content-Type': 'image/png',
+  //   },
+  // });
 
   if (!key) {
-    return notFoundImageResponse;
+    return new Response('Key is required');
+    // return notFoundImageResponse;
   }
 
   const { success } = await ratelimit.limit(key);
 
-  if (success) {
-    return notFoundImageResponse;
+  if (!success) {
+    return new Response('Rate limit exceeded');
+    // return notFoundImageResponse;
   }
 
   const decodedKey = decodeURIComponent(key);
@@ -42,7 +44,8 @@ export async function GET(request: NextRequest) {
       `${process.env['NEXT_PUBLIC_AWS_CLOUDFRONT_URL']}/${decodedKey}`
     );
   } catch (error) {
-    return notFoundImageResponse;
+    return new Response('Image not found');
+    // return notFoundImageResponse;
   }
 
   const blob = await imageResult.blob();

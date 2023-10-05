@@ -23,7 +23,7 @@ export const useSingleFileUpload = ({ folder, initialFile }: Props) => {
   const handleSingleFileUpload = async (file: SingleFileUpload) => {
     let fileUrl = currentFile;
 
-    console.log('Init', { file });
+    console.log('Init', { currentFile });
 
     // UPLOAD IMAGE TO S3
     if (file instanceof File) {
