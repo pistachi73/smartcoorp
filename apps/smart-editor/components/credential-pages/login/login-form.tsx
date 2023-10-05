@@ -33,7 +33,7 @@ export const LoginForm = () => {
     if (response?.error) {
       toast.error(response.error);
     } else {
-      router.push('/overview');
+      router.push('/posts');
     }
 
     setLoading(false);
