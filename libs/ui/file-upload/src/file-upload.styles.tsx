@@ -48,6 +48,7 @@ const DropzoneContainer = styled.div<DropzoneContainerTranseitnProps>`
   border: 1px dashed ${({ theme }) => theme.form.placeholderColor};
   border-radius: ${borderRadiusXS};
   cursor: pointer;
+  background-color: white;
 
   transition-property: border-color, background-color;
   transition-duration: ${motionTimeXS};

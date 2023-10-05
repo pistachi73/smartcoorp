@@ -224,7 +224,7 @@ const StyledReactSelect = styled(ReactSelect)<SelectProps>`
     /** Size styles */
     &:hover {
       background-color: ${({ theme }) => theme.form.hoverColor};
-      border-color: ${({ theme }) => theme.form.neutralColor};
+      /* border-color: ${({ theme }) => theme.form.neutralColor}; */
     }
 
     ${({ $error }) =>

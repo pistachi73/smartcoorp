@@ -14,7 +14,7 @@ export const mediaWide = `(min-width: 992px)`;
 export const mediaXWide = `(min-width: 1200px)`;
 
 /** Media query token:  **SMALL or TINY only** - *(0, 767px)* */
-export const mediaSmallOrTiny = `(max-width: 767px)`;
+export const mediaSmallOrTiny = `(max-width: 768px)`;
 
 /** Media query token:  **SMALL only** - *(540px, 767px)* */
 export const mediaSmallOnly = `(min-width: 577px) and (max-width: 767px)`;

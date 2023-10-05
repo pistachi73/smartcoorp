@@ -21,47 +21,47 @@ export const Tabs: FC<TabsProps> = ({ defaultTab, tabs, onTabChange }) => {
           <S.TabTrigger value={id} key={`${id}-trigger`}>
             {Icon && (
               <S.TabTriggerIconContainer>
-                <Icon size={20} />
+                <Icon size={16} />
               </S.TabTriggerIconContainer>
             )}
             {label}
           </S.TabTrigger>
         ))}
       </S.TabsList>
-      <S.VisibleResizablePanel
-        animationKey={activeTab}
-        duration={duration}
-        variants={{
-          initial: { x: '-20%', opacity: 0 },
-          animate: {
-            x: 0,
-            opacity: 1,
-            transition: { duration: duration / 2, delay: duration / 2 },
-          },
-          exit: {
-            x: '20%',
-            opacity: 0,
-            transition: { duration: duration / 2 },
-          },
-          transition: {
-            type: 'spring',
-            damping: 20,
-            stiffness: 100,
-            mass: 0.8,
-          },
-        }}
-      >
-        {tabs.map(({ id, content }) => (
-          <S.TabsContent
-            value={id}
-            key={`${id}-content`}
-            forceMount
-            tabIndex={-1}
-          >
-            {activeTab === id && content}
-          </S.TabsContent>
-        ))}
-      </S.VisibleResizablePanel>
+      {/* <S.VisibleResizablePanel
+        // animationKey={activeTab}
+        // duration={duration}
+        // variants={{
+        //   initial: { x: '-20%', opacity: 0 },
+        //   animate: {
+        //     x: 0,
+        //     opacity: 1,
+        //     transition: { duration: duration / 2, delay: duration / 2 },
+        //   },
+        //   exit: {
+        //     x: '20%',
+        //     opacity: 0,
+        //     transition: { duration: duration / 2 },
+        //   },
+        //   transition: {
+        //     type: 'spring',
+        //     damping: 20,
+        //     stiffness: 100,
+        //     mass: 0.8,
+        //   },
+        // }}
+      > */}
+      {tabs.map(({ id, content }) => (
+        <S.TabsContent
+          value={id}
+          key={`${id}-content`}
+          forceMount
+          tabIndex={-1}
+        >
+          {activeTab === id && content}
+        </S.TabsContent>
+      ))}
+      {/* </S.VisibleResizablePanel> */}
     </S.Tabs>
   );
 };

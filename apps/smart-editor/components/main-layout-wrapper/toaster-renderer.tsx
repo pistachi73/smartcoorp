@@ -2,21 +2,27 @@ import { Toaster } from 'react-hot-toast';
 
 import {
   borderRadiusXS,
-  gray900,
   green100,
   green400,
   green500,
   red100,
-  red200,
-  red300,
   red400,
   red500,
-  scale190,
-  spaceM,
   spaceS,
 } from '@smartcoorp/ui/tokens';
 
 export const ToasterRenderer = () => {
+  // const searchParams = useSearchParams();
+
+  // useEffect(() => {
+  //   const toastMessage = searchParams.get('t');
+
+  //   if (!toastMessage) return;
+
+  //   const decodedToastMessage = decodeURIComponent;
+
+  //   toast.success(decodeURIComponent(toastMessage));
+  // }, [searchParams]);
   return (
     <Toaster
       toastOptions={{

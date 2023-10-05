@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 import { FlattenUnion, KeysOfUnion } from '@smartcoorp/smart-types';
 
 import { ImageWithUrl, ImagesToHandle } from './contexts/blocks-context';
@@ -9,6 +11,23 @@ type SharedBlockProps = {
 };
 
 export type BlockType = Block['type'];
+
+const HeaderBlockSchema = z.object({
+  type: z.literal('header'),
+  data: z.object({
+    text: z.string(),
+    level: z.number().min(1).max(6),
+  }),
+});
+
+const ParagraphBlockSchema = z.object({
+  type: z.literal('paragraph'),
+  data: z.object({
+    text: z.string(),
+  }),
+});
+
+const BlockSchema = z.union([HeaderBlockSchema, ParagraphBlockSchema]);
 
 export type HeaderBlockProps = SharedBlockProps & {
   type: 'header';
