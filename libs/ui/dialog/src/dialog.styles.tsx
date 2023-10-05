@@ -45,6 +45,7 @@ const DialogContent = styled(motion(DialogAlertPrimitives.AlertDialogContent))`
 const DialogOverlay = styled(motion(DialogAlertPrimitives.Overlay))`
   background-color: ${({ theme }) => theme.modal.backgroundColor};
   position: fixed;
+  z-index: 30;
   inset: 0;
 `;
 const DialogActionsContainer = styled.div<DialogActionsContainerTransientProps>`

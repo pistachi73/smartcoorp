@@ -21,14 +21,19 @@ export const getFocusShadow = ({
   color = primary,
   colorRGBA = primary_RGBA,
   shadowWidth = 3,
+  withTransition = true,
 }: {
   color?: string;
   colorRGBA?: string;
   shadowWidth?: number;
+  withTransition?: boolean;
 }) => css`
-  transition-property: box-shadow;
-  transition-duration: ${motionTimeXXS};
-  transition-timing-function: ${motionEasingStandard};
+  ${withTransition &&
+  css`
+    transition-property: box-shadow;
+    transition-duration: ${motionTimeXXS};
+    transition-timing-function: ${motionEasingStandard};
+  `}
 
   border-width: 1px;
   border-style: solid;

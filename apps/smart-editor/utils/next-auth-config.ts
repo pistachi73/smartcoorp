@@ -9,7 +9,6 @@ import prisma from '@smartcoorp/prisma';
 const authorize = async (
   credentials: Record<'email' | 'password', string> | undefined
 ) => {
-  console.log(credentials);
   const creds = await LoginFormSchema.parseAsync({
     email: credentials?.email,
     password: credentials?.password,
@@ -95,13 +94,14 @@ export const nextAuthConfig: NextAuthOptions = {
       if (token) {
         session.id = token.id;
         session.user.name = token.name;
+        session.user.picture = token.picture;
       }
 
       return session;
     },
     jwt: ({ token, user }) => {
       if (user) {
-        token.id = user.id;
+        token.id = Number(user.id);
         token.email = user.email;
         token.name = user.name;
       }

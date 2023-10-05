@@ -2,7 +2,13 @@ import styled from 'styled-components';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
-import { spaceXS } from '@smartcoorp/ui/tokens';
+import {
+  scale130,
+  scale140,
+  scale180,
+  scale290,
+  spaceXS,
+} from '@smartcoorp/ui/tokens';
 
 const BreadcrumbItem = styled.li`
   display: inline-block;
@@ -30,9 +36,25 @@ const Separator = styled(Body)`
   justify-content: center;
 `;
 
+const SkeletonContainer = styled.div`
+  height: ${scale140};
+  display: flex;
+  align-items: center;
+
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+
+  & > div {
+    margin: 0 !important;
+  }
+`;
+
 export const Styled = {
   BreadcrumbItem,
   BreadcrumbButton,
   OrderedList,
   Separator,
+  SkeletonContainer,
 };

@@ -5,6 +5,8 @@ import { BiChevronRight, BiHomeAlt } from 'react-icons/bi';
 
 import { usePathname } from 'next/navigation';
 
+import { Skeleton } from '@smartcoorp/ui/skeleton';
+
 import { Styled as S } from './breadcrumb.styles';
 import type { BreadcrumbItem, BreadcrumbProps } from './breadcrumb.types';
 
@@ -38,7 +40,19 @@ export const Breadcrumb: FC<BreadcrumbProps> = ({ homeUrl }) => {
   }, [pathname]);
 
   if (!breadcrumbs) {
-    return <div>No breadcrumb</div>;
+    return (
+      <S.SkeletonContainer>
+        <Skeleton width="18px" height="16px" />
+        <S.Separator size="small" variant="neutral" noMargin>
+          <BiChevronRight size={18} />
+        </S.Separator>
+        <Skeleton width="55px" height="16px" />
+        <S.Separator size="small" variant="neutral" noMargin>
+          <BiChevronRight size={18} />
+        </S.Separator>
+        <Skeleton width="45px" height="16px" />
+      </S.SkeletonContainer>
+    );
   }
 
   return (
@@ -53,7 +67,7 @@ export const Breadcrumb: FC<BreadcrumbProps> = ({ homeUrl }) => {
             color={'neutral'}
           />
         </S.BreadcrumbItem>
-        {breadcrumbs.length > 1 && (
+        {breadcrumbs.length >= 1 && (
           <S.Separator size="small" variant="neutral" noMargin>
             <BiChevronRight size={18} />
           </S.Separator>

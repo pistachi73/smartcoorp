@@ -11,6 +11,7 @@ import {
   scale070,
   spaceL,
   spaceM,
+  spaceS,
   spaceXL,
 } from '@smartcoorp/ui/tokens';
 
@@ -32,6 +33,11 @@ const TabTrigger = styled(TabsPrimitive.Trigger)`
   transition-property: background-color;
   transition-duration: ${motionTimeXS};
   transition-timing-function: ${motionEasingStandard};
+
+  display: flex;
+  align-items: center;
+  gap: ${spaceS};
+
   &::before {
     content: '';
     position: absolute;
@@ -61,10 +67,6 @@ const TabTrigger = styled(TabsPrimitive.Trigger)`
     pointer-events: none;
   }
 
-  &:not(:last-child) {
-    margin-right: ${spaceL};
-  }
-
   &:focus-visible {
     box-shadow: 0 0 0 3px rgba(${primary_RGBA}, 0.25);
     border-top: 1px solid ${primary};
@@ -82,9 +84,6 @@ const TabTriggerIconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: ${spaceM};
-  width: 24px;
-  height: 24px;
 `;
 
 const TabsContent = styled(motion(TabsPrimitive.Content))``;
@@ -92,6 +91,9 @@ const TabsList = styled(TabsPrimitive.List)`
   position: relative;
   margin-bottom: ${spaceXL};
   overflow: visible;
+
+  display: flex;
+  gap: ${spaceL};
 
   &::before {
     content: '';
