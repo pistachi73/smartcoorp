@@ -3,6 +3,7 @@ import { BiTrashAlt } from 'react-icons/bi';
 import Link from 'next/link';
 
 import { Body } from '@smartcoorp/ui/body';
+import { gray500 } from '@smartcoorp/ui/tokens';
 
 import { formatBytes } from '../helpers';
 
@@ -57,11 +58,14 @@ export const SingleFilePreview = ({
       <S.SinglePreviewInfoContainer>
         <div>
           <Body size="small" noMargin fontWeight="bold">
-            File already uploaded to S3
+            File already uploaded
           </Body>
 
           <Body size="xsmall" variant="neutral" noMargin>
-            Check file <Link href={file}> here</Link>
+            Check file{' '}
+            <Link href={file} style={{ color: gray500 }}>
+              here
+            </Link>
           </Body>
         </div>
         <S.PreviewDeleteButton

@@ -1,5 +1,11 @@
+import { Headline } from '@smartcoorp/ui/headline';
+
 const APIKeyPage = async () => {
-  return <h1>APIKey Page</h1>;
+  return (
+    <Headline size="xlarge" noMargin>
+      APIKey Page
+    </Headline>
+  );
 };
 
 export default APIKeyPage;

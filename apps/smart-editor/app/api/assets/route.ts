@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 
@@ -26,14 +23,12 @@ export async function GET(request: NextRequest) {
 
   if (!key) {
     return new Response('Key is required');
-    // return notFoundImageResponse;
   }
 
   const { success } = await ratelimit.limit(key);
 
   if (!success) {
     return new Response('Rate limit exceeded');
-    // return notFoundImageResponse;
   }
 
   const decodedKey = decodeURIComponent(key);
@@ -45,7 +40,6 @@ export async function GET(request: NextRequest) {
     );
   } catch (error) {
     return new Response('Image not found');
-    // return notFoundImageResponse;
   }
 
   const blob = await imageResult.blob();

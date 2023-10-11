@@ -115,11 +115,7 @@ export const PostBuilder = ({ post }: PostBuilderProps) => {
             }
           />
 
-          <Button
-            size="small"
-            type="submit"
-            // loading={loading}
-          >
+          <Button size="small" type="submit" loading={loading}>
             Save
           </Button>
         </div>

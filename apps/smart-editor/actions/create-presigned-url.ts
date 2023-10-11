@@ -2,7 +2,7 @@
 
 import { S3Client } from '@aws-sdk/client-s3';
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
-import { nanoid } from 'nanoid';
+import { nanoid } from '@smart-editor/utils/nanoid';
 import { z } from 'zod';
 
 const s3 = new S3Client({
@@ -24,40 +24,36 @@ const hasFileExtension = (fileName?: string) => {
   return lastDotIndex !== -1 && lastDotIndex !== fileName.length - 1;
 };
 
-const InputSchema = z.object({
+const CreatePresignedUrlInputSchema = z.object({
   folder: z.string(),
-  fileExtension: z.string(),
-  fileUrl: z.nullable(z.string().optional()),
-  fileName: z.nullable(z.string().optional()),
-  key: z.string().optional(),
+  key: z.nullable(z.string().optional()),
 });
 
-type Input = z.infer<typeof InputSchema>;
+const CreatePresignedUrlOutputSchema = z.promise(
+  z.object({
+    url: z.string(),
+    fields: z.record(z.string()),
+    key: z.string(),
+  })
+);
 
-export const createPresignedUrl = async ({
+type CreatePresignedUrlInput = z.infer<typeof CreatePresignedUrlInputSchema>;
+export type CreatePresignedUrlOutput = z.infer<
+  typeof CreatePresignedUrlOutputSchema
+>;
+type CreatePresignedUrl = (
+  input: CreatePresignedUrlInput
+) => CreatePresignedUrlOutput;
+
+export const createPresignedUrl: CreatePresignedUrl = async ({
   folder,
-  fileExtension,
-  fileUrl,
-  fileName,
   key,
-}: Input) => {
+}) => {
   const fileId = nanoid();
 
   const Fields = {};
 
-  const fileNameFromUrl = fileUrl?.split('/').pop();
-
-  if (fileUrl && !hasFileExtension(fileNameFromUrl)) {
-    throw new Error('Invalid file url');
-  }
-
-  const Key = `${folder}/${
-    fileUrl ? fileNameFromUrl : `${fileName ?? fileId}.${fileExtension}`
-  }`;
-
-  const Key_ = key
-    ? decodeURIComponent(key)
-    : `${folder}/${fileId}.${fileExtension}`;
+  const Key = key ? `${decodeURIComponent(key)}` : `${folder}/${fileId}`;
 
   const presignedUrl = await createPresignedPost(s3, {
     Bucket: process.env['NEXT_PUBLIC_AWS_S3_BUCKET_NAME'] as string,
@@ -68,6 +64,11 @@ export const createPresignedUrl = async ({
       ['starts-with', '$Content-Type', ''],
       ['content-length-range', 0, UPLOAD_MAX_FILE_SIZE],
     ],
+  });
+
+  console.log({
+    ...presignedUrl,
+    key: presignedUrl?.fields?.['key'],
   });
 
   return {
