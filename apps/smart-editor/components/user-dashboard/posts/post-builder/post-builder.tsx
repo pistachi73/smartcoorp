@@ -167,6 +167,7 @@ export const PostBuilder = ({ post }: PostBuilderProps) => {
                     'image/jpg': [],
                     'image/png': [],
                   }}
+                  helperText="Cover images will be updated in 24h."
                   // isDisabled={isFormLoading || blogPostId === -1}
                 />
               </PostInformationContainer>

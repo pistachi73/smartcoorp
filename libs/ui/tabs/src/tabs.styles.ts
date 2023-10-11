@@ -1,5 +1,4 @@
 import * as TabsPrimitive from '@radix-ui/react-tabs';
-import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 import { ResizablePanel } from '@smartcoorp/ui/resizable-panel';
@@ -9,6 +8,9 @@ import {
   primary,
   primary_RGBA,
   scale070,
+  scale150,
+  scale170,
+  scale180,
   spaceL,
   spaceM,
   spaceS,
@@ -23,7 +25,8 @@ const Tabs = styled(TabsPrimitive.Root)`
 
 const TabTrigger = styled(TabsPrimitive.Trigger)`
   font-size: ${scale070};
-  padding: ${spaceM} ${spaceL};
+  height: ${scale150};
+  padding-inline: ${spaceL};
   position: relative;
 
   border-top: 1px solid transparent;
@@ -86,7 +89,7 @@ const TabTriggerIconContainer = styled.div`
   justify-content: center;
 `;
 
-const TabsContent = styled(motion(TabsPrimitive.Content))``;
+const TabsContent = styled(TabsPrimitive.Content)``;
 const TabsList = styled(TabsPrimitive.List)`
   position: relative;
   margin-bottom: ${spaceXL};

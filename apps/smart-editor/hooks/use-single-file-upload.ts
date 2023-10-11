@@ -42,6 +42,7 @@ export const useSingleFileUpload = ({ folder, initialFile }: Props) => {
 
     // DELETE IMAGE FROM S3
     if (!file && fileUrl) {
+      console.log(deleteFile);
       await deleteFile({
         fileUrl,
         folder,

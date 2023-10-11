@@ -1,9 +1,6 @@
 import { createPresignedUrl } from '@smart-editor/actions/create-presigned-url';
 import { deleteFile } from '@smart-editor/actions/delete-file';
-import {
-  getFileExtension,
-  uploadToS3,
-} from '@smart-editor/actions/upload-to-s3';
+import { uploadToS3 } from '@smart-editor/actions/upload-to-s3';
 import { useCallback, useState } from 'react';
 
 import {
@@ -112,8 +109,7 @@ export const usePostEditor = ({
             getPresignedUrl: () =>
               createPresignedUrl({
                 folder: `${userId}/${postId}`,
-                fileExtension: getFileExtension(image),
-                fileName: blockId,
+                key: blockId,
               }),
             file: image,
           });
@@ -133,8 +129,8 @@ export const usePostEditor = ({
       imagesToHandle.toDelete.map(async ({ imageUrl }) => {
         try {
           await deleteFile({
-            fileUrl: imageUrl,
             folder: `${userId}/${postId}`,
+            fileUrl: imageUrl,
           });
           newImagesDeletedUrls.add(imageUrl);
         } catch (e) {

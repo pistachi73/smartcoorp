@@ -28,7 +28,6 @@ export const FileUpload = ({
 }: FileUploadProps) => {
   const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
 
-  console.log(value);
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       setRejectedFiles(rejectedFiles);
