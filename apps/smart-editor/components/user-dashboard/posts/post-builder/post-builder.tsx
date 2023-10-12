@@ -22,6 +22,7 @@ import { updatePost } from '../actions/update-post';
 import { DeletePostDialog } from '../delete-post-dialog';
 
 import { Header, PostInformationContainer } from './post-builder.styles';
+
 const FormSchema = z.object({
   title: z.nullable(z.string()),
   wordCount: z.nullable(z.number()),
@@ -33,10 +34,12 @@ type FormData = z.infer<typeof FormSchema>;
 
 type PostBuilderProps = {
   post: EPost;
+  userId: number;
 };
 
-export const PostBuilder = ({ post }: PostBuilderProps) => {
+export const PostBuilder = ({ post, userId }: PostBuilderProps) => {
   const [loading, setLoading] = useState(false);
+
   const {
     postBlocks,
     setPostBlocks,
@@ -46,7 +49,7 @@ export const PostBuilder = ({ post }: PostBuilderProps) => {
     getWordCount,
   } = usePostEditor({
     postId: post.id,
-    userId: 1,
+    userId,
     initialBlocks: post.content,
   });
 

@@ -27,6 +27,7 @@ const hasFileExtension = (fileName?: string) => {
 const CreatePresignedUrlInputSchema = z.object({
   folder: z.string(),
   key: z.nullable(z.string().optional()),
+  defaultFileId: z.string().optional(),
 });
 
 const CreatePresignedUrlOutputSchema = z.promise(
@@ -48,12 +49,13 @@ type CreatePresignedUrl = (
 export const createPresignedUrl: CreatePresignedUrl = async ({
   folder,
   key,
+  defaultFileId,
 }) => {
   const fileId = nanoid();
 
   const Fields = {};
 
-  const Key = key ? `${decodeURIComponent(key)}` : `${folder}/${fileId}`;
+  const Key = key || `${folder}/${defaultFileId || fileId}`;
 
   const presignedUrl = await createPresignedPost(s3, {
     Bucket: process.env['NEXT_PUBLIC_AWS_S3_BUCKET_NAME'] as string,
@@ -64,11 +66,6 @@ export const createPresignedUrl: CreatePresignedUrl = async ({
       ['starts-with', '$Content-Type', ''],
       ['content-length-range', 0, UPLOAD_MAX_FILE_SIZE],
     ],
-  });
-
-  console.log({
-    ...presignedUrl,
-    key: presignedUrl?.fields?.['key'],
   });
 
   return {

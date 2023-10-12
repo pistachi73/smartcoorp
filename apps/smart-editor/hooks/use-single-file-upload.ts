@@ -28,7 +28,7 @@ export const useSingleFileUpload = ({ folder, initialFile }: Props) => {
       // eslint-disable-next-line no-empty
     } catch (e) {}
 
-    // UPLOAD IMAGE TO S3
+    // UPLOAD / REPLACE IMAGE TO S3
     if (file instanceof File) {
       newFileUrl = await uploadToS3({
         getPresignedUrl: () =>
@@ -42,10 +42,8 @@ export const useSingleFileUpload = ({ folder, initialFile }: Props) => {
 
     // DELETE IMAGE FROM S3
     if (!file && fileUrl) {
-      console.log(deleteFile);
       await deleteFile({
-        fileUrl,
-        folder,
+        key,
       });
 
       newFileUrl = null;

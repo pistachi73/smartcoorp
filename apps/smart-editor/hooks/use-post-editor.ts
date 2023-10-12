@@ -93,6 +93,8 @@ export const usePostEditor = ({
     toDelete: [],
   });
 
+  console.log({ userId, postId });
+
   const handleImages = async () => {
     const newPostBlocks = JSON.parse(JSON.stringify(postBlocks));
 
@@ -109,7 +111,7 @@ export const usePostEditor = ({
             getPresignedUrl: () =>
               createPresignedUrl({
                 folder: `${userId}/${postId}`,
-                key: blockId,
+                defaultFileId: blockId,
               }),
             file: image,
           });
@@ -127,10 +129,10 @@ export const usePostEditor = ({
     // DELETE IMAGES
     await Promise.all(
       imagesToHandle.toDelete.map(async ({ imageUrl }) => {
+        const key = new URL(imageUrl).searchParams.get('key');
         try {
           await deleteFile({
-            folder: `${userId}/${postId}`,
-            fileUrl: imageUrl,
+            key,
           });
           newImagesDeletedUrls.add(imageUrl);
         } catch (e) {
