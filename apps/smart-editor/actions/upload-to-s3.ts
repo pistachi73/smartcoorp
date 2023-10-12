@@ -1,15 +1,12 @@
+import type { CreatePresignedUrlOutput } from './create-presigned-url';
+
 export const uploadToS3 = async ({
   getPresignedUrl,
   file,
 }: {
-  getPresignedUrl: () => Promise<{
-    url: string;
-    fields: Record<string, string>;
-    key: string;
-  }>;
   file: File;
+  getPresignedUrl: () => CreatePresignedUrlOutput;
 }): Promise<string> => {
-  console.log('HOla');
   const { url, fields, key } = await getPresignedUrl();
 
   const data: Record<string, any> = {
@@ -31,8 +28,4 @@ export const uploadToS3 = async ({
   const encodedKey = encodeURIComponent(key);
 
   return `https://smarteditor.app/api/assets?key=${encodedKey}`;
-};
-
-export const getFileExtension = (file: File): string => {
-  return file.name.split('.').pop() as string;
 };

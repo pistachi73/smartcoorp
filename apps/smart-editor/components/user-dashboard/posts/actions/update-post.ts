@@ -13,8 +13,6 @@ const UpdatePostSchema = z.object({
 export type UpdatePostInput = z.infer<typeof UpdatePostSchema>;
 
 export const updatePost = async ({ userId, postId, data }: UpdatePostInput) => {
-  console.log(data);
-
   let post = null;
   try {
     post = await prisma.ePost.update({

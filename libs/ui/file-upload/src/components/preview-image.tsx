@@ -7,7 +7,7 @@ import {
 } from 'react-icons/bs';
 
 import { Styled as S } from '../file-upload.styles';
-import type { FilePreview, FileType } from '../file-upload.types';
+import type { FileType } from '../file-upload.types';
 
 const imageExtensions = ['png', 'gif', 'jpeg', 'jpg'];
 const videoExtensions = ['mp4', 'mov', 'avi', 'mkv'];
@@ -35,7 +35,7 @@ const checkFileType = (file: string | File): FileType => {
   if (textExtensions.includes(extension)) return 'text';
   if (applicationExtensions.includes(extension)) return 'application';
 
-  return 'application';
+  return 'image';
 };
 
 export const PreviewImage = ({
@@ -49,11 +49,7 @@ export const PreviewImage = ({
 
   return fileType === 'image' ? (
     <S.PreviewImage
-      src={
-        typeof file === 'string'
-          ? `${file}?${new Date().getTime()}`
-          : URL.createObjectURL(file)
-      }
+      src={typeof file === 'string' ? `${file}` : URL.createObjectURL(file)}
       alt={typeof file === 'string' ? `Uploaded image: ${file}` : file.name}
     />
   ) : fileType === 'audio' ? (

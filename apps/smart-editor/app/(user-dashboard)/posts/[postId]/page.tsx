@@ -1,11 +1,10 @@
 import { PostBuilder } from '@smart-editor/components/user-dashboard/posts/post-builder';
 import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
 import { getServerSession } from 'next-auth';
-import toast from 'react-hot-toast';
 
 import { redirect } from 'next/navigation';
 
-import { isNumber } from '@smartcoorp/smart-types';
+import prisma from '@smartcoorp/prisma';
 
 type PostPageProps = {
   params: {
@@ -25,7 +24,7 @@ const PostPage = async ({ params }: PostPageProps) => {
     redirect('/posts');
   }
 
-  const post = await prisma?.ePost.findUnique({
+  const post = await prisma.ePost.findUnique({
     where: {
       id: parseInt(postId),
       userId: session?.id,
@@ -36,7 +35,7 @@ const PostPage = async ({ params }: PostPageProps) => {
     redirect('/posts');
   }
 
-  return <PostBuilder post={post} />;
+  return <PostBuilder post={post} userId={session.id} />;
 };
 
 export default PostPage;

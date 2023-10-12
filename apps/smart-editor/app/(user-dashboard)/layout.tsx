@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 import { Breadcrumb } from '@smartcoorp/ui/breadcrumb';
-import { spaceM, spaceXL } from '@smartcoorp/ui/tokens';
+import { spaceL, spaceM, spaceXL } from '@smartcoorp/ui/tokens';
 
 const UserDashboardLayoutPage = async ({
   children,
@@ -24,12 +24,11 @@ const UserDashboardLayoutPage = async ({
       <UserDashboardLayout>
         <div
           style={{
-            marginBottom: spaceXL,
+            marginBottom: spaceL,
           }}
         >
           <Breadcrumb homeUrl="/posts" />
         </div>
-        {/* {JSON.stringify(session, null, 2)} */}
         {children}
       </UserDashboardLayout>
     </>
