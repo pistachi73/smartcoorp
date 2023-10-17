@@ -1,4 +1,5 @@
 import { Toaster } from 'react-hot-toast';
+import { Toaster as SoonerToaster } from 'sonner';
 
 import {
   borderRadiusXS,
@@ -24,33 +25,47 @@ export const ToasterRenderer = () => {
   //   toast.success(decodeURIComponent(toastMessage));
   // }, [searchParams]);
   return (
-    <Toaster
-      toastOptions={{
-        style: {
-          padding: spaceS,
-          borderRadius: borderRadiusXS,
-        },
-        error: {
+    <>
+      <Toaster
+        toastOptions={{
           style: {
-            backgroundColor: red100,
-            border: `1px solid ${red400}`,
+            padding: spaceS,
+            borderRadius: borderRadiusXS,
           },
-          iconTheme: {
-            primary: red500,
-            secondary: 'white',
+          error: {
+            style: {
+              backgroundColor: red100,
+              border: `1px solid ${red400}`,
+            },
+            iconTheme: {
+              primary: red500,
+              secondary: 'white',
+            },
           },
-        },
-        success: {
+          success: {
+            style: {
+              backgroundColor: green100,
+              border: `1px solid ${green400}`,
+            },
+            iconTheme: {
+              primary: green500,
+              secondary: 'white',
+            },
+          },
+        }}
+      />
+      <SoonerToaster
+        richColors
+        closeButton
+        position="top-center"
+        toastOptions={{
           style: {
-            backgroundColor: green100,
-            border: `1px solid ${green400}`,
+            fontFamily:
+              "'Inter', 'Trebuchet MS', Arial, 'Helvetica Neue', sans-serif",
+            fontSize: '14px',
           },
-          iconTheme: {
-            primary: green500,
-            secondary: 'white',
-          },
-        },
-      }}
-    />
+        }}
+      />
+    </>
   );
 };

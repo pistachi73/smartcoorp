@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, DisplayColumnDef } from '@tanstack/react-table';
 
 import { Checkbox } from '@smartcoorp/ui/checkbox';
 
@@ -55,6 +55,27 @@ export function makeData(...lens: number[]) {
 
   return makeDataLevel();
 }
+
+export const selectColumn: DisplayColumnDef<any> = {
+  id: 'select',
+  header: ({ table }) => (
+    <Checkbox
+      checked={table.getIsAllPageRowsSelected()}
+      intermediate={table.getIsSomePageRowsSelected()}
+      onChange={(v) => table.toggleAllPageRowsSelected(v)}
+      size="small"
+    />
+  ),
+
+  cell: ({ row }) => (
+    <Checkbox
+      size="small"
+      checked={row.getIsSelected()}
+      isDisabled={!row.getCanSelect()}
+      onChange={(v) => row.toggleSelected(v)}
+    />
+  ),
+};
 
 export const addOptionalColumns = <T,>(
   columns: ColumnDef<T>[],

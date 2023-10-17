@@ -14,7 +14,7 @@ const UserDashboardLayoutPage = async ({
 }) => {
   const session = await getServerSession(nextAuthConfig);
 
-  if (!session) {
+  if (!session || !session.id) {
     redirect('/login');
   }
 

@@ -57,7 +57,7 @@ const contentVariants = {
 
 export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
   (
-    { children, title, description, closeIcon = true, ...props },
+    { children, title, description, closeIcon = true, className, ...props },
     forwardedRef: React.Ref<HTMLDivElement>
   ) => {
     return (
@@ -66,6 +66,7 @@ export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
         <Styled.ModalContent
           ref={forwardedRef}
           variants={contentVariants}
+          className={className}
           {...variantMapping}
           {...props}
         >

@@ -1,8 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import {
-  ColumnDef,
   ColumnFiltersState,
   FilterFn,
   SortingState,
@@ -14,7 +12,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { AnimatePresence } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BiLayerPlus, BiSortDown, BiSortUp } from 'react-icons/bi';
 
 import { Skeleton } from '@smartcoorp/ui/skeleton';
@@ -25,7 +23,6 @@ import { dateBetweenFilterFn } from './components/filter/date-filter';
 import { GlobalFilter, globalFilterFn } from './components/global-filter';
 import { Pagination } from './components/pagination/pagination';
 import { SelectedRowsWidget } from './components/selected-rows-widget';
-import { addOptionalColumns } from './helpers';
 import { Styled as S } from './table.styles';
 import { TableProps } from './table.types';
 declare module '@tanstack/table-core' {
@@ -35,9 +32,10 @@ declare module '@tanstack/table-core' {
 }
 
 export const Table = <T,>({
-  data = [],
+  data,
   columnDefs,
   createUrl,
+  onCreate,
   enableMultiSort = true,
   enableSelect = true,
   defaultColumnVisibility = {},
@@ -50,15 +48,10 @@ export const Table = <T,>({
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [areOptionalColumnsAdded, setAreOptionalColumnsAdded] = useState(false);
-  const [columns, setColumns] = useState<ColumnDef<T>[]>(columnDefs);
-  useEffect(() => {
-    setColumns(addOptionalColumns(columnDefs, enableSelect, enableMultiSort));
-    setAreOptionalColumnsAdded(true);
-  }, []);
+
   const table = useReactTable({
-    data,
-    columns,
+    data: data || [],
+    columns: columnDefs,
     filterFns: {
       dateBetween: dateBetweenFilterFn,
     },
@@ -74,7 +67,7 @@ export const Table = <T,>({
 
     /** SORTING OPTIONS */
     getSortedRowModel: getSortedRowModel(),
-    enableMultiSort: true,
+    enableMultiSort,
     onSortingChange: setSorting,
 
     /** PAGINATION OPTIONS */
@@ -100,7 +93,6 @@ export const Table = <T,>({
     // getPaginationRowModel: getPaginationRowModel(),
   });
 
-  if (!areOptionalColumnsAdded) return null;
   return (
     <S.TableContainer>
       <S.TableActionsContainer>
@@ -113,23 +105,24 @@ export const Table = <T,>({
           <GlobalFilter
             globalFilter={globalFilter}
             setGlobalFilter={setGlobalFilter}
-            disabled={data.length === 0}
+            disabled={data?.length === 0}
           />
           <ColumnToggler table={table} />
-          {createUrl && (
+          {(createUrl || onCreate) && (
             <S.StyledButton
               size="small"
               icon={BiLayerPlus}
               variant="primary"
-              to={createUrl}
-              disabled={data.length === 0}
+              {...(createUrl ? { to: createUrl } : {})}
+              {...(onCreate ? { onClick: onCreate } : {})}
+              disabled={Boolean(!data)}
             >
               New
             </S.StyledButton>
           )}
         </S.RightTableActionsContainer>
       </S.TableActionsContainer>
-      <S.Table $disabled={data.length === 0}>
+      <S.Table $disabled={data?.length === 0}>
         <S.TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
             <S.TableRow key={headerGroup.id}>
@@ -145,7 +138,7 @@ export const Table = <T,>({
                       <S.TableHeaderWrapper
                         $sortingEnabled={header.column.getCanSort()}
                       >
-                        {data.length ? (
+                        {data ? (
                           <>
                             <S.TableHeaderText
                               onClick={header.column.getToggleSortingHandler()}
@@ -216,7 +209,7 @@ export const Table = <T,>({
           ))}
         </S.TableHead>
         <S.TableBody>
-          {table.getRowModel().rows.length === 0 && data.length ? (
+          {table.getRowModel().rows.length === 0 && data ? (
             <S.TableRow>
               <S.TableCell
                 key={'no_results'}
@@ -226,7 +219,7 @@ export const Table = <T,>({
                 No results
               </S.TableCell>
             </S.TableRow>
-          ) : data.length ? (
+          ) : data?.length ? (
             table.getRowModel().rows.map((row) => {
               return (
                 <S.TableRow key={row.id} $selected={row.getIsSelected()}>

@@ -13,6 +13,7 @@ import {
   Content,
   ContentContainer,
   Header,
+  HeaderContent,
   Input,
   Logo,
   LogoContainer,
@@ -61,17 +62,19 @@ export const UserDashboardLayout = async ({
       </SidebarContainer>
       <ContentContainer>
         <Header>
-          <label htmlFor="toggle" role="button">
-            <BsList size={20} />
-          </label>
-          <div>
-            <Body size="small" noMargin variant="neutral">
-              Welcome,
-            </Body>
-            <Body size="medium" noMargin fontWeight="bold">
-              {session?.user?.name}
-            </Body>
-          </div>
+          <HeaderContent>
+            <label htmlFor="toggle" role="button">
+              <BsList size={20} />
+            </label>
+            <div>
+              <Body size="small" noMargin variant="neutral">
+                Welcome,
+              </Body>
+              <Body size="medium" noMargin fontWeight="bold">
+                {session?.user?.name}
+              </Body>
+            </div>
+          </HeaderContent>
         </Header>
         <Content>{children}</Content>
       </ContentContainer>

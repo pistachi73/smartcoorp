@@ -15,7 +15,7 @@ export const PostCardGrid = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (min-width: 1292px) {
+  @media (min-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
   }
 `;

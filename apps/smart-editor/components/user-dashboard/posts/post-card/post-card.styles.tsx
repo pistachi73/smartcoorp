@@ -1,6 +1,6 @@
 'use client';
 
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 
 import Link from 'next/link';
 
@@ -23,6 +23,7 @@ import {
   gray600,
   gray600_RGBA,
   gray700,
+  gray900,
   gray900_RGBA,
   motionEasingStandard,
   motionTimeM,
@@ -30,13 +31,16 @@ import {
   motionTimeXS,
   primary,
   primary100,
+  primary100_RGBA,
   primary500_RGBA,
   primary600,
   primary600_RGBA,
   primary700,
+  red300,
   scale240,
   scale300,
   spaceL,
+  spaceM,
   spaceS,
   spaceXL,
   spaceXS,
@@ -54,64 +58,34 @@ export const Container = styled.div`
 `;
 
 //-----POST CARD STYLE-----
-export const PostCardContainer = styled(Container)`
-  position: relative;
+export const PostCardContainer = styled(Container)<{ $isSkeleton: boolean }>`
   border: 1px solid ${gray300};
   overflow: hidden;
-`;
+  display: block;
 
-export const Toolbar = styled.div`
-  width: 100%;
-  padding: ${spaceXS} ${spaceL};
+  ${({ $isSkeleton }) =>
+    !$isSkeleton &&
+    css`
+      transition-property: transform, box-shadow, border-color, background-color;
+      transition-duration: ${motionTimeM};
+      transition-timing-function: ${motionEasingStandard};
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  background-color: rgba(${gray900_RGBA}, 0.9);
-
-  button,
-  a {
-    padding: ${spaceXXS} ${spaceXS};
-    display: flex;
-    align-items: center;
-    gap: ${spaceS};
-    color: white;
-
-    border-radius: ${borderRadiusXXS};
-
-    border: 1px solid transparent;
-    transition-property: background-color, box-shadow;
-    transition-duration: ${motionTimeXS};
-    transition-timing-function: ${motionEasingStandard};
-
-    p {
-      color: white;
-    }
-
-    &:hover {
-      text-decoration: none;
-      background-color: ${gray700};
-    }
-
-    &:focus-visible {
-      ${getFocusShadow({
-        color: primary600,
-        colorRGBA: primary500_RGBA,
-        withTransition: false,
-      })}
-    }
-  }
+      &:hover {
+        text-decoration: none;
+        transform: translateY(-${spaceXXS});
+        background-color: rgba(${primary100_RGBA}, 0.25);
+        border-color: ${primary};
+      }
+      &:focus-visible {
+        ${getFocusShadow({ withTransition: false })}
+      }
+    `}
 `;
 
 export const PostCardImage = styled.div`
+  position: relative;
   width: 100%;
   height: 200px;
-  background-color: ${gray100};
 
   img {
     width: 100%;
@@ -135,6 +109,8 @@ export const PostCardFooter = styled.div`
   align-items: center;
   justify-content: space-between;
 
+  padding-top: ${spaceXXL};
+
   p {
     color: black;
     span {
@@ -146,6 +122,7 @@ export const PostCardFooter = styled.div`
 //---------- NEW POST CARD STYLE -------------
 
 export const NewPostCardContainer = styled(Container)`
+  min-height: 390px;
   padding: ${spaceXL};
   border: 1px dashed ${gray300};
   text-align: center;
@@ -156,7 +133,7 @@ export const NewPostCardContainer = styled(Container)`
   &:hover {
     text-decoration: none;
     transform: translateY(-${spaceXXS});
-    background-color: ${primary100};
+    background-color: rgba(${primary100_RGBA}, 0.25);
     border-color: ${primary};
   }
 
@@ -182,4 +159,19 @@ export const Badge = styled.div`
   svg {
     color: ${primary};
   }
+`;
+
+//---------- NO POSTS FOUND CARD STYLE -------------
+export const NoPostsFoundContainer = styled(Container)`
+  min-height: 390px;
+  padding: ${spaceXL};
+  border: 1px solid ${gray300};
+  text-align: center;
+`;
+
+export const NotFoundImageContainer = styled.div`
+  width: 100%;
+  height: 200px;
+  margin-top: ${spaceM};
+  position: relative;
 `;

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import {
   borderRadiusXS,
   focusShadow,
+  gray500,
   mediaConfined,
   mediaWide,
   motionEasingStandard,
@@ -314,17 +315,15 @@ const LabelContainer = styled.div`
 `;
 
 const Label = styled.label<SizeProps>`
-  color: ${({ theme }) => theme.form.neutralColor};
-  /* padding-bottom: ${spaceXS}; */
-  /* font-weight: 500; */
-
+  /* color: ${({ theme }) => theme.form.neutralColor}; */
+  color: ${gray500};
+  /* padding-bottom: ${spaceXS}; */ /* font-weight: 500; */
   /** Size styles */
   ${({ $size }) =>
     $size &&
     css`
       ${sizes[$size].label}
     `}
-
   ${({ $sizeConfined }) =>
     $sizeConfined &&
     css`

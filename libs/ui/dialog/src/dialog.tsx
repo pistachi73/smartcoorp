@@ -108,7 +108,13 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
               {description}
             </DialogPrimitive.Description>
           </VisuallyHidden.Root>
-          <div>{children}</div>
+          <div
+            style={{
+              width: '100%',
+            }}
+          >
+            {children}
+          </div>
           <Styled.DialogActionsContainer $cancelLabel={Boolean(cancelLabel)}>
             {cancelLabel && (
               <Styled.DialogActionButton asChild={true}>

@@ -14,6 +14,8 @@ export type ModalControl =
 export type ModalRootProps = ModalControl & { children: React.ReactNode };
 
 export type ModalContentProps = {
+  /** Custom styles */
+  className?: string;
   /** Content of the modal */
   children: React.ReactNode;
   /** An accessible title to be announced when the dialog is opened.  */
@@ -23,5 +25,5 @@ export type ModalContentProps = {
   /** Show close icon */
   closeIcon?: boolean;
   /**Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling **event.preventDefault**. */
-  onInteractionOutside?: DialogPrimitives.DialogContentProps['onInteractOutside'];
+  onPointerDownOutside?: DialogPrimitives.DialogContentProps['onPointerDownOutside'];
 };

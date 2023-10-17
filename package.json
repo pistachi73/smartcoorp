@@ -79,6 +79,7 @@
     "react-use-measure": "^2.1.1",
     "regenerator-runtime": "0.13.7",
     "resend": "^1.1.0",
+    "sonner": "^1.0.3",
     "styled-components": "^6.0.3",
     "superjson": "^1.11.0",
     "tslib": "^2.3.0",

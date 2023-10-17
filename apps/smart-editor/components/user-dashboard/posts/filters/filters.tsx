@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { BsSearch } from 'react-icons/bs';
 import { z } from 'zod';
+
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { DebounceFormField } from '@smartcoorp/ui/form-field';
 
@@ -17,11 +18,20 @@ type FiltersData = z.infer<typeof FiltersSchema>;
 
 export const Filters = () => {
   const [search, setSearch] = useState<FiltersData['search']>('');
+  const params = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const onSearchChange = (value: string) => {
     setSearch(value);
 
-    console.log('Hola');
+    if (value) {
+      const newParams = new URLSearchParams(params.toString());
+      newParams.set('title', value);
+      router.push(`${pathname}?${newParams.toString()}`, {});
+    } else {
+      router.push(`${pathname}`);
+    }
   };
 
   return (
