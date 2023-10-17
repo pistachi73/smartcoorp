@@ -63,6 +63,19 @@ model EUser {
     EPasswordResetToken       EPasswordResetToken[]
     EAccountVerificationToken EAccountVerificationToken[]
     EPost                     EPost[]
+    EApiKey                   EApiKey[]
+}
+
+model EApiKey {
+    id        Int       @id @default(autoincrement())
+    key       String    @unique
+    name      String
+    lastUsed  DateTime?
+    createdAt DateTime  @default(now())
+    user      EUser     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    Int
+
+    @@index([userId])
 }
 
 model EPasswordResetToken {

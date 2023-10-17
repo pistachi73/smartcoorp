@@ -1,12 +1,34 @@
-import { Posts } from '@smart-editor/components/user-dashboard/posts';
+import {
+  Posts,
+  SkeletonPosts,
+} from '@smart-editor/components/user-dashboard/posts';
+import { Suspense } from 'react';
 
-const OverviewPage = () => {
+import { Headline } from '@smartcoorp/ui/headline';
+import { space3XL } from '@smartcoorp/ui/tokens';
+
+const PostsPage = ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) => {
+  console.log({ searchParams });
   return (
     <>
-      {/* @ts-expect-error Server Component */}
-      <Posts />
+      <Headline
+        size="xlarge"
+        style={{
+          marginBottom: space3XL,
+        }}
+      >
+        Overview
+      </Headline>
+      <Suspense fallback={<SkeletonPosts />}>
+        {/* @ts-expect-error Server Component */}
+        <Posts titleSearchParam={searchParams.title} />
+      </Suspense>
     </>
   );
 };
 
-export default OverviewPage;
+export default PostsPage;

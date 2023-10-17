@@ -32,7 +32,7 @@ import {
   spaceXXS,
 } from '@smartcoorp/ui/tokens';
 
-export const Container = styled.aside`
+export const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
@@ -54,16 +54,13 @@ export const ContentContainer = styled.div`
 export const Header = styled.header`
   height: 70px;
   width: 100%;
-  padding-inline: ${spaceXL};
+
+  display: flex;
 
   position: sticky;
   top: 0;
   left: 0;
   z-index: 20;
-
-  display: flex;
-  align-items: center;
-  gap: ${spaceL};
 
   backdrop-filter: blur(3px);
   background-color: rgba(${gray100_RGBA}, 0.85);
@@ -88,15 +85,33 @@ export const Header = styled.header`
     }
   }
   @media ${mediaWide} {
-    padding-inline: ${space3XL};
     label {
       display: none;
     }
   }
 `;
+export const HeaderContent = styled.div`
+  max-width: 1200px;
+  width: 100%;
+
+  padding-inline: ${spaceXL};
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  gap: ${spaceL};
+
+  @media ${mediaWide} {
+    padding-inline: ${space3XL};
+  }
+`;
+
 export const Content = styled.div`
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   min-height: calc(100vh - 70px);
+
   padding: ${spaceXL};
 
   @media ${mediaWide} {
@@ -106,7 +121,7 @@ export const Content = styled.div`
 
 // --------------sidebar---------------- //
 
-export const SidebarContainer = styled.nav`
+export const SidebarContainer = styled.aside`
   height: 100vh;
   min-width: 260px;
   max-width: 260px;

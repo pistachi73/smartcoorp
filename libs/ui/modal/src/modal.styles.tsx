@@ -21,14 +21,15 @@ const ModalOverlay = styled(motion(Dialog.Overlay))`
   background-color: ${({ theme }) => theme.modal.backgroundColor};
   position: fixed;
   inset: 0;
+  z-index: 30;
 `;
 
 const ModalContent = styled(motion(Dialog.Content))`
   padding: ${spaceXL};
   min-height: ${scale320};
   max-height: 60vh;
-  width: 90%;
   z-index: 9999;
+  width: 90%;
 
   max-width: ${scale420};
 

@@ -15,7 +15,11 @@ import { createPost } from '../actions/create-post';
 
 import { Badge, NewPostCardContainer } from './post-card.styles';
 
-export const NewPostCard = () => {
+type NewPostCardProps = {
+  totalPosts?: number;
+};
+
+export const NewPostCard = ({ totalPosts = 0 }: NewPostCardProps) => {
   const [loading, setLoading] = useState(false);
   const session = useSession();
   const router = useRouter();
@@ -54,7 +58,7 @@ export const NewPostCard = () => {
           <>
             <BsJournalText size={16} />
             <Body size="small" as="span" noMargin>
-              3 / 5
+              {totalPosts} / 5
             </Body>
           </>
         )}

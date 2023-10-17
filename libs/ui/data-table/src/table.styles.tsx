@@ -152,7 +152,7 @@ export const TableRow = styled.tr<TableRowProps>`
 
 export const TableCell = styled.td<{ $uniqueCell?: boolean }>`
   color: ${({ theme }) => theme.color.neutral};
-  padding: ${spaceL};
+  padding: ${spaceM};
   height: ${({ $uniqueCell }) => ($uniqueCell ? scale220 : 'auto')};
   text-align: ${({ $uniqueCell }) => ($uniqueCell ? 'center' : 'left')};
 `;
