@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { prismaMock } from '@smart-editor/utils/testing/prisma-mock';
 
 import { forgotPasswordAction } from '../action';

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { BsTrash } from 'react-icons/bs';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Dialog, DialogContent, DialogTrigger } from '@smartcoorp/ui/dialog';

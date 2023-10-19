@@ -1,5 +1,4 @@
 import { EApiKey } from '@prisma/client';
-import { set } from 'date-fns';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BsClipboard } from 'react-icons/bs';
@@ -10,10 +9,9 @@ import { z } from 'zod';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
-import { Dialog, DialogContent } from '@smartcoorp/ui/dialog';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 import { Headline } from '@smartcoorp/ui/headline';
-import { Modal, ModalContent } from '@smartcoorp/ui/modal';
+import { Modal } from '@smartcoorp/ui/modal';
 import { spaceM, spaceXXS } from '@smartcoorp/ui/tokens';
 import { Tooltip } from '@smartcoorp/ui/tooltip';
 
@@ -96,14 +94,6 @@ export const CreateApiKeyDialog = ({
               },
             }
           : {})}
-
-        // onAction={onDelete}
-        // onCancel={onCancel}
-        // actionLabel={`Create API Key`}
-        // cancelLabel="Cancel"
-        // disabled={!apiKeyCopied}
-        // // loading={isLoading}
-        // variant="success"
       >
         <Headline as="h2" size="medium">
           Add a new API Key

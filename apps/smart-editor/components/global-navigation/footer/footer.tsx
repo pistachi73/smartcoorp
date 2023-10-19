@@ -1,10 +1,11 @@
+import Image from 'next/image';
+
 import { Body } from '@smartcoorp/ui/body';
 import { Headline } from '@smartcoorp/ui/headline';
 import { spaceXL, spaceXS } from '@smartcoorp/ui/tokens';
 
 import {
   ContactContainer,
-  ContactImg,
   ContactsContainer,
   FooterContainer,
   LogoContainer,
@@ -17,8 +18,9 @@ export const Footer = () => {
     <FooterContainer>
       <RelativeWidthLimiter>
         <LogoContainer>
-          <img
+          <Image
             width={45}
+            height={34.83}
             src="logo_light.svg"
             alt="SmartEditor Footer Logo"
             data-testid="footer-logo"
@@ -46,19 +48,25 @@ export const Footer = () => {
               rel="noopener noreferrer"
               data-testid="whatsapp-contact"
             >
-              <ContactImg
-                src="./external-logos/whatsapp-logo.svg"
-                alt="Contact Icon: Whatsapp"
-              />
+              <div>
+                <Image
+                  src="./external-logos/whatsapp-logo.svg"
+                  alt="Contact Icon: Whatsapp"
+                  fill
+                />
+              </div>
             </ContactContainer>
             <ContactContainer
               href="mailto:oscarpulido98@gmail.com"
               data-testid="mail-contact"
             >
-              <ContactImg
-                src="./external-logos/gmail-logo.svg"
-                alt="Contact Icon: Gmail"
-              />
+              <div>
+                <Image
+                  src="./external-logos/gmail-logo.svg"
+                  alt="Contact Icon: Gmail"
+                  fill
+                />
+              </div>
             </ContactContainer>
             <ContactContainer
               href="https://www.linkedin.com/in/oscar-pulido-castillo/"
@@ -66,10 +74,13 @@ export const Footer = () => {
               rel="noopener noreferrer"
               data-testid="linkedin-contact"
             >
-              <ContactImg
-                src="./external-logos/linkedin-logo.svg"
-                alt="Contact Icon: Linkedin"
-              />
+              <div>
+                <Image
+                  src="./external-logos/linkedin-logo.svg"
+                  alt="Contact Icon: Linkedin"
+                  fill
+                />
+              </div>
             </ContactContainer>
           </ContactsContainer>
         </div>

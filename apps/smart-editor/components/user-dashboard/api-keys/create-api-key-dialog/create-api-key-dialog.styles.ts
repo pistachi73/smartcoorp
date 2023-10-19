@@ -4,36 +4,23 @@ import styled, { css } from 'styled-components';
 
 import { ModalContent } from '@smartcoorp/ui/modal';
 import {
-  borderRadiusS,
   borderRadiusXS,
-  gray100,
   gray200,
   gray300,
   gray400,
   gray500,
-  gray600,
-  gray900,
-  green100,
   green100_RGBA,
   green400,
-  green500,
   green600,
   motionEasingStandard,
   motionTimeM,
-  motionTimeNumberM,
-  motionTimeNumberS,
   scale070,
-  scale080,
   scale140,
-  scale300,
-  scale380,
   spaceL,
   spaceM,
-  spaceXL,
   yellow100,
   yellow500,
   yellow700,
-  yellow800,
 } from '@smartcoorp/ui/tokens';
 
 export const StyledModalContent = styled(ModalContent)`

@@ -2,12 +2,13 @@
 
 import { styled } from 'styled-components';
 
+import Image from 'next/image';
+
 import { Button } from '@smartcoorp/ui/button';
 import {
   borderRadiusM,
   gray100,
   gray300,
-  gray600,
   gray900,
   mediaWide,
   mediaXWide,
@@ -93,7 +94,7 @@ export const FormWrapper = styled(Wrapper)`
   }
 `;
 
-export const LogoImg = styled.img`
+export const LogoImg = styled(Image)`
   position: absolute;
   top: 0;
   left: 0;
@@ -112,10 +113,11 @@ export const IllustrationsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  max-height: 100%;
+  width: 100%;
+  aspect-ratio: 1;
 `;
 
-export const Illustration = styled.img`
+export const Illustration = styled.div`
   object-fit: contain;
   max-height: 100%;
   max-width: 100%;

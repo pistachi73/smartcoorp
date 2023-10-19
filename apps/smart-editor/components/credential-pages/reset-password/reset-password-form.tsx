@@ -3,13 +3,11 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { z } from 'zod';
 
 import { useParams, useRouter } from 'next/navigation';
 
 import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
-import { spaceXL } from '@smartcoorp/ui/tokens';
 
 import { type ResetPasswordFormData, passwordInputValidator } from '../helpers';
 

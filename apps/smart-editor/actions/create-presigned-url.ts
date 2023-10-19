@@ -16,14 +16,6 @@ const s3 = new S3Client({
 
 const UPLOAD_MAX_FILE_SIZE = 1000000;
 
-const hasFileExtension = (fileName?: string) => {
-  if (!fileName) return false;
-
-  const lastDotIndex = fileName.lastIndexOf('.');
-
-  return lastDotIndex !== -1 && lastDotIndex !== fileName.length - 1;
-};
-
 const CreatePresignedUrlInputSchema = z.object({
   folder: z.string(),
   key: z.nullable(z.string().optional()),

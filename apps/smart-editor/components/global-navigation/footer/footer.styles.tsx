@@ -2,6 +2,7 @@
 
 import { css, styled } from 'styled-components';
 
+import Image from 'next/image';
 import Link from 'next/link';
 
 import {
@@ -47,6 +48,7 @@ export const ContactsContainer = styled.div`
 `;
 
 export const ContactContainer = styled(Link)`
+  position: relative;
   width: ${scale200};
   padding: ${spaceL};
 
@@ -67,15 +69,15 @@ export const ContactContainer = styled(Link)`
   &:focus {
     ${focusShadow}
   }
+
+  div {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
 `;
 
-export const ContactImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-`;
-
-export const Illustration = styled.img`
+export const Illustration = styled(Image)`
   position: absolute;
   right: ${spaceXXL};
   bottom: -${spaceL};

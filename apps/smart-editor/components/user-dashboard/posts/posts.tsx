@@ -1,12 +1,7 @@
 import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
-import { AnimatePresence } from 'framer-motion';
 import { getServerSession } from 'next-auth';
-import { Suspense } from 'react';
 
 import prisma from '@smartcoorp/prisma';
-import { Body } from '@smartcoorp/ui/body';
-import { Headline } from '@smartcoorp/ui/headline';
-import { space3XL } from '@smartcoorp/ui/tokens';
 
 import { Filters } from './filters';
 import { PostCard, SkeletonPostCard } from './post-card';

@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 import { Breadcrumb } from '@smartcoorp/ui/breadcrumb';
-import { spaceL, spaceM, spaceXL } from '@smartcoorp/ui/tokens';
+import { spaceL } from '@smartcoorp/ui/tokens';
 
 const UserDashboardLayoutPage = async ({
   children,

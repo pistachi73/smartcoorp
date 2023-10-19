@@ -1,18 +1,9 @@
-import { EPostStatus } from '@prisma/client';
-import { format } from 'date-fns';
-
-import Link from 'next/link';
-
-import { Body } from '@smartcoorp/ui/body';
-import { Headline } from '@smartcoorp/ui/headline';
 import { Skeleton } from '@smartcoorp/ui/skeleton';
-import { spaceXS } from '@smartcoorp/ui/tokens';
 
 import {
   PostCardContainer,
   PostCardContent,
   PostCardFooter,
-  PostCardImage,
 } from './post-card.styles';
 
 export const SkeletonPostCard = () => {

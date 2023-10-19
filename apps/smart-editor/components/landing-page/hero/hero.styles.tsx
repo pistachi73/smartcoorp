@@ -91,6 +91,7 @@ export const IllustrationsContainer = styled.div`
 `;
 
 export const ImgContainer = styled.div`
+  position: relative;
   height: ${scale370};
 
   display: flex;

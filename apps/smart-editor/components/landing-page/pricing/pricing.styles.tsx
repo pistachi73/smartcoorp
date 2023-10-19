@@ -6,14 +6,12 @@ import { Grid } from '@smartcoorp/ui/grid';
 import {
   borderRadiusS,
   gray700,
-  mediaConfined,
   mediaSmall,
   primary,
   primary100,
   scale110,
   spaceL,
   spaceM,
-  spaceS,
   spaceXL,
   spaceXXL,
 } from '@smartcoorp/ui/tokens';

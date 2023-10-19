@@ -1,14 +1,4 @@
-import {
-  BsColumnsGap,
-  BsEmojiSunglasses,
-  BsGraphUp,
-  BsImages,
-  BsLink,
-  BsLink45Deg,
-  BsPen,
-  BsTelephoneInbound,
-  BsUpload,
-} from 'react-icons/bs';
+import { BsImages, BsLink, BsPen, BsTelephoneInbound } from 'react-icons/bs';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
@@ -97,7 +87,7 @@ export const Pricing = () => {
                 <Body size="xsmall" variant="neutral" noMargin>
                   Free forever
                 </Body>
-                <Button>Start Crafting Now</Button>
+                <Button to="/login">Start Crafting Now</Button>
 
                 <Body
                   size="xsmall"

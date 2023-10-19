@@ -5,7 +5,6 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { revalidatePath } from 'next/cache';
 import Image from 'next/image';
 
 import { Body } from '@smartcoorp/ui/body';

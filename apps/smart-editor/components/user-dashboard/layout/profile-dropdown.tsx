@@ -1,13 +1,8 @@
 'use client';
 import type { Session } from 'next-auth';
-import { signOut, useSession } from 'next-auth/react';
-import {
-  BsBoxArrowInRight,
-  BsPersonCircle,
-  BsThreeDotsVertical,
-} from 'react-icons/bs';
+import { signOut } from 'next-auth/react';
+import { BsBoxArrowInRight, BsThreeDotsVertical } from 'react-icons/bs';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { Body } from '@smartcoorp/ui/body';

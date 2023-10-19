@@ -1,4 +1,5 @@
-import { Body } from '@smartcoorp/ui/body';
+import Image from 'next/image';
+
 import { Button } from '@smartcoorp/ui/button';
 import { WidthLimiter } from '@smartcoorp/ui/width-limiter';
 
@@ -11,7 +12,6 @@ import {
   IllustrationStick,
   IllustrationTitle,
   IllustrationsContainer,
-  Img,
   ImgContainer,
   StyledHeadline,
   Subtitle,
@@ -76,7 +76,7 @@ export const Hero = () => {
           {illustrations.map(({ src, title, sticks }) => (
             <IllustrationContainer key={title}>
               <ImgContainer>
-                <Img src={src} alt={title} />
+                <Image src={src} alt={title} fill priority />
               </ImgContainer>
               <IllustrationTitle size="medium" forwardedAs={'div'}>
                 <p>{title}</p>

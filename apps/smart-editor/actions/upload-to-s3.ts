@@ -9,6 +9,7 @@ export const uploadToS3 = async ({
 }): Promise<string> => {
   const { url, fields, key } = await getPresignedUrl();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const data: Record<string, any> = {
     ...fields,
     'Content-Type': file.type,
