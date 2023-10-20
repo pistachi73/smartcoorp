@@ -25,7 +25,7 @@ export const PostEditorTrial = () => {
         chainId: 'main',
         type: 'header',
         data: {
-          level: 2,
+          level: 3,
           text: 'Mastering the Art of Work-life Balance for Small Business Owners.',
         },
       },

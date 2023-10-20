@@ -1,3 +1,3 @@
 import { TryEditor } from './try-editor';
 
-export { TryEditor };
+export default TryEditor;

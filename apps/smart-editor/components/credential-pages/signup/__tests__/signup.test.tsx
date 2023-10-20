@@ -4,7 +4,7 @@ import {
   screen,
   waitFor,
 } from '@smart-editor/utils/testing/test-utils';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 import { useRouter } from 'next/navigation';
 
@@ -22,7 +22,7 @@ const typeInput = ({ field, value }: { field: string; value: string }) =>
     target: { value },
   });
 
-jest.mock('react-hot-toast');
+jest.mock('sonner');
 jest.mock('next/navigation');
 jest.mock('../action');
 

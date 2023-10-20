@@ -1,5 +1,5 @@
 export const getValueType = (value: any) => {
-  if (value instanceof File) {
+  if (typeof value.name === 'string') {
     return 'file';
   }
   if (typeof value === 'string') {

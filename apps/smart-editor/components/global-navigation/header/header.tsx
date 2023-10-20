@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { Button } from '@smartcoorp/ui/button';
 
 import {
@@ -11,8 +13,9 @@ export const Header = () => {
     <HeaderContainer>
       <StyledWidthLimiter>
         <Button to="/" variant="text">
-          <img
+          <Image
             width={80}
+            height={36.36}
             src={'logo_by_pul_light.svg'}
             alt="SmartEditor Logo"
           />
