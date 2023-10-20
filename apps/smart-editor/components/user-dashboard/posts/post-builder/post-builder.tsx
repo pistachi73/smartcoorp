@@ -5,8 +5,8 @@ import { usePostEditor } from '@smart-editor/hooks/use-post-editor';
 import { useSingleFileUpload } from '@smart-editor/hooks/use-single-file-upload';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { BsJournalText, BsPen } from 'react-icons/bs';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Body } from '@smartcoorp/ui/body';

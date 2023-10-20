@@ -191,6 +191,7 @@ export const Toolbar = () => {
               icon={BsTypeBold}
               iconSize={18}
               $formatted={selectionFormat.bold}
+              aria-label="Bold"
             />
           }
           content={
@@ -212,6 +213,7 @@ export const Toolbar = () => {
               icon={BsTypeItalic}
               iconSize={18}
               $formatted={selectionFormat.italic}
+              aria-label="Italic"
             />
           }
           content={
@@ -233,6 +235,7 @@ export const Toolbar = () => {
               icon={BsTypeUnderline}
               iconSize={18}
               $formatted={selectionFormat.underline}
+              aria-label="Underline"
             />
           }
           content={
@@ -254,6 +257,7 @@ export const Toolbar = () => {
               icon={BsTypeStrikethrough}
               iconSize={18}
               $formatted={selectionFormat.strikeThrough}
+              aria-label="Strike Trough"
             />
           }
           content={
@@ -273,6 +277,7 @@ export const Toolbar = () => {
               onClick={removeFormat}
               icon={MdFormatClear}
               iconSize={18}
+              aria-label="Remove format"
             />
           }
           content={
@@ -291,6 +296,7 @@ export const Toolbar = () => {
             disabled={!selectionFormat.link.enabled}
             $formatted={selectionFormat.link.formatted}
             size="small"
+            aria-label="Add link"
           >
             Add link
           </IconButton>
@@ -323,6 +329,7 @@ export const Toolbar = () => {
               onClick={() => undo()}
               icon={BsArrowCounterclockwise}
               iconSize={14}
+              aria-label="Undo"
             />
           }
           content={
@@ -344,6 +351,7 @@ export const Toolbar = () => {
               onClick={() => redo()}
               icon={BsArrowClockwise}
               iconSize={14}
+              aria-label="Redo"
             />
           }
           content={
@@ -365,6 +373,7 @@ export const Toolbar = () => {
               onClick={() => console.log(blocksDB)}
               icon={BsTerminal}
               iconSize={14}
+              aria-label="Log blocks data"
             />
           }
           content={
@@ -383,6 +392,7 @@ export const Toolbar = () => {
               icon={BsBoundingBox}
               iconSize={14}
               $formatted={viewBlocks}
+              aria-label="View Blocks"
             />
           }
           content={

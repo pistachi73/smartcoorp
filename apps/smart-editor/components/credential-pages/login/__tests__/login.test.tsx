@@ -5,7 +5,7 @@ import {
   waitFor,
 } from '@smart-editor/utils/testing/test-utils';
 import { signIn } from 'next-auth/react';
-import { toast } from 'react-hot-toast';
+import { toast } from 'sonner';
 
 import { useRouter } from 'next/navigation';
 
@@ -24,7 +24,7 @@ const typeInput = ({ field, value }: { field: string; value: string }) =>
   });
 
 jest.mock('next-auth/react');
-jest.mock('react-hot-toast');
+jest.mock('sonner');
 jest.mock('next/navigation');
 
 const pushMock = jest.fn();
@@ -96,7 +96,7 @@ describe('<Login />', () => {
     });
 
     expect(pushMock).toHaveBeenCalledTimes(1);
-    expect(pushMock).toHaveBeenCalledWith('/');
+    expect(pushMock).toHaveBeenCalledWith('/posts');
   });
   it('should trigger toast error on login fail', async () => {
     const error = 'Invalid credentials';

@@ -191,7 +191,7 @@ export const ColumnBlockTool = ({
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <ColSeparatorContainer>
+        <ColSeparatorContainer aria-label="Column block tool">
           <ColSeparator $isOpen={isOpen} />
         </ColSeparatorContainer>
       </DropdownMenuTrigger>
