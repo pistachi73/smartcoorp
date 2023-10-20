@@ -20,7 +20,6 @@ const UserDashboardLayoutPage = async ({
 
   return (
     <>
-      {/* @ts-expect-error Server Component */}
       <UserDashboardLayout>
         <div
           style={{

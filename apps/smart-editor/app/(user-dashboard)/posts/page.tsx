@@ -10,7 +10,7 @@ import { space3XL } from '@smartcoorp/ui/tokens';
 const PostsPage = ({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | undefined };
 }) => {
   console.log({ searchParams });
   return (
@@ -24,7 +24,6 @@ const PostsPage = ({
         Overview
       </Headline>
       <Suspense fallback={<SkeletonPosts />}>
-        {/* @ts-expect-error Server Component */}
         <Posts titleSearchParam={searchParams.title} />
       </Suspense>
     </>
