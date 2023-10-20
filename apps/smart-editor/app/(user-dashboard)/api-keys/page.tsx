@@ -20,7 +20,6 @@ const APIKeyPage = async () => {
         Api Keys
       </Headline>
       <Suspense fallback={<Table columnDefs={apiKeysTableColumns} />}>
-        {/* @ts-expect-error Server Component */}
         <ApiKeys />
       </Suspense>
     </>

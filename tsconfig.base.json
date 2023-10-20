@@ -22,6 +22,13 @@
       "@smart-api/test/*": ["libs/smart-api/src/utils/test/*"],
       "@smart-coaching/types": ["apps/smart-coaching/types/index.ts"],
       "@smart-coaching/utils/*": ["apps/smart-coaching/utils/*"],
+      "@smart-editor/actions/*": ["apps/smart-editor/actions/*"],
+      "@smart-editor/components/*": ["apps/smart-editor/components/*"],
+      "@smart-editor/emails/*": ["apps/smart-editor/emails/*"],
+      "@smart-editor/hooks/*": ["apps/smart-editor/hooks/*"],
+      "@smart-editor/types": ["apps/smart-editor/types/index.ts"],
+      "@smart-editor/utils/*": ["apps/smart-editor/utils/*"],
+      "@smartcoorp/prisma": ["prisma/prisma-client.ts"],
       "@smartcoorp/smart-api": ["libs/smart-api/src/index.ts"],
       "@smartcoorp/smart-design": ["libs/smart-design/src/index.ts"],
       "@smartcoorp/smart-hooks": ["libs/smart-hooks/src/index.ts"],
@@ -71,14 +78,7 @@
       "@smartcoorp/ui/tabs": ["libs/ui/tabs/src/index.ts"],
       "@smartcoorp/ui/tokens": ["libs/ui/tokens/src/index.ts"],
       "@smartcoorp/ui/tooltip": ["libs/ui/tooltip/src/index.ts"],
-      "@smartcoorp/ui/width-limiter": ["libs/ui/width-limiter/src/index.ts"],
-      "@smart-editor/components/*": ["apps/smart-editor/components/*"],
-      "@smart-editor/utils/*": ["apps/smart-editor/utils/*"],
-      "@smart-editor/actions/*": ["apps/smart-editor/actions/*"],
-      "@smart-editor/emails/*": ["apps/smart-editor/emails/*"],
-      "@smart-editor/hooks/*": ["apps/smart-editor/hooks/*"],
-      "@smart-editor/types": ["apps/smart-editor/types/index.ts"],
-      "@smartcoorp/prisma": ["prisma/prisma-client.ts"]
+      "@smartcoorp/ui/width-limiter": ["libs/ui/width-limiter/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
