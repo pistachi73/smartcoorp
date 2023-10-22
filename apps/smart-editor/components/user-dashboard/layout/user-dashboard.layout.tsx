@@ -2,6 +2,7 @@ import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
 import { getServerSession } from 'next-auth';
 import { BsBoxArrowLeft, BsList } from 'react-icons/bs';
 
+import prisma from '@smartcoorp/prisma';
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
 import { Headline } from '@smartcoorp/ui/headline';
@@ -28,6 +29,22 @@ export const UserDashboardLayout = async ({
   children,
 }: UserDashboardLayoutProps) => {
   const session = await getServerSession(nextAuthConfig);
+
+  const user = await prisma.eUser.findUnique({
+    where: {
+      id: session?.id,
+    },
+    include: {
+      _count: {
+        select: {
+          EPost: true,
+        },
+      },
+    },
+  });
+
+  const { EPost: numberOfPosts = 0 } = user?._count ?? {};
+
   return (
     <Container>
       <Input type="checkbox" id="toggle" />
@@ -49,15 +66,17 @@ export const UserDashboardLayout = async ({
 
         <div>
           {session && <ProfileDropdown session={session} />}
-          <Upgrade>
-            <Headline size="small" as="h4">
-              Content Limit Reached
-            </Headline>
-            <Body size="xsmall">
-              You&apos;ve hit the limit for total posts on your current plan.
-            </Body>
-            <Button size="small">Upgrade Now</Button>
-          </Upgrade>
+          {numberOfPosts >= 5 && (
+            <Upgrade>
+              <Headline size="small" as="h4">
+                Content Limit Reached
+              </Headline>
+              <Body size="xsmall">
+                You&apos;ve hit the limit for total posts on your current plan.
+              </Body>
+              <Button size="small">Upgrade Now</Button>
+            </Upgrade>
+          )}
         </div>
       </SidebarContainer>
       <ContentContainer>

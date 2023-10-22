@@ -65,6 +65,7 @@
     "nanoid": "^4.0.1",
     "next": "13.4.1",
     "next-auth": "^4.22.1",
+    "next-mdx-remote": "^4.4.1",
     "open-graph-scraper": "^6.2.2",
     "react": "18.2.0",
     "react-day-picker": "^8.7.1",
@@ -78,6 +79,7 @@
     "react-select": "^5.7.3",
     "react-use-measure": "^2.1.1",
     "regenerator-runtime": "0.13.7",
+    "rehype-prism-plus": "^1.6.3",
     "resend": "^1.1.0",
     "sharp": "^0.32.6",
     "sonner": "^1.0.3",
@@ -97,6 +99,7 @@
     "@cypress/webpack-preprocessor": "^5.17.1",
     "@faker-js/faker": "^7.6.0",
     "@nx/cypress": "17.0.0",
+    "@nx/eslint": "17.0.0",
     "@nx/eslint-plugin": "17.0.0",
     "@nx/express": "17.0.0",
     "@nx/jest": "17.0.0",
@@ -174,8 +177,7 @@
     "typescript": "5.1.6",
     "url-loader": "^4.1.1",
     "webpack": "5.89.0",
-    "webpack-merge": "^5.8.0",
-    "@nx/eslint": "17.0.0"
+    "webpack-merge": "^5.8.0"
   },
   "overrides": {
     "loader-utils": "2.0.4",

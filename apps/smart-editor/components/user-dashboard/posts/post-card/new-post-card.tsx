@@ -7,18 +7,25 @@ import { BsJournalText } from 'react-icons/bs';
 import { useRouter } from 'next/navigation';
 
 import { Body } from '@smartcoorp/ui/body';
+import { Button } from '@smartcoorp/ui/button';
 import { DotLoading } from '@smartcoorp/ui/dot-loading';
 import { Headline } from '@smartcoorp/ui/headline';
+import { Skeleton } from '@smartcoorp/ui/skeleton';
+import { spaceXL } from '@smartcoorp/ui/tokens';
 
 import { createPost } from '../actions/create-post';
 
-import { Badge, NewPostCardContainer } from './post-card.styles';
+import {
+  Badge,
+  BadgeContainer,
+  NewPostCardContainer,
+} from './post-card.styles';
 
 type NewPostCardProps = {
   totalPosts?: number;
 };
 
-export const NewPostCard = ({ totalPosts = 0 }: NewPostCardProps) => {
+export const NewPostCard = ({ totalPosts }: NewPostCardProps) => {
   const [loading, setLoading] = useState(false);
   const session = useSession();
   const router = useRouter();
@@ -28,11 +35,7 @@ export const NewPostCard = ({ totalPosts = 0 }: NewPostCardProps) => {
     const { data } = session;
     const { id } = data || {};
 
-    if (!id) {
-      router.push('/login');
-    }
-
-    const result = await createPost(id as number);
+    const result = await createPost({ userId: id as string });
 
     if (result.error) {
       router.push('/login');
@@ -43,25 +46,51 @@ export const NewPostCard = ({ totalPosts = 0 }: NewPostCardProps) => {
     setLoading(false);
   };
 
+  const limitReached = Boolean(totalPosts && totalPosts >= 5);
+
+  const headline = limitReached
+    ? "You've Reached Your Post Limit"
+    : 'Embark on a New Journey';
+  const body = limitReached
+    ? 'Upgrade to Premium to Write More Posts'
+    : 'Craft, Share, and Publish Your Unique Stories – Write a New Post Today';
+
   return (
-    <NewPostCardContainer as="button" onClick={createPostMutation}>
-      <Headline size="medium">Embark on a New Journey</Headline>
+    <NewPostCardContainer
+      as="button"
+      onClick={createPostMutation}
+      disabled={limitReached}
+      $limitReach={limitReached}
+    >
+      <Headline size="medium">{headline}</Headline>
       <Body variant="neutral" size="small">
-        Craft, Share, and Publish Your Unique Stories – Write a New Post Today
+        {body}
       </Body>
 
-      <Badge>
-        {loading ? (
-          <DotLoading disabled size="medium" />
-        ) : (
-          <>
-            <BsJournalText size={16} />
-            <Body size="small" as="span" noMargin>
-              {totalPosts} / 5
-            </Body>
-          </>
+      <BadgeContainer>
+        <Badge>
+          {loading ? (
+            <DotLoading size="small" />
+          ) : (
+            <>
+              <BsJournalText size={16} />
+              {totalPosts ? (
+                <Body size="small" as="span" noMargin>
+                  {totalPosts} / 5
+                </Body>
+              ) : (
+                <Skeleton height="21px" width="30px" />
+              )}
+            </>
+          )}
+        </Badge>
+
+        {totalPosts && totalPosts >= 5 && (
+          <Button size="medium" variant="primary" disabled={loading}>
+            Upgrade Now
+          </Button>
         )}
-      </Badge>
+      </BadgeContainer>
     </NewPostCardContainer>
   );
 };

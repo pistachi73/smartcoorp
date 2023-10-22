@@ -33,7 +33,10 @@ export const Login = () => {
   const router = useRouter();
 
   const onSubmit = async (data: ILogin) => {
+    console.log('Hola');
     setLoading(true);
+
+    console.log({ data });
 
     const response = await signIn('admin-credentials', {
       ...data,

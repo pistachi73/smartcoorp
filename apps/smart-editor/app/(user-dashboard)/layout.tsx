@@ -2,6 +2,7 @@ import { UserDashboardLayout } from '@smart-editor/components/user-dashboard/lay
 import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
 import { getServerSession } from 'next-auth';
 
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { Breadcrumb } from '@smartcoorp/ui/breadcrumb';

@@ -81,7 +81,7 @@ export const lightTheme: ThemeType = {
   backgroundScreen: 'white',
 
   typography: {
-    bodyTextColor: 'black',
+    bodyTextColor: gray900,
     neutralTextColor: gray500,
     warningTextColor: yellow500,
     errorTextColor: red500,

@@ -36,7 +36,7 @@ type BodyTransientProps = {
 // *** Base ***
 const baseBodyCopy = css`
   color: ${({ theme }) => theme.typography.bodyTextColor};
-  line-height: 1.5;
+  line-height: 1.6;
   margin-left: 0;
   margin-right: 0;
   margin-top: 0;
@@ -87,7 +87,7 @@ export const lineHeights = {
     line-height: 1.25;
   `,
   increased: css`
-    line-height: 1.7;
+    line-height: 1.75;
   `,
 };
 

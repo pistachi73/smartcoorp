@@ -8,7 +8,7 @@ declare module 'next-auth' {
   }
 
   interface Session {
-    id?: number;
+    id?: string;
     user: User;
   }
 }
@@ -16,7 +16,7 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
   interface JWT {
-    id: number;
+    id: string;
     /** OpenID ID Token */
     idToken?: string;
     name?: string;

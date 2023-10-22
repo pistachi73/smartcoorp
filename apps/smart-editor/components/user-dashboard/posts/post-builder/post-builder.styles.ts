@@ -1,6 +1,21 @@
 import styled from 'styled-components';
 
-import { spaceL, spaceM, spaceXL, spaceXXL } from '@smartcoorp/ui/tokens';
+import {
+  borderRadiusXS,
+  gray100,
+  gray200,
+  gray300,
+  gray500,
+  gray700,
+  motionEasingStandard,
+  motionTimeS,
+  primary,
+  primary100_RGBA,
+  spaceL,
+  spaceM,
+  spaceXL,
+  spaceXXL,
+} from '@smartcoorp/ui/tokens';
 
 export const TabLabelContainer = styled.div`
   /* gap: ${spaceM}; */
@@ -29,4 +44,31 @@ export const PostInformationContainer = styled.div`
 
   row-gap: ${spaceL};
   column-gap: ${spaceXXL};
+`;
+
+export const IdContainer = styled.button`
+  height: 42px;
+  padding-inline: ${spaceM};
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: ${spaceM};
+
+  border: 1px solid ${gray300};
+  border-radius: ${borderRadiusXS};
+  background-color: ${gray100};
+
+  color: ${gray500};
+
+  transition-property: color, background-color, border-color;
+  transition-duration: ${motionTimeS};
+  transition-timing-function: ${motionEasingStandard};
+
+  &:hover {
+    color: ${gray700};
+    background-color: rgba(${primary100_RGBA}, 0.25);
+    border-color: ${primary};
+    cursor: pointer;
+  }
 `;

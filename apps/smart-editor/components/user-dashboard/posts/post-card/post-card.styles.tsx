@@ -7,18 +7,23 @@ import {
   borderRadiusXS,
   dropShadowM,
   getFocusShadow,
+  gray100,
+  gray200,
   gray300,
   gray500,
   motionEasingStandard,
   motionTimeM,
   primary,
   primary100_RGBA,
+  space3XL,
   spaceM,
   spaceS,
   spaceXL,
   spaceXXL,
   spaceXXS,
 } from '@smartcoorp/ui/tokens';
+
+import { disabled } from '../../../../../../libs/ui/button/src/button.styles';
 
 export const Container = styled.div`
   display: flex;
@@ -33,7 +38,10 @@ export const Container = styled.div`
 export const PostCardContainer = styled(Container)<{ $isSkeleton: boolean }>`
   border: 1px solid ${gray300};
   overflow: hidden;
-  display: block;
+  display: grid;
+  width: 100%;
+  grid-template-rows: 200px auto;
+  grid-template-columns: 1fr;
 
   ${({ $isSkeleton }) =>
     !$isSkeleton &&
@@ -56,11 +64,11 @@ export const PostCardContainer = styled(Container)<{ $isSkeleton: boolean }>`
 
 export const PostCardImage = styled.div`
   position: relative;
-  width: 100%;
+  min-width: 100%;
   height: 200px;
 
   img {
-    width: 100%;
+    min-width: 100%;
     height: 100%;
     object-fit: cover;
   }
@@ -68,10 +76,22 @@ export const PostCardImage = styled.div`
 
 export const PostCardContent = styled.div`
   width: 100%;
+  height: 100%;
   padding: ${spaceXL};
 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: auto;
+
+  p {
+    margin-bottom: ${spaceS};
+  }
   h2 {
-    margin-bottom: ${spaceXXL};
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 `;
 
@@ -81,7 +101,7 @@ export const PostCardFooter = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  padding-top: ${spaceXXL};
+  padding-top: ${space3XL};
 
   p {
     color: black;
@@ -93,7 +113,9 @@ export const PostCardFooter = styled.div`
 
 //---------- NEW POST CARD STYLE -------------
 
-export const NewPostCardContainer = styled(Container)`
+export const NewPostCardContainer = styled(Container)<{
+  $limitReach?: boolean;
+}>`
   min-height: 390px;
   padding: ${spaceXL};
   border: 1px dashed ${gray300};
@@ -102,22 +124,30 @@ export const NewPostCardContainer = styled(Container)`
   transition-property: transform, box-shadow, border-color, background-color;
   transition-duration: ${motionTimeM};
   transition-timing-function: ${motionEasingStandard};
-  &:hover {
-    text-decoration: none;
-    transform: translateY(-${spaceXXS});
-    background-color: rgba(${primary100_RGBA}, 0.25);
-    border-color: ${primary};
-  }
 
-  &:focus-visible {
-    ${getFocusShadow({ withTransition: false })}
-  }
+  ${({ $limitReach }) =>
+    !$limitReach
+      ? css`
+          &:hover {
+            text-decoration: none;
+            transform: translateY(-${spaceXXS});
+            background-color: rgba(${primary100_RGBA}, 0.25);
+            border-color: ${primary};
+          }
+          &:focus-visible {
+            ${getFocusShadow({ withTransition: false })}
+          }
+        `
+      : css`
+          background-color: ${gray200};
+          cursor: default;
+        `}
 `;
 
 export const Badge = styled.div`
   padding: ${spaceS};
 
-  height: 40px;
+  height: 42px;
 
   display: flex;
   align-items: center;
@@ -131,6 +161,13 @@ export const Badge = styled.div`
   svg {
     color: ${primary};
   }
+`;
+
+export const BadgeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${spaceS};
 `;
 
 //---------- NO POSTS FOUND CARD STYLE -------------

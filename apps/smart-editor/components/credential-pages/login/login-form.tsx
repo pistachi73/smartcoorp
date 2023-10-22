@@ -33,6 +33,7 @@ export const LoginForm = () => {
     if (response?.error) {
       toast.error(response.error);
     } else {
+      toast.success('Login successful');
       router.push('/posts');
     }
 

@@ -1,5 +1,9 @@
+import Usage from '@smart-editor/components/user-dashboard/usage';
+
+import './code-snippets.css';
+
 const UsagePage = async () => {
-  return <h1>Usage Page</h1>;
+  return <Usage />;
 };
 
 export default UsagePage;

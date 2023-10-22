@@ -52,7 +52,7 @@ enum Role {
 }
 
 model EUser {
-    id                        Int                         @id @default(autoincrement())
+    id                        String                      @id @default(uuid())
     name                      String
     email                     String                      @unique
     password                  String?
@@ -67,43 +67,43 @@ model EUser {
 }
 
 model EApiKey {
-    id        Int       @id @default(autoincrement())
+    id        String    @id @default(uuid())
     key       String    @unique
     name      String
     lastUsed  DateTime?
     createdAt DateTime  @default(now())
     user      EUser     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    Int
+    userId    String
 
     @@index([userId])
 }
 
 model EPasswordResetToken {
-    id        Int       @id @default(autoincrement())
+    id        String    @id @default(uuid())
     token     String    @unique
     createdAt DateTime  @default(now())
     resetAt   DateTime?
 
-    user   EUser @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId Int
+    user   EUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
 
     @@index([userId])
 }
 
 model EAccountVerificationToken {
-    id          Int       @id @default(autoincrement())
+    id          String    @id @default(uuid())
     token       String    @unique
     activatedAt DateTime?
 
     createdAt DateTime @default(now())
     user      EUser    @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    Int
+    userId    String
 
     @@index([userId])
 }
 
 model EPost {
-    id            Int         @id @default(autoincrement())
+    id            String      @id @default(uuid())
     title         String?
     content       Json?
     wordCount     Int?
@@ -112,8 +112,8 @@ model EPost {
     createdAt     DateTime    @default(now())
     updatedAt     DateTime    @updatedAt
 
-    user   EUser @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId Int
+    user   EUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
 
     @@index([userId])
 }

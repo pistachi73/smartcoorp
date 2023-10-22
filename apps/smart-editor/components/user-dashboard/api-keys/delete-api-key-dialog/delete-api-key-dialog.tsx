@@ -20,36 +20,32 @@ import {
 } from './delete-api-key-dialog.styles';
 
 type DeleteApiKeyDialogProps = {
-  userId: number;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   toDeleteApiKeys: EApiKey[];
-  setApiKeysState: Dispatch<SetStateAction<EApiKey[]>>;
+  refetch: any;
 };
 
 const DeleteApiKeySchema = z.object({
-  name: z.string().nonempty(),
+  name: z.string(),
 });
 
 export type DeleteApiKeyData = z.infer<typeof DeleteApiKeySchema>;
 
 export const DeleteApiKeyDialog = ({
-  userId,
   isOpen = false,
   setIsOpen,
   toDeleteApiKeys,
-  setApiKeysState,
+  refetch,
 }: DeleteApiKeyDialogProps) => {
   const [loading, setLoading] = useState(false);
 
-  const onDelete = async (apiKeyIds: number[]) => {
+  const onDelete = async (apiKeyIds: string[]) => {
     setLoading(true);
     await deleteApiKey({
       apiKeyIds,
     });
-    setApiKeysState((apiKeys) =>
-      apiKeys.filter(({ id }) => !apiKeyIds.includes(id))
-    );
+    refetch();
     setLoading(false);
     setIsOpen(false);
     toast.success('Api keys deleted successfully');

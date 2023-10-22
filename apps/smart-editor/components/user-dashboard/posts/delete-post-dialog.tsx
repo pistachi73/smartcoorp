@@ -6,16 +6,18 @@ import { Body } from '@smartcoorp/ui/body';
 import { Dialog, DialogContent, DialogTrigger } from '@smartcoorp/ui/dialog';
 import { Headline } from '@smartcoorp/ui/headline';
 
-import { TrashImageContainer } from './posts.styles';
+import { DeleteDialogTextContainer, TrashImageContainer } from './posts.styles';
 
 type DeletePostDialogProps = {
   trigger: React.ReactNode;
   postId: number;
+  onDelete: (postId: string) => void;
 };
 
 export const DeletePostDialog = ({
   postId,
   trigger,
+  onDelete,
 }: DeletePostDialogProps) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
@@ -40,12 +42,17 @@ export const DeletePostDialog = ({
           <img src={'/illustrations/recycle-bin.svg'} alt="Delete post" />
         </TrashImageContainer>
 
-        <Headline as="h2" size="medium" style={{ textAlign: 'center' }}>
-          Are you sure you want to delete this post?
-        </Headline>
-        <Body variant="neutral" size="small" style={{ textAlign: 'center' }}>
-          This action cannot be undone.
-        </Body>
+        <DeleteDialogTextContainer>
+          <Headline as="h2" size="large" noMargin>
+            Delete Post
+          </Headline>
+          <Body size="small" noMargin>
+            Are you sure you want to delete this post?
+          </Body>
+          <Body variant="error" size="small" fontWeight="bold">
+            This action cannot be undone.
+          </Body>
+        </DeleteDialogTextContainer>
       </DialogContent>
     </Dialog>
   );

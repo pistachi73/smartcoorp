@@ -6,9 +6,9 @@ import prisma from '@smartcoorp/prisma';
 import { ApiKeysTable } from './api-keys-table';
 
 export const ApiKeys = async () => {
-  const session = await getServerSession(nextAuthConfig);
+  const session = (await getServerSession(nextAuthConfig)) as Session;
 
-  const userId = (session as Session).id as number;
+  const userId = session.id as string;
 
   const user = await prisma.eUser.findUnique({
     where: {
@@ -19,5 +19,5 @@ export const ApiKeys = async () => {
     },
   });
 
-  return <ApiKeysTable apiKeys={user?.EApiKey} userId={userId} />;
+  return <ApiKeysTable initialApiKeys={user?.EApiKey} userId={userId} />;
 };
