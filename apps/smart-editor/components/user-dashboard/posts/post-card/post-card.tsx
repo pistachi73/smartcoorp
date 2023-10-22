@@ -37,7 +37,6 @@ export const PostCard = ({
   status,
   coverImageUrl,
 }: PostCardProps) => {
-  console.log({ id, title, wordCount, updatedAt, status, coverImageUrl });
   return (
     <PostCardContainer as={Link} href={`/posts/${id}`} $isSkeleton={false}>
       <PostCardImage>

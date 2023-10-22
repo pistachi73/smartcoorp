@@ -20,10 +20,9 @@ import { PostCardGrid } from './posts.styles';
 
 type PostsProps = {
   userId: string;
-  initialPosts?: EPost[];
 };
 
-export const Posts = ({ userId, initialPosts }: PostsProps) => {
+export const Posts = ({ userId }: PostsProps) => {
   const searchParams = useSearchParams();
   const { data: posts, isLoading } = useQuery(
     ['posts', searchParams],
@@ -33,7 +32,6 @@ export const Posts = ({ userId, initialPosts }: PostsProps) => {
         title: searchParams.get('title'),
       }),
     {
-      initialData: initialPosts,
       refetchOnWindowFocus: false,
     }
   );

@@ -57,7 +57,7 @@ export const NewPostCard = ({ totalPosts }: NewPostCardProps) => {
 
   return (
     <NewPostCardContainer
-      as="button"
+      as={limitReached ? 'div' : 'button'}
       onClick={createPostMutation}
       disabled={limitReached}
       $limitReach={limitReached}

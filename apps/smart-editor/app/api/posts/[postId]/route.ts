@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import prisma from '@smartcoorp/prisma';
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { postId: string } }
