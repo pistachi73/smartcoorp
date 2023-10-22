@@ -1,11 +1,10 @@
 import { Posts } from '@smart-editor/components/user-dashboard/posts';
-import { getBaseUrl } from '@smart-editor/utils/get-base-url';
 import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
 import { Session, getServerSession } from 'next-auth';
 
+import prisma from '@smartcoorp/prisma';
 import { Headline } from '@smartcoorp/ui/headline';
 import { space3XL } from '@smartcoorp/ui/tokens';
-
 const PostsPage = async ({
   searchParams,
 }: {
@@ -13,21 +12,12 @@ const PostsPage = async ({
 }) => {
   const session = (await getServerSession(nextAuthConfig)) as Session;
 
-  const fetchSearchParams = new URLSearchParams({
-    userId: session?.id?.toString() ?? '',
-    ...(searchParams.title ? { title: searchParams.title } : {}),
+  const posts = await prisma.ePost.findMany({
+    where: {
+      userId: session?.id?.toString() ?? '',
+      ...(searchParams.title ? { title: searchParams.title } : {}),
+    },
   });
-
-  const response = await fetch(
-    `${getBaseUrl()}/api/posts?${fetchSearchParams.toString()}`,
-    {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', Origin: 'admin' },
-    }
-  );
-
-  const data = await response.json();
-  const { posts } = data;
 
   return (
     <>
@@ -39,9 +29,7 @@ const PostsPage = async ({
       >
         Overview
       </Headline>
-      {/* <Suspense fallback={<SkeletonPosts />}> */}
       <Posts initialPosts={posts} userId={session.id as string} />
-      {/* </Suspense> */}
     </>
   );
 };
