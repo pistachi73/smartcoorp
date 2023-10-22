@@ -1,9 +1,7 @@
 'use client';
 
-import React, { forwardRef } from 'react';
-import { InputHTMLAttributes } from 'react-day-picker';
+import React, { forwardRef, useId } from 'react';
 import { BiHide, BiMinus, BiPlus, BiShow } from 'react-icons/bi';
-import { v4 as uuid } from 'uuid';
 
 import { Styled as S } from './form-field.styles';
 import type { FormFieldProps } from './form-field.types';
@@ -40,7 +38,7 @@ export const FormField = forwardRef<
   ) => {
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
-    const inputId = id ?? uuid();
+    const inputId = useId();
 
     const handlePasswordSwitch = () => {
       document.getElementById(inputId)?.focus();
