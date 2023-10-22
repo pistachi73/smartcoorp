@@ -3,25 +3,41 @@
 import { EPost, EPostStatus } from '@prisma/client';
 import { usePostEditor } from '@smart-editor/hooks/use-post-editor';
 import { useSingleFileUpload } from '@smart-editor/hooks/use-single-file-upload';
-import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { BsJournalText, BsPen } from 'react-icons/bs';
+import { BsClipboard, BsJournalText, BsPen } from 'react-icons/bs';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+import { useRouter } from 'next/navigation';
+
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
+import { Caption } from '@smartcoorp/ui/caption';
+import { Dialog, DialogContent, DialogTrigger } from '@smartcoorp/ui/dialog';
 import { RHFFileUpload } from '@smartcoorp/ui/file-upload';
-import { RHFFormField } from '@smartcoorp/ui/form-field';
+import { FormField, RHFFormField } from '@smartcoorp/ui/form-field';
 import { Headline } from '@smartcoorp/ui/headline';
-import { PostEditor } from '@smartcoorp/ui/post-editor';
+import { BlocksDB, PostEditor } from '@smartcoorp/ui/post-editor';
 import { RHFSelect } from '@smartcoorp/ui/select';
 import { Tabs } from '@smartcoorp/ui/tabs';
+import { gray500 } from '@smartcoorp/ui/tokens';
 
+import { disabled } from '../../../../../../libs/ui/button/src/button.styles';
+import { deletePost } from '../actions/delete-post';
+import { getPost } from '../actions/get-posts';
 import { updatePost } from '../actions/update-post';
-import { DeletePostDialog } from '../delete-post-dialog';
+import {
+  DeleteDialogTextContainer,
+  TrashImageContainer,
+} from '../posts.styles';
 
-import { Header, PostInformationContainer } from './post-builder.styles';
+import {
+  Header,
+  IdContainer,
+  PostInformationContainer,
+} from './post-builder.styles';
 
 const FormSchema = z.object({
   title: z.nullable(z.string()),
@@ -33,12 +49,31 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>;
 
 type PostBuilderProps = {
-  post: EPost;
-  userId: number;
+  initialPost: EPost;
+  userId: string;
+  postId: string;
 };
 
-export const PostBuilder = ({ post, userId }: PostBuilderProps) => {
+export const PostBuilder = ({
+  initialPost,
+  userId,
+  postId,
+}: PostBuilderProps) => {
+  const router = useRouter();
+
+  const { data: post } = useQuery(['post', postId], {
+    queryFn: async () =>
+      await getPost({
+        postId: initialPost.id,
+        userId,
+      }),
+    initialData: initialPost,
+    refetchOnWindowFocus: false,
+  });
+
   const [loading, setLoading] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeleteDialogLoading, setIsDeleteDialogLoading] = useState(false);
 
   const {
     postBlocks,
@@ -62,6 +97,16 @@ export const PostBuilder = ({ post, userId }: PostBuilderProps) => {
     },
   });
 
+  useEffect(() => {
+    reset({
+      title: post.title ?? '',
+      wordCount: post.wordCount ?? 0,
+      status: post.status,
+      coverImageUrl: post.coverImageUrl ?? '',
+    });
+    setPostBlocks(post.content as BlocksDB);
+  }, [post, reset, setPostBlocks]);
+
   const { handleSingleFileUpload } = useSingleFileUpload({
     folder: `${post.userId}/${post.id}`,
     initialFile: post.coverImageUrl,
@@ -77,8 +122,6 @@ export const PostBuilder = ({ post, userId }: PostBuilderProps) => {
       console.log(e);
     }
 
-    console.log('ret');
-
     const postData = {
       ...data,
       content: postBlocks,
@@ -88,18 +131,42 @@ export const PostBuilder = ({ post, userId }: PostBuilderProps) => {
 
     try {
       await updatePost({
-        postId: Number(post.id),
-        userId: Number(post.userId),
+        postId: post.id,
+        userId: post.userId,
         data: postData,
       });
 
       reset({}, { keepValues: true });
+      toast.success('Post saved!');
     } catch (e) {
       toast.error('ERROR');
     }
 
-    // setValue('coverImageUrl', coverImageUrl);
     setLoading(false);
+  };
+
+  const onDelete = async () => {
+    setIsDeleteDialogLoading(true);
+
+    const { error } = await deletePost({ postId: post.id });
+
+    if (error) {
+      toast.error(error);
+      setIsDeleteDialogLoading(false);
+      return;
+    }
+
+    toast.success('Post deleted!');
+
+    router.push('/posts');
+
+    setIsDeleteDialogLoading(false);
+  };
+
+  const onIdCopy = () => {
+    toast.success('Id copied to clipboard');
+
+    navigator.clipboard.writeText(post.id.toString());
   };
 
   return (
@@ -109,14 +176,43 @@ export const PostBuilder = ({ post, userId }: PostBuilderProps) => {
           Post builder
         </Headline>
         <div>
-          <DeletePostDialog
-            postId={post.id}
-            trigger={
+          <Dialog
+            defaultOpen={false}
+            open={isDeleteDialogOpen}
+            onOpenChange={setIsDeleteDialogOpen}
+          >
+            <DialogTrigger asChild>
               <Button size="small" variant="secondary" disabled={loading}>
                 Delete
               </Button>
-            }
-          />
+            </DialogTrigger>
+            <DialogContent
+              title="Are you sure you want to delete this post?"
+              description="This action cannot be undone."
+              onAction={onDelete}
+              onCancel={() => setIsDeleteDialogOpen(false)}
+              actionLabel={`Yes, delete`}
+              cancelLabel="Cancel"
+              loading={isDeleteDialogLoading}
+              variant="danger"
+            >
+              <TrashImageContainer>
+                <img src={'/illustrations/recycle-bin.svg'} alt="Delete post" />
+              </TrashImageContainer>
+
+              <DeleteDialogTextContainer>
+                <Headline as="h2" size="large" noMargin>
+                  Delete Post
+                </Headline>
+                <Body size="small" noMargin>
+                  Are you sure you want to delete this post?
+                </Body>
+                <Body variant="error" size="small" fontWeight="bold">
+                  This action cannot be undone.
+                </Body>
+              </DeleteDialogTextContainer>
+            </DialogContent>
+          </Dialog>
 
           <Button size="small" type="submit" loading={loading}>
             Save
@@ -132,6 +228,28 @@ export const PostBuilder = ({ post, userId }: PostBuilderProps) => {
             label: 'Post information',
             content: (
               <PostInformationContainer>
+                <Body noMargin size="medium" fontWeight="bold">
+                  Unique Identifier
+                  <Body
+                    variant="neutral"
+                    as="span"
+                    size="xsmall"
+                    noMargin
+                    style={{
+                      display: 'block',
+                    }}
+                  >
+                    Used for fetching the post
+                  </Body>
+                </Body>
+                <IdContainer
+                  type="button"
+                  aria-label="Copy Id to clipboard"
+                  onClick={onIdCopy}
+                >
+                  {post.id}
+                  <BsClipboard size={14} />
+                </IdContainer>
                 <Body noMargin size="medium" fontWeight="bold">
                   Title
                 </Body>

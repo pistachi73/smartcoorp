@@ -16,10 +16,10 @@ import {
 } from './post-card.styles';
 
 type PostCardProps = {
-  id: number;
+  id: string;
   title: string | null;
   wordCount: number | null;
-  updatedAt?: Date;
+  updatedAt?: string | Date;
   status?: EPostStatus;
   coverImageUrl: string | null;
 };
@@ -30,13 +30,14 @@ const statusMapping: Record<EPostStatus, string> = {
 };
 
 export const PostCard = ({
-  id = 1234,
+  id,
   title,
   wordCount,
   updatedAt,
   status,
   coverImageUrl,
 }: PostCardProps) => {
+  console.log({ id, title, wordCount, updatedAt, status, coverImageUrl });
   return (
     <PostCardContainer as={Link} href={`/posts/${id}`} $isSkeleton={false}>
       <PostCardImage>
@@ -47,19 +48,18 @@ export const PostCard = ({
         />
       </PostCardImage>
       <PostCardContent>
-        <Body
-          size="small"
-          variant="neutral"
-          style={{
-            marginBottom: spaceXS,
-          }}
-        >
-          Last updated:{' '}
-          {updatedAt ? format(updatedAt, 'PPP') : 'Waiting for updates'}
-        </Body>
-        <Headline size="large" as="h2">
-          {title ?? 'Begin Your Journey: A Blank Canvas'}
-        </Headline>
+        <div>
+          <Body size="small" variant="neutral" noMargin>
+            Last updated:{' '}
+            {updatedAt
+              ? format(new Date(updatedAt), 'PPP')
+              : 'Waiting for updates'}
+          </Body>
+          <Headline size="large" as="h2" noMargin>
+            {title ?? 'Begin Your Journey: A Blank Canvas'}
+          </Headline>
+        </div>
+
         <PostCardFooter>
           <Body size="small" variant="neutral" noMargin>
             <span>Status: </span>

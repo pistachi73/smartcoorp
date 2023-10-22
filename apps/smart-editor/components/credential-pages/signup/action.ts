@@ -35,9 +35,17 @@ export const signupAction = async ({
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const createdUser = await prisma.eUser.create({
-    data: { name, email, password: hashedPassword },
-  });
+  let createdUser;
+  try {
+    createdUser = await prisma.eUser.create({
+      data: { name, email, password: hashedPassword },
+    });
+  } catch (e) {
+    console.log(e);
+    return {
+      error: 'Error creating user.',
+    };
+  }
 
   if (!createdUser) {
     return {

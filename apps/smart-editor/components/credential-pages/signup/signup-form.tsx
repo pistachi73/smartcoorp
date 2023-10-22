@@ -35,11 +35,10 @@ export const SignupForm = () => {
 
     if (error) {
       toast.error(error);
+      setLoading(false);
     } else {
       router.push('/signup/success');
     }
-
-    setLoading(false);
   };
 
   return (

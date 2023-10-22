@@ -1,6 +1,7 @@
 'use client';
 
 import { EApiKey } from '@prisma/client';
+import { useQuery } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { useState } from 'react';
@@ -9,13 +10,14 @@ import { Body } from '@smartcoorp/ui/body';
 // import { Checkbox } from '@smartcoorp/ui/checkbox';
 import { Table, selectColumn } from '@smartcoorp/ui/data-table';
 
+import { getApiKeys } from './actions/get-api-keys';
 import { ApiKeyTokenCell } from './api-keys.styles';
 import { CreateApiKeyDialog } from './create-api-key-dialog/create-api-key-dialog';
 import { DeleteApiKeyDialog } from './delete-api-key-dialog/delete-api-key-dialog';
 
 type ApiKeysProps = {
-  userId: number;
-  apiKeys?: EApiKey[];
+  userId: string;
+  initialApiKeys?: EApiKey[];
 };
 
 export const apiKeysTableColumns: ColumnDef<EApiKey>[] = [
@@ -65,7 +67,7 @@ export const apiKeysTableColumns: ColumnDef<EApiKey>[] = [
   },
 ];
 
-export const ApiKeysTable = ({ apiKeys, userId }: ApiKeysProps) => {
+export const ApiKeysTable = ({ initialApiKeys, userId }: ApiKeysProps) => {
   const [isCreateApiKeyDialogOpen, setIsCreateApiKeyDialogOpen] =
     useState(false);
 
@@ -74,12 +76,21 @@ export const ApiKeysTable = ({ apiKeys, userId }: ApiKeysProps) => {
 
   const [toDeleteApiKeys, setToDeleteApiKeys] = useState<EApiKey[]>([]);
 
-  const [apiKeysState, setApiKeysState] = useState<EApiKey[]>(apiKeys || []);
+  const { data: apiKeys, refetch } = useQuery(
+    ['api-keys'],
+    async () =>
+      await getApiKeys({
+        userId,
+      }),
+    {
+      initialData: initialApiKeys,
+    }
+  );
 
   return (
     <>
       <Table
-        data={apiKeysState}
+        data={apiKeys}
         columnDefs={apiKeysTableColumns}
         onCreate={() => {
           setIsCreateApiKeyDialogOpen(true);
@@ -93,14 +104,13 @@ export const ApiKeysTable = ({ apiKeys, userId }: ApiKeysProps) => {
         isOpen={isCreateApiKeyDialogOpen}
         setIsOpen={setIsCreateApiKeyDialogOpen}
         userId={userId}
-        setApiKeysState={setApiKeysState}
+        refetch={refetch}
       />
       <DeleteApiKeyDialog
         isOpen={isDeleteApiKeyDialogOpen}
         setIsOpen={setIsDeleteApiKeyDialogOpen}
-        userId={userId}
         toDeleteApiKeys={toDeleteApiKeys}
-        setApiKeysState={setApiKeysState}
+        refetch={refetch}
       />
     </>
   );

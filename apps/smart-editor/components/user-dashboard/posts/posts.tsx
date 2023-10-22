@@ -1,8 +1,17 @@
+'use client';
+
+import { EPost } from '@prisma/client';
+import { getBaseUrl } from '@smart-editor/utils/get-base-url';
 import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
+import { useQuery } from '@tanstack/react-query';
 import { getServerSession } from 'next-auth';
+import { useEffect } from 'react';
+
+import { useSearchParams } from 'next/navigation';
 
 import prisma from '@smartcoorp/prisma';
 
+import { getPosts } from './actions/get-posts';
 import { Filters } from './filters';
 import { PostCard, SkeletonPostCard } from './post-card';
 import { NewPostCard } from './post-card/new-post-card';
@@ -10,38 +19,40 @@ import { NoPostsFoundCard } from './post-card/no-posts-found-card';
 import { PostCardGrid } from './posts.styles';
 
 type PostsProps = {
-  titleSearchParam?: string;
+  userId: string;
+  initialPosts?: EPost[];
 };
 
-export const Posts = async ({ titleSearchParam = '' }: PostsProps) => {
-  console.log('Rerendering Posts');
-  const session = await getServerSession(nextAuthConfig);
-
-  const user = await prisma.eUser.findUnique({
-    where: {
-      id: session?.id,
-    },
-    include: {
-      EPost: {
-        where: {
-          title: {
-            contains: titleSearchParam,
-          },
-        },
-      },
-    },
-  });
+export const Posts = ({ userId, initialPosts }: PostsProps) => {
+  const searchParams = useSearchParams();
+  const { data: posts, isLoading } = useQuery(
+    ['posts', searchParams],
+    async () =>
+      await getPosts({
+        userId,
+        title: searchParams.get('title'),
+      }),
+    {
+      initialData: initialPosts,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   return (
     <>
       <Filters />
       <PostCardGrid>
-        {user?.EPost.length ? (
-          user.EPost.map((post) => <PostCard key={post.id} {...post} />)
+        {isLoading ? (
+          [...Array(2)].map((e, i) => (
+            <SkeletonPostCard key={`skeletonCard${i}`} />
+          ))
+        ) : posts?.length ? (
+          posts?.map((post: EPost) => <PostCard key={post.id} {...post} />)
         ) : (
           <NoPostsFoundCard />
         )}
-        <NewPostCard totalPosts={user?.EPost.length} />
+
+        <NewPostCard totalPosts={posts?.length} />
       </PostCardGrid>
     </>
   );
@@ -50,7 +61,6 @@ export const Posts = async ({ titleSearchParam = '' }: PostsProps) => {
 export const SkeletonPosts = () => {
   return (
     <>
-      <Filters />
       <PostCardGrid>
         <SkeletonPostCard />
         <SkeletonPostCard />

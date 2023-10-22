@@ -1,15 +1,13 @@
 'use client';
 
-import { FC } from 'react';
-
 import { Styled } from './dot-loading.styles';
 import { DotLoadingProps } from './dot-loading.types';
 
-export const DotLoading: FC<DotLoadingProps> = ({
+export const DotLoading = ({
   size = 'medium',
   disabled,
   className,
-}) => {
+}: DotLoadingProps) => {
   return (
     <Styled.Loader $size={size} data-cy="dot-loading" className={className}>
       <Styled.LoaderDot $size={size} $disabled={disabled} />

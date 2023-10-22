@@ -108,7 +108,7 @@ export const Content = styled.div`
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh - 69px);
 
   padding: ${spaceXL};
 

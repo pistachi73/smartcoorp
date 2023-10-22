@@ -59,7 +59,7 @@ const getWordCountFromHTML = (html: string) =>
     .split(' ')
     .filter((n) => n != '').length;
 
-export const defaultBlobPostContent: BlocksDB = {
+export const defaultBlogPostContent: BlocksDB = {
   blocks: {
     '0': {
       id: '0',
@@ -82,11 +82,11 @@ export const usePostEditor = ({
   userId,
 }: Input): Output => {
   const [postBlocks, setPostBlocks] = useState<BlocksDB>(
-    initialBlocks ?? defaultBlobPostContent
+    initialBlocks ?? defaultBlogPostContent
   );
   const [currentUploadedImages, setCurrentUploadedImages] = useState<
     ImageWithUrl[]
-  >(getInitialUploadedImages(initialBlocks?.blocks ?? defaultBlobPostContent));
+  >(getInitialUploadedImages(initialBlocks?.blocks ?? defaultBlogPostContent));
 
   const [imagesToHandle, setImagesToHandle] = useState<ImagesToHandle>({
     toUpload: [],

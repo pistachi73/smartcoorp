@@ -2,13 +2,13 @@
 
 import { styled } from 'styled-components';
 
-import { scale300, spaceL, spaceXL } from '@smartcoorp/ui/tokens';
+import { scale300, spaceL, spaceXL, spaceXS } from '@smartcoorp/ui/tokens';
 
 // -------POST CARD GRID STYLES-------
 export const PostCardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  grid-auto-rows: 1fr;
+  /* grid-auto-rows: 1fr; */
   grid-gap: ${spaceL};
 
   @media (min-width: 650px) {
@@ -31,4 +31,12 @@ export const TrashImageContainer = styled.div`
     height: ${scale300};
     width: auto;
   }
+`;
+
+export const DeleteDialogTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spaceXS};
+
+  text-align: center;
 `;

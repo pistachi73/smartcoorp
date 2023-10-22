@@ -101,7 +101,7 @@ export const nextAuthConfig: NextAuthOptions = {
     },
     jwt: ({ token, user }) => {
       if (user) {
-        token.id = Number(user.id);
+        token.id = user.id;
         token.email = user.email;
         token.name = user.name;
       }

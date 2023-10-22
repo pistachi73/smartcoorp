@@ -5,7 +5,7 @@ import prisma from '@smartcoorp/prisma';
 import { type CreateApiKeyData } from './create-api-key-dialog';
 
 type Input = {
-  userId: number;
+  userId: string;
   apiKeyToken: string;
   data: CreateApiKeyData;
 };

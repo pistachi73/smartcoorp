@@ -25,14 +25,14 @@ import {
 } from './create-api-key-dialog.styles';
 
 type CreateApiKeyDialogProps = {
-  userId: number;
+  userId: string;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  setApiKeysState: Dispatch<SetStateAction<EApiKey[]>>;
+  refetch: any;
 };
 
 const CreateApiKeySchema = z.object({
-  name: z.string().nonempty(),
+  name: z.string(),
 });
 
 export type CreateApiKeyData = z.infer<typeof CreateApiKeySchema>;
@@ -41,7 +41,7 @@ export const CreateApiKeyDialog = ({
   userId,
   isOpen = false,
   setIsOpen,
-  setApiKeysState,
+  refetch,
 }: CreateApiKeyDialogProps) => {
   const [apiKeyCopied, setApiKeyCopied] = useState(false);
   const [apiKeyToken, setApiKeyToken] = useState(uuid().replace(/-/g, ''));
@@ -74,7 +74,7 @@ export const CreateApiKeyDialog = ({
     } else {
       onOpenChange(false);
       if (apiKey) {
-        setApiKeysState((apiKeys) => [...apiKeys, apiKey]);
+        refetch();
       }
       toast.success('Api key created successfully');
     }

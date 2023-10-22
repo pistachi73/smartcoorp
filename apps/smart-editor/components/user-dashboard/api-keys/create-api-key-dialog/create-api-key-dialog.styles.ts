@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 import { ModalContent } from '@smartcoorp/ui/modal';
 import {
   borderRadiusXS,
+  focusShadow,
   gray200,
   gray300,
   gray400,
@@ -71,6 +72,10 @@ export const ApiKeyContainer = styled.button<{ $apiKeyCopied: boolean }>`
       border-color: ${$apiKeyCopied ? green400 : gray400};
     }
   `}
+
+  &:focus-visible {
+    ${focusShadow}
+  }
 `;
 
 export const WarningContainer = styled.div`

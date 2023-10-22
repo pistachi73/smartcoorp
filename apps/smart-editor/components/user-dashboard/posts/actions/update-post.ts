@@ -5,8 +5,8 @@ import { z } from 'zod';
 import prisma from '@smartcoorp/prisma';
 
 const UpdatePostSchema = z.object({
-  userId: z.number(),
-  postId: z.number(),
+  userId: z.string(),
+  postId: z.string(),
   data: z.any(),
 });
 
