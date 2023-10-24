@@ -5,6 +5,8 @@ import { Session, getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 import prisma from '@smartcoorp/prisma';
+import { Breadcrumb, BreadcrumbItem } from '@smartcoorp/ui/breadcrumb';
+import { spaceXL } from '@smartcoorp/ui/tokens';
 
 type PostPageProps = {
   params: {
@@ -14,7 +16,7 @@ type PostPageProps = {
 
 const PostPage = async ({ params }: PostPageProps) => {
   const { postId } = params;
-  const session = (await getServerSession(nextAuthConfig)) as Session;
+  const session = await getServerSession(nextAuthConfig);
 
   const post = await prisma.ePost.findUnique({
     where: {
@@ -27,12 +29,32 @@ const PostPage = async ({ params }: PostPageProps) => {
     redirect('/posts');
   }
 
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      label: 'Posts',
+      href: '/posts',
+    },
+    {
+      label: post.id,
+      href: `/posts/${post.id}`,
+    },
+  ];
+
   return (
-    <PostBuilder
-      initialPost={post}
-      userId={session.id as string}
-      postId={postId}
-    />
+    <>
+      <Breadcrumb
+        homeUrl="/posts"
+        breadcrumbs={breadcrumbs}
+        style={{
+          marginBottom: spaceXL,
+        }}
+      />
+      <PostBuilder
+        initialPost={post}
+        userId={(session as Session).id as string}
+        postId={postId}
+      />
+    </>
   );
 };
 

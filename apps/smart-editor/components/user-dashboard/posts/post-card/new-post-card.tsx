@@ -57,7 +57,7 @@ export const NewPostCard = ({ totalPosts }: NewPostCardProps) => {
 
   return (
     <NewPostCardContainer
-      as={limitReached ? 'div' : 'button'}
+      as="button"
       onClick={createPostMutation}
       disabled={limitReached}
       $limitReach={limitReached}
@@ -74,7 +74,7 @@ export const NewPostCard = ({ totalPosts }: NewPostCardProps) => {
           ) : (
             <>
               <BsJournalText size={16} />
-              {totalPosts ? (
+              {typeof totalPosts !== 'undefined' ? (
                 <Body size="small" as="span" noMargin>
                   {totalPosts} / 5
                 </Body>
@@ -85,11 +85,16 @@ export const NewPostCard = ({ totalPosts }: NewPostCardProps) => {
           )}
         </Badge>
 
-        {totalPosts && totalPosts >= 5 && (
-          <Button size="medium" variant="primary" disabled={loading}>
+        {totalPosts && totalPosts >= 5 ? (
+          <Button
+            size="medium"
+            variant="primary"
+            disabled={loading}
+            to="/posts"
+          >
             Upgrade Now
           </Button>
-        )}
+        ) : null}
       </BadgeContainer>
     </NewPostCardContainer>
   );

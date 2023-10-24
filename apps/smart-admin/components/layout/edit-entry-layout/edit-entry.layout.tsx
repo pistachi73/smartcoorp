@@ -6,7 +6,6 @@ import React, { FC, useEffect } from 'react';
 import Image from 'next/image';
 
 import { Body } from '@smartcoorp/ui/body';
-import { Breadcrumb } from '@smartcoorp/ui/breadcrumb';
 import { Button } from '@smartcoorp/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@smartcoorp/ui/dialog';
 import { DotLoading } from '@smartcoorp/ui/dot-loading';
@@ -52,7 +51,6 @@ export const EditEntryLayout: FC<EditLayoutProps> = ({
   }, [isDeleteDialogOpen]);
   return (
     <>
-      <Breadcrumb homeUrl="/home" />
       <EditLayoutContainer>
         <EditLayoutHeader>
           <div>

@@ -42,6 +42,7 @@ export const Filters = () => {
           onChange={onSearchChange}
           icon={BsSearch}
           placeholder="Search by title"
+          debounceTime={300}
         />
       </SearchContainer>
     </FiltersContainer>

@@ -1,6 +1,14 @@
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
+
 import { NextRequest, NextResponse } from 'next/server';
 
 import prisma from '@smartcoorp/prisma';
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(200, '1 s'),
+});
 
 export async function GET(request: NextRequest) {
   const headers = request.headers;
@@ -20,6 +28,16 @@ export async function GET(request: NextRequest) {
   }
 
   const apiKey = auhtorization.replace('Bearer ', '');
+
+  const { success } = await ratelimit.limit(apiKey);
+
+  if (!success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded, please try again later' },
+      { status: 429 }
+    );
+  }
+
   try {
     const apiKeyData = await prisma.eApiKey.findUnique({
       where: {

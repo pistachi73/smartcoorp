@@ -1,37 +1,32 @@
 'use client';
 
 import { EPost } from '@prisma/client';
-import { getBaseUrl } from '@smart-editor/utils/get-base-url';
-import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
 import { useQuery } from '@tanstack/react-query';
-import { getServerSession } from 'next-auth';
-import { useEffect } from 'react';
 
 import { useSearchParams } from 'next/navigation';
-
-import prisma from '@smartcoorp/prisma';
 
 import { getPosts } from './actions/get-posts';
 import { Filters } from './filters';
 import { PostCard, SkeletonPostCard } from './post-card';
 import { NewPostCard } from './post-card/new-post-card';
-import { NoPostsFoundCard } from './post-card/no-posts-found-card';
 import { PostCardGrid } from './posts.styles';
 
 type PostsProps = {
   userId: string;
+  initialPosts?: EPost[];
 };
 
-export const Posts = ({ userId }: PostsProps) => {
+export const Posts = ({ userId, initialPosts }: PostsProps) => {
   const searchParams = useSearchParams();
-  const { data: posts, isLoading } = useQuery(
-    ['posts', searchParams],
+  const { data, isLoading, error } = useQuery(
+    ['posts', searchParams.get('title')],
     async () =>
       await getPosts({
         userId,
         title: searchParams.get('title'),
       }),
     {
+      initialData: { posts: initialPosts, totalPosts: initialPosts?.length },
       refetchOnWindowFocus: false,
     }
   );
@@ -41,16 +36,17 @@ export const Posts = ({ userId }: PostsProps) => {
       <Filters />
       <PostCardGrid>
         {isLoading ? (
-          [...Array(2)].map((e, i) => (
+          [...Array(3)].map((_, i) => (
             <SkeletonPostCard key={`skeletonCard${i}`} />
           ))
-        ) : posts?.length ? (
-          posts?.map((post: EPost) => <PostCard key={post.id} {...post} />)
         ) : (
-          <NoPostsFoundCard />
+          <>
+            {data.posts?.map((post: EPost) => (
+              <PostCard key={post.id} {...post} />
+            ))}
+            <NewPostCard totalPosts={data.totalPosts} />
+          </>
         )}
-
-        <NewPostCard totalPosts={posts?.length} />
       </PostCardGrid>
     </>
   );

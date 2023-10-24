@@ -9,7 +9,7 @@ export type SingleFileUpload = File | string | null | undefined;
 
 type Props = {
   folder: string;
-  initialFile: string | null;
+  initialFile?: string | null;
 };
 
 export const useSingleFileUpload = ({ folder, initialFile }: Props) => {
