@@ -1,6 +1,7 @@
 'use client';
 
 import { EPost, EPostStatus } from '@prisma/client';
+import { deleteFile } from '@smart-editor/actions/delete-file';
 import { usePostEditor } from '@smart-editor/hooks/use-post-editor';
 import { useSingleFileUpload } from '@smart-editor/hooks/use-single-file-upload';
 import { useQuery } from '@tanstack/react-query';
@@ -14,17 +15,14 @@ import { useRouter } from 'next/navigation';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
-import { Caption } from '@smartcoorp/ui/caption';
 import { Dialog, DialogContent, DialogTrigger } from '@smartcoorp/ui/dialog';
 import { RHFFileUpload } from '@smartcoorp/ui/file-upload';
-import { FormField, RHFFormField } from '@smartcoorp/ui/form-field';
+import { RHFFormField } from '@smartcoorp/ui/form-field';
 import { Headline } from '@smartcoorp/ui/headline';
 import { BlocksDB, PostEditor } from '@smartcoorp/ui/post-editor';
 import { RHFSelect } from '@smartcoorp/ui/select';
 import { Tabs } from '@smartcoorp/ui/tabs';
-import { gray500 } from '@smartcoorp/ui/tokens';
 
-import { disabled } from '../../../../../../libs/ui/button/src/button.styles';
 import { deletePost } from '../actions/delete-post';
 import { getPost } from '../actions/get-posts';
 import { updatePost } from '../actions/update-post';
@@ -83,33 +81,33 @@ export const PostBuilder = ({
     setImagesToHandle,
     getWordCount,
   } = usePostEditor({
-    postId: post.id,
+    postId: initialPost.id,
     userId,
-    initialBlocks: post.content,
+    initialBlocks: initialPost.content,
   });
 
   const { control, reset, handleSubmit } = useForm<FormData>({
     defaultValues: {
-      title: post.title ?? '',
-      wordCount: post.wordCount ?? 0,
-      status: post.status,
-      coverImageUrl: post.coverImageUrl ?? '',
+      title: post?.title ?? '',
+      wordCount: post?.wordCount ?? 0,
+      status: post?.status,
+      coverImageUrl: post?.coverImageUrl ?? '',
     },
   });
 
   useEffect(() => {
     reset({
-      title: post.title ?? '',
-      wordCount: post.wordCount ?? 0,
-      status: post.status,
-      coverImageUrl: post.coverImageUrl ?? '',
+      title: post?.title ?? '',
+      wordCount: post?.wordCount ?? 0,
+      status: post?.status,
+      coverImageUrl: post?.coverImageUrl ?? '',
     });
-    setPostBlocks(post.content as BlocksDB);
+    setPostBlocks(post?.content as BlocksDB);
   }, [post, reset, setPostBlocks]);
 
   const { handleSingleFileUpload } = useSingleFileUpload({
-    folder: `${post.userId}/${post.id}`,
-    initialFile: post.coverImageUrl,
+    folder: `${post?.userId}/${post?.id}`,
+    initialFile: post?.coverImageUrl,
   });
 
   const onSave = async (data: FormData) => {
@@ -131,8 +129,8 @@ export const PostBuilder = ({
 
     try {
       await updatePost({
-        postId: post.id,
-        userId: post.userId,
+        postId: initialPost.id,
+        userId: userId,
         data: postData,
       });
 
@@ -148,7 +146,15 @@ export const PostBuilder = ({
   const onDelete = async () => {
     setIsDeleteDialogLoading(true);
 
-    const { error } = await deletePost({ postId: post.id });
+    const { error } = await deletePost({ postId: initialPost.id });
+
+    if (post?.coverImageUrl) {
+      const key = new URL(post.coverImageUrl).searchParams.get('key');
+
+      await deleteFile({
+        key,
+      });
+    }
 
     if (error) {
       toast.error(error);
@@ -166,7 +172,7 @@ export const PostBuilder = ({
   const onIdCopy = () => {
     toast.success('Id copied to clipboard');
 
-    navigator.clipboard.writeText(post.id.toString());
+    navigator.clipboard.writeText(initialPost.id.toString());
   };
 
   return (
@@ -247,7 +253,7 @@ export const PostBuilder = ({
                   aria-label="Copy Id to clipboard"
                   onClick={onIdCopy}
                 >
-                  {post.id}
+                  {post?.id}
                   <BsClipboard size={14} />
                 </IdContainer>
                 <Body noMargin size="medium" fontWeight="bold">

@@ -20,7 +20,7 @@ export type Heading = {
 export const TableOfContent = ({ headings }: { headings: Heading[] }) => {
   const ids = headings.map(({ id }) => id);
   const [currentActiveIndex] = useScrollspy(ids, {
-    offset: 70,
+    offset: 300,
   });
 
   return (

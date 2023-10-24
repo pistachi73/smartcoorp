@@ -42,7 +42,7 @@ export const Footer = () => {
         >
           <Headline size="small">Contact</Headline>
           <ContactsContainer>
-            <ContactContainer
+            {/* <ContactContainer
               href="https://api.whatsapp.com/send?phone=655996255"
               target="_blank"
               rel="noopener noreferrer"
@@ -55,7 +55,7 @@ export const Footer = () => {
                   fill
                 />
               </div>
-            </ContactContainer>
+            </ContactContainer> */}
             <ContactContainer
               href="mailto:oscarpulido98@gmail.com"
               data-testid="mail-contact"

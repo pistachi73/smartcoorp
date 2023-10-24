@@ -101,6 +101,12 @@ export const Usage = async () => {
             </li>
             <li>
               <Body lineHeight="increased">
+                <code>429 Too many requests</code> - You have exceeded the rate
+                limit.
+              </Body>
+            </li>
+            <li>
+              <Body lineHeight="increased">
                 <code>500 Error</code> - An error occurred on the server.
               </Body>
             </li>

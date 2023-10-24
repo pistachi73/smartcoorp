@@ -6,7 +6,6 @@ import Link from 'next/link';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Headline } from '@smartcoorp/ui/headline';
-import { spaceXS } from '@smartcoorp/ui/tokens';
 
 import {
   PostCardContainer,
@@ -44,6 +43,7 @@ export const PostCard = ({
           src={coverImageUrl ?? '/dashboard/cover-image-placeholder.webp'}
           alt={`${title} Cover Image`}
           fill
+          sizes="600px"
         />
       </PostCardImage>
       <PostCardContent>

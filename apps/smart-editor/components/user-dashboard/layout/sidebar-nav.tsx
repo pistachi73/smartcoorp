@@ -56,11 +56,6 @@ const navList: (NavItem | NavGroup)[] = [
         icon: BsPerson,
         href: '/profile',
       },
-      {
-        name: 'Settings',
-        icon: BsGear,
-        href: '/settings',
-      },
     ],
   },
 ];

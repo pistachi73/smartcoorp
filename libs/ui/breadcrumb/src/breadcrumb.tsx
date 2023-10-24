@@ -1,99 +1,64 @@
 'use client';
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { BiChevronRight, BiHomeAlt } from 'react-icons/bi';
 
-import { usePathname } from 'next/navigation';
+import {
+  BreadcrumbButton,
+  BreadcrumbItem,
+  OrderedList,
+  Separator,
+} from './breadcrumb.styles';
+import type { BreadcrumbProps } from './breadcrumb.types';
 
-import { Skeleton } from '@smartcoorp/ui/skeleton';
-
-import { Styled as S } from './breadcrumb.styles';
-import type { BreadcrumbItem, BreadcrumbProps } from './breadcrumb.types';
-
-const convertBreadcrumb = (string: string) => {
-  return string
-    .replace(/-/g, ' ')
-    .replace(/oe/g, 'ö')
-    .replace(/ae/g, 'ä')
-    .replace(/ue/g, 'ü')
-    .replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
-};
-
-export const Breadcrumb: FC<BreadcrumbProps> = ({ homeUrl }) => {
-  const pathname = usePathname();
-  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbItem[] | null>(null);
-
-  useEffect(() => {
-    if (pathname) {
-      const linkPath = pathname.split('/');
-      linkPath.shift();
-
-      const pathArray = linkPath.map((path, i) => {
-        return {
-          breadcrumb: path,
-          href: '/' + linkPath.slice(0, i + 1).join('/'),
-        };
-      });
-
-      setBreadcrumbs(pathArray);
-    }
-  }, [pathname]);
-
-  if (!breadcrumbs) {
-    return (
-      <S.SkeletonContainer>
-        <Skeleton width="18px" height="16px" />
-        <S.Separator size="small" variant="neutral" noMargin>
-          <BiChevronRight size={18} />
-        </S.Separator>
-        <Skeleton width="55px" height="16px" />
-        <S.Separator size="small" variant="neutral" noMargin>
-          <BiChevronRight size={18} />
-        </S.Separator>
-        <Skeleton width="45px" height="16px" />
-      </S.SkeletonContainer>
-    );
-  }
-
+export const Breadcrumb: FC<BreadcrumbProps> = ({
+  breadcrumbs,
+  homeUrl,
+  ...props
+}) => {
   return (
-    <nav aria-label="breadcrumbs">
-      <S.OrderedList className="breadcrumb">
-        <S.BreadcrumbItem>
-          <S.BreadcrumbButton
+    <nav aria-label="breadcrumbs" {...props}>
+      <OrderedList className="breadcrumb">
+        <BreadcrumbItem>
+          <BreadcrumbButton
             to={homeUrl}
             variant="text"
             icon={BiHomeAlt}
             size="small"
             color={'neutral'}
           />
-        </S.BreadcrumbItem>
+        </BreadcrumbItem>
         {breadcrumbs.length >= 1 && (
-          <S.Separator size="small" variant="neutral" noMargin>
+          <Separator size="small" variant="neutral" noMargin>
             <BiChevronRight size={18} />
-          </S.Separator>
+          </Separator>
         )}
         {breadcrumbs.map((breadcrumb, i) => {
           return (
             <React.Fragment key={breadcrumb.href}>
-              <S.BreadcrumbItem>
-                <S.BreadcrumbButton
+              <BreadcrumbItem>
+                <BreadcrumbButton
+                  forwardedAs={
+                    i === breadcrumbs.length - 1 ? 'span' : undefined
+                  }
                   to={breadcrumb.href}
                   variant="text"
                   size="small"
                   color={i === breadcrumbs.length - 1 ? 'primary' : 'neutral'}
+                  $isLastItem={i === breadcrumbs.length - 1}
                 >
-                  {convertBreadcrumb(breadcrumb.breadcrumb)}
-                </S.BreadcrumbButton>
-              </S.BreadcrumbItem>
+                  {breadcrumb.label}
+                </BreadcrumbButton>
+              </BreadcrumbItem>
               {i !== breadcrumbs.length - 1 && (
-                <S.Separator size="small" variant="neutral" noMargin>
+                <Separator size="small" variant="neutral" noMargin>
                   <BiChevronRight size={18} />
-                </S.Separator>
+                </Separator>
               )}
             </React.Fragment>
           );
         })}
-      </S.OrderedList>
+      </OrderedList>
     </nav>
   );
 };

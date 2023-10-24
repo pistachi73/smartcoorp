@@ -2,11 +2,7 @@ import { UserDashboardLayout } from '@smart-editor/components/user-dashboard/lay
 import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
 import { getServerSession } from 'next-auth';
 
-import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-
-import { Breadcrumb } from '@smartcoorp/ui/breadcrumb';
-import { spaceL } from '@smartcoorp/ui/tokens';
 
 const UserDashboardLayoutPage = async ({
   children,
@@ -19,20 +15,7 @@ const UserDashboardLayoutPage = async ({
     redirect('/login');
   }
 
-  return (
-    <>
-      <UserDashboardLayout>
-        <div
-          style={{
-            marginBottom: spaceL,
-          }}
-        >
-          <Breadcrumb homeUrl="/posts" />
-        </div>
-        {children}
-      </UserDashboardLayout>
-    </>
-  );
+  return <UserDashboardLayout>{children}</UserDashboardLayout>;
 };
 
 export default UserDashboardLayoutPage;
