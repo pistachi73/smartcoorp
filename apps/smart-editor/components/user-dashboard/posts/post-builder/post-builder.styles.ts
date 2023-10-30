@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import {
   borderRadiusXS,
   gray100,
-  gray200,
   gray300,
-  gray500,
   gray700,
+  mediaConfined,
   motionEasingStandard,
   motionTimeS,
   primary,
@@ -17,9 +16,7 @@ import {
   spaceXXL,
 } from '@smartcoorp/ui/tokens';
 
-export const TabLabelContainer = styled.div`
-  /* gap: ${spaceM}; */
-`;
+export const TabLabelContainer = styled.div``;
 
 export const Header = styled.div`
   margin-bottom: ${spaceXL};
@@ -40,10 +37,14 @@ export const PostInformationContainer = styled.div`
   padding-block: ${spaceL};
 
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr;
 
   row-gap: ${spaceL};
   column-gap: ${spaceXXL};
+
+  @media ${mediaConfined} {
+    grid-template-columns: 1fr 2fr;
+  }
 `;
 
 export const IdContainer = styled.button`
@@ -59,7 +60,7 @@ export const IdContainer = styled.button`
   border-radius: ${borderRadiusXS};
   background-color: ${gray100};
 
-  color: ${gray500};
+  overflow: hidden;
 
   transition-property: color, background-color, border-color;
   transition-duration: ${motionTimeS};

@@ -1,8 +1,10 @@
 'use client';
 
+import { createPost } from '@smart-editor/actions/posts.actions';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { BsJournalText } from 'react-icons/bs';
+import { toast } from 'sonner';
 
 import { useRouter } from 'next/navigation';
 
@@ -11,9 +13,6 @@ import { Button } from '@smartcoorp/ui/button';
 import { DotLoading } from '@smartcoorp/ui/dot-loading';
 import { Headline } from '@smartcoorp/ui/headline';
 import { Skeleton } from '@smartcoorp/ui/skeleton';
-import { spaceXL } from '@smartcoorp/ui/tokens';
-
-import { createPost } from '../actions/create-post';
 
 import {
   Badge,
@@ -35,13 +34,13 @@ export const NewPostCard = ({ totalPosts }: NewPostCardProps) => {
     const { data } = session;
     const { id } = data || {};
 
-    const result = await createPost({ userId: id as string });
-
-    if (result.error) {
-      router.push('/login');
+    try {
+      const { postId } = await createPost({ userId: id as string });
+      toast.success('Post created successfully! Start writing now.');
+      router.push(`/posts/${postId}`);
+    } catch (error) {
+      toast.error("Couldn't create post. Please try again.");
     }
-
-    router.push(`/posts/${result.postId}`);
 
     setLoading(false);
   };

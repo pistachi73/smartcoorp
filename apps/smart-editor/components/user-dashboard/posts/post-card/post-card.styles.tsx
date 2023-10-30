@@ -2,6 +2,8 @@
 
 import { css, styled } from 'styled-components';
 
+import { Button } from '@smartcoorp/ui/button';
+import { DropdownMenuContent } from '@smartcoorp/ui/dropdown-menu';
 import {
   borderRadiusS,
   borderRadiusXS,
@@ -9,6 +11,7 @@ import {
   getFocusShadow,
   gray100,
   gray200,
+  gray200_RGBA,
   gray300,
   gray500,
   motionEasingStandard,
@@ -19,11 +22,9 @@ import {
   spaceM,
   spaceS,
   spaceXL,
-  spaceXXL,
+  spaceXS,
   spaceXXS,
 } from '@smartcoorp/ui/tokens';
-
-import { disabled } from '../../../../../../libs/ui/button/src/button.styles';
 
 export const Container = styled.div`
   display: flex;
@@ -35,7 +36,9 @@ export const Container = styled.div`
 `;
 
 //-----POST CARD STYLE-----
+
 export const PostCardContainer = styled(Container)<{ $isSkeleton: boolean }>`
+  position: relative;
   border: 1px solid ${gray300};
   overflow: hidden;
   display: grid;
@@ -52,7 +55,6 @@ export const PostCardContainer = styled(Container)<{ $isSkeleton: boolean }>`
 
       &:hover {
         text-decoration: none;
-        transform: translateY(-${spaceXXS});
         background-color: rgba(${primary100_RGBA}, 0.25);
         border-color: ${primary};
       }
@@ -93,6 +95,12 @@ export const PostCardContent = styled.div`
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+  }
 `;
 
 export const PostCardFooter = styled.div`
@@ -111,12 +119,53 @@ export const PostCardFooter = styled.div`
   }
 `;
 
+export const PostCardOptionsButton = styled(Button)`
+  position: absolute;
+  z-index: 1;
+  top: ${spaceM};
+  left: ${spaceM};
+
+  background-color: rgba(${gray200_RGBA}, 0.5);
+  backdrop-filter: blur(2px);
+
+  &:hover {
+    background-color: rgba(white, 0.5);
+  }
+`;
+
+export const PostCardOptionsContent = styled(DropdownMenuContent)`
+  padding: ${spaceS};
+  border-radius: ${borderRadiusXS};
+  border: 1px solid ${gray300};
+  box-shadow: ${dropShadowM};
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  gap: ${spaceXS};
+
+  div {
+    padding: 0;
+  }
+  button,
+  a {
+    width: 100%;
+    height: 24px !important;
+    justify-content: left;
+    padding: ${spaceM};
+
+    &:hover {
+      background-color: ${gray100};
+    }
+  }
+`;
+
 //---------- NEW POST CARD STYLE -------------
 
 export const NewPostCardContainer = styled(Container)<{
   $limitReach?: boolean;
 }>`
-  min-height: 390px;
+  min-height: 372px;
   padding: ${spaceXL};
   border: 1px dashed ${gray300};
   text-align: center;
@@ -130,7 +179,6 @@ export const NewPostCardContainer = styled(Container)<{
       ? css`
           &:hover {
             text-decoration: none;
-            transform: translateY(-${spaceXXS});
             background-color: rgba(${primary100_RGBA}, 0.25);
             border-color: ${primary};
           }

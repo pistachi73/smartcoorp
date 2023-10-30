@@ -17,8 +17,10 @@ const FiltersSchema = z.object({
 type FiltersData = z.infer<typeof FiltersSchema>;
 
 export const Filters = () => {
-  const [search, setSearch] = useState<FiltersData['search']>('');
   const params = useSearchParams();
+  const [search, setSearch] = useState<FiltersData['search']>(
+    params.get('title') || ''
+  );
   const pathname = usePathname();
   const router = useRouter();
 

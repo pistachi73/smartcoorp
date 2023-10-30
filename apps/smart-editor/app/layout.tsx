@@ -1,6 +1,8 @@
 import { MainLayoutWrapper } from '@smart-editor/components/main-layout-wrapper/main-layout-wrapper';
 import { getHeaders } from '@smart-editor/utils/get-headers';
 
+import { Inter } from 'next/font/google';
+
 import { DeviceOnlyProvider } from '@smartcoorp/ui/device-only';
 
 export const metadata = {
@@ -22,6 +24,10 @@ export const metadata = {
   },
 };
 
+const inter = Inter({
+  subsets: ['latin'],
+});
+
 export default function RootLayout({
   children,
 }: {
@@ -30,7 +36,7 @@ export default function RootLayout({
   const { deviceType } = getHeaders();
   return (
     <html lang="en">
-      <body>
+      <body className={inter.className}>
         <MainLayoutWrapper>
           <DeviceOnlyProvider deviceType={deviceType}>
             {children}

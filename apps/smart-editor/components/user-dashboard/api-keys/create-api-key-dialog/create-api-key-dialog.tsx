@@ -1,5 +1,6 @@
-import { EApiKey } from '@prisma/client';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { createApiKey } from '@smart-editor/actions/api-keys.actions';
+import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BsClipboard } from 'react-icons/bs';
 import { IoWarning } from 'react-icons/io5';
@@ -15,7 +16,6 @@ import { Modal } from '@smartcoorp/ui/modal';
 import { spaceM, spaceXXS } from '@smartcoorp/ui/tokens';
 import { Tooltip } from '@smartcoorp/ui/tooltip';
 
-import { createApiKey } from './action';
 import {
   ApiKeyContainer,
   CTAContainer,
@@ -28,7 +28,6 @@ type CreateApiKeyDialogProps = {
   userId: string;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  refetch: any;
 };
 
 const CreateApiKeySchema = z.object({
@@ -41,8 +40,9 @@ export const CreateApiKeyDialog = ({
   userId,
   isOpen = false,
   setIsOpen,
-  refetch,
 }: CreateApiKeyDialogProps) => {
+  const queryClient = useQueryClient();
+
   const [apiKeyCopied, setApiKeyCopied] = useState(false);
   const [apiKeyToken, setApiKeyToken] = useState(uuid().replace(/-/g, ''));
   const [loading, setLoading] = useState(false);
@@ -63,20 +63,18 @@ export const CreateApiKeyDialog = ({
   const onSubmit = async (data: CreateApiKeyData) => {
     setLoading(true);
 
-    const { error, apiKey } = await createApiKey({
-      data,
-      userId,
-      apiKeyToken,
-    });
+    try {
+      await createApiKey({
+        userId,
+        apiKeyToken,
+        apiKeyName: data.name,
+      });
 
-    if (error) {
-      toast.error(error);
-    } else {
+      queryClient.invalidateQueries({ queryKey: ['getApiKeys'] });
       onOpenChange(false);
-      if (apiKey) {
-        refetch();
-      }
       toast.success('Api key created successfully');
+    } catch (error) {
+      toast.error('Error creating API key');
     }
 
     setLoading(false);

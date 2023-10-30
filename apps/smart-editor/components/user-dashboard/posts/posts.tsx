@@ -1,11 +1,12 @@
 'use client';
 
 import { EPost } from '@prisma/client';
+import { getPosts } from '@smart-editor/actions/posts.actions';
+import { InternalServerError } from '@smart-editor/components/error-pages/internal-server-error';
 import { useQuery } from '@tanstack/react-query';
 
 import { useSearchParams } from 'next/navigation';
 
-import { getPosts } from './actions/get-posts';
 import { Filters } from './filters';
 import { PostCard, SkeletonPostCard } from './post-card';
 import { NewPostCard } from './post-card/new-post-card';
@@ -13,52 +14,41 @@ import { PostCardGrid } from './posts.styles';
 
 type PostsProps = {
   userId: string;
-  initialPosts?: EPost[];
 };
 
-export const Posts = ({ userId, initialPosts }: PostsProps) => {
+export const Posts = ({ userId }: PostsProps) => {
   const searchParams = useSearchParams();
-  const { data, isLoading, error } = useQuery(
-    ['posts', searchParams.get('title')],
-    async () =>
-      await getPosts({
+
+  const { data, isFetching, error } = useQuery({
+    queryKey: ['getPosts', searchParams.get('title') ?? ''],
+    queryFn: () =>
+      getPosts({
         userId,
-        title: searchParams.get('title'),
+        title: searchParams.get('title') ?? '',
       }),
-    {
-      initialData: { posts: initialPosts, totalPosts: initialPosts?.length },
-      refetchOnWindowFocus: false,
-    }
-  );
+    refetchOnWindowFocus: false,
+  });
+
+  if (error) {
+    return <InternalServerError />;
+  }
 
   return (
     <>
       <Filters />
       <PostCardGrid>
-        {isLoading ? (
+        {!isFetching ? (
+          <>
+            {data?.posts?.map((post: EPost) => (
+              <PostCard key={post.id} {...post} />
+            ))}
+            <NewPostCard totalPosts={data?.count} />
+          </>
+        ) : (
           [...Array(3)].map((_, i) => (
             <SkeletonPostCard key={`skeletonCard${i}`} />
           ))
-        ) : (
-          <>
-            {data.posts?.map((post: EPost) => (
-              <PostCard key={post.id} {...post} />
-            ))}
-            <NewPostCard totalPosts={data.totalPosts} />
-          </>
         )}
-      </PostCardGrid>
-    </>
-  );
-};
-
-export const SkeletonPosts = () => {
-  return (
-    <>
-      <PostCardGrid>
-        <SkeletonPostCard />
-        <SkeletonPostCard />
-        <SkeletonPostCard />
       </PostCardGrid>
     </>
   );

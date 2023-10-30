@@ -1,13 +1,20 @@
 'use client';
 
-import { EPost, EPostStatus } from '@prisma/client';
-import { deleteFile } from '@smart-editor/actions/delete-file';
+import { EPostStatus } from '@prisma/client';
+import { getMetadata } from '@smart-editor/actions/get-metadata';
+import { getPost, updatePost } from '@smart-editor/actions/posts.actions';
 import { usePostEditor } from '@smart-editor/hooks/use-post-editor';
 import { useSingleFileUpload } from '@smart-editor/hooks/use-single-file-upload';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { BsClipboard, BsJournalText, BsPen } from 'react-icons/bs';
+import {
+  BsClipboard,
+  BsJournalText,
+  BsPen,
+  BsSave,
+  BsTrash,
+} from 'react-icons/bs';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -15,7 +22,7 @@ import { useRouter } from 'next/navigation';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@smartcoorp/ui/dialog';
+import { useDeviceType } from '@smartcoorp/ui/device-only';
 import { RHFFileUpload } from '@smartcoorp/ui/file-upload';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 import { Headline } from '@smartcoorp/ui/headline';
@@ -23,13 +30,7 @@ import { BlocksDB, PostEditor } from '@smartcoorp/ui/post-editor';
 import { RHFSelect } from '@smartcoorp/ui/select';
 import { Tabs } from '@smartcoorp/ui/tabs';
 
-import { deletePost } from '../actions/delete-post';
-import { getPost } from '../actions/get-posts';
-import { updatePost } from '../actions/update-post';
-import {
-  DeleteDialogTextContainer,
-  TrashImageContainer,
-} from '../posts.styles';
+import { DeletePostDialog } from '../delete-post-dialog';
 
 import {
   Header,
@@ -47,31 +48,22 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>;
 
 type PostBuilderProps = {
-  initialPost: EPost;
   userId: string;
   postId: string;
 };
 
-export const PostBuilder = ({
-  initialPost,
-  userId,
-  postId,
-}: PostBuilderProps) => {
+export const PostBuilder = ({ userId, postId }: PostBuilderProps) => {
   const router = useRouter();
+  const { deviceType } = useDeviceType();
 
-  const { data: post } = useQuery(['post', postId], {
-    queryFn: async () =>
-      await getPost({
-        postId: initialPost.id,
-        userId,
-      }),
-    initialData: initialPost,
+  const { data } = useQuery({
+    queryKey: ['post', postId],
+    queryFn: () => getPost({ postId, userId }),
     refetchOnWindowFocus: false,
   });
 
   const [loading, setLoading] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isDeleteDialogLoading, setIsDeleteDialogLoading] = useState(false);
 
   const {
     postBlocks,
@@ -81,39 +73,40 @@ export const PostBuilder = ({
     setImagesToHandle,
     getWordCount,
   } = usePostEditor({
-    postId: initialPost.id,
+    postId,
     userId,
-    initialBlocks: initialPost.content,
+    initialBlocks: data?.post?.content,
   });
 
   const { control, reset, handleSubmit } = useForm<FormData>({
     defaultValues: {
-      title: post?.title ?? '',
-      wordCount: post?.wordCount ?? 0,
-      status: post?.status,
-      coverImageUrl: post?.coverImageUrl ?? '',
+      title: data?.post?.title ?? '',
+      wordCount: data?.post?.wordCount ?? 0,
+      status: data?.post?.status,
+      coverImageUrl: data?.post?.coverImageUrl ?? '',
     },
   });
 
   useEffect(() => {
     reset({
-      title: post?.title ?? '',
-      wordCount: post?.wordCount ?? 0,
-      status: post?.status,
-      coverImageUrl: post?.coverImageUrl ?? '',
+      title: data?.post?.title ?? '',
+      wordCount: data?.post?.wordCount ?? 0,
+      status: data?.post?.status,
+      coverImageUrl: data?.post?.coverImageUrl ?? '',
     });
-    setPostBlocks(post?.content as BlocksDB);
-  }, [post, reset, setPostBlocks]);
+    setPostBlocks(data?.post?.content as BlocksDB);
+  }, [data?.post, reset, setPostBlocks]);
 
   const { handleSingleFileUpload } = useSingleFileUpload({
-    folder: `${post?.userId}/${post?.id}`,
-    initialFile: post?.coverImageUrl,
+    folder: `${data?.post?.userId}/${data?.post?.id}`,
+    initialFile: data?.post?.coverImageUrl,
   });
 
   const onSave = async (data: FormData) => {
     setLoading(true);
     const postBlocks = await handleImages();
     let coverImageUrl;
+
     try {
       coverImageUrl = await handleSingleFileUpload(data.coverImageUrl);
     } catch (e) {
@@ -129,7 +122,7 @@ export const PostBuilder = ({
 
     try {
       await updatePost({
-        postId: initialPost.id,
+        postId,
         userId: userId,
         data: postData,
       });
@@ -137,185 +130,147 @@ export const PostBuilder = ({
       reset({}, { keepValues: true });
       toast.success('Post saved!');
     } catch (e) {
-      toast.error('ERROR');
+      toast.error('Error saving post');
     }
 
     setLoading(false);
   };
 
-  const onDelete = async () => {
-    setIsDeleteDialogLoading(true);
-
-    const { error } = await deletePost({ postId: initialPost.id });
-
-    if (post?.coverImageUrl) {
-      const key = new URL(post.coverImageUrl).searchParams.get('key');
-
-      await deleteFile({
-        key,
-      });
-    }
-
-    if (error) {
-      toast.error(error);
-      setIsDeleteDialogLoading(false);
-      return;
-    }
-
-    toast.success('Post deleted!');
-
-    router.push('/posts');
-
-    setIsDeleteDialogLoading(false);
-  };
-
   const onIdCopy = () => {
     toast.success('Id copied to clipboard');
-
-    navigator.clipboard.writeText(initialPost.id.toString());
+    navigator.clipboard.writeText(postId);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSave)}>
-      <Header>
-        <Headline size="xlarge" noMargin style={{}}>
-          Post builder
-        </Headline>
-        <div>
-          <Dialog
-            defaultOpen={false}
-            open={isDeleteDialogOpen}
-            onOpenChange={setIsDeleteDialogOpen}
-          >
-            <DialogTrigger asChild>
-              <Button size="small" variant="secondary" disabled={loading}>
-                Delete
-              </Button>
-            </DialogTrigger>
-            <DialogContent
-              title="Are you sure you want to delete this post?"
-              description="This action cannot be undone."
-              onAction={onDelete}
-              onCancel={() => setIsDeleteDialogOpen(false)}
-              actionLabel={`Yes, delete`}
-              cancelLabel="Cancel"
-              loading={isDeleteDialogLoading}
-              variant="danger"
+    <>
+      <form onSubmit={handleSubmit(onSave)}>
+        <Header>
+          <Headline size="xlarge" noMargin style={{}}>
+            Post builder
+          </Headline>
+          <div>
+            <Button
+              size="small"
+              variant="secondary"
+              disabled={loading}
+              onClick={() => setIsDeleteDialogOpen(true)}
+              {...(deviceType === 'mobile' && { icon: BsTrash })}
             >
-              <TrashImageContainer>
-                <img src={'/illustrations/recycle-bin.svg'} alt="Delete post" />
-              </TrashImageContainer>
+              {deviceType === 'mobile' ? '' : 'Delete'}
+            </Button>
 
-              <DeleteDialogTextContainer>
-                <Headline as="h2" size="large" noMargin>
-                  Delete Post
-                </Headline>
-                <Body size="small" noMargin>
-                  Are you sure you want to delete this post?
-                </Body>
-                <Body variant="error" size="small" fontWeight="bold">
-                  This action cannot be undone.
-                </Body>
-              </DeleteDialogTextContainer>
-            </DialogContent>
-          </Dialog>
+            <Button
+              size="small"
+              type="submit"
+              loading={loading}
+              {...(deviceType === 'mobile' && { icon: BsSave })}
+            >
+              {deviceType === 'mobile' ? '' : 'Save'}
+            </Button>
+          </div>
+        </Header>
+        <Tabs
+          defaultTab="post-info"
+          tabs={[
+            {
+              id: 'post-info',
+              labelIcon: BsJournalText,
+              label: deviceType === 'mobile' ? 'Info' : 'Post information',
 
-          <Button size="small" type="submit" loading={loading}>
-            Save
-          </Button>
-        </div>
-      </Header>
-      <Tabs
-        defaultTab="post-info"
-        tabs={[
-          {
-            id: 'post-info',
-            labelIcon: BsJournalText,
-            label: 'Post information',
-            content: (
-              <PostInformationContainer>
-                <Body noMargin size="medium" fontWeight="bold">
-                  Unique Identifier
-                  <Body
-                    variant="neutral"
-                    as="span"
-                    size="xsmall"
-                    noMargin
-                    style={{
-                      display: 'block',
-                    }}
-                  >
-                    Used for fetching the post
+              content: (
+                <PostInformationContainer>
+                  <Body noMargin size="medium" fontWeight="bold">
+                    Unique Identifier
+                    <Body
+                      variant="neutral"
+                      as="span"
+                      size="xsmall"
+                      noMargin
+                      style={{
+                        display: 'block',
+                      }}
+                    >
+                      Used for fetching the post
+                    </Body>
                   </Body>
-                </Body>
-                <IdContainer
-                  type="button"
-                  aria-label="Copy Id to clipboard"
-                  onClick={onIdCopy}
-                >
-                  {post?.id}
-                  <BsClipboard size={14} />
-                </IdContainer>
-                <Body noMargin size="medium" fontWeight="bold">
-                  Title
-                </Body>
-                <RHFFormField
-                  control={control}
-                  name="title"
-                  placeholder="Enter post title"
-                />
+                  <IdContainer
+                    type="button"
+                    aria-label="Copy Id to clipboard"
+                    onClick={onIdCopy}
+                  >
+                    <Body variant="neutral" ellipsis noMargin>
+                      {postId}
+                    </Body>
+                    <BsClipboard size={14} />
+                  </IdContainer>
+                  <Body noMargin size="medium" fontWeight="bold">
+                    Title
+                  </Body>
+                  <RHFFormField
+                    control={control}
+                    name="title"
+                    placeholder="Enter post title"
+                  />
 
-                <Body noMargin size="medium" fontWeight="bold">
-                  Status
-                </Body>
-                <RHFSelect
-                  options={[
-                    {
-                      value: 'DRAFT',
-                      label: 'Draft',
-                    },
-                    {
-                      value: 'PUBLISHED',
-                      label: 'Published',
-                    },
-                  ]}
-                  control={control}
-                  name="status"
+                  <Body noMargin size="medium" fontWeight="bold">
+                    Status
+                  </Body>
+                  <RHFSelect
+                    options={[
+                      {
+                        value: 'DRAFT',
+                        label: 'Draft',
+                      },
+                      {
+                        value: 'PUBLISHED',
+                        label: 'Published',
+                      },
+                    ]}
+                    control={control}
+                    name="status"
+                  />
+                  <Body noMargin size="medium" fontWeight="bold">
+                    Cover image
+                  </Body>
+                  <RHFFileUpload
+                    control={control}
+                    name="coverImageUrl"
+                    singleFilePreview={true}
+                    acceptedFileTypes={{
+                      'image/jpeg': [],
+                      'image/jpg': [],
+                      'image/png': [],
+                    }}
+                    helperText="Cover images will be updated in 24h."
+                    // isDisabled={isFormLoading || blogPostId === -1}
+                  />
+                </PostInformationContainer>
+              ),
+            },
+            {
+              id: 'post-editor',
+              label: deviceType === 'mobile' ? 'Editor' : 'Post Editor',
+              labelIcon: BsPen,
+              content: (
+                <PostEditor
+                  blocksDB={postBlocks}
+                  setBlocksDB={setPostBlocks}
+                  getMetaData={getMetadata}
+                  currentUploadedImages={currentUploadedImages}
+                  setImagesToHandle={setImagesToHandle}
                 />
-                <Body noMargin size="medium" fontWeight="bold">
-                  Cover image
-                </Body>
-                <RHFFileUpload
-                  control={control}
-                  name="coverImageUrl"
-                  singleFilePreview={true}
-                  acceptedFileTypes={{
-                    'image/jpeg': [],
-                    'image/jpg': [],
-                    'image/png': [],
-                  }}
-                  helperText="Cover images will be updated in 24h."
-                  // isDisabled={isFormLoading || blogPostId === -1}
-                />
-              </PostInformationContainer>
-            ),
-          },
-          {
-            id: 'post-editor',
-            label: 'Post Editor',
-            labelIcon: BsPen,
-            content: (
-              <PostEditor
-                blocksDB={postBlocks}
-                setBlocksDB={setPostBlocks}
-                // getMetaData={getMetaDataMutate}
-                currentUploadedImages={currentUploadedImages}
-                setImagesToHandle={setImagesToHandle}
-              />
-            ),
-          },
-        ]}
+              ),
+            },
+          ]}
+        />
+      </form>
+      <DeletePostDialog
+        isDeleteDialogOpen={isDeleteDialogOpen}
+        setIsDeleteDialogOpen={setIsDeleteDialogOpen}
+        postId={postId}
+        coverImageUrl={data?.post?.coverImageUrl}
+        onSuccess={() => router.push('/posts')}
       />
-    </form>
+    </>
   );
 };

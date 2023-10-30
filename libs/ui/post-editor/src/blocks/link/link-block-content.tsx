@@ -135,22 +135,23 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
         <Grid>
           <Row noMargin>
             <Col size={8}>
-              <Headline size="xlarge">{block.data.title}</Headline>
-              <S.MetaDescription>{block.data.description}</S.MetaDescription>
+              <Headline size="large" as="p">
+                {block.data.title}
+              </Headline>
+              <S.MetaDescription size="small">
+                {block.data.description}
+              </S.MetaDescription>
               <S.MetaDomain size={'xsmall'} noMargin>
                 {block.data.domain}
               </S.MetaDomain>
             </Col>
-            <Col offset={1} size={3}>
+            <Col size={4}>
               {block.data.imageUrl && (
                 <S.MetaImageContainer>
-                  <Image
-                    src={`/api/imagefetcher?url=${encodeURIComponent(
-                      block.data.imageUrl
-                    )}`}
-                    alt={`${block.data.domain} metadata image`}
+                  <img
+                    src={block.data.imageUrl}
+                    alt={`${block.data.domain} metadata`}
                     style={{ objectFit: 'contain' }}
-                    fill
                   />
                 </S.MetaImageContainer>
               )}

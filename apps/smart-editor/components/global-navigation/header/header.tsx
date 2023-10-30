@@ -12,7 +12,13 @@ export const Header = () => {
   return (
     <HeaderContainer>
       <StyledWidthLimiter>
-        <Button to="/" variant="text">
+        <Button
+          to="/"
+          variant="text"
+          style={{
+            padding: '0px',
+          }}
+        >
           <Image
             width={80}
             height={36.36}
