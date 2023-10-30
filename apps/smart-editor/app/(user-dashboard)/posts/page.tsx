@@ -1,11 +1,8 @@
 import { getPosts } from '@smart-editor/actions/posts.actions';
 import { Posts } from '@smart-editor/components/user-dashboard/posts';
+import { getQueryClient } from '@smart-editor/utils/get-query-client';
 import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
-import {
-  HydrationBoundary,
-  QueryClient,
-  dehydrate,
-} from '@tanstack/react-query';
+import { Hydrate, dehydrate } from '@tanstack/react-query';
 import { getServerSession } from 'next-auth';
 
 import { Breadcrumb, type BreadcrumbItem } from '@smartcoorp/ui/breadcrumb';
@@ -17,7 +14,7 @@ const PostsPage = async ({
 }: {
   searchParams: { [key: string]: string | null };
 }) => {
-  const queryClient = new QueryClient();
+  const queryClient = getQueryClient();
   const session = await getServerSession(nextAuthConfig);
 
   await queryClient.prefetchQuery({
@@ -53,9 +50,9 @@ const PostsPage = async ({
       >
         Overview
       </Headline>
-      <HydrationBoundary state={dehydrate(queryClient)}>
+      <Hydrate state={dehydrate(queryClient)}>
         <Posts userId={session?.id ?? ''} />
-      </HydrationBoundary>
+      </Hydrate>
     </>
   );
 };

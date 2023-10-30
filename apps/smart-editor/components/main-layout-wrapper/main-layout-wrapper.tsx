@@ -2,6 +2,7 @@
 
 import StyledComponentsRegistry from '@smart-editor/components/registry';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SessionProvider } from 'next-auth/react';
 import { useState } from 'react';
 
@@ -29,7 +30,7 @@ export function MainLayoutWrapper({ children }: { children: React.ReactNode }) {
           </StyledComponentsRegistry>
         </ThemeProvider>
       </SessionProvider>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

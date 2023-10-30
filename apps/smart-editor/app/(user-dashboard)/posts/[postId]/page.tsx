@@ -1,11 +1,7 @@
 import { getPost } from '@smart-editor/actions/posts.actions';
 import { PostBuilder } from '@smart-editor/components/user-dashboard/posts/post-builder';
 import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
-import {
-  HydrationBoundary,
-  QueryClient,
-  dehydrate,
-} from '@tanstack/react-query';
+import { Hydrate, QueryClient, dehydrate } from '@tanstack/react-query';
 import { Session, getServerSession } from 'next-auth';
 
 import { redirect } from 'next/navigation';
@@ -57,12 +53,12 @@ const PostPage = async ({ params }: PostPageProps) => {
           marginBottom: spaceXL,
         }}
       />
-      <HydrationBoundary state={dehydrate(queryClient)}>
+      <Hydrate state={dehydrate(queryClient)}>
         <PostBuilder
           userId={(session as Session).id as string}
           postId={postId}
         />
-      </HydrationBoundary>
+      </Hydrate>
     </>
   );
 };

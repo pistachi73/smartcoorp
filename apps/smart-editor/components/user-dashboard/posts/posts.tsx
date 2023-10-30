@@ -20,7 +20,7 @@ export const Posts = ({ userId }: PostsProps) => {
   const searchParams = useSearchParams();
 
   const { data, isFetching, error } = useQuery({
-    queryKey: ['getPosts', searchParams.get('title')],
+    queryKey: ['getPosts', searchParams.get('title') ?? ''],
     queryFn: () =>
       getPosts({
         userId,
