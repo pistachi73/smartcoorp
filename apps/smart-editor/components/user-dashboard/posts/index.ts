@@ -1,4 +1,4 @@
 import { PostBuilder } from './post-builder';
-import { Posts, SkeletonPosts } from './posts';
+import { Posts } from './posts';
 
-export { Posts, PostBuilder, SkeletonPosts };
+export { Posts, PostBuilder };
