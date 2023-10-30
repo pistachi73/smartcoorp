@@ -93,8 +93,6 @@ export const usePostEditor = ({
     toDelete: [],
   });
 
-  console.log({ userId, postId });
-
   const handleImages = async () => {
     const newPostBlocks = JSON.parse(JSON.stringify(postBlocks));
 
@@ -183,7 +181,7 @@ export const usePostEditor = ({
     }
 
     return wordCount;
-  }, [postBlocks.blocks]);
+  }, [postBlocks]);
 
   return {
     postBlocks,

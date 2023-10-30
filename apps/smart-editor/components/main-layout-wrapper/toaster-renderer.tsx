@@ -1,17 +1,6 @@
 import { Toaster } from 'sonner';
 
 export const ToasterRenderer = () => {
-  // const searchParams = useSearchParams();
-
-  // useEffect(() => {
-  //   const toastMessage = searchParams.get('t');
-
-  //   if (!toastMessage) return;
-
-  //   const decodedToastMessage = decodeURIComponent;
-
-  //   toast.success(decodeURIComponent(toastMessage));
-  // }, [searchParams]);
   return (
     <>
       <Toaster
@@ -21,7 +10,7 @@ export const ToasterRenderer = () => {
         toastOptions={{
           style: {
             fontFamily:
-              "'Inter', 'Trebuchet MS', Arial, 'Helvetica Neue', sans-serif",
+              '"Inter", "Montserrat", "Trebuchet MS", Arial, "Helvetica Neue", sans-serif',
             fontSize: '14px',
           },
         }}

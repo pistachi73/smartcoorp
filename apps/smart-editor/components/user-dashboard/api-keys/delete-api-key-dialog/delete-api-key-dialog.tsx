@@ -1,9 +1,10 @@
 'use client';
 
 import type { EApiKey } from '@prisma/client';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { deleteApiKey } from '@smart-editor/actions/api-keys.actions';
+import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
 import Image from 'next/image';
 
@@ -11,7 +12,6 @@ import { Body } from '@smartcoorp/ui/body';
 import { Dialog, DialogContent } from '@smartcoorp/ui/dialog';
 import { Headline } from '@smartcoorp/ui/headline';
 
-import { deleteApiKey } from './action';
 import {
   ApiKeyBadge,
   ApiKeyBadgeContainer,
@@ -23,32 +23,33 @@ type DeleteApiKeyDialogProps = {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   toDeleteApiKeys: EApiKey[];
-  refetch: any;
 };
-
-const DeleteApiKeySchema = z.object({
-  name: z.string(),
-});
-
-export type DeleteApiKeyData = z.infer<typeof DeleteApiKeySchema>;
 
 export const DeleteApiKeyDialog = ({
   isOpen = false,
   setIsOpen,
   toDeleteApiKeys,
-  refetch,
 }: DeleteApiKeyDialogProps) => {
+  const queryClient = useQueryClient();
+
   const [loading, setLoading] = useState(false);
 
   const onDelete = async (apiKeyIds: string[]) => {
     setLoading(true);
-    await deleteApiKey({
-      apiKeyIds,
-    });
-    refetch();
+
+    try {
+      await deleteApiKey({
+        apiKeyIds,
+      });
+
+      queryClient.invalidateQueries({ queryKey: ['getApiKeys'] });
+      setIsOpen(false);
+      toast.success('Api keys deleted successfully');
+    } catch (error) {
+      toast.error("Couldn't delete api keys");
+    }
+
     setLoading(false);
-    setIsOpen(false);
-    toast.success('Api keys deleted successfully');
   };
 
   return (

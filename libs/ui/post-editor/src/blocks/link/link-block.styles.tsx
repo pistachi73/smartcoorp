@@ -39,12 +39,23 @@ export const MetaDomain = styled(Body)`
 
 export const MetaDescription = styled(Body)`
   -webkit-line-clamp: 3;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 export const MetaImageContainer = styled.div`
-  position: relative;
   width: 100%;
   height: 100%;
+
+  display: flex;
+  align-items: start;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
 `;
 
 export const StyledInputBox = styled(InputBox)`

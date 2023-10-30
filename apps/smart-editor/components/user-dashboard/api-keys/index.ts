@@ -1,4 +1,3 @@
-import { ApiKeys } from './api-keys';
-import { apiKeysTableColumns } from './api-keys-table';
+import { ApiKeys, apiKeysTableColumns } from './api-keys';
 
 export { ApiKeys, apiKeysTableColumns };

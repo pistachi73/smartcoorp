@@ -1,25 +1,54 @@
 'use client';
 
-import { useState } from 'react';
+import { deleteFile } from '@smart-editor/actions/delete-file';
+import { deletePost } from '@smart-editor/actions/posts.actions';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { toast } from 'sonner';
 
 import { Body } from '@smartcoorp/ui/body';
-import { Dialog, DialogContent, DialogTrigger } from '@smartcoorp/ui/dialog';
+import { Dialog, DialogContent } from '@smartcoorp/ui/dialog';
 import { Headline } from '@smartcoorp/ui/headline';
 
 import { DeleteDialogTextContainer, TrashImageContainer } from './posts.styles';
 
 type DeletePostDialogProps = {
-  trigger: React.ReactNode;
-  postId: number;
-  onDelete: (postId: string) => void;
+  isDeleteDialogOpen: boolean;
+  setIsDeleteDialogOpen: Dispatch<SetStateAction<boolean>>;
+  postId: string;
+  coverImageUrl?: string | null;
+  onSuccess?: any;
 };
 
 export const DeletePostDialog = ({
+  isDeleteDialogOpen,
+  setIsDeleteDialogOpen,
   postId,
-  trigger,
-  onDelete,
+  coverImageUrl,
+  onSuccess,
 }: DeletePostDialogProps) => {
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeleteDialogLoading, setIsDeleteDialogLoading] = useState(false);
+
+  const onDelete = async () => {
+    setIsDeleteDialogLoading(true);
+
+    try {
+      await deletePost({ postId });
+      if (coverImageUrl) {
+        const key = new URL(coverImageUrl).searchParams.get('key');
+
+        await deleteFile({
+          key,
+        });
+      }
+
+      toast.success('Post deleted!');
+      onSuccess?.();
+    } catch (error) {
+      toast.error("Couldn't delete post.");
+    }
+
+    setIsDeleteDialogLoading(false);
+  };
 
   return (
     <Dialog
@@ -27,15 +56,14 @@ export const DeletePostDialog = ({
       open={isDeleteDialogOpen}
       onOpenChange={setIsDeleteDialogOpen}
     >
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent
-        title="Are you sure you want to delete this post?"
-        description="This action cannot be undone."
-        // onAction={onDelete}
+        title="Delete Post"
+        description="Are you sure you want to delete this post?"
+        onAction={onDelete}
         onCancel={() => setIsDeleteDialogOpen(false)}
         actionLabel={`Yes, delete`}
         cancelLabel="Cancel"
-        // loading={isLoading}
+        loading={isDeleteDialogLoading}
         variant="danger"
       >
         <TrashImageContainer>

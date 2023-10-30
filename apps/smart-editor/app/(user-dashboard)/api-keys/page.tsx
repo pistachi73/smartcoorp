@@ -1,15 +1,26 @@
+import { getApiKeys } from '@smart-editor/actions/api-keys.actions';
+import { ApiKeys } from '@smart-editor/components/user-dashboard/api-keys';
+import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
 import {
-  ApiKeys,
-  apiKeysTableColumns,
-} from '@smart-editor/components/user-dashboard/api-keys';
-import { Suspense } from 'react';
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from '@tanstack/react-query';
+import { getServerSession } from 'next-auth';
 
 import { Breadcrumb, BreadcrumbItem } from '@smartcoorp/ui/breadcrumb';
-import { Table } from '@smartcoorp/ui/data-table';
 import { Headline } from '@smartcoorp/ui/headline';
 import { space3XL, spaceXL } from '@smartcoorp/ui/tokens';
 
 const APIKeyPage = async () => {
+  const queryClient = new QueryClient();
+  const sesssion = await getServerSession(nextAuthConfig);
+
+  await queryClient.prefetchQuery({
+    queryKey: ['getApiKeys'],
+    queryFn: () => getApiKeys({ userId: sesssion?.id?.toString() ?? '' }),
+  });
+
   const breadcrumbs: BreadcrumbItem[] = [
     {
       label: 'Api Keys',
@@ -33,9 +44,9 @@ const APIKeyPage = async () => {
       >
         Api Keys
       </Headline>
-      <Suspense fallback={<Table columnDefs={apiKeysTableColumns} />}>
-        <ApiKeys />
-      </Suspense>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <ApiKeys userId={sesssion?.id ?? ''} />
+      </HydrationBoundary>
     </>
   );
 };

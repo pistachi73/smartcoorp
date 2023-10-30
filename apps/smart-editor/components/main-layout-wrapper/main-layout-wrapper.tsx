@@ -1,13 +1,9 @@
 'use client';
 
 import StyledComponentsRegistry from '@smart-editor/components/registry';
-import {
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SessionProvider } from 'next-auth/react';
+import { useState } from 'react';
 
 import { GlobalStyles, ThemeProvider } from '@smartcoorp/ui/global-styles';
 
@@ -16,7 +12,7 @@ import { darkTheme, lightTheme } from '../../theme/theme';
 import { ToasterRenderer } from './toaster-renderer';
 
 export function MainLayoutWrapper({ children }: { children: React.ReactNode }) {
-  const queryClient = new QueryClient();
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -33,7 +29,7 @@ export function MainLayoutWrapper({ children }: { children: React.ReactNode }) {
           </StyledComponentsRegistry>
         </ThemeProvider>
       </SessionProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }

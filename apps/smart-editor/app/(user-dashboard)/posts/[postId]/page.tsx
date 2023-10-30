@@ -1,10 +1,15 @@
+import { getPost } from '@smart-editor/actions/posts.actions';
 import { PostBuilder } from '@smart-editor/components/user-dashboard/posts/post-builder';
 import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from '@tanstack/react-query';
 import { Session, getServerSession } from 'next-auth';
 
 import { redirect } from 'next/navigation';
 
-import prisma from '@smartcoorp/prisma';
 import { Breadcrumb, BreadcrumbItem } from '@smartcoorp/ui/breadcrumb';
 import { spaceXL } from '@smartcoorp/ui/tokens';
 
@@ -17,15 +22,18 @@ type PostPageProps = {
 const PostPage = async ({ params }: PostPageProps) => {
   const { postId } = params;
   const session = await getServerSession(nextAuthConfig);
+  const queryClient = new QueryClient();
 
-  const post = await prisma.ePost.findUnique({
-    where: {
-      id: postId,
-      userId: session?.id,
-    },
+  await queryClient.prefetchQuery({
+    queryKey: ['post', postId],
+    queryFn: () =>
+      getPost({
+        userId: session?.id?.toString() ?? '',
+        postId,
+      }),
   });
 
-  if (!post) {
+  if (queryClient.getQueryData(['post', postId]) === undefined) {
     redirect('/posts');
   }
 
@@ -35,8 +43,8 @@ const PostPage = async ({ params }: PostPageProps) => {
       href: '/posts',
     },
     {
-      label: post.id,
-      href: `/posts/${post.id}`,
+      label: postId,
+      href: `/posts/${postId}`,
     },
   ];
 
@@ -49,11 +57,12 @@ const PostPage = async ({ params }: PostPageProps) => {
           marginBottom: spaceXL,
         }}
       />
-      <PostBuilder
-        initialPost={post}
-        userId={(session as Session).id as string}
-        postId={postId}
-      />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <PostBuilder
+          userId={(session as Session).id as string}
+          postId={postId}
+        />
+      </HydrationBoundary>
     </>
   );
 };

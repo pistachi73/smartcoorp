@@ -141,10 +141,6 @@ export const FormField = forwardRef<
               placeholder={placeholder}
               type={inputType}
               disabled={isDisabled}
-              $size={size}
-              $sizeConfined={sizeConfined}
-              $sizeWide={sizeWide}
-              $hasIcon={!!Icon || inputType === 'number'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 if (!onChange) return;
                 return onChange(e.target.value);
@@ -154,6 +150,10 @@ export const FormField = forwardRef<
               value={value}
               name={name}
               {...props}
+              $size={size}
+              $sizeConfined={sizeConfined}
+              $sizeWide={sizeWide}
+              $hasIcon={!!Icon || inputType === 'number'}
             ></S.Input>
           )}
           {type === 'password' && !isMultiline && (

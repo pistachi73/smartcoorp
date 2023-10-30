@@ -3,7 +3,7 @@ import { type Heading } from './table-of-contents/table-of-contents';
 export const codeSnippets = {
   fetchAllPosts: `
   ~~~js
-  fetch('https://smarteditor.app/api/posts', {
+  fetch('https://www.smarteditor.app/api/posts', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -14,7 +14,7 @@ export const codeSnippets = {
   ~~~`,
   fetchPostById: `
   ~~~js
-  fetch('https://smarteditor.app/api/posts/{post-id}', {
+  fetch('https://www.smarteditor.app/api/posts/{post-id}', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
