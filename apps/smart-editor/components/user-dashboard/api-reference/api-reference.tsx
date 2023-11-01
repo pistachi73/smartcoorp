@@ -18,7 +18,6 @@ export const ApiReference = () => {
           API Reference
         </Headline>
         <Body
-          variant="neutral"
           noMargin
           style={{
             marginBottom: space3XL,
@@ -47,9 +46,7 @@ export const ApiReference = () => {
           <Headline size="large" as="h2">
             1. Get all posts
           </Headline>
-          <Body variant="neutral" noMargin>
-            Retrieve a List of Posts
-          </Body>
+          <Body noMargin>Retrieve a List of Posts</Body>
           <CodeBlock code={codeSnippets.fetchAllPosts} />
 
           <Headline size="medium" as="h3">
@@ -81,9 +78,7 @@ export const ApiReference = () => {
             2. Get post by ID
           </Headline>
 
-          <Body variant="neutral" noMargin>
-            Retrieve a Specific Blog Post by Its Unique ID
-          </Body>
+          <Body noMargin>Retrieve a Specific Blog Post by Its Unique ID</Body>
 
           <CodeBlock code={codeSnippets.fetchPostById} />
         </section>

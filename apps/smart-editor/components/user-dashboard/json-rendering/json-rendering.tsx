@@ -18,7 +18,6 @@ export const JSONRendering = async () => {
           JSON Rendering
         </Headline>
         <Body
-          variant="neutral"
           noMargin
           style={{
             marginBottom: space3XL,
