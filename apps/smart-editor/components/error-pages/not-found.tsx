@@ -45,7 +45,14 @@ export const NotFound = () => {
               <Link href="/api-keys">Create an API Key</Link>
             </li>
             <li>
-              <Link href="/usage">Learn how to use SmartEditor API</Link>
+              <Link href="/api-reference">
+                Learn how to use SmartEditor API
+              </Link>
+            </li>
+            <li>
+              <Link href="/json-rendering">
+                Learn how to render SmartEditor content in JSON format
+              </Link>
             </li>
             <li>
               <Body>

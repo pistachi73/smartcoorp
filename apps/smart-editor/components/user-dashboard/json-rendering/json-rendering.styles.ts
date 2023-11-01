@@ -3,25 +3,15 @@
 import styled from 'styled-components';
 
 import {
-  borderRadiusS,
   borderRadiusXS,
-  gray300,
-  gray700,
-  gray800,
   mediaConfined,
   mediaWide,
   mediaXWide,
-  motionEasingEnter,
-  motionTimeS,
-  primary,
   primary100_RGBA,
   primary300,
-  scale060,
   scale070,
   space3XL,
-  spaceL,
   spaceM,
-  spaceS,
   spaceXL,
   spaceXS,
   spaceXXS,
@@ -29,11 +19,13 @@ import {
 
 export const Container = styled.div`
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
+  display: block;
+  overflow: hidden;
   gap: ${space3XL};
 
   @media ${mediaConfined} {
+    overflow: unset;
+    display: grid;
     grid-template-columns: 10fr 4fr;
   }
   @media ${mediaWide} {
@@ -53,6 +45,14 @@ export const DocumentationContainer = styled.div`
 
     ul {
       list-style-type: '- ';
+    }
+
+    ol {
+      list-style-type: decimal;
+    }
+
+    ul,
+    ol {
       padding-left: ${spaceXL};
       margin-block: ${spaceXL};
 
@@ -65,28 +65,21 @@ export const DocumentationContainer = styled.div`
           font-weight: bold;
           color: black;
         }
-
-        code {
-          background-color: rgba(${primary100_RGBA}, 1);
-          color: black;
-          padding: ${spaceXXS} ${spaceXS};
-          border-radius: ${borderRadiusXS};
-
-          border: 1px solid ${primary300};
-
-          font-weight: bold;
-          font-size: ${scale070};
-        }
       }
     }
 
-    pre {
-      margin-block: ${spaceXL};
-      padding: ${spaceL};
-      border-radius: ${borderRadiusS};
-      border: 1px solid ${gray300};
-      border-top: none;
-      font-size: 14px;
+    p {
+      code {
+        background-color: rgba(${primary100_RGBA}, 1);
+        color: black;
+        padding: ${spaceXXS} ${spaceXS};
+        border-radius: ${borderRadiusXS};
+
+        border: 1px solid ${primary300};
+
+        font-weight: bold;
+        font-size: ${scale070};
+      }
     }
   }
 `;

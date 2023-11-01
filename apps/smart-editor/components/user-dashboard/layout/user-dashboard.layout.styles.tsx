@@ -32,10 +32,14 @@ import {
 
 export const Container = styled.div`
   position: relative;
-  display: flex;
+  display: block;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
+
+  @media ${mediaWide} {
+    display: flex;
+  }
 `;
 
 export const ContentContainer = styled.div`
@@ -92,7 +96,7 @@ export const HeaderContent = styled.div`
   max-width: 1200px;
   width: 100%;
 
-  padding-inline: ${spaceXL};
+  padding-inline: ${spaceM};
   margin: 0 auto;
 
   display: flex;
@@ -110,7 +114,7 @@ export const Content = styled.div`
   margin: 0 auto;
   min-height: calc(100vh - 69px);
 
-  padding: ${spaceXL};
+  padding: ${spaceXL} ${spaceM};
 
   @media ${mediaWide} {
     padding: ${spaceXL} ${space3XL};

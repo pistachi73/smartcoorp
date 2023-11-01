@@ -13,11 +13,10 @@ export const BaseStyles = createGlobalStyle`
         /* width */
        
   }
-  *::-webkit-scrollbar {
+  /* *::-webkit-scrollbar {
       width: 9px;
     }
 
-    /* Track */
     *::-webkit-scrollbar-track {
       ${({ theme }) => css`
         border-left: 1px solid ${theme.scrollArea.scrollbarBackgroundHover};
@@ -31,15 +30,13 @@ export const BaseStyles = createGlobalStyle`
       }
     }
 
-    /* Handle */
     *::-webkit-scrollbar-thumb {
       border: 2px solid rgba(0, 0, 0, 0);
       background-clip: padding-box;
       border-radius: 9999px;
       background-color: ${({ theme }) => theme.scrollArea.thumbColor};
-      /* background: ${({ theme }) => theme.scrollArea.thumbColor}; */
     }
-  
+   */
 
   ::-moz-selection { /* Code for Firefox */
     background: rgba(179, 212, 252, 0.75);

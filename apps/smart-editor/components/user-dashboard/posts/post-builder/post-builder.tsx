@@ -145,7 +145,7 @@ export const PostBuilder = ({ userId, postId }: PostBuilderProps) => {
     <>
       <form onSubmit={handleSubmit(onSave)}>
         <Header>
-          <Headline size="xlarge" noMargin style={{}}>
+          <Headline size="xlarge" noMargin as="h1">
             Post builder
           </Headline>
           <div>

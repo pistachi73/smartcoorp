@@ -32,12 +32,18 @@ export const TableOfContent = ({ headings }: { headings: Heading[] }) => {
         <TableOfCntentsList>
           {headings.map((heading, i) => {
             const selected = i === currentActiveIndex;
+            const lader = heading.level !== headings[i - 1]?.level && i !== 0;
+            const laderDirection =
+              heading.level > headings[i - 1]?.level ? 'up' : 'down';
 
             return (
               <TableOfContentsListItem
                 key={heading.id}
-                $selected={selected}
                 className="sb-unstyled"
+                $selected={selected}
+                $level={heading.level}
+                $lader={lader}
+                $laderDirection={laderDirection}
               >
                 <TableOfContentsLink
                   href={`#${heading.id}`}

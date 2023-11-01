@@ -7,6 +7,7 @@
 
 code[class*='language-'],
 pre[class*='language-'] {
+  max-width: 100%;
   color: #d6e7ff;
   background: #030314;
   text-shadow: none;
