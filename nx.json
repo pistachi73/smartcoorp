@@ -73,7 +73,8 @@
       "runner": "@vercel/remote-nx",
       "options": {
         "cacheableOperations": ["build", "test", "lint", "e2e"],
-        "token": "<token>"
+        "token": "XvDLPcZuBMHL9xru6QwUsm4W",
+        "verbose": true
       }
     }
   }
