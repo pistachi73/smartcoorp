@@ -1,14 +1,14 @@
-import Usage from '@smart-editor/components/user-dashboard/usage';
+import { JSONRendering } from '@smart-editor/components/user-dashboard/json-rendering';
 
 import './code-snippets.css';
 import { Breadcrumb, type BreadcrumbItem } from '@smartcoorp/ui/breadcrumb';
 import { spaceXL } from '@smartcoorp/ui/tokens';
 
-const UsagePage = async () => {
+const Page = async () => {
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      label: 'Usage',
-      href: '/usage',
+      label: 'JSON Rendering',
+      href: '/json-rendering',
     },
   ];
 
@@ -21,9 +21,9 @@ const UsagePage = async () => {
           marginBottom: spaceXL,
         }}
       />
-      <Usage />
+      <JSONRendering />
     </>
   );
 };
 
-export default UsagePage;
+export default Page;

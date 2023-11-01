@@ -6,14 +6,16 @@ import { CodeBlockContainer } from './code-block.styles';
 
 export const CodeBlock = ({ code }: { code: string }) => {
   return (
-    <CodeBlockContainer>
-      <CodeBlockIcons code={code} />
-      <MDXRemote
-        source={code}
-        options={{
-          mdxOptions: { rehypePlugins: [rehypePrism] },
-        }}
-      />
-    </CodeBlockContainer>
+    <>
+      <CodeBlockContainer>
+        <CodeBlockIcons code={code} />
+        <MDXRemote
+          source={code}
+          options={{
+            mdxOptions: { rehypePlugins: [rehypePrism] },
+          }}
+        />
+      </CodeBlockContainer>
+    </>
   );
 };

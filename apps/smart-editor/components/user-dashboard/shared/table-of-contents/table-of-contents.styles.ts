@@ -62,10 +62,16 @@ export const ThemeBlockWrapper = styled.div<{ $maxWidth: boolean }>`
           }
         `}
 `;
-export const TableOfContentsListItem = styled.li<{ $selected?: boolean }>`
+export const TableOfContentsListItem = styled.li<{
+  $selected?: boolean;
+  $lader?: boolean;
+  $laderDirection?: 'up' | 'down';
+  $level: number;
+}>`
+  position: relative;
   list-style: none;
-  margin: 0 !important;
   padding: ${spaceXS} 0 ${spaceXS} ${spaceL};
+  margin-left: ${({ $level }) => `calc(${spaceS} * (${$level} - 1))`};
   border-style: solid;
   border-width: 0 0 0 2px;
   font-size: 14px;
@@ -73,6 +79,20 @@ export const TableOfContentsListItem = styled.li<{ $selected?: boolean }>`
   ${({ $selected }) => css`
     border-color: ${$selected ? primary : gray300};
   `}
+
+  ${({ $lader, $laderDirection, $selected }) =>
+    $lader &&
+    css`
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: ${$laderDirection === 'up' ? `calc(-${spaceS} - 2px);` : `0`};
+        width: ${spaceS};
+        height: 2px;
+        background-color: ${$selected ? primary : gray300};
+      }
+    `}
 `;
 
 export const TableOfContentsLink = styled.a<{ $selected?: boolean }>`
@@ -89,7 +109,7 @@ export const TableOfContentsLink = styled.a<{ $selected?: boolean }>`
 
 export const TableOfCntentsList = styled.ul`
   margin: ${spaceM} 0 !important;
-  /* padding-left: ${spaceM}; */
+  padding-left: ${spaceXL};
 `;
 
 export const TableOfContentsNav = styled.nav`

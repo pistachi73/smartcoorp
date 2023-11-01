@@ -14,11 +14,12 @@ const PostsPage = async ({
 }: {
   searchParams: { [key: string]: string | null };
 }) => {
-  const queryClient = getQueryClient();
   const session = await getServerSession(nextAuthConfig);
+  const queryClient = getQueryClient();
+  const dehydratedState = dehydrate(queryClient);
 
   await queryClient.prefetchQuery({
-    queryKey: ['getPosts'],
+    queryKey: ['getPosts', searchParams.title ?? ''],
     queryFn: () =>
       getPosts({
         userId: session?.id?.toString() ?? '',
@@ -44,13 +45,14 @@ const PostsPage = async ({
       />
       <Headline
         size="xlarge"
+        as="h1"
         style={{
           marginBottom: space3XL,
         }}
       >
         Overview
       </Headline>
-      <Hydrate state={dehydrate(queryClient)}>
+      <Hydrate state={dehydratedState}>
         <Posts userId={session?.id ?? ''} />
       </Hydrate>
     </>

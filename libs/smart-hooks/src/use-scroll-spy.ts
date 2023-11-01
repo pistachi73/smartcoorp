@@ -43,7 +43,7 @@ export const useScrollspy = (
 
   React.useEffect(() => {
     const widgetElements = ids
-      .map((item) => document.querySelector(`section[id="${item}"]`))
+      .map((item) => document.getElementById(item))
       .filter(Boolean) as Element[];
 
     setElements(widgetElements);

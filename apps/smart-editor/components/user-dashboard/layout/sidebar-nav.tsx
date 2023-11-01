@@ -3,10 +3,10 @@
 import type { IconType } from 'react-icons';
 import {
   BsBook,
-  BsGear,
-  BsHandIndexThumb,
+  BsCodeSlash,
   BsLock,
   BsPerson,
+  BsTerminal,
 } from 'react-icons/bs';
 
 import Link from 'next/link';
@@ -42,9 +42,14 @@ const navList: (NavItem | NavGroup)[] = [
         href: '/api-keys',
       },
       {
-        name: 'Usage',
-        icon: BsHandIndexThumb,
-        href: '/usage',
+        name: 'API Reference',
+        icon: BsTerminal,
+        href: '/api-reference',
+      },
+      {
+        name: 'JSON Rendering',
+        icon: BsCodeSlash,
+        href: '/json-rendering',
       },
     ],
   },

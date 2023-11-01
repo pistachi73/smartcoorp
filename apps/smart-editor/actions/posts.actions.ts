@@ -136,7 +136,11 @@ export const createPost = async (input: CreatePostInput) => {
   const { userId } = await CreatePostSchema.parseAsync(input);
 
   const post = await prisma.ePost.create({
-    data: { userId, content: defaultBlogPostContent },
+    data: {
+      userId,
+      title: 'Begin Your Journey: A Blank Canvas',
+      content: defaultBlogPostContent,
+    },
   });
 
   return {

@@ -19,7 +19,7 @@ type PostsProps = {
 export const Posts = ({ userId }: PostsProps) => {
   const searchParams = useSearchParams();
 
-  const { data, isFetching, error } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['getPosts', searchParams.get('title') ?? ''],
     queryFn: () =>
       getPosts({
@@ -37,7 +37,7 @@ export const Posts = ({ userId }: PostsProps) => {
     <>
       <Filters />
       <PostCardGrid>
-        {!isFetching ? (
+        {!isLoading ? (
           <>
             {data?.posts?.map((post: EPost) => (
               <PostCard key={post.id} {...post} />

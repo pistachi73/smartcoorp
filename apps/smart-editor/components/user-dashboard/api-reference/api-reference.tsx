@@ -4,17 +4,18 @@ import { Body } from '@smartcoorp/ui/body';
 import { Headline } from '@smartcoorp/ui/headline';
 import { space3XL } from '@smartcoorp/ui/tokens';
 
-import { CodeBlock } from './code-block';
-import { codeSnippets, headings } from './helpers';
-import { TableOfContent } from './table-of-contents/table-of-contents';
-import { Container, DocumentationContainer } from './usage.styles';
+import { CodeBlock } from '../shared/code-block';
+import { TableOfContent } from '../shared/table-of-contents';
 
-export const Usage = async () => {
+import { Container, DocumentationContainer } from './api-reference.styles';
+import { codeSnippets, headings } from './helpers';
+
+export const ApiReference = () => {
   return (
     <Container>
-      <DocumentationContainer id="usage">
-        <Headline size="xlarge" id="title">
-          Usage
+      <DocumentationContainer>
+        <Headline size="xlarge" as="h1">
+          API Reference
         </Headline>
         <Body
           variant="neutral"
@@ -26,8 +27,10 @@ export const Usage = async () => {
           Learn how to use SmartEditor API and get the most out of it.
         </Body>
         <section id="prerequisites">
-          <Headline size="large">Prerequisites</Headline>
-          <Body variant="neutral" noMargin>
+          <Headline size="large" as="h2">
+            Prerequisites
+          </Headline>
+          <Body noMargin>
             To get the most out of SmartEditor API, you will need to:
           </Body>
 
@@ -41,13 +44,17 @@ export const Usage = async () => {
           </ul>
         </section>
         <section id="get-all-posts">
-          <Headline size="large">1. Get all posts</Headline>
+          <Headline size="large" as="h2">
+            1. Get all posts
+          </Headline>
           <Body variant="neutral" noMargin>
             Retrieve a List of Posts
           </Body>
           <CodeBlock code={codeSnippets.fetchAllPosts} />
 
-          <Headline size="medium">Available query parameters:</Headline>
+          <Headline size="medium" as="h3">
+            Available query parameters:
+          </Headline>
 
           <ul>
             <li>
@@ -70,7 +77,9 @@ export const Usage = async () => {
           </ul>
         </section>
         <section id="get-a-post-by-id">
-          <Headline size="large">2. Get post by ID</Headline>
+          <Headline size="large" as="h2">
+            2. Get post by ID
+          </Headline>
 
           <Body variant="neutral" noMargin>
             Retrieve a Specific Blog Post by Its Unique ID
@@ -79,7 +88,9 @@ export const Usage = async () => {
           <CodeBlock code={codeSnippets.fetchPostById} />
         </section>
         <section id="status-codes">
-          <Headline size="large">Status codes</Headline>{' '}
+          <Headline size="large" as="h2">
+            Status codes
+          </Headline>{' '}
           <ul>
             <li>
               <Body lineHeight="increased">
@@ -113,7 +124,9 @@ export const Usage = async () => {
           </ul>
         </section>
         <section id="rate-limiting">
-          <Headline size="large">Rate limiting</Headline>
+          <Headline size="large" as="h2">
+            Rate limiting
+          </Headline>
 
           <Body noMargin>
             This API has rate limiting in place to prevent abuse. The rate

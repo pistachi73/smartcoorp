@@ -12,7 +12,10 @@ export const CodeBlockIcons = ({ code }: { code: string }) => {
   const onCopyToClipboard = () => {
     setCopied(true);
     navigator.clipboard.writeText(
-      code.replace(/~~~js/g, '').replace(/~~~/g, '')
+      code
+        .replace(/~~~js/g, '')
+        .replace(/~~~tsx/g, '')
+        .replace(/~~~/g, '')
     );
 
     setTimeout(() => {

@@ -3,12 +3,15 @@
 import styled from 'styled-components';
 
 import {
+  borderRadiusS,
+  gray300,
   gray800,
   motionEasingEnter,
   motionTimeS,
   spaceL,
   spaceM,
   spaceS,
+  spaceXL,
 } from '@smartcoorp/ui/tokens';
 
 export const CodeBlockIconsContainer = styled.div`
@@ -37,6 +40,16 @@ export const CodeBlockIconsContainer = styled.div`
 
 export const CodeBlockContainer = styled.div`
   position: relative;
+  max-width: 100%;
+  margin-block: ${spaceXL};
+
+  pre {
+    padding: ${spaceL};
+    font-size: 14px;
+    margin: 0;
+    min-width: 0;
+    overflow-x: auto;
+  }
 
   &:hover ${CodeBlockIconsContainer} {
     opacity: 1;
