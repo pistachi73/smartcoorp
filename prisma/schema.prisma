@@ -57,6 +57,7 @@ model EUser {
     email                     String                      @unique
     password                  String?
     picture                   String?
+    provider                  Provider                    @default(EMAIL)
     accountVerified           Boolean                     @default(false)
     createdAt                 DateTime                    @default(now())
     updatedAt                 DateTime                    @updatedAt
@@ -64,6 +65,11 @@ model EUser {
     EAccountVerificationToken EAccountVerificationToken[]
     EPost                     EPost[]
     EApiKey                   EApiKey[]
+}
+
+enum Provider {
+    EMAIL
+    GOOGLE
 }
 
 model EApiKey {

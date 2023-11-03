@@ -255,6 +255,11 @@ export const headings: Heading[] = [
     level: 1,
   },
   {
+    id: 'data-structure',
+    text: 'Data structure',
+    level: 1,
+  },
+  {
     id: 'how-to-render-json',
     text: 'How to render JSON',
     level: 1,

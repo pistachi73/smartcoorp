@@ -53,16 +53,16 @@ const navList: (NavItem | NavGroup)[] = [
       },
     ],
   },
-  {
-    name: 'CONFIGURATION',
-    items: [
-      {
-        name: 'Profile',
-        icon: BsPerson,
-        href: '/profile',
-      },
-    ],
-  },
+  // {
+  //   name: 'CONFIGURATION',
+  //   items: [
+  //     {
+  //       name: 'Profile',
+  //       icon: BsPerson,
+  //       href: '/profile',
+  //     },
+  //   ],
+  // },
 ];
 
 export const SidebarNav = () => {

@@ -119,7 +119,7 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
             {cancelLabel && (
               <Styled.DialogActionButton asChild={true}>
                 <Button
-                  disabled={disabled || loading}
+                  disabled={loading}
                   variant="secondary"
                   size="small"
                   {...onCancelClick}

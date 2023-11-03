@@ -1,7 +1,7 @@
 import type { RegisterOptions } from 'react-hook-form';
 import { z } from 'zod';
 
-const PasswordSchema = z
+export const PasswordSchema = z
   .string()
   .min(8, 'Password must be at least 8 characters long')
   .max(16, 'Password must be at most 16 characters long')

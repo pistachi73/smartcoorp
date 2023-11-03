@@ -10,9 +10,12 @@ type GoogleButtonProps = {
 
 export const GoogleButton = ({ action }: GoogleButtonProps) => {
   const actionText = action === 'login' ? 'Log in' : 'Sign up';
+
   return (
     <StyledGoogleButton
-      onClick={() => signIn('google', { callbackUrl: '/' })}
+      onClick={() => {
+        signIn('google', { redirect: false, callbackUrl: '/posts' });
+      }}
       variant="secondary"
     >
       <img

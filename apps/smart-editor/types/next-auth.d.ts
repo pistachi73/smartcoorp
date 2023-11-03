@@ -4,12 +4,16 @@ import NextAuth from 'next-auth';
 declare module 'next-auth' {
   interface User {
     name?: string;
-    picture?: string;
+    picture?: string | null;
   }
 
   interface Session {
     id?: string;
     user: User;
+  }
+
+  interface Profile {
+    email_verified?: boolean;
   }
 }
 

@@ -1,8 +1,10 @@
 'use client';
 import type { Session } from 'next-auth';
 import { signOut } from 'next-auth/react';
-import { BsBoxArrowInRight, BsThreeDotsVertical } from 'react-icons/bs';
+import { BsBoxArrowInRight, BsGear, BsThreeDotsVertical } from 'react-icons/bs';
 
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { Body } from '@smartcoorp/ui/body';
@@ -39,12 +41,13 @@ export const ProfileDropdown = ({ session }: ProfileDropdownProps) => {
         <Profile>
           <ProfileContent>
             <ProfileImage>
-              <img
+              <Image
                 src={
                   session.user.picture ??
                   '/illustrations/default-profile-picture.svg'
                 }
                 alt="Profile Image"
+                fill
               />
             </ProfileImage>
             <ProfileInformation>
@@ -69,6 +72,14 @@ export const ProfileDropdown = ({ session }: ProfileDropdownProps) => {
         }}
       >
         <ProfileDropdownContent>
+          <DropdownMenuItem asChild>
+            <Link href={'/account'}>
+              <BsGear size={18} />
+              <Body size="small" noMargin>
+                Settings
+              </Body>
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={logout}>
             <BsBoxArrowInRight size={18} />
             <Body size="small" noMargin>

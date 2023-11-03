@@ -74,32 +74,71 @@ export const nextAuthConfig: NextAuthOptions = {
         where: { email: profile?.email },
       });
 
-      if (existingUser) return true;
+      if (existingUser?.provider === 'EMAIL') {
+        const errorMessage = encodeURIComponent('User already exists');
+        return `/login?error=${errorMessage}`;
+      } else if (existingUser?.provider === 'GOOGLE') {
+        return true;
+      }
 
-      const { email, name, image } = user;
+      const { email_verified } = profile ?? {};
 
-      if (!email || !name || !image) return false;
+      if (!email_verified) {
+        const errorMessage = encodeURIComponent(
+          'Please verify your email first'
+        );
+        return `/login?error=${errorMessage}`;
+      }
+
+      const { email, name, id, image } = user;
+
+      if (!email || !name) {
+        const errorMessage = encodeURIComponent('Email and name are required');
+        return `/login?error=${errorMessage}`;
+      }
 
       await prisma.eUser.create({
         data: {
+          id,
           email,
           name,
           picture: image,
+          provider: 'GOOGLE',
+          accountVerified: true,
         },
       });
 
       return true;
     },
-    session: ({ session, token }) => {
+
+    session: async ({ session, token }) => {
+      const user = await prisma.eUser.findFirst({
+        where: { id: token.id },
+        select: {
+          picture: true,
+        },
+      });
       if (token) {
         session.id = token.id;
         session.user.name = token.name;
-        session.user.picture = token.picture;
+        session.user.picture = user?.picture;
       }
 
       return session;
     },
-    jwt: ({ token, user }) => {
+    jwt: ({ trigger, token, user, session }) => {
+      if (trigger === 'update') {
+        if (session.name) {
+          token.name = session.name;
+        }
+        if (session.email) {
+          token.email = session.email;
+        }
+        if (session.picture) {
+          token.picture = session.picture;
+        }
+      }
+
       if (user) {
         token.id = user.id;
         token.email = user.email;
