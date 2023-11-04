@@ -86,6 +86,7 @@ export const JSONRendering = async () => {
             block (<code>type</code>) and the content of the block (styling,
             configurations, text, etc.)
           </Body>
+          <CodeBlock code={codeSnippets.blocks} />
           <Body>
             Chains contain the order of the blocks. Multiple chains can compose
             a post. However, each post will always have the <code>main</code>{' '}
@@ -96,6 +97,7 @@ export const JSONRendering = async () => {
             <code>id</code> of the <code>Column</code> block that generates the
             chain and the second part is randomly generated.
           </Body>
+          <CodeBlock code={codeSnippets.chains} />
         </section>
         <section>
           <section id="how-to-render-json">

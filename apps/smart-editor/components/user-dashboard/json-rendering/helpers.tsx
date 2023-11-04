@@ -1,9 +1,37 @@
 import { Heading } from '../shared/table-of-contents/table-of-contents';
 
 export const codeSnippets = {
+  blocks: `
+  ~~~js
+  blocks = {
+    okwx0mlowz: {
+      id: 'okwx0mlowz',
+      chainId: 'main',
+      type: 'header',
+      data: {
+        level: 3,
+        text: 'Mastering the Art of Work-life Balance for Small Business Owners.',
+      },
+    },
+    ...
+  };
+  ~~~
+  `,
+  chains: `
+  ~~~js
+  chains = {
+    main: ['okwx0mlowz', 'l0ux2p2RM8', 'TyniizAA9V'],
+    'TyniizAA9V-3RlPwH5IOB': ['okwx0mlo9p', '3HszdcLhWt'],
+    'TyniizAA9V-gkngNm9Qk3': ['Go8AXyvXRj', 'ugpsVOggTf'],
+    ...
+  };
+  ~~~
+  `,
   headerBlock: `
   ~~~tsx
   type HeaderBlock = {
+    id: string;
+    chainId: string;
     type: 'header';
     data: {
       text: string;
