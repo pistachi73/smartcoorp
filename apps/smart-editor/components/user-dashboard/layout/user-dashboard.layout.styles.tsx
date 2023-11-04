@@ -318,6 +318,7 @@ export const ProfileContent = styled.div`
 `;
 
 export const ProfileImage = styled.div`
+  position: relative;
   width: 40px;
   height: 40px;
 
@@ -329,7 +330,6 @@ export const ProfileImage = styled.div`
   justify-content: center;
 
   img {
-    margin: 4px;
     width: 36px;
     border: 1px solid ${primary300};
     border-radius: 50%;
@@ -363,7 +363,15 @@ export const ProfileDropdownContent = styled.div`
     transition-timing-function: ${motionEasingStandard};
   }
 
-  div {
+  a {
+    color: black;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  div,
+  a {
     padding: ${spaceXS};
 
     &:not(:last-child) {

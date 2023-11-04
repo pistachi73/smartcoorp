@@ -1,11 +1,11 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
@@ -13,6 +13,7 @@ import { RHFFormField } from '@smartcoorp/ui/form-field';
 import { LoginFormData } from '../helpers';
 
 export const LoginForm = () => {
+  const searchParams = useSearchParams();
   const { control, handleSubmit } = useForm<LoginFormData>({
     defaultValues: {
       email: '',
@@ -31,7 +32,7 @@ export const LoginForm = () => {
     });
 
     if (response?.error) {
-      toast.error(response.error);
+      toast.error('Invalid credentials. Please try again.');
     } else {
       toast.success('Login successful');
       router.push('/posts');
@@ -39,6 +40,14 @@ export const LoginForm = () => {
 
     setLoading(false);
   };
+
+  useEffect(() => {
+    const errorMessage = searchParams.get('error');
+    if (errorMessage) {
+      toast.error(errorMessage);
+      router.replace('/login');
+    }
+  }, [router, searchParams]);
 
   return (
     <>

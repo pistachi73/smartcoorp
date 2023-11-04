@@ -2,7 +2,6 @@
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { composePlugins, withNx } = require('@nx/next');
-
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
@@ -33,6 +32,7 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
+    domains: ['lh3.googleusercontent.com'],
     remotePatterns: [
       {
         protocol: 'https',

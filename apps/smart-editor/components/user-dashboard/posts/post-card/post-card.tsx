@@ -154,7 +154,7 @@ export const PostCard = ({
             </Body>
             <Link href={`/posts/${id}`}>
               <Headline as="h2" size="large" noMargin>
-                {title ?? 'Begin Your Journey: A Blank Canvas'}
+                {title}
               </Headline>
             </Link>
           </div>
