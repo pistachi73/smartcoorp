@@ -310,6 +310,7 @@ export const PostBuilder = ({ userId, postId }: PostBuilderProps) => {
                 <PostEditor
                   blocksDB={postBlocks}
                   setBlocksDB={setPostBlocks}
+                  maxImages={5}
                   getMetaData={getMetadata}
                   currentUploadedImages={currentUploadedImages}
                   setImagesToHandle={setImagesToHandle}

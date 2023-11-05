@@ -19,11 +19,12 @@ export const PostEditor: FC<PostEditorProps> = ({
   setBlocksDB,
   getMetaData,
   debounceTime = 300,
+  maxImages,
   currentUploadedImages,
   setImagesToHandle,
 }) => {
   return (
-    <UtilProvider debounceTime={debounceTime}>
+    <UtilProvider debounceTime={debounceTime} maxImages={maxImages}>
       <RefsProvider>
         <BlockSelectionProvider>
           <ToolControlProvider>

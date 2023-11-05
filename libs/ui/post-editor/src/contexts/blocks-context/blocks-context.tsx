@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect, useMemo, useReducer } from 'react';
 
 import { useRefsContext } from '../refs-context';
+import { useUtilsUpdaterContext } from '../util-context/util-context';
 
 import type {
   AddBlocks,
@@ -73,18 +74,27 @@ export const BlocksDBProvider = ({
     canUndo: false,
   });
 
+  const { setHasMaxImages } = useUtilsUpdaterContext();
+
   useEffect(() => {
     if (currentUploadedImages && setImagesToHandle) {
       setImagesToHandle(
         getImagesFromBlocks({
           blocks: blocksDB.blocks,
           currentUploadedImages,
+          setHasMaxImages,
         })
       );
     }
 
     setBlocksDB({ blocks: blocksDB.blocks, chains: blocksDB.chains });
-  }, [blocksDB, currentUploadedImages, setBlocksDB, setImagesToHandle]);
+  }, [
+    blocksDB,
+    currentUploadedImages,
+    setBlocksDB,
+    setImagesToHandle,
+    setHasMaxImages,
+  ]);
 
   const setFieldValue: SetFieldValue = ({
     blockId,

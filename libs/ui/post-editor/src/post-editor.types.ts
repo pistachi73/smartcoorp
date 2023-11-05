@@ -111,6 +111,7 @@ export type EveryBlockFields = Partial<
 export type PostEditorProps = {
   blocksDB: BlocksDB;
   setBlocksDB: any;
+  maxImages?: number;
   getMetaData?: Promise<Function> | any;
   /** Time for the debounce changes */
   debounceTime?: number;
