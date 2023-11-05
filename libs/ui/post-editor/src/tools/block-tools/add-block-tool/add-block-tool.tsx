@@ -19,6 +19,7 @@ import {
   useToolControlConsumerContext,
   useToolControlUpdaterContext,
 } from '../../../contexts/tool-control-context/tool-control-context';
+import { useUtilContext } from '../../../contexts/util-context';
 import type { Block } from '../../../post-editor.types';
 import { TooltipCaption } from '../../toolbar/toolbar.styles';
 import { DropdownTrigger } from '../block-tools.styles';
@@ -50,6 +51,7 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
     const { setIsAddBlockMenuOpened } = useToolControlUpdaterContext();
     const { isAddBlockMenuOpened } = useToolControlConsumerContext();
     const setToolBlockIndex = useToolBlockIndexUpdaterContext();
+    const { hasMaxImages } = useUtilContext();
 
     const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
@@ -136,19 +138,27 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
             {dropdownItems.map(({ groupName, items }) => (
               <React.Fragment key={groupName}>
                 <CommandGroup heading={groupName}>
-                  {Object.entries(items).map(([key, { label, snippet }]) => (
-                    <CommandItem
-                      key={`${label}_${key}`}
-                      value={key}
-                      onSelect={(val) => addBlock(val as DropdownItemTypes)}
-                    >
-                      <AddBlockItem
-                        type={key as DropdownItemTypes}
-                        label={label}
-                        snippet={snippet}
-                      />
-                    </CommandItem>
-                  ))}
+                  {Object.entries(items).map(([key, { label, snippet }]) => {
+                    const props: Record<string, any> = {};
+                    if (key === 'image') {
+                      props.disabled = hasMaxImages.hasMaxImages;
+                    }
+
+                    return (
+                      <CommandItem
+                        key={`${label}_${key}`}
+                        value={key}
+                        onSelect={(val) => addBlock(val as DropdownItemTypes)}
+                        {...props}
+                      >
+                        <AddBlockItem
+                          type={key as DropdownItemTypes}
+                          label={label}
+                          snippet={snippet}
+                        />
+                      </CommandItem>
+                    );
+                  })}
                 </CommandGroup>
               </React.Fragment>
             ))}

@@ -1,3 +1,6 @@
+import { set } from 'date-fns';
+import { Dispatch, SetStateAction } from 'react';
+
 import type { BlockDataDB } from './blocks-context.types';
 
 export type ImageWithFile = {
@@ -18,11 +21,15 @@ export type ImagesToHandle = {
 type GetImagesFromBlocksInput = {
   blocks: BlockDataDB;
   currentUploadedImages: ImageWithUrl[];
+  setHasMaxImages: Dispatch<
+    SetStateAction<{ hasMaxImages: boolean; maxImages: number | undefined }>
+  >;
 };
 
 export const getImagesFromBlocks = ({
   blocks,
   currentUploadedImages,
+  setHasMaxImages,
 }: GetImagesFromBlocksInput): ImagesToHandle => {
   const imageBlockIds = new Set<string>();
   const toUpload = new Map<string, File>();
@@ -51,6 +58,11 @@ export const getImagesFromBlocks = ({
       toDelete.set(blockId, imageUrl);
     }
   }
+
+  setHasMaxImages((state) => ({
+    ...state,
+    hasMaxImages: imageBlockIds.size >= (state.maxImages ?? 99),
+  }));
 
   return {
     toUpload: Array.from(toUpload.entries()).map(([key, value]) => ({

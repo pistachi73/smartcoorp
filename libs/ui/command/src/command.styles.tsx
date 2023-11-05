@@ -221,6 +221,10 @@ export const CommandContainer = styled.div<SizeProps>`
       }
     }
 
+    &[data-disabled] {
+      cursor: not-allowed;
+      opacity: 0.35;
+    }
     &[aria-disabled] {
       cursor: not-allowed;
       opacity: 0.35;
