@@ -10,12 +10,14 @@ import {
   gray100,
   gray300,
   gray900,
+  mediaConfined,
   mediaWide,
   mediaXWide,
   space3XL,
   space4XL,
   space5XL,
   spaceL,
+  spaceM,
   spaceXL,
   spaceXXL,
 } from '@smartcoorp/ui/tokens';
@@ -25,12 +27,16 @@ export const Container = styled.div`
   width: 100vw;
 
   margin: auto;
-  padding: ${spaceXXL};
+  padding: ${spaceM};
 
   display: flex;
   gap: ${spaceXL};
 
   background-color: ${gray100};
+
+  @media ${mediaConfined} {
+    padding: ${spaceXXL};
+  }
 
   @media ${mediaWide} {
     padding: ${space4XL};
@@ -76,8 +82,8 @@ export const FormContainer = styled.div`
 
 // ------- FORM SECTION -------
 export const FormWrapper = styled(Wrapper)`
+  padding: 0;
   align-items: center;
-  padding: ${space3XL};
   position: relative;
 
   > div {
@@ -87,6 +93,9 @@ export const FormWrapper = styled(Wrapper)`
     gap: ${spaceXXL};
     width: 100%;
 
+    @media ${mediaConfined} {
+      padding: ${spaceXXL};
+    }
     @media ${mediaXWide} {
       width: 75%;
       min-width: 435px;

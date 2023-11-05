@@ -31,6 +31,8 @@ type CommonProps = {
   defaultValue?: string | number;
   /** Render a textarea */
   isMultiline?: boolean;
+  /** Render a textarea */
+  maxChars?: number;
   /** Name of the field */
   name?: string;
   /** Forgot Password HREF */

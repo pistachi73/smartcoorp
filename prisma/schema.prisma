@@ -100,6 +100,7 @@ model EAccountVerificationToken {
     id          String    @id @default(uuid())
     token       String    @unique
     activatedAt DateTime?
+    resendAt    DateTime? @default(now())
 
     createdAt DateTime @default(now())
     user      EUser    @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -111,6 +112,7 @@ model EAccountVerificationToken {
 model EPost {
     id            String      @id @default(uuid())
     title         String?
+    description   String?     @db.VarChar(280)
     content       Json?
     wordCount     Int?
     coverImageUrl String?

@@ -1,6 +1,7 @@
 'use client';
 import { EPostStatus } from '@prisma/client';
-import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { fromContentToJSON } from '@smart-editor/utils/from-content-to-json';
+import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useState } from 'react';
 import {
@@ -48,12 +49,6 @@ const statusMapping: Record<EPostStatus, string> = {
   PUBLISHED: 'Published',
 };
 
-const toKebabCase = (str: string) =>
-  str
-    .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
-    ?.map((x) => x.toLowerCase())
-    .join('-');
-
 export const PostCard = ({
   id,
   title,
@@ -66,24 +61,6 @@ export const PostCard = ({
   const queryClient = useQueryClient();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isOptionsDropdownOpen, setIsOptionsDropdownOpen] = useState(false);
-
-  const createJSONContent = () => {
-    if (!title || !content) return;
-
-    const file = new File(
-      ['\ufeff' + JSON.stringify(content)],
-      `${toKebabCase(title)}.json`,
-      {
-        type: 'text/json;charset=utf-8',
-      }
-    );
-    const url = window.URL.createObjectURL(file);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = file.name;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
 
   return (
     <>
@@ -127,7 +104,10 @@ export const PostCard = ({
                 variant="text"
                 icon={BsCloudDownload}
                 onClick={() => {
-                  createJSONContent();
+                  fromContentToJSON({
+                    title,
+                    content,
+                  });
                   setIsOptionsDropdownOpen(false);
                 }}
               >

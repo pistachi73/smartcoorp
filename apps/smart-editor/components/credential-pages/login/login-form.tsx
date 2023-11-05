@@ -1,5 +1,7 @@
 'use client';
 
+import { sendAccountVerificationEmail } from '@smart-editor/actions/account.actions';
+import { AuthorizeError } from '@smart-editor/utils/next-auth-config';
 import { signIn } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -32,7 +34,43 @@ export const LoginForm = () => {
     });
 
     if (response?.error) {
-      toast.error('Invalid credentials. Please try again.');
+      const { error } = response;
+
+      const typedError = JSON.parse(error) as unknown as AuthorizeError;
+
+      if (typedError.code === 401) {
+        toast.error(typedError.message);
+      }
+
+      if (typedError.code === 403) {
+        toast.error(typedError.message, {
+          action: {
+            label: 'Resend verification email',
+            onClick: () =>
+              toast.promise(
+                async () => {
+                  await new Promise((r) => setTimeout(r, 1000));
+                  await sendAccountVerificationEmail({
+                    userId: typedError?.data?.id,
+                    email: typedError?.data?.email,
+                    name: typedError?.data?.name,
+                  });
+                },
+                {
+                  loading: 'Sending email...',
+                  success: 'Email sent',
+                  error: (error) => {
+                    if (error instanceof Error) {
+                      return error.message;
+                    } else {
+                      return 'Error sending email. Please try again later.';
+                    }
+                  },
+                }
+              ),
+          },
+        });
+      }
     } else {
       toast.success('Login successful');
       router.push('/posts');

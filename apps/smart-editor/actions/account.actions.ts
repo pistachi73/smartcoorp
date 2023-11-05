@@ -2,6 +2,7 @@
 
 import { randomUUID } from 'crypto';
 
+import { EAccountVerificationToken } from '@prisma/client';
 import { PasswordSchema } from '@smart-editor/components/credential-pages/helpers';
 import VerifyAccountEmail from '@smart-editor/emails/activate-account-email';
 import * as bcrypt from 'bcrypt';
@@ -88,12 +89,49 @@ export const sendAccountVerificationEmail = async (
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
-  const activationToken = await prisma.eAccountVerificationToken.create({
-    data: {
-      userId,
-      token: `${randomUUID()}${randomUUID()}`.replace(/-/g, ''),
-    },
-  });
+  const enabledActivationToken =
+    await prisma.eAccountVerificationToken.findFirst({
+      where: {
+        AND: [
+          {
+            userId,
+          },
+          {
+            // Token is valid for 4 hours
+            createdAt: {
+              gte: new Date(Date.now() - 1000 * 60 * 60 * 4),
+            },
+          },
+        ],
+      },
+    });
+
+  let newActivationToken;
+
+  if (
+    (enabledActivationToken?.resendAt ?? 0) >=
+    new Date(Date.now() - 1000 * 60 * 30)
+  ) {
+    throw new Error(
+      'Please wait 30 minutes before resending the verification email again.'
+    );
+  }
+
+  if (!enabledActivationToken) {
+    newActivationToken = await prisma.eAccountVerificationToken.create({
+      data: {
+        userId,
+        token: `${randomUUID()}${randomUUID()}`.replace(/-/g, ''),
+      },
+    });
+  }
+
+  const token: EAccountVerificationToken | undefined =
+    enabledActivationToken || newActivationToken;
+
+  if (!token) {
+    throw new Error('Unable to get account verification token.');
+  }
 
   await resend.emails.send({
     from: 'SmartEditor <noreply@cookiecoaching.com>',
@@ -101,7 +139,16 @@ export const sendAccountVerificationEmail = async (
     subject: 'Activate your account',
     react: VerifyAccountEmail({
       name,
-      activateAccountLink: `/activate-account/${activationToken.token}`,
+      activateAccountLink: `/activate-account/${token.token}`,
     }),
+  });
+
+  await prisma.eAccountVerificationToken.update({
+    where: {
+      id: token.id,
+    },
+    data: {
+      resendAt: new Date(),
+    },
   });
 };
