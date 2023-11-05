@@ -13,8 +13,8 @@ export const BaseStyles = createGlobalStyle`
         /* width */
        
   }
-  /* *::-webkit-scrollbar {
-      width: 9px;
+   /* *::-webkit-scrollbar {
+      width: 10px;
     }
 
     *::-webkit-scrollbar-track {
@@ -36,7 +36,7 @@ export const BaseStyles = createGlobalStyle`
       border-radius: 9999px;
       background-color: ${({ theme }) => theme.scrollArea.thumbColor};
     }
-   */
+    */
 
   ::-moz-selection { /* Code for Firefox */
     background: rgba(179, 212, 252, 0.75);

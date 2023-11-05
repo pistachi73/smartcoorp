@@ -7,11 +7,14 @@ import {
   borderRadiusS,
   borderRadiusXXS,
   getFocusShadow,
+  gray300,
+  mediaConfined,
   motionEasingStandard,
   motionTimeXS,
   scale060,
   scale130,
   scale140,
+  scale330,
   scale380,
   spaceS,
   spaceXS,
@@ -85,22 +88,26 @@ export const Separator = styled.div`
   background-color: ${({ theme }) => theme.form.placeholderColor};
 `;
 
-export const LinkToolContainer = styled(motion.div)`
-  display: flex;
-  align-items: center;
-  gap: ${spaceS};
-`;
-
 export const LinkInputContainer = styled.div`
+  position: absolute;
+  top: calc(100% + 8px);
+  transform: translateX(-50%);
+
   display: flex;
   align-items: center;
 
-  width: ${scale380};
+  width: ${scale330};
   font-size: ${scale060};
 
   border-radius: ${borderRadiusXXS};
 
-  border: none;
+  border: 1px solid ${gray300};
+
+  @media ${mediaConfined} {
+    position: unset;
+    transform: unset;
+    width: ${scale380};
+  }
 
   &:focus-within {
     outline: none;
@@ -108,6 +115,14 @@ export const LinkInputContainer = styled.div`
     ${getFocusShadow({ shadowWidth: 2 })}
   }
 `;
+
+export const LinkToolContainer = styled(motion.div)`
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: ${spaceS};
+`;
+
 export const LinkInput = styled.input`
   width: 100%;
   font-size: ${scale060};
@@ -145,5 +160,13 @@ export const LinkInputSaveButton = styled.button`
     top: 0;
 
     background-color: ${({ theme }) => theme.form.placeholderColor};
+  }
+`;
+
+export const UtilityToolsContainer = styled.div`
+  display: none;
+
+  @media ${mediaConfined} {
+    display: block;
   }
 `;

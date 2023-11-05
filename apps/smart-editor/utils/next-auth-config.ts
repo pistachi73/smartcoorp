@@ -6,6 +6,12 @@ import GoogleProvider from 'next-auth/providers/google';
 
 import prisma from '@smartcoorp/prisma';
 
+export type AuthorizeError = {
+  message: string;
+  code: number;
+  data?: Record<string, any>;
+};
+
 const authorize = async (
   credentials: Record<'email' | 'password', string> | undefined
 ) => {
@@ -19,11 +25,12 @@ const authorize = async (
   });
 
   if (!user) {
-    return null;
-  }
+    const error: AuthorizeError = {
+      message: 'Invalid email or password.',
+      code: 401,
+    };
 
-  if (!user.accountVerified) {
-    throw new Error('Account not verified');
+    throw new Error(JSON.stringify(error));
   }
 
   const isValidPassword = await bcrypt.compare(
@@ -32,7 +39,22 @@ const authorize = async (
   );
 
   if (!isValidPassword) {
-    throw new Error('Invalid password');
+    const error: AuthorizeError = {
+      message: 'Invalid email or password.',
+      code: 401,
+    };
+
+    throw new Error(JSON.stringify(error));
+  }
+
+  if (!user.accountVerified) {
+    const error: AuthorizeError = {
+      message: 'Account not verified',
+      code: 403,
+      data: { email: user.email, name: user.name, id: user.id },
+    };
+
+    throw new Error(JSON.stringify(error));
   }
 
   return {

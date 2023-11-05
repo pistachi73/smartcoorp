@@ -32,6 +32,7 @@ export const FormField = forwardRef<
       height,
       name,
       forgotPasswordHref,
+      maxChars,
       ...props
     },
     ref?: React.Ref<HTMLElement>
@@ -191,6 +192,18 @@ export const FormField = forwardRef<
             $sizeWide={sizeWide}
           >
             {helperText}
+          </S.HelperText>
+        )}
+        {maxChars && typeof value === 'string' && (
+          <S.HelperText
+            $error={isError || value.length - maxChars > 0}
+            $size={size}
+            $sizeConfined={sizeConfined}
+            $sizeWide={sizeWide}
+          >
+            {maxChars - value.length >= 0
+              ? `${maxChars - value.length} characters left `
+              : `${value.length - maxChars} characters over limit`}
           </S.HelperText>
         )}
       </S.Container>

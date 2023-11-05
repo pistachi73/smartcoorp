@@ -36,6 +36,7 @@ import {
   LinkToolContainer,
   Separator,
   TooltipCaption,
+  UtilityToolsContainer,
 } from './toolbar.styles';
 import { useToolbar } from './use-toolbar';
 
@@ -297,9 +298,7 @@ export const Toolbar = () => {
             $formatted={selectionFormat.link.formatted}
             size="small"
             aria-label="Add link"
-          >
-            Add link
-          </IconButton>
+          />
 
           {linkTool.isOpen && (
             <LinkInputContainer onBlur={handleBlur}>
@@ -363,44 +362,46 @@ export const Toolbar = () => {
             </Body>
           }
         />
-        <Separator />
-        <Tooltip
-          sideOffset={0}
-          triggerAsChild
-          trigger={
-            <IconButton
-              variant="text"
-              onClick={() => console.log(blocksDB)}
-              icon={BsTerminal}
-              iconSize={14}
-              aria-label="Log blocks data"
-            />
-          }
-          content={
-            <Body size="xsmall" noMargin>
-              Log blocks data
-            </Body>
-          }
-        />
-        <Tooltip
-          sideOffset={0}
-          triggerAsChild
-          trigger={
-            <IconButton
-              variant="text"
-              onClick={() => setViewBlocks((viewBlocks) => !viewBlocks)}
-              icon={BsBoundingBox}
-              iconSize={14}
-              $formatted={viewBlocks}
-              aria-label="View Blocks"
-            />
-          }
-          content={
-            <Body size="xsmall" noMargin>
-              View Blocks
-            </Body>
-          }
-        />
+        <UtilityToolsContainer>
+          <Separator />
+          <Tooltip
+            sideOffset={0}
+            triggerAsChild
+            trigger={
+              <IconButton
+                variant="text"
+                onClick={() => console.log(blocksDB)}
+                icon={BsTerminal}
+                iconSize={14}
+                aria-label="Log blocks data"
+              />
+            }
+            content={
+              <Body size="xsmall" noMargin>
+                Log blocks data
+              </Body>
+            }
+          />
+          <Tooltip
+            sideOffset={0}
+            triggerAsChild
+            trigger={
+              <IconButton
+                variant="text"
+                onClick={() => setViewBlocks((viewBlocks) => !viewBlocks)}
+                icon={BsBoundingBox}
+                iconSize={14}
+                $formatted={viewBlocks}
+                aria-label="View Blocks"
+              />
+            }
+            content={
+              <Body size="xsmall" noMargin>
+                View Blocks
+              </Body>
+            }
+          />
+        </UtilityToolsContainer>
       </IconsContainer>
     </Container>
   );

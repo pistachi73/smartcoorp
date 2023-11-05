@@ -5,11 +5,13 @@ import { getMetadata } from '@smart-editor/actions/get-metadata';
 import { getPost, updatePost } from '@smart-editor/actions/posts.actions';
 import { usePostEditor } from '@smart-editor/hooks/use-post-editor';
 import { useSingleFileUpload } from '@smart-editor/hooks/use-single-file-upload';
+import { fromContentToJSON } from '@smart-editor/utils/from-content-to-json';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   BsClipboard,
+  BsCloudDownload,
   BsJournalText,
   BsPen,
   BsSave,
@@ -33,6 +35,7 @@ import { Tabs } from '@smartcoorp/ui/tabs';
 import { DeletePostDialog } from '../delete-post-dialog';
 
 import {
+  FieldContainer,
   Header,
   IdContainer,
   PostInformationContainer,
@@ -40,6 +43,7 @@ import {
 
 const FormSchema = z.object({
   title: z.nullable(z.string()),
+  description: z.nullable(z.string()),
   wordCount: z.nullable(z.number()),
   status: z.nativeEnum(EPostStatus),
   coverImageUrl: z.nullable(z.any()).optional(),
@@ -84,6 +88,7 @@ export const PostBuilder = ({ userId, postId }: PostBuilderProps) => {
       wordCount: data?.post?.wordCount ?? 0,
       status: data?.post?.status,
       coverImageUrl: data?.post?.coverImageUrl ?? '',
+      description: data?.post?.description ?? '',
     },
   });
 
@@ -93,6 +98,7 @@ export const PostBuilder = ({ userId, postId }: PostBuilderProps) => {
       wordCount: data?.post?.wordCount ?? 0,
       status: data?.post?.status,
       coverImageUrl: data?.post?.coverImageUrl ?? '',
+      description: data?.post?.description ?? '',
     });
     setPostBlocks(data?.post?.content as BlocksDB);
   }, [data?.post, reset, setPostBlocks]);
@@ -151,6 +157,19 @@ export const PostBuilder = ({ userId, postId }: PostBuilderProps) => {
           <div>
             <Button
               size="small"
+              variant="text"
+              {...(deviceType === 'mobile' && { icon: BsCloudDownload })}
+              onClick={() => {
+                fromContentToJSON({
+                  title: data?.post?.title,
+                  content: postBlocks,
+                });
+              }}
+            >
+              {deviceType === 'mobile' ? '' : 'Export JSON'}
+            </Button>
+            <Button
+              size="small"
               variant="secondary"
               disabled={loading}
               onClick={() => setIsDeleteDialogOpen(true)}
@@ -179,71 +198,107 @@ export const PostBuilder = ({ userId, postId }: PostBuilderProps) => {
 
               content: (
                 <PostInformationContainer>
-                  <Body noMargin size="medium" fontWeight="bold">
-                    Unique Identifier
-                    <Body
-                      variant="neutral"
-                      as="span"
-                      size="xsmall"
-                      noMargin
-                      style={{
-                        display: 'block',
-                      }}
+                  <FieldContainer>
+                    <Body noMargin size="medium" fontWeight="bold">
+                      Unique Identifier
+                      <Body
+                        variant="neutral"
+                        as="span"
+                        size="xsmall"
+                        noMargin
+                        style={{
+                          display: 'block',
+                        }}
+                      >
+                        Used for fetching the post
+                      </Body>
+                    </Body>
+                    <IdContainer
+                      type="button"
+                      aria-label="Copy Id to clipboard"
+                      onClick={onIdCopy}
                     >
-                      Used for fetching the post
-                    </Body>
-                  </Body>
-                  <IdContainer
-                    type="button"
-                    aria-label="Copy Id to clipboard"
-                    onClick={onIdCopy}
-                  >
-                    <Body variant="neutral" ellipsis noMargin>
-                      {postId}
-                    </Body>
-                    <BsClipboard size={14} />
-                  </IdContainer>
-                  <Body noMargin size="medium" fontWeight="bold">
-                    Title
-                  </Body>
-                  <RHFFormField
-                    control={control}
-                    name="title"
-                    placeholder="Enter post title"
-                  />
+                      <Body variant="neutral" ellipsis noMargin>
+                        {postId}
+                      </Body>
+                      <BsClipboard size={14} />
+                    </IdContainer>
+                  </FieldContainer>
 
-                  <Body noMargin size="medium" fontWeight="bold">
-                    Status
-                  </Body>
-                  <RHFSelect
-                    options={[
-                      {
-                        value: 'DRAFT',
-                        label: 'Draft',
-                      },
-                      {
-                        value: 'PUBLISHED',
-                        label: 'Published',
-                      },
-                    ]}
-                    control={control}
-                    name="status"
-                  />
-                  <Body noMargin size="medium" fontWeight="bold">
-                    Cover image
-                  </Body>
-                  <RHFFileUpload
-                    control={control}
-                    name="coverImageUrl"
-                    singleFilePreview={true}
-                    acceptedFileTypes={{
-                      'image/jpeg': [],
-                      'image/jpg': [],
-                      'image/png': [],
-                    }}
-                    helperText="Cover images will be updated in 24h."
-                    // isDisabled={isFormLoading || blogPostId === -1}
-                  />
+                  <FieldContainer>
+                    <Body noMargin size="medium" fontWeight="bold">
+                      Title
+                    </Body>
+
+                    <RHFFormField
+                      control={control}
+                      name="title"
+                      placeholder="Enter post title"
+                    />
+                  </FieldContainer>
+
+                  <FieldContainer>
+                    <Body noMargin size="medium" fontWeight="bold">
+                      Description
+                      <Body
+                        variant="neutral"
+                        as="span"
+                        size="xsmall"
+                        noMargin
+                        style={{
+                          display: 'block',
+                        }}
+                      >
+                        Maximum 280 characters
+                      </Body>
+                    </Body>
+                    <RHFFormField
+                      control={control}
+                      name="description"
+                      isMultiline
+                      maxChars={280}
+                      rules={{
+                        maxLength: 280,
+                      }}
+                      placeholder="Enter post description"
+                    />
+                  </FieldContainer>
+                  <FieldContainer>
+                    <Body noMargin size="medium" fontWeight="bold">
+                      Status
+                    </Body>
+                    <RHFSelect
+                      options={[
+                        {
+                          value: 'DRAFT',
+                          label: 'Draft',
+                        },
+                        {
+                          value: 'PUBLISHED',
+                          label: 'Published',
+                        },
+                      ]}
+                      control={control}
+                      name="status"
+                    />
+                  </FieldContainer>
+                  <FieldContainer>
+                    <Body noMargin size="medium" fontWeight="bold">
+                      Cover image
+                    </Body>
+                    <RHFFileUpload
+                      control={control}
+                      name="coverImageUrl"
+                      singleFilePreview={true}
+                      acceptedFileTypes={{
+                        'image/jpeg': [],
+                        'image/jpg': [],
+                        'image/png': [],
+                      }}
+                      helperText="Cover images will be updated in 24h."
+                      // isDisabled={isFormLoading || blogPostId === -1}
+                    />
+                  </FieldContainer>
                 </PostInformationContainer>
               ),
             },

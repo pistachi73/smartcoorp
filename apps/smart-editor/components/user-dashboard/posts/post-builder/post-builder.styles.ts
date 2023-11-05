@@ -12,6 +12,7 @@ import {
   primary100_RGBA,
   spaceL,
   spaceM,
+  spaceS,
   spaceXL,
   spaceXXL,
 } from '@smartcoorp/ui/tokens';
@@ -32,18 +33,30 @@ export const Header = styled.div`
 `;
 
 export const PostInformationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spaceXL};
+
   max-width: 868px;
-  margin: 0 auto;
   padding-block: ${spaceL};
+
+  @media ${mediaConfined} {
+    gap: ${spaceL};
+    grid-template-columns: 1fr 2fr;
+  }
+`;
+
+export const FieldContainer = styled.div`
+  width: 100%;
 
   display: grid;
   grid-template-columns: 1fr;
-
-  row-gap: ${spaceL};
-  column-gap: ${spaceXXL};
+  gap: ${spaceS};
 
   @media ${mediaConfined} {
     grid-template-columns: 1fr 2fr;
+    gap: 0;
+    column-gap: ${spaceXXL};
   }
 `;
 
