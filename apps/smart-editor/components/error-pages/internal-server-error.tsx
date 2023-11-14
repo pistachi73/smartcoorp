@@ -24,7 +24,7 @@ export const InternalServerError = () => {
     router.refresh();
   };
   return (
-    <Content>
+    <Content data-testid="internal-server-error">
       <InternalServerErrorIllustrationContainer>
         <Image
           src="illustrations/500-internal-server-error.svg"

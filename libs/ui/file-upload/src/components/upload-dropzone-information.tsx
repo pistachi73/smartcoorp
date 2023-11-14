@@ -20,7 +20,7 @@ export const UploadDropzoneInformation = ({
       <S.InformationIconContainer>
         <BiUpload size={22} />
       </S.InformationIconContainer>
-      <Headline size="small">
+      <Headline size="small" as="p">
         Drag and drop files, or{' '}
         <span
           style={{

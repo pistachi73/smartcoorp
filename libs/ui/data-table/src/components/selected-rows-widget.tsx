@@ -99,6 +99,7 @@ export const SelectedRowsWidget = ({
                 table.toggleAllPageRowsSelected(false);
               }}
               icon={BiTrashAlt}
+              data-testid="delete-rows-button"
             />
           )}
           {editUrl && numberOfSelectedRows === 1 ? (

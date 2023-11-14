@@ -1,14 +1,12 @@
 'use client';
 
-import { deleteFile } from '@smart-editor/actions/delete-file';
-import { deletePost } from '@smart-editor/actions/posts.actions';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { toast } from 'sonner';
+import { Dispatch, SetStateAction } from 'react';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Dialog, DialogContent } from '@smartcoorp/ui/dialog';
 import { Headline } from '@smartcoorp/ui/headline';
 
+import { useDeletePost } from './posts.hooks';
 import { DeleteDialogTextContainer, TrashImageContainer } from './posts.styles';
 
 type DeletePostDialogProps = {
@@ -26,28 +24,9 @@ export const DeletePostDialog = ({
   coverImageUrl,
   onSuccess,
 }: DeletePostDialogProps) => {
-  const [isDeleteDialogLoading, setIsDeleteDialogLoading] = useState(false);
-
+  const { mutate: deletePost, isLoading } = useDeletePost({ onSuccess });
   const onDelete = async () => {
-    setIsDeleteDialogLoading(true);
-
-    try {
-      await deletePost({ postId });
-      if (coverImageUrl) {
-        const key = new URL(coverImageUrl).searchParams.get('key');
-
-        await deleteFile({
-          key,
-        });
-      }
-
-      toast.success('Post deleted!');
-      onSuccess?.();
-    } catch (error) {
-      toast.error("Couldn't delete post.");
-    }
-
-    setIsDeleteDialogLoading(false);
+    await deletePost({ postId, coverImageUrl });
   };
 
   return (
@@ -63,7 +42,7 @@ export const DeletePostDialog = ({
         onCancel={() => setIsDeleteDialogOpen(false)}
         actionLabel={`Yes, delete`}
         cancelLabel="Cancel"
-        loading={isDeleteDialogLoading}
+        loading={isLoading}
         variant="danger"
       >
         <TrashImageContainer>

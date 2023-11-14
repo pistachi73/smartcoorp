@@ -30,7 +30,8 @@ export const Filters = () => {
     if (value) {
       const newParams = new URLSearchParams(params.toString());
       newParams.set('title', value);
-      router.push(`${pathname}?${newParams.toString()}`, {});
+
+      router.push(`${pathname}?${newParams.toString()}`);
     } else {
       router.push(`${pathname}`);
     }

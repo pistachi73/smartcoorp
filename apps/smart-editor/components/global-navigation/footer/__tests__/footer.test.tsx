@@ -13,13 +13,6 @@ describe('<Footer />', () => {
       screen.getByText('Craft, Convert, Control: Your Content, Your Way')
     ).toBeInTheDocument();
 
-    const whatsappContact = screen.getByTestId('whatsapp-contact');
-    expect(whatsappContact).toBeInTheDocument();
-    expect(whatsappContact).toHaveAttribute(
-      'href',
-      'https://api.whatsapp.com/send?phone=655996255'
-    );
-
     const mailContact = screen.getByTestId('mail-contact');
     expect(mailContact).toBeInTheDocument();
     expect(mailContact).toHaveAttribute(

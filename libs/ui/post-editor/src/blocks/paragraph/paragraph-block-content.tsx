@@ -87,12 +87,6 @@ export const ParagraphBlockContent: React.FC<ParagraphBlockContentProps> = ({
       if (isTextSplit) {
         debouncedOnTextChange.cancel();
 
-        console.log({
-          blockIndex,
-          fieldRefs: fieldRefs.current,
-        });
-        console.log(fieldRefs.current[blockIndex]?.[0]);
-
         splitTextField({
           blockType: 'paragraph',
           blockId: block.id,

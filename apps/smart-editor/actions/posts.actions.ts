@@ -1,5 +1,6 @@
 'use server';
 
+import { EPostStatus } from '@prisma/client';
 import { z } from 'zod';
 
 import prisma from '@smartcoorp/prisma';
@@ -34,8 +35,14 @@ export const getPost = async (input: GetPostInput) => {
 
   const post = await prisma.ePost.findFirst({
     where: {
-      id: postId,
-      userId: userId,
+      AND: [
+        {
+          userId: userId,
+        },
+        {
+          id: postId,
+        },
+      ],
     },
   });
 
@@ -43,7 +50,7 @@ export const getPost = async (input: GetPostInput) => {
 };
 
 const getPostsSchema = z.object({
-  userId: z.string(),
+  userId: z.string().optional(),
   title: z.nullable(z.string()).optional(),
 });
 
@@ -103,20 +110,27 @@ export const deletePost = async (input: DeletePostInput) => {
 };
 
 const UpdatePostSchema = z.object({
-  userId: z.string(),
   postId: z.string(),
-  data: z.any(),
+  data: z
+    .object({
+      title: z.string(),
+      description: z.string(),
+      status: z.nativeEnum(EPostStatus),
+      coverImageUrl: z.nullable(z.string()),
+      wordCount: z.number(),
+      content: z.any(),
+    })
+    .partial(),
 });
 
 export type UpdatePostInput = z.infer<typeof UpdatePostSchema>;
 
 export const updatePost = async (input: UpdatePostInput) => {
-  const { userId, postId, data } = await UpdatePostSchema.parseAsync(input);
+  const { postId, data } = await UpdatePostSchema.parseAsync(input);
 
   const post = await prisma.ePost.update({
     where: {
       id: postId,
-      userId: userId,
     },
     data,
   });

@@ -31,6 +31,10 @@ export const MetaDataContainer = styled.a`
     outline-color: ${primary};
     outline-width: 6px;
   }
+
+  &:hover {
+    text-decoration: none;
+  }
 `;
 
 export const MetaDomain = styled(Body)`

@@ -1,16 +1,14 @@
 'use client';
 
 import type { EApiKey } from '@prisma/client';
-import { deleteApiKey } from '@smart-editor/actions/api-keys.actions';
-import { useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
-import { toast } from 'sonner';
 
 import Image from 'next/image';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Dialog, DialogContent } from '@smartcoorp/ui/dialog';
 import { Headline } from '@smartcoorp/ui/headline';
+
+import { useDeleteApiKey } from '../api-keys.hooks';
 
 import {
   ApiKeyBadge,
@@ -30,26 +28,16 @@ export const DeleteApiKeyDialog = ({
   setIsOpen,
   toDeleteApiKeys,
 }: DeleteApiKeyDialogProps) => {
-  const queryClient = useQueryClient();
-
-  const [loading, setLoading] = useState(false);
+  const { mutate: deleteApiKey, isLoading } = useDeleteApiKey({
+    onSuccess: () => {
+      setIsOpen(false);
+    },
+  });
 
   const onDelete = async (apiKeyIds: string[]) => {
-    setLoading(true);
-
-    try {
-      await deleteApiKey({
-        apiKeyIds,
-      });
-
-      queryClient.invalidateQueries({ queryKey: ['getApiKeys'] });
-      setIsOpen(false);
-      toast.success('Api keys deleted successfully');
-    } catch (error) {
-      toast.error("Couldn't delete api keys");
-    }
-
-    setLoading(false);
+    await deleteApiKey({
+      apiKeyIds,
+    });
   };
 
   return (
@@ -61,7 +49,7 @@ export const DeleteApiKeyDialog = ({
         onCancel={() => setIsOpen(false)}
         actionLabel={`Yes, delete`}
         cancelLabel="Cancel"
-        loading={loading}
+        loading={isLoading}
         variant="danger"
       >
         <TrashImageContainer>

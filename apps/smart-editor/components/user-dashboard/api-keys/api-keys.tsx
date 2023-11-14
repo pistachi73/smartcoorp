@@ -1,7 +1,6 @@
 'use client';
 import { EApiKey } from '@prisma/client';
-import { getApiKeys } from '@smart-editor/actions/api-keys.actions';
-import { useQuery } from '@tanstack/react-query';
+import { InternalServerError } from '@smart-editor/components/error-pages/internal-server-error';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { useState } from 'react';
@@ -9,6 +8,7 @@ import { useState } from 'react';
 import { Body } from '@smartcoorp/ui/body';
 import { Table, selectColumn } from '@smartcoorp/ui/data-table';
 
+import { useGetApiKeys } from './api-keys.hooks';
 import { ApiKeyTokenCell } from './api-keys.styles';
 import { CreateApiKeyDialog } from './create-api-key-dialog/create-api-key-dialog';
 import { DeleteApiKeyDialog } from './delete-api-key-dialog/delete-api-key-dialog';
@@ -37,7 +37,7 @@ export const apiKeysTableColumns: ColumnDef<EApiKey>[] = [
   },
   {
     accessorKey: 'lastUsed',
-    header: 'CREATED AT',
+    header: 'USED AT',
 
     cell: (info) => (
       <Body size="small" noMargin>
@@ -69,11 +69,11 @@ export const ApiKeys = ({ userId }: { userId: string }) => {
 
   const [toDeleteApiKeys, setToDeleteApiKeys] = useState<EApiKey[]>([]);
 
-  const { data } = useQuery({
-    queryKey: ['getApiKeys'],
-    queryFn: () => getApiKeys({ userId }),
-    refetchOnWindowFocus: false,
-  });
+  const { data, error } = useGetApiKeys({ userId });
+
+  if (error) {
+    return <InternalServerError />;
+  }
 
   return (
     <>

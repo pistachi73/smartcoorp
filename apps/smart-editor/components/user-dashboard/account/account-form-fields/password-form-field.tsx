@@ -1,9 +1,7 @@
-import { updateAccount } from '@smart-editor/actions/account.actions';
 import {
   PasswordSchema,
   passwordInputValidator,
 } from '@smart-editor/components/credential-pages/helpers';
-import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -14,6 +12,7 @@ import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 import { Headline } from '@smartcoorp/ui/headline';
 
+import { useUpdateField } from '../account.hooks';
 import {
   FieldContainer,
   FieldContent,
@@ -28,8 +27,6 @@ const PasswordFieldFormSchema = z.object({
 
 type PasswordFieldForm = z.infer<typeof PasswordFieldFormSchema>;
 
-type PasswordFieldProps = {};
-
 export const PasswordField = () => {
   const session = useSession();
   const { control, handleSubmit, watch, reset } = useForm<PasswordFieldForm>({
@@ -39,15 +36,8 @@ export const PasswordField = () => {
     },
   });
 
-  const { mutate: updatePassword, isLoading } = useMutation({
-    mutationFn: updateAccount,
-
-    onSettled: () => {
-      toast.success('Password updated');
-    },
-    onError: () => {
-      toast.error('Something went wrong. Please try again.');
-    },
+  const { mutate: updatePassword, isLoading } = useUpdateField({
+    field: 'password',
   });
 
   const onSubmit = handleSubmit(async (data: PasswordFieldForm) => {

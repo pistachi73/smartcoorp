@@ -24,23 +24,23 @@ export type PricingSnippet = {
 
 export const pricingSnippets: PricingSnippet[] = [
   {
-    title: 'Chain-Based Rendering',
+    title: 'Chain-based rendering',
     description:
       'Leverage the powerful chain-based rendering for intricate content structures.',
     icon: <BsLink size={20} />,
   },
   {
-    title: '5 Blog Posts',
+    title: '5 blog posts',
     description: 'Create and manage up to 5 blog posts.',
     icon: <BsPen size={20} />,
   },
   {
-    title: '5 Images per Blog Post',
+    title: '5 Iimages per blog post',
     description: 'Add up to 5 images to each blog post.',
     icon: <BsImages size={20} />,
   },
   {
-    title: 'Priority Support',
+    title: 'Priority support',
     description: 'Receive priority customer support for quicker assistance.',
     icon: <BsTelephoneInbound size={20} />,
   },
@@ -66,7 +66,7 @@ export const Pricing = () => {
               marginBottom: space3XL,
             }}
           >
-            Discover the Perfect Plan to Power Your Content Journey
+            Discover the perfect plan to power your content journey
           </Body>
         </div>
         <Wrapper>

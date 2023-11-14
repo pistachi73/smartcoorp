@@ -69,6 +69,7 @@ export const selectColumn: DisplayColumnDef<any> = {
 
   cell: ({ row }) => (
     <Checkbox
+      id={`row${row.id}-checkbox`}
       size="small"
       checked={row.getIsSelected()}
       isDisabled={!row.getCanSelect()}

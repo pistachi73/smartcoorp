@@ -3,7 +3,7 @@ import { getAccount } from '@smart-editor/actions/account.actions';
 import { useQuery } from '@tanstack/react-query';
 
 import { AvatarField } from './account-form-fields/avatar-field';
-import { DeleteAccount } from './account-form-fields/delete-account';
+import { DeleteAccountField } from './account-form-fields/delete-account-field';
 import { EmailField } from './account-form-fields/email-field';
 import { NameField } from './account-form-fields/name-field';
 import { PasswordField } from './account-form-fields/password-form-field';
@@ -42,7 +42,7 @@ export const Account = ({ userId }: AccountProps) => {
               isGoogleUser={isGoogleUser}
             />
             {isGoogleUser ? null : <PasswordField />}
-            <DeleteAccount />
+            <DeleteAccountField />
           </FormContainer>
         </>
       )}

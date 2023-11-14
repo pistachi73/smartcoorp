@@ -29,21 +29,21 @@ export const features: FeatureType[] = [
     icon: <BsUpload size={68} />,
   },
   {
-    title: 'User-Friendly Learning Curve',
+    title: 'User-friendly learning curve',
     description:
       'Benefit from an intuitive interface that requires minimal learning, ensuring that both beginners and experienced users can leverage the tool effectively.',
     icon: <BsEmojiSunglasses size={68} />,
   },
   {
-    title: 'Dynamic Column Creation',
+    title: 'Dynamic column creation',
     description:
       'Create visually appealing layouts by organizing content blocks into customizable columns, providing a clean and professional look to your output.',
     icon: <BsColumnsGap size={68} />,
   },
   {
-    title: 'Continuous Updates',
+    title: 'Continuous updates',
     description:
-      ' Stay ahead with regular updates that bring enhancements and new features to enrich your content creation experience.',
+      'Stay ahead with regular updates that bring enhancements and new features to enrich your content creation experience.',
     icon: <BsGraphUp size={68} />,
   },
 ];
@@ -58,7 +58,7 @@ export const Features = () => {
           }}
         >
           <Headline size="large" sizeConfined="xxlarge" forwardedAs="h2">
-            Transform and Customise Your Content
+            Transform and customise your content
           </Headline>
           <Body
             size="medium"
@@ -68,7 +68,7 @@ export const Features = () => {
               marginBottom: space3XL,
             }}
           >
-            Elevate Your Content with Chain-Based JSON Rendering
+            Elevate your content with chain-based JSON rendering
           </Body>
         </div>
         <Grid>

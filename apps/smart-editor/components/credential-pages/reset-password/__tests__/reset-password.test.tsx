@@ -4,12 +4,11 @@ import {
   screen,
   waitFor,
 } from '@smart-editor/utils/testing/test-utils';
-import { toast } from 'sonner';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
-import { resetPasswordAction } from '../action';
 import { ResetPassword } from '../reset-password';
+import { useResetPassword } from '../reset-password.hooks';
 
 const validPassword = 'Password1!+';
 
@@ -20,20 +19,18 @@ const typeInput = ({ field, value }: { field: string; value: string }) =>
     target: { value },
   });
 
-jest.mock('sonner');
 jest.mock('next/navigation');
-jest.mock('../action');
+jest.mock('../reset-password.hooks');
 
 const mockToken = 'token';
-const pushMock = jest.fn();
-(useRouter as jest.Mock).mockReturnValue({
-  push: pushMock,
-});
 (useParams as jest.Mock).mockReturnValue({
   token: mockToken,
 });
 
-const mockResetPasswordAction = resetPasswordAction as jest.Mock;
+const mockMutate = jest.fn();
+(useResetPassword as jest.Mock).mockReturnValue({
+  mutate: mockMutate,
+});
 
 describe('<ResetPassword />', () => {
   beforeEach(() => {
@@ -44,9 +41,13 @@ describe('<ResetPassword />', () => {
     it('should show an error when the password is invalid', async () => {
       clickResetPasswordButton();
 
-      expect(await screen.findAllByText('Password is required')).toHaveLength(
-        2
-      );
+      expect(
+        await screen.findByText('Password is required')
+      ).toBeInTheDocument();
+
+      expect(
+        await screen.findByText('Please confirm your password')
+      ).toBeInTheDocument();
     });
 
     it('should show an error when the password is invalid', async () => {
@@ -61,11 +62,10 @@ describe('<ResetPassword />', () => {
 
     it('should show an error when the confirm password is invalid', async () => {
       typeInput({ field: 'Confirm password', value: 'test' });
+
       clickResetPasswordButton();
       expect(
-        await screen.findByText(
-          'Password must be at least 8 characters long, contain at least one uppercase letter, one number and one special character'
-        )
+        await screen.findByText('Your passwords do no match')
       ).toBeInTheDocument();
     });
   });
@@ -78,51 +78,16 @@ describe('<ResetPassword />', () => {
     ).toHaveAttribute('href', '/login');
   });
 
-  it('should throw error if resetPasswordAction threw error', async () => {
-    const error = 'error';
-    mockResetPasswordAction.mockResolvedValueOnce({
-      error,
-    });
-
-    typeInput({ field: 'Password', value: validPassword });
-    typeInput({ field: 'Confirm password', value: validPassword });
-
-    clickResetPasswordButton();
-
-    await waitFor(() => {
-      expect(mockResetPasswordAction).toHaveBeenCalledTimes(1);
-      expect(mockResetPasswordAction).toHaveBeenCalledWith(
-        {
-          password: validPassword,
-          confirmPassword: validPassword,
-        },
-        mockToken
-      );
-    });
-
-    expect(toast.error).toHaveBeenCalledTimes(1);
-    expect(toast.error).toHaveBeenCalledWith(error);
-  });
-
-  it('should redirect to /login if resetPasswordAction was successful', async () => {
-    mockResetPasswordAction.mockResolvedValueOnce({});
-
+  it('should call resetPassword when the form is submitted and the password is valid', async () => {
     typeInput({ field: 'Password', value: validPassword });
     typeInput({ field: 'Confirm password', value: validPassword });
     clickResetPasswordButton();
-
     await waitFor(() => {
-      expect(mockResetPasswordAction).toHaveBeenCalledTimes(1);
-      expect(mockResetPasswordAction).toHaveBeenCalledWith(
-        {
-          password: validPassword,
-          confirmPassword: validPassword,
-        },
-        'token'
-      );
+      expect(mockMutate).toHaveBeenCalledWith({
+        token: mockToken,
+        password: validPassword,
+        confirmPassword: validPassword,
+      });
     });
-
-    expect(pushMock).toHaveBeenCalledTimes(1);
-    expect(pushMock).toHaveBeenCalledWith('/login');
   });
 });
