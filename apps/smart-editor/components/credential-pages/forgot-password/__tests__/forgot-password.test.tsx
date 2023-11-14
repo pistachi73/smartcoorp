@@ -8,8 +8,8 @@ import { toast } from 'sonner';
 
 import { useRouter } from 'next/navigation';
 
-import { forgotPasswordAction } from '../action';
 import { ForgotPassword } from '../forgot-password';
+import { useSendForgotPasswordEmail } from '../forgot-password.hooks';
 
 const validEmail = 'test@test.com';
 
@@ -21,15 +21,12 @@ const typeInput = ({ field, value }: { field: string; value: string }) =>
   });
 
 jest.mock('sonner');
-jest.mock('next/navigation');
-jest.mock('../action');
+jest.mock('../forgot-password.hooks');
 
-const pushMock = jest.fn();
-(useRouter as jest.Mock).mockReturnValue({
-  push: pushMock,
+const mockMutate = jest.fn();
+(useSendForgotPasswordEmail as jest.Mock).mockReturnValue({
+  mutate: mockMutate,
 });
-
-const mockForgotPasswordAction = forgotPasswordAction as jest.Mock;
 
 describe('<ForgotPassword />', () => {
   beforeEach(() => {
@@ -63,40 +60,13 @@ describe('<ForgotPassword />', () => {
     ).toHaveAttribute('href', '/login');
   });
 
-  it('should throw error if forgotPasswordAction threw error', async () => {
-    const error = 'error';
-    mockForgotPasswordAction.mockResolvedValueOnce({
-      error,
-    });
-
+  it('should call sendForgotPasswordEmail when the form is submitted and the email is valid', async () => {
     typeInput({ field: 'Email', value: validEmail });
     clickResetPasswordButton();
-
     await waitFor(() => {
-      expect(mockForgotPasswordAction).toHaveBeenCalledTimes(1);
-      expect(mockForgotPasswordAction).toHaveBeenCalledWith({
+      expect(mockMutate).toHaveBeenCalledWith({
         email: validEmail,
       });
     });
-
-    expect(toast.error).toHaveBeenCalledTimes(1);
-    expect(toast.error).toHaveBeenCalledWith(error);
-  });
-
-  it('should redirect to /forgot-password/success if forgotPasswordAction was successful', async () => {
-    mockForgotPasswordAction.mockResolvedValueOnce({});
-
-    typeInput({ field: 'Email', value: validEmail });
-    clickResetPasswordButton();
-
-    await waitFor(() => {
-      expect(mockForgotPasswordAction).toHaveBeenCalledTimes(1);
-      expect(mockForgotPasswordAction).toHaveBeenCalledWith({
-        email: validEmail,
-      });
-    });
-
-    expect(pushMock).toHaveBeenCalledTimes(1);
-    expect(pushMock).toHaveBeenCalledWith('/forgot-password/success');
   });
 });

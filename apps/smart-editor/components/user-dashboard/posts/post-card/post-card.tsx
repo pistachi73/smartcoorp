@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { useState } from 'react';
 import {
   BsCloudDownload,
+  BsGear,
   BsPen,
   BsThreeDotsVertical,
   BsTrash,
@@ -34,7 +35,7 @@ import {
   PostCardOptionsContent,
 } from './post-card.styles';
 
-type PostCardProps = {
+export type PostCardProps = {
   id: string;
   title: string | null;
   wordCount: number | null;
@@ -44,7 +45,7 @@ type PostCardProps = {
   content: any;
 };
 
-const statusMapping: Record<EPostStatus, string> = {
+export const statusMapping: Record<EPostStatus, string> = {
   DRAFT: 'Draft',
   PUBLISHED: 'Published',
 };
@@ -80,12 +81,22 @@ export const PostCard = ({
           <PostCardOptionsContent align="start" sideOffset={4}>
             <DropdownMenuItem>
               <Button
-                to={`/posts/${id}`}
+                to={`/posts/${id}/edit`}
                 size="small"
                 variant="text"
                 icon={BsPen}
               >
-                Edit
+                Edit post
+              </Button>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Button
+                to={`/posts/${id}`}
+                size="small"
+                variant="text"
+                icon={BsGear}
+              >
+                Post settings
               </Button>
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -118,10 +129,12 @@ export const PostCard = ({
         </DropdownMenu>
         <PostCardImage>
           <Image
+            data-testid="post-card-image"
             src={coverImageUrl ?? '/dashboard/cover-image-placeholder.webp'}
             alt={`${title} Cover Image`}
             fill
             sizes="600px"
+            priority
           />
         </PostCardImage>
         <PostCardContent>

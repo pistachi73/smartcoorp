@@ -21,14 +21,14 @@ import {
   spaceXXS,
 } from '@smartcoorp/ui/tokens';
 
-export const Container = styled.div`
+export const Container = styled.div<{ $toolbarTopOffset?: number }>`
   padding: ${spaceXS};
 
   height: ${scale140};
 
   position: sticky;
-  top: 0;
-  z-index: 10;
+  top: ${({ $toolbarTopOffset }) => $toolbarTopOffset ?? 0}px;
+  z-index: 9999;
 
   display: flex;
   align-items: center;

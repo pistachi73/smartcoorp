@@ -4,12 +4,9 @@ import {
   screen,
   waitFor,
 } from '@smart-editor/utils/testing/test-utils';
-import { toast } from 'sonner';
 
-import { useRouter } from 'next/navigation';
-
-import { signupAction } from '../action';
 import { Signup } from '../signup';
+import { useSignUp } from '../signup.hooks';
 
 const validEmail = 'test@test.com';
 const validPassword = '1Abcdefgh+';
@@ -22,15 +19,12 @@ const typeInput = ({ field, value }: { field: string; value: string }) =>
     target: { value },
   });
 
-jest.mock('sonner');
-jest.mock('next/navigation');
-jest.mock('../action');
+jest.mock('../signup.hooks');
 
-const pushMock = jest.fn();
-(useRouter as jest.Mock).mockReturnValue({
-  push: pushMock,
+const mockMutate = jest.fn();
+(useSignUp as jest.Mock).mockReturnValue({
+  mutate: mockMutate,
 });
-const mockSignupAction = signupAction as jest.Mock;
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -90,41 +84,18 @@ describe('<Signup />', () => {
     );
   });
 
-  it('should redirect on successful signup', async () => {
-    mockSignupAction.mockResolvedValueOnce({});
+  it('should call signUp when the form is submitted and the data is valid', async () => {
     typeInput({ field: 'Email', value: validEmail });
     typeInput({ field: 'Password', value: validPassword });
     typeInput({ field: 'Name', value: 'test' });
     clickSignupButton();
 
     await waitFor(() => {
-      expect(mockSignupAction).toHaveBeenCalledTimes(1);
-      expect(mockSignupAction).toHaveBeenCalledWith({
+      expect(mockMutate).toHaveBeenCalledWith({
         email: validEmail,
         password: validPassword,
         name: 'test',
       });
     });
-    expect(pushMock).toHaveBeenCalledTimes(1);
-    expect(pushMock).toHaveBeenCalledWith('/signup/success');
-  });
-
-  it('should throw error if signupAction threw error', async () => {
-    const error = 'error';
-    mockSignupAction.mockResolvedValueOnce({
-      error,
-    });
-
-    typeInput({ field: 'Email', value: validEmail });
-    typeInput({ field: 'Password', value: validPassword });
-    typeInput({ field: 'Name', value: 'test' });
-    clickSignupButton();
-
-    await waitFor(() => {
-      expect(mockSignupAction).toHaveBeenCalledTimes(1);
-    });
-
-    expect(toast.error).toHaveBeenCalledTimes(1);
-    expect(toast.error).toHaveBeenCalledWith(error);
   });
 });

@@ -117,4 +117,5 @@ export type PostEditorProps = {
   debounceTime?: number;
   currentUploadedImages?: ImageWithUrl[];
   setImagesToHandle?: (imagesToHandle: ImagesToHandle) => void;
+  toolbarTopOffset?: number;
 };

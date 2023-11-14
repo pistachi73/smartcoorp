@@ -11,6 +11,7 @@ import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 import { Headline } from '@smartcoorp/ui/headline';
 
+import { useUpdateField } from '../account.hooks';
 import {
   FieldContainer,
   FieldContent,
@@ -38,16 +39,7 @@ export const NameField = ({ name, isGoogleUser }: NameFieldProps) => {
     },
   });
 
-  const { mutate: updateName, isLoading } = useMutation({
-    mutationFn: updateAccount,
-
-    onSettled: () => {
-      toast.success('Name updated');
-    },
-    onError: () => {
-      toast.error('Something went wrong. Please try again.');
-    },
-  });
+  const { mutate: updateName, isLoading } = useUpdateField({ field: 'name' });
 
   const onSubmit = handleSubmit(async (data: NameFieldForm) => {
     await updateName({

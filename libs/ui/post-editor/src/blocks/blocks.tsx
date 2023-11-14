@@ -16,7 +16,13 @@ const pasteEvent = (e: any) => {
   document.execCommand('insertText', false, text);
 };
 
-export const Blocks = ({ getMetaData }: { getMetaData: any }) => {
+export const Blocks = ({
+  getMetaData,
+  toolbarTopOffset,
+}: {
+  getMetaData: any;
+  toolbarTopOffset?: number;
+}) => {
   const { DragSelection } = useDragSelection();
   const { handleSharedClickDown, handleSharedKeyDown } = useSharedEvents();
 
@@ -36,7 +42,7 @@ export const Blocks = ({ getMetaData }: { getMetaData: any }) => {
     >
       <DragSelection />
       <BlockTools />
-      <Toolbar />
+      <Toolbar toolbarTopOffset={toolbarTopOffset} />
       <BlockChainContainer>
         <BlockChain chainId="main" getMetaData={getMetaData} />
       </BlockChainContainer>

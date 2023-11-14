@@ -36,6 +36,6 @@ describe('<Hero />', () => {
     });
 
     expect(startCraftingButton).toBeInTheDocument();
-    expect(startCraftingButton).toHaveAttribute('href', '#try-editor');
+    expect(startCraftingButton).toHaveAttribute('href', '/signup');
   });
 });

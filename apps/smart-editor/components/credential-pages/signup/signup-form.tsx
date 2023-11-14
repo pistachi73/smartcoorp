@@ -1,10 +1,6 @@
 'use client';
 
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-
-import { useRouter } from 'next/navigation';
 
 import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
@@ -15,7 +11,7 @@ import {
   passwordInputValidator,
 } from '../helpers';
 
-import { signupAction } from './action';
+import { useSignUp } from './signup.hooks';
 
 export const SignupForm = () => {
   const { control, handleSubmit } = useForm<SignupFormData>({
@@ -25,20 +21,11 @@ export const SignupForm = () => {
       password: '',
     },
   });
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+
+  const { mutate: signUp, isLoading } = useSignUp();
 
   const onSubmit = async (data: SignupFormData) => {
-    setLoading(true);
-
-    const { error } = await signupAction(data);
-
-    if (error) {
-      toast.error(error);
-      setLoading(false);
-    } else {
-      router.push('/signup/success');
-    }
+    await signUp(data);
   };
 
   return (
@@ -47,7 +34,7 @@ export const SignupForm = () => {
         label="Name"
         name="name"
         control={control}
-        isDisabled={loading}
+        isDisabled={isLoading}
         rules={{
           required: 'Name is required',
         }}
@@ -56,18 +43,18 @@ export const SignupForm = () => {
         label="Email"
         name="email"
         control={control}
-        isDisabled={loading}
+        isDisabled={isLoading}
         rules={emailnputValidator}
       />
       <RHFFormField
         label="Password"
         name="password"
         control={control}
-        isDisabled={loading}
+        isDisabled={isLoading}
         type="password"
         rules={passwordInputValidator}
       />
-      <Button type="submit" loading={loading}>
+      <Button type="submit" loading={isLoading}>
         Sign up
       </Button>
     </form>

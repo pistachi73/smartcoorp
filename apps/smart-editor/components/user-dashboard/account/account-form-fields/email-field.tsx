@@ -1,9 +1,5 @@
-import {
-  sendAccountVerificationEmail,
-  updateAccount,
-} from '@smart-editor/actions/account.actions';
+import { sendAccountVerificationEmail } from '@smart-editor/actions/account.actions';
 import { emailnputValidator } from '@smart-editor/components/credential-pages/helpers';
-import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
@@ -15,6 +11,7 @@ import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 import { Headline } from '@smartcoorp/ui/headline';
 
+import { useUpdateField } from '../account.hooks';
 import {
   FieldContainer,
   FieldContent,
@@ -42,18 +39,7 @@ export const EmailField = ({ email, isGoogleUser }: EmailFieldProps) => {
     },
   });
 
-  const { mutate: updateEmail, isLoading } = useMutation({
-    mutationFn: updateAccount,
-
-    onSettled: () => {
-      toast.success(
-        'Email updated. Please check your email to verify the change'
-      );
-    },
-    onError: () => {
-      toast.error('Something went wrong. Please try again.');
-    },
-  });
+  const { mutate: updateEmail, isLoading } = useUpdateField({ field: 'email' });
 
   const onSubmit = handleSubmit(async (data: EmailFieldForm) => {
     if (data.email === email) {
@@ -111,7 +97,6 @@ export const EmailField = ({ email, isGoogleUser }: EmailFieldProps) => {
             rules={emailnputValidator}
           />
         </FormFieldContainer>
-        {/* {children} */}
       </FieldContent>
       <FieldFooter>
         <Body size="small" variant="neutral" noMargin>

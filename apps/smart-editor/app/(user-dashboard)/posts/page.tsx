@@ -22,7 +22,7 @@ const PostsPage = async ({
     queryKey: ['getPosts', searchParams.title ?? ''],
     queryFn: () =>
       getPosts({
-        userId: session?.id?.toString() ?? '',
+        userId: session?.id,
         title: searchParams.title,
       }),
   });

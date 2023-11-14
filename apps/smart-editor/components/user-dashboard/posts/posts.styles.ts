@@ -8,7 +8,6 @@ import { scale300, spaceL, spaceXL, spaceXS } from '@smartcoorp/ui/tokens';
 export const PostCardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  /* grid-auto-rows: 1fr; */
   grid-gap: ${spaceL};
 
   @media (min-width: 650px) {

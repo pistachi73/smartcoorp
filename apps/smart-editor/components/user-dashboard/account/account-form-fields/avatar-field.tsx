@@ -18,12 +18,7 @@ import {
   primary100_RGBA,
 } from '@smartcoorp/ui/tokens';
 
-import {
-  FieldContainer,
-  FieldContent,
-  FieldFooter,
-  WarningSign,
-} from '../account.styles';
+import { FieldContainer, FieldContent, WarningSign } from '../account.styles';
 
 const StyledFieldContent = styled(FieldContent)`
   display: flex;
@@ -104,13 +99,11 @@ export const AvatarField = ({ picture }: AvatarFieldProps) => {
           },
         });
         session.update({
-          picture,
+          picture: avatarPicture,
         });
       }
-
-      setAvatarPreview(URL.createObjectURL(file));
-
       toast.success('Avatar updated');
+      setAvatarPreview(URL.createObjectURL(file));
     } catch (error) {
       toast.error('Something went wrong. Please try again.');
     }
@@ -154,6 +147,7 @@ export const AvatarField = ({ picture }: AvatarFieldProps) => {
           accept="image/png,image/jpeg"
           aria-label="Upload Avatar"
           type="file"
+          data-testid="avatar-input"
         />
       </StyledFieldContent>
       {/* <FieldFooter>

@@ -1,42 +1,33 @@
 'use client';
 
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
 import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 
 import { type ResetPasswordFormData, passwordInputValidator } from '../helpers';
 
-import { resetPasswordAction } from './action';
+import { useResetPassword } from './reset-password.hooks';
 
 export const ResetPasswordForm = () => {
   const params = useParams();
-  const { control, handleSubmit } = useForm<ResetPasswordFormData>({
+  const { control, handleSubmit, watch } = useForm<ResetPasswordFormData>({
     defaultValues: {
       password: '',
       confirmPassword: '',
     },
   });
-  const [loading, setLoading] = useState(false);
 
-  const router = useRouter();
+  const { mutate: resetPassword, isLoading } = useResetPassword();
 
   const onSubmit = async (data: ResetPasswordFormData) => {
-    setLoading(true);
-
-    const { error } = await resetPasswordAction(data, params.token);
-
-    if (error) {
-      toast.error(error);
-    } else {
-      router.push('/login');
-    }
-
-    setLoading(false);
+    await resetPassword({
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+      token: params.token,
+    });
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -44,7 +35,7 @@ export const ResetPasswordForm = () => {
         label="Password"
         name="password"
         control={control}
-        isDisabled={loading}
+        isDisabled={isLoading}
         type="password"
         rules={passwordInputValidator}
       />
@@ -52,11 +43,18 @@ export const ResetPasswordForm = () => {
         label="Confirm password"
         name="confirmPassword"
         control={control}
-        isDisabled={loading}
+        isDisabled={isLoading}
         type="password"
-        rules={passwordInputValidator}
+        rules={{
+          required: 'Please confirm your password',
+          validate: (confirmPassword: string) => {
+            if (watch('password') != confirmPassword) {
+              return 'Your passwords do no match';
+            }
+          },
+        }}
       />
-      <Button type="submit" loading={loading}>
+      <Button type="submit" loading={isLoading}>
         Set new Password
       </Button>
     </form>

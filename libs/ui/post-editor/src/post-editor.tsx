@@ -22,6 +22,7 @@ export const PostEditor: FC<PostEditorProps> = ({
   maxImages,
   currentUploadedImages,
   setImagesToHandle,
+  toolbarTopOffset,
 }) => {
   return (
     <UtilProvider debounceTime={debounceTime} maxImages={maxImages}>
@@ -34,7 +35,10 @@ export const PostEditor: FC<PostEditorProps> = ({
               currentUploadedImages={currentUploadedImages}
               setImagesToHandle={setImagesToHandle}
             >
-              <Blocks getMetaData={getMetaData} />
+              <Blocks
+                getMetaData={getMetaData}
+                toolbarTopOffset={toolbarTopOffset}
+              />
             </BlocksDBProvider>
           </ToolControlProvider>
         </BlockSelectionProvider>

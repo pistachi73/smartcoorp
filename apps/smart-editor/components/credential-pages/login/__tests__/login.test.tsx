@@ -1,3 +1,4 @@
+import { AuthorizeError } from '@smart-editor/utils/next-auth-config';
 import {
   fireEvent,
   render,
@@ -7,7 +8,7 @@ import {
 import { signIn } from 'next-auth/react';
 import { toast } from 'sonner';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Login } from '../login';
 
@@ -30,6 +31,10 @@ jest.mock('next/navigation');
 const pushMock = jest.fn();
 (useRouter as jest.Mock).mockReturnValue({
   push: pushMock,
+});
+
+(useSearchParams as jest.Mock).mockReturnValue({
+  get: jest.fn(),
 });
 
 beforeEach(() => {
@@ -98,27 +103,60 @@ describe('<Login />', () => {
     expect(pushMock).toHaveBeenCalledTimes(1);
     expect(pushMock).toHaveBeenCalledWith('/posts');
   });
-  it('should trigger toast error on login fail', async () => {
-    const error = 'Invalid credentials';
-    (signIn as jest.Mock).mockReturnValue({
-      error,
-    });
-    render(<Login />);
 
-    typeInput({ field: 'Email', value: validEmail });
-    typeInput({ field: 'Password', value: validPassword });
-    clickLoginButton();
+  describe('<Login /> Errors', () => {
+    const triggerLoginError = async (error: string) => {
+      (signIn as jest.Mock).mockReturnValue({
+        error,
+      });
+      render(<Login />);
 
-    await waitFor(() => {
-      expect(signIn).toHaveBeenCalledTimes(1);
-      expect(signIn).toHaveBeenCalledWith('credentials', {
-        email: validEmail,
-        password: validPassword,
-        redirect: false,
+      typeInput({ field: 'Email', value: validEmail });
+      typeInput({ field: 'Password', value: validPassword });
+      clickLoginButton();
+
+      await waitFor(() => {
+        expect(signIn).toHaveBeenCalledTimes(1);
+        expect(signIn).toHaveBeenCalledWith('credentials', {
+          email: validEmail,
+          password: validPassword,
+          redirect: false,
+        });
+      });
+    };
+
+    it("should trigger toast error on login fail with '403' error", async () => {
+      const error: AuthorizeError = {
+        code: 403,
+        message: 'Error',
+        data: {
+          email: 'mockEmail',
+          name: 'mockName',
+          id: 'mockId',
+        },
+      };
+
+      await triggerLoginError(JSON.stringify(error));
+
+      expect(toast.error).toHaveBeenCalledTimes(1);
+      expect(toast.error).toHaveBeenCalledWith('Error', {
+        action: {
+          label: 'Resend email',
+          onClick: expect.any(Function),
+        },
       });
     });
 
-    expect(toast.error).toHaveBeenCalledTimes(1);
-    expect(toast.error).toHaveBeenCalledWith(error);
+    it("should trigger toast error on login fail with '401' error", async () => {
+      const error = {
+        code: 401,
+        message: 'Error',
+      };
+
+      await triggerLoginError(JSON.stringify(error));
+
+      expect(toast.error).toHaveBeenCalledTimes(1);
+      expect(toast.error).toHaveBeenCalledWith('Error');
+    });
   });
 });

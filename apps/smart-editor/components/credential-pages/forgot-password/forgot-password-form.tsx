@@ -1,52 +1,39 @@
 'use client';
 
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-
-import { useRouter } from 'next/navigation';
 
 import { Button } from '@smartcoorp/ui/button';
 import { RHFFormField } from '@smartcoorp/ui/form-field';
 
 import { type ForgotPasswordFormData, emailnputValidator } from '../helpers';
 
-import { forgotPasswordAction } from './action';
+import { useSendForgotPasswordEmail } from './forgot-password.hooks';
 
 export const ForgotPasswordForm = () => {
-  const [loading, setLoading] = useState(false);
   const { control, handleSubmit } = useForm<ForgotPasswordFormData>({
     defaultValues: {
       email: '',
     },
   });
 
-  const router = useRouter();
+  const { mutate: sendForgotPasswordEmail, isLoading } =
+    useSendForgotPasswordEmail();
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
-    setLoading(true);
-
-    const { error } = await forgotPasswordAction(data);
-
-    if (error) {
-      toast.error(error);
-    } else {
-      router.push('/forgot-password/success');
-    }
-
-    setLoading(false);
+    await sendForgotPasswordEmail({ email: data.email });
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <RHFFormField
         label="Email"
         name="email"
         control={control}
-        isDisabled={loading}
+        isDisabled={isLoading}
         type="email"
         rules={emailnputValidator}
       />
-      <Button type="submit" loading={loading}>
+      <Button type="submit" loading={isLoading}>
         Reset Password
       </Button>
     </form>

@@ -9,10 +9,7 @@ import {
   primary_RGBA,
   scale070,
   scale150,
-  scale170,
-  scale180,
   spaceL,
-  spaceM,
   spaceS,
   spaceXL,
 } from '@smartcoorp/ui/tokens';
@@ -96,7 +93,6 @@ const TabsList = styled(TabsPrimitive.List)`
   overflow: visible;
 
   display: flex;
-  gap: ${spaceL};
 
   &::before {
     content: '';

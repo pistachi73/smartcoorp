@@ -66,7 +66,7 @@ export const Hero = () => {
             you envision, revolutionising how you craft content.
           </Subtitle>
           <ButtonsContainer>
-            <Button href="#try-editor">Start Crafting</Button>
+            <Button href="/signup">Start Crafting</Button>
             <Button href="#try-editor" variant="secondary">
               Try the Editor!
             </Button>

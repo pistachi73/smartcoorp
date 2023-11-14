@@ -12,7 +12,7 @@ export const HeaderContainer = styled.header`
 
   position: sticky;
   top: 0;
-  z-index: 99999;
+  z-index: 21;
 
   background-color: ${gray100};
 

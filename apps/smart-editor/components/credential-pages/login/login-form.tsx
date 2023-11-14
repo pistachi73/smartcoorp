@@ -45,7 +45,7 @@ export const LoginForm = () => {
       if (typedError.code === 403) {
         toast.error(typedError.message, {
           action: {
-            label: 'Resend verification email',
+            label: 'Resend email',
             onClick: () =>
               toast.promise(
                 async () => {

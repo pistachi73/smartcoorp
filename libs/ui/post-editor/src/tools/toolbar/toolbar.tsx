@@ -40,7 +40,11 @@ import {
 } from './toolbar.styles';
 import { useToolbar } from './use-toolbar';
 
-export const Toolbar = () => {
+export const Toolbar = ({
+  toolbarTopOffset,
+}: {
+  toolbarTopOffset?: number;
+}) => {
   const [linkTool, setLinkTool] = useState({ isOpen: false, value: '' });
 
   const [selectionFormat, setSelectionFormat] = useState({
@@ -180,7 +184,7 @@ export const Toolbar = () => {
   );
 
   return (
-    <Container>
+    <Container $toolbarTopOffset={toolbarTopOffset}>
       <IconsContainer>
         <Tooltip
           sideOffset={0}

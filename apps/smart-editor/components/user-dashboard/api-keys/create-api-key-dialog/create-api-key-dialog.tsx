@@ -1,10 +1,7 @@
-import { createApiKey } from '@smart-editor/actions/api-keys.actions';
-import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BsClipboard } from 'react-icons/bs';
 import { IoWarning } from 'react-icons/io5';
-import { toast } from 'sonner';
 import { v4 as uuid } from 'uuid';
 import { z } from 'zod';
 
@@ -15,6 +12,8 @@ import { Headline } from '@smartcoorp/ui/headline';
 import { Modal } from '@smartcoorp/ui/modal';
 import { spaceM, spaceXXS } from '@smartcoorp/ui/tokens';
 import { Tooltip } from '@smartcoorp/ui/tooltip';
+
+import { useCreateApiKey } from '../api-keys.hooks';
 
 import {
   ApiKeyContainer,
@@ -41,15 +40,18 @@ export const CreateApiKeyDialog = ({
   isOpen = false,
   setIsOpen,
 }: CreateApiKeyDialogProps) => {
-  const queryClient = useQueryClient();
-
   const [apiKeyCopied, setApiKeyCopied] = useState(false);
   const [apiKeyToken, setApiKeyToken] = useState(uuid().replace(/-/g, ''));
-  const [loading, setLoading] = useState(false);
 
   const { control, handleSubmit, reset } = useForm<CreateApiKeyData>({
     defaultValues: {
       name: '',
+    },
+  });
+
+  const { mutate: createApiKey, isLoading } = useCreateApiKey({
+    onSuccess: () => {
+      onOpenChange(false);
     },
   });
 
@@ -61,23 +63,11 @@ export const CreateApiKeyDialog = ({
   };
 
   const onSubmit = async (data: CreateApiKeyData) => {
-    setLoading(true);
-
-    try {
-      await createApiKey({
-        userId,
-        apiKeyToken,
-        apiKeyName: data.name,
-      });
-
-      queryClient.invalidateQueries({ queryKey: ['getApiKeys'] });
-      onOpenChange(false);
-      toast.success('Api key created successfully');
-    } catch (error) {
-      toast.error('Error creating API key');
-    }
-
-    setLoading(false);
+    await createApiKey({
+      userId,
+      apiKeyToken,
+      apiKeyName: data.name,
+    });
   };
 
   return (
@@ -85,7 +75,7 @@ export const CreateApiKeyDialog = ({
       <StyledModalContent
         title="Add a new API Key"
         description="Use the REST API with the newly generated API Key"
-        {...(loading
+        {...(isLoading
           ? {
               onPointerDownOutside: (e: any) => {
                 e.preventDefault();
@@ -115,7 +105,7 @@ export const CreateApiKeyDialog = ({
                 marginBottom: spaceXXS,
               }}
             >
-              Api Key Token
+              API Key Token
             </Body>
             <Tooltip
               align="center"
@@ -132,6 +122,7 @@ export const CreateApiKeyDialog = ({
                     setApiKeyCopied(true);
                     navigator.clipboard.writeText(apiKeyToken);
                   }}
+                  data-testid="api-key-token"
                   $apiKeyCopied={apiKeyCopied}
                 >
                   <Body size="small" variant="neutral" noMargin ellipsis>
@@ -167,7 +158,7 @@ export const CreateApiKeyDialog = ({
               size="small"
               type="submit"
               disabled={!apiKeyCopied}
-              loading={loading}
+              loading={isLoading}
             >
               Create API Key
             </Button>

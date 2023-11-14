@@ -12,8 +12,8 @@ import {
 } from '@smartcoorp/ui/post-editor';
 
 type Input = {
-  userId: string | number;
-  postId: string | number;
+  userId?: string;
+  postId?: string;
   initialBlocks?: BlocksDB | any;
 };
 
@@ -141,7 +141,7 @@ export const usePostEditor = ({
 
     //RESET CURRENT UPLOADED IMAGES
     setCurrentUploadedImages((acc) => [
-      ...[...acc].filter(({ imageUrl }) => !newImagesDeletedUrls.has(imageUrl)),
+      ...acc.filter(({ imageUrl }) => !newImagesDeletedUrls.has(imageUrl)),
       ...Array.from(newImagesUploadedUrls.entries()).map(
         ([blockId, imageUrl]) => ({ blockId, imageUrl })
       ),

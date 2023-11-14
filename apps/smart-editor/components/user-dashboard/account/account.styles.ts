@@ -36,9 +36,6 @@ export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spaceXL};
-  /* max-width: 416px;
-  margin-block: ${spaceXL};
-  ${padding} */
 `;
 
 export const FormFieldContainer = styled.div`
