@@ -111,7 +111,7 @@ model EAccountVerificationToken {
 
 model EPost {
     id            String      @id @default(uuid())
-    title         String?
+    title         String      @db.VarChar(140)
     description   String?     @db.VarChar(280)
     content       Json?
     wordCount     Int?

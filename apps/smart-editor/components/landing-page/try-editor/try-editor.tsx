@@ -25,7 +25,7 @@ export const TryEditor = () => {
             textAlign: 'center',
           }}
         >
-          Experience the Magic Yourself
+          Experience the magic yourself
         </Headline>
       </WidthLimiter>
       <PostEditorTrial />

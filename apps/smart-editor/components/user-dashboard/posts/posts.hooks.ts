@@ -1,15 +1,16 @@
-import { deleteFile } from '@smart-editor/actions/delete-file';
+import { deleteFolder } from '@smart-editor/actions/delete-file';
 import {
   createPost,
   deletePost,
   getPost,
+  getPosts,
   updatePost,
 } from '@smart-editor/actions/posts.actions';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 export const useGetPost = () => {
   const session = useSession({ required: true });
@@ -23,7 +24,23 @@ export const useGetPost = () => {
   });
 };
 
-type Field = 'prose' | 'status' | 'coverImage' | 'content';
+export const useGetPosts = () => {
+  const session = useSession({ required: true });
+  const searchParams = useSearchParams();
+
+  return useQuery({
+    queryKey: ['getPosts', searchParams.get('title') ?? ''],
+    queryFn: () =>
+      getPosts({
+        userId: session?.data?.id as string,
+        title: searchParams.get('title') ?? '',
+      }),
+    refetchOnWindowFocus: false,
+    enabled: session.status === 'authenticated',
+  });
+};
+
+export type Field = 'prose' | 'status' | 'coverImage' | 'content';
 
 export const successMessageMap: Record<Exclude<Field, 'content'>, string> = {
   prose: 'Title and description updated',
@@ -40,8 +57,6 @@ export const useUpdatePost = ({ field }: { field: Field }) =>
       if (field !== 'content') {
         toast.success(successMessageMap[field]);
       }
-
-      toast.success('Post updated');
     },
     onError: () => {
       toast.error('Something went wrong. Please try again.');
@@ -69,19 +84,18 @@ export const useCreatePost = () => {
 
 type DeletePostMutation = {
   postId: string;
-  coverImageUrl?: string | null;
+  userId?: string;
 };
 export const useDeletePost = ({ onSuccess }: { onSuccess?: () => void }) =>
   useMutation({
     mutationKey: ['deletePost'],
-    mutationFn: async ({ postId, coverImageUrl }: DeletePostMutation) => {
+    mutationFn: async ({ postId, userId }: DeletePostMutation) => {
       await deletePost({ postId });
 
-      if (coverImageUrl) {
-        await deleteFile({
-          key: new URL(coverImageUrl).searchParams.get('key'),
-        });
-      }
+      if (!userId) return;
+      await deleteFolder({
+        folder: `${userId}/${postId}`,
+      });
     },
 
     onSuccess: () => {

@@ -5,7 +5,6 @@ import {
   screen,
   waitFor,
 } from '@smart-editor/utils/testing/test-utils';
-import userEvent from '@testing-library/user-event';
 import { toast } from 'sonner';
 
 import { EmailField } from '../account-form-fields/email-field';

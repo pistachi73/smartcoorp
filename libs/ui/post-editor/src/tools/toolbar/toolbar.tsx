@@ -70,9 +70,8 @@ export const Toolbar = ({
     removeFormat,
   } = useToolbar();
 
-  const blocksDB = useBlocksDBConsumerContext();
   const { undo, redo } = useBlocksDBUpdaterContext();
-  const { canUndo, canRedo } = useBlocksDBConsumerContext();
+  const { blocks, canUndo, canRedo } = useBlocksDBConsumerContext();
   const { setViewBlocks } = useUtilsUpdaterContext();
   const { viewBlocks } = useUtilContext();
 
@@ -374,7 +373,7 @@ export const Toolbar = ({
             trigger={
               <IconButton
                 variant="text"
-                onClick={() => console.log(blocksDB)}
+                onClick={() => console.log(blocks)}
                 icon={BsTerminal}
                 iconSize={14}
                 aria-label="Log blocks data"

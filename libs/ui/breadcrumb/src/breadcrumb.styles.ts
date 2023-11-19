@@ -10,8 +10,8 @@ export const BreadcrumbItem = styled.li`
 `;
 
 export const BreadcrumbButton = styled(Button)<{ $isLastItem?: boolean }>`
-  padding: 0;
-  font-weight: 400;
+  padding: 0 !important;
+  font-weight: 400 !important;
   min-width: 0;
 
   ${({ $isLastItem }) =>

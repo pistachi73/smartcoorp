@@ -3,8 +3,6 @@
 import styled from 'styled-components';
 
 import {
-  borderRadiusS,
-  gray300,
   gray800,
   motionEasingEnter,
   motionTimeS,

@@ -38,6 +38,9 @@ export const TextBoxField = memo(
   },
   (prevProps, nextProps) => {
     // CONDITIONS TO RERENDER
+    if (prevProps.error !== nextProps.error) {
+      return false;
+    }
     return prevProps.blockIndex === nextProps.blockIndex;
   }
 );

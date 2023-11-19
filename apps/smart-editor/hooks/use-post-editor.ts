@@ -165,11 +165,7 @@ export const usePostEditor = ({
     for (const id of blockIds) {
       const block = postBlocks.blocks[id];
 
-      if (block.type === 'header') {
-        wordCount += getWordCountFromHTML(block.data.text);
-      }
-
-      if (block.type === 'paragraph') {
+      if (block.type === 'header' || block.type === 'paragraph') {
         wordCount += getWordCountFromHTML(block.data.text);
       }
 
@@ -184,6 +180,8 @@ export const usePostEditor = ({
   }, [postBlocks]);
 
   return {
+    // blocksDb: blocksDbRef.current,
+
     postBlocks,
     setPostBlocks,
     setImagesToHandle,

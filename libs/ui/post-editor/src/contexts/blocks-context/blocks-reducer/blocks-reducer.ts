@@ -4,12 +4,10 @@ import produce, { applyPatches, enablePatches } from 'immer';
 import {
   buildParagraphBlock,
   getBlockContainerAttributes,
-  getElementTextContent,
   getHTMLStringTextContent,
   nanoid,
   waitForElement,
 } from '../../../helpers';
-import { setCaretPosition } from '../../../helpers/set-caret-position';
 import { EveryBlockFields } from '../../../post-editor.types';
 import { BlockDataDB } from '../blocks-context.types';
 import type { UndoRedoChanges } from '../undo-redo-reducer';

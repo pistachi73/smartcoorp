@@ -1,13 +1,21 @@
-import { deleteFile } from '@smart-editor/actions/delete-file';
-import { createPost, deletePost } from '@smart-editor/actions/posts.actions';
+import { deleteFile, deleteFolder } from '@smart-editor/actions/delete-file';
+import {
+  createPost,
+  deletePost,
+  updatePost,
+} from '@smart-editor/actions/posts.actions';
 import { renderHook, waitFor } from '@smart-editor/utils/testing/test-utils';
 import { toast } from 'sonner';
 
-import { useCreatePost, useDeletePost } from '../posts.hooks';
+import {
+  Field,
+  successMessageMap,
+  useCreatePost,
+  useDeletePost,
+  useUpdatePost,
+} from '../posts.hooks';
 
 const mockUserId = 'mockUserId';
-const mockKey = 'mockKey';
-const mockCoverImageUrl = `https://smarteditor.app/api/assets?key=${mockKey}`;
 const mockOnSuccess = jest.fn();
 const mockPush = jest.fn();
 jest.mock('@smart-editor/actions/delete-file');
@@ -25,6 +33,8 @@ jest.mock('next/navigation', () => ({
     push: mockPush,
   }),
 }));
+
+beforeEach(jest.resetAllMocks);
 
 describe('<Posts /> Hooks', () => {
   describe('useDeletePost', () => {
@@ -46,20 +56,20 @@ describe('<Posts /> Hooks', () => {
       expect(deleteFile).not.toHaveBeenCalled();
     });
 
-    it('should call deleteFile if coverImageUrl is provided', async () => {
+    it('should call deleteFolder if userId is provided', async () => {
       const { result } = renderHook(() =>
         useDeletePost({ onSuccess: mockOnSuccess })
       );
 
       await result.current.mutate({
         postId: 'postId',
-        coverImageUrl: mockCoverImageUrl,
+        userId: mockUserId,
       });
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(deleteFile).toHaveBeenCalledWith({
-        key: mockKey,
+      expect(deleteFolder).toHaveBeenCalledWith({
+        folder: `${mockUserId}/postId`,
       });
     });
 
@@ -106,6 +116,98 @@ describe('<Posts /> Hooks', () => {
 
       expect(toast.error).toHaveBeenCalledWith(
         "Couldn't create post. Please try again."
+      );
+    });
+  });
+
+  describe('useUpdatePost', () => {
+    it.each<{
+      field: Field;
+      toastMessage: string;
+    }>([
+      {
+        field: 'prose',
+        toastMessage: successMessageMap.prose,
+      },
+      {
+        field: 'coverImage',
+        toastMessage: successMessageMap.coverImage,
+      },
+      {
+        field: 'status',
+        toastMessage: successMessageMap.status,
+      },
+    ])(
+      'should  call toast.success for $field field on success',
+      async ({ field, toastMessage }) => {
+        const postId = 'postId';
+        (updatePost as jest.Mock).mockResolvedValueOnce({});
+        const { result } = renderHook(() =>
+          useUpdatePost({
+            field,
+          })
+        );
+
+        await result.current.mutate({
+          data: {},
+          postId,
+        });
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+        if (toastMessage) {
+          expect(toast.success).toHaveBeenCalledWith(toastMessage);
+        } else {
+          expect(toast.success).not.toHaveBeenCalled();
+        }
+      }
+    );
+
+    it.each<{
+      field: Field;
+    }>([
+      {
+        field: 'content',
+      },
+    ])(
+      'should not call toast.success for $field field on success',
+      async ({ field }) => {
+        const postId = 'postId';
+        (updatePost as jest.Mock).mockResolvedValueOnce({});
+        const { result } = renderHook(() =>
+          useUpdatePost({
+            field,
+          })
+        );
+
+        await result.current.mutate({
+          data: {},
+          postId,
+        });
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+        expect(toast.success).not.toHaveBeenCalled();
+      }
+    );
+
+    it('should call toast.error on error', async () => {
+      (updatePost as jest.Mock).mockRejectedValueOnce({});
+      const { result } = renderHook(() =>
+        useUpdatePost({
+          field: 'status',
+        })
+      );
+
+      await result.current.mutate({
+        data: {},
+        postId: 'postId',
+      });
+
+      await waitFor(() => expect(result.current.isError).toBe(true));
+
+      expect(toast.error).toHaveBeenCalledWith(
+        'Something went wrong. Please try again.'
       );
     });
   });

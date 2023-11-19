@@ -1,8 +1,6 @@
 import debounce from 'lodash.debounce';
 import { memo, useCallback, useMemo, useState } from 'react';
 
-import Image from 'next/image';
-
 import { Col, Grid, Row } from '@smartcoorp/ui/grid';
 import { Headline } from '@smartcoorp/ui/headline';
 

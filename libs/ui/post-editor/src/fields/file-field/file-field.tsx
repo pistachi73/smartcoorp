@@ -1,5 +1,7 @@
 import { useCallback, useRef } from 'react';
 
+import { Body } from '@smartcoorp/ui/body';
+
 import { useRefsContext } from '../../contexts/refs-context';
 
 import * as S from './file-field.styles';
@@ -12,6 +14,7 @@ export const FileField: React.FC<FileFieldProps> = ({
   placeholder,
   name,
   handleUploadFile,
+  error,
 }) => {
   const uploadImageRef = useRef<HTMLInputElement>(null);
   const { addFieldRef } = useRefsContext();
@@ -48,9 +51,15 @@ export const FileField: React.FC<FileFieldProps> = ({
         onClick={handleOpenUploadFile}
         onKeyDown={handleKeyDown}
         tabIndex={1}
+        $error={error}
       >
         {placeholder}
       </S.UploadFileButton>
+      {error && (
+        <Body size="xsmall" noMargin variant="error">
+          File size too large. Max size: 250kb
+        </Body>
+      )}
     </>
   );
 };

@@ -118,6 +118,7 @@ export const FormField = forwardRef<
           )}
           {isMultiline ? (
             <S.Textarea
+              id={inputId}
               ref={ref as React.Ref<HTMLTextAreaElement>}
               placeholder={placeholder}
               disabled={isDisabled}

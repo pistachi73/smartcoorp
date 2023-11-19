@@ -68,6 +68,7 @@
     "next-mdx-remote": "^4.4.1",
     "open-graph-scraper": "^6.2.2",
     "react": "18.2.0",
+    "react-autosave": "^0.4.3",
     "react-day-picker": "^8.7.1",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",

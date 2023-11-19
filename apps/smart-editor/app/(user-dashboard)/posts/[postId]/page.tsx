@@ -36,7 +36,7 @@ export async function generateMetadata({
   });
 
   return {
-    title: data?.title || 'Post settings',
+    title: `${data?.title} post settings` || 'Post settings',
     description: 'Edit your post settings',
   };
 }
@@ -56,7 +56,9 @@ const PostSettingsPage = async ({ params }: PostSettingsPageProps) => {
       }),
   });
 
-  if (queryClient.getQueryData(['getPost', postId]) === undefined) {
+  const data = queryClient.getQueryData(['getPost', postId]) as unknown as any;
+  if (!data?.post) {
+    console.log(queryClient.getQueryData(['getPost', postId]));
     redirect('/posts');
   }
 

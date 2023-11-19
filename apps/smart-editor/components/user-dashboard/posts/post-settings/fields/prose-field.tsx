@@ -77,6 +77,13 @@ export const ProseField = ({ title, description }: ProseFieldProps) => {
             control={control}
             name="title"
             size="small"
+            rules={{
+              required: "Title can't be empty",
+              maxLength: {
+                value: 140,
+                message: 'Title must be less than 140 characters',
+              },
+            }}
           />
         </InputContainer>
 

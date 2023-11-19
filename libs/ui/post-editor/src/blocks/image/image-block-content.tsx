@@ -14,7 +14,7 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
     const { setFieldValue } = useBlocksDBUpdaterContext();
     const { setPrevCaretPosition } = useRefsContext();
     const [imagePreview, setImagePreview] = useState<string | null>(null);
-
+    const [error, setError] = useState(false);
     const captionFieldId = `${block.id}_0`;
 
     useEffect(() => {
@@ -31,6 +31,11 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
         const file = e.target.files?.[0];
 
         if (!file) return;
+
+        if (file.size > 250000) {
+          setError(true);
+          return;
+        }
 
         setFieldValue({
           blockType: 'image',
@@ -68,6 +73,7 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
         placeholder="👉 Select file"
         name="imageToUpload"
         handleUploadFile={handleUploadImage}
+        error={error}
       />
     );
   }

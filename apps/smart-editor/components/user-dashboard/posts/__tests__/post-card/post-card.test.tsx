@@ -1,17 +1,10 @@
-import { exec } from 'child_process';
-
 import { EPostStatus } from '@prisma/client';
-import {
-  fireEvent,
-  render,
-  screen,
-} from '@smart-editor/utils/testing/test-utils';
-import userEvent from '@testing-library/user-event';
-import * as ReactDOM from 'react-dom';
-import { string } from 'zod';
+import { render, screen } from '@smart-editor/utils/testing/test-utils';
 
-import { PostCard, type PostCardProps } from '../post-card';
-import { statusMapping } from '../post-card/post-card';
+import { PostCard } from '../../post-card';
+import { statusMapping } from '../../post-card/post-card';
+
+const mockUserId = 'mockUserId';
 
 const props = {
   id: '1',
@@ -22,6 +15,14 @@ const props = {
   coverImageUrl: 'https://test.com/test.jpg',
   content: 'Test content',
 };
+
+jest.mock('next-auth/react', () => ({
+  useSession: () => ({
+    data: {
+      id: mockUserId,
+    },
+  }),
+}));
 
 describe('<PostCard />', () => {
   it('should render the component', () => {
