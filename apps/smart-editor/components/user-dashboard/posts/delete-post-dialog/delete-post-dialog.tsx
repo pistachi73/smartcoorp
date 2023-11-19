@@ -1,19 +1,23 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import { Dispatch, SetStateAction } from 'react';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Dialog, DialogContent } from '@smartcoorp/ui/dialog';
 import { Headline } from '@smartcoorp/ui/headline';
 
-import { useDeletePost } from './posts.hooks';
-import { DeleteDialogTextContainer, TrashImageContainer } from './posts.styles';
+import { useDeletePost } from '../posts.hooks';
+
+import {
+  DeleteDialogTextContainer,
+  TrashImageContainer,
+} from './delete-post-dialog.styles';
 
 type DeletePostDialogProps = {
   isDeleteDialogOpen: boolean;
   setIsDeleteDialogOpen: Dispatch<SetStateAction<boolean>>;
   postId: string;
-  coverImageUrl?: string | null;
   onSuccess?: any;
 };
 
@@ -21,12 +25,12 @@ export const DeletePostDialog = ({
   isDeleteDialogOpen,
   setIsDeleteDialogOpen,
   postId,
-  coverImageUrl,
   onSuccess,
 }: DeletePostDialogProps) => {
-  const { mutate: deletePost, isLoading } = useDeletePost({ onSuccess });
+  const session = useSession();
+  const { mutateAsync: deletePost, isLoading } = useDeletePost({ onSuccess });
   const onDelete = async () => {
-    await deletePost({ postId, coverImageUrl });
+    await deletePost({ postId, userId: session?.data?.id });
   };
 
   return (

@@ -3,7 +3,9 @@
 import {
   FieldContainer,
   FieldContent,
+  WarningSign,
 } from '@smart-editor/components/shared/styled-form-field';
+import { BsExclamationCircle } from 'react-icons/bs';
 import styled from 'styled-components';
 
 import Link from 'next/link';
@@ -43,10 +45,14 @@ export const EditPostLink = () => {
     <StyledFieldContainer as={Link} href={`/posts/${postId}/edit`}>
       <FieldContent>
         <Headline size="large">Edit blog post content</Headline>
-        <Body size="small" noMargin>
-          Edit the content of your blog post. This link will open the editor in
-          a new tab.
+        <Body size="small">
+          The changes will be saved automatically every 5 seconds. Please wait
+          until the saving is finished before closing the tab.
         </Body>
+        <WarningSign size="small" noMargin>
+          <BsExclamationCircle />
+          The editor is still in beta. Please save your work often.
+        </WarningSign>
       </FieldContent>
     </StyledFieldContainer>
   );

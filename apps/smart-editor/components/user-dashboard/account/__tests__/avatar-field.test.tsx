@@ -1,12 +1,10 @@
 import { updateAccount } from '@smart-editor/actions/account.actions';
-import { useSingleFileUpload } from '@smart-editor/hooks/use-single-file-upload';
 import {
   fireEvent,
   render,
   screen,
   waitFor,
 } from '@smart-editor/utils/testing/test-utils';
-import { act } from 'react-dom/test-utils';
 import { toast } from 'sonner';
 
 import { AvatarField } from '../account-form-fields/avatar-field';

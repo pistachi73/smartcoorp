@@ -2,6 +2,7 @@
 import styled, { css } from 'styled-components';
 
 import { Body } from '@smartcoorp/ui/body';
+import { Skeleton } from '@smartcoorp/ui/skeleton';
 import {
   borderRadiusS,
   gray300,
@@ -109,5 +110,28 @@ export const WarningSign = styled(Body)`
 
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: ${spaceS};
 `;
+
+export const SkeletonFormField = () => {
+  return (
+    <FieldContainer>
+      <FieldContent>
+        <div
+          style={{
+            paddingBottom: spaceM,
+          }}
+        >
+          <Skeleton width="100px" height="24px" />
+        </div>
+        <Skeleton width="360px" height="14px" />
+        <Skeleton width="140px" height="14px" />
+      </FieldContent>
+      <FieldFooter>
+        <Skeleton width="240px" height="14px" />
+        <Skeleton width="70px" height="24px" />
+      </FieldFooter>
+    </FieldContainer>
+  );
+};

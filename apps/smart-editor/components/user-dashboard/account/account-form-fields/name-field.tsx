@@ -1,9 +1,6 @@
-import { updateAccount } from '@smart-editor/actions/account.actions';
-import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { BsExclamationCircle } from 'react-icons/bs';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Body } from '@smartcoorp/ui/body';

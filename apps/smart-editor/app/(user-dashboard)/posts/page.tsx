@@ -3,11 +3,20 @@ import { Posts } from '@smart-editor/components/user-dashboard/posts';
 import { getQueryClient } from '@smart-editor/utils/get-query-client';
 import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
 import { Hydrate, dehydrate } from '@tanstack/react-query';
+import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 
 import { Breadcrumb, type BreadcrumbItem } from '@smartcoorp/ui/breadcrumb';
 import { Headline } from '@smartcoorp/ui/headline';
 import { space3XL, spaceL } from '@smartcoorp/ui/tokens';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const session = await getServerSession(nextAuthConfig);
+  return {
+    title: `${session?.user.name}'s posts`,
+    description: 'Explore all of your posts',
+  };
+}
 
 const PostsPage = async ({
   searchParams,
@@ -53,7 +62,7 @@ const PostsPage = async ({
         Overview
       </Headline>
       <Hydrate state={dehydratedState}>
-        <Posts userId={session?.id ?? ''} />
+        <Posts />
       </Hydrate>
     </>
   );

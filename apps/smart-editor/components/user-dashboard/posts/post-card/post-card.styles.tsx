@@ -23,7 +23,6 @@ import {
   spaceS,
   spaceXL,
   spaceXS,
-  spaceXXS,
 } from '@smartcoorp/ui/tokens';
 
 export const Container = styled.div`

@@ -4,10 +4,10 @@ import {
   screen,
 } from '@smart-editor/utils/testing/test-utils';
 
-import { NewPostCard } from '../post-card';
-import { useCreatePost } from '../posts.hooks';
+import { NewPostCard } from '../../post-card';
+import { useCreatePost } from '../../posts.hooks';
 
-jest.mock('../post.hooks');
+jest.mock('../../posts.hooks');
 
 const mockMutate = jest.fn();
 (useCreatePost as jest.Mock).mockReturnValue({

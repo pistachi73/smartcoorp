@@ -1,13 +1,7 @@
 'use client';
 
 import type { IconType } from 'react-icons';
-import {
-  BsBook,
-  BsCodeSlash,
-  BsLock,
-  BsPerson,
-  BsTerminal,
-} from 'react-icons/bs';
+import { BsBook, BsCodeSlash, BsLock, BsTerminal } from 'react-icons/bs';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

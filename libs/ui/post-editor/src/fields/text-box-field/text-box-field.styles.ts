@@ -27,17 +27,16 @@ export const TextBoxField = styled(Body).attrs(() => ({ noMargin: true }))<{
   cursor: ${({ $loading }) => $loading && 'not-allowed'};
   pointer-events: ${({ $loading }) => $loading && 'none'};
 
+  background-color: ${({ $loading, $error, theme }) =>
+    $error
+      ? theme.postEditor.linkTool.errorBackgroundColor
+      : !$loading && 'transparent'};
+  outline: 1px solid;
+  outline-color: ${({ theme, $error }) =>
+    $error ? theme.common.errorColor : theme.common.overBackgroundNeutral};
+
   &:empty:before {
     content: attr(data-placeholder);
     color: ${({ theme }) => theme.common.overBackgroundNeutral};
-  }
-  &:not(:empty) {
-    background-color: ${({ $loading, $error, theme }) =>
-      $error
-        ? theme.postEditor.linkTool.errorBackgroundColor
-        : !$loading && 'transparent'};
-    outline: 1px solid;
-    outline-color: ${({ theme, $error }) =>
-      $error ? theme.common.errorColor : theme.common.overBackgroundNeutral};
   }
 `;

@@ -83,7 +83,7 @@ export const FileUpload = ({
         $isDragReject={isDragReject || isError}
         $isSingleFileUploaded={!multiple && typeof value === 'string'}
       >
-        <input {...getInputProps()} />
+        <input data-testid="upload-file-input" {...getInputProps()} />
         <S.DropzoneInformationContainer>
           {singleFilePreview && !multiple && value ? (
             <SingleFilePreview file={value} removeFile={removeFile} />

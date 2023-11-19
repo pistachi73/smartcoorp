@@ -14,11 +14,7 @@ import { Headline } from '@smartcoorp/ui/headline';
 
 import { DeletePostDialog } from '../../delete-post-dialog';
 
-type DeletePostFieldProps = {
-  coverImageUrl: string;
-};
-
-export const DeletePostField = ({ coverImageUrl }: DeletePostFieldProps) => {
+export const DeletePostField = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const router = useRouter();
   const { postId } = useParams();
@@ -47,7 +43,6 @@ export const DeletePostField = ({ coverImageUrl }: DeletePostFieldProps) => {
           isDeleteDialogOpen={isDeleteDialogOpen}
           setIsDeleteDialogOpen={setIsDeleteDialogOpen}
           postId={postId}
-          coverImageUrl={coverImageUrl}
           onSuccess={() => router.push('/posts')}
         />
       </FieldFooter>

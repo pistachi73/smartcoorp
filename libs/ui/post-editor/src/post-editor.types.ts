@@ -1,9 +1,12 @@
+import { Dispatch } from 'react';
 import { z } from 'zod';
 
 import { FlattenUnion, KeysOfUnion } from '@smartcoorp/smart-types';
 
-import { ImageWithUrl, ImagesToHandle } from './contexts/blocks-context';
-import type { BlocksDB } from './contexts/blocks-context/blocks-context.types';
+import type {
+  BlocksDBAction,
+  BlocksDBReducerState,
+} from './contexts/blocks-context/blocks-reducer';
 
 type SharedBlockProps = {
   id: string;
@@ -109,13 +112,10 @@ export type EveryBlockFields = Partial<
 >;
 
 export type PostEditorProps = {
-  blocksDB: BlocksDB;
-  setBlocksDB: any;
+  blocksDB: BlocksDBReducerState;
+  dispatchBlocksDB: Dispatch<BlocksDBAction>;
   maxImages?: number;
   getMetaData?: Promise<Function> | any;
-  /** Time for the debounce changes */
   debounceTime?: number;
-  currentUploadedImages?: ImageWithUrl[];
-  setImagesToHandle?: (imagesToHandle: ImagesToHandle) => void;
   toolbarTopOffset?: number;
 };

@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 
 import { Button } from '@smartcoorp/ui/button';
 import {
-  BlocksDB,
   PostEditor,
   RenderBlocksJSON,
+  blocksDBReducer,
 } from '@smartcoorp/ui/post-editor';
 
 import {
@@ -18,7 +18,7 @@ import {
 } from './try-editor.styles';
 
 export const PostEditorTrial = () => {
-  const [blocks, setBlocks] = useState<BlocksDB>({
+  const [blocksDB, dispatchBlocksDB] = useReducer(blocksDBReducer, {
     blocks: {
       okwx0mlowz: {
         id: 'okwx0mlowz',
@@ -109,6 +109,8 @@ export const PostEditorTrial = () => {
       'TyniizAA9V-3RlPwH5IOB': ['okwx0mlo9p', '3HszdcLhWt'],
       'TyniizAA9V-gkngNm9Qk3': ['Go8AXyvXRj', 'ugpsVOggTf'],
     },
+    canRedo: false,
+    canUndo: false,
   });
 
   const [dataRendered, setDataRendered] = useState<'blocks' | 'chains'>(
@@ -119,7 +121,7 @@ export const PostEditorTrial = () => {
     <>
       <PostEditorAndRenderContainer>
         <PostEditorContainer>
-          <PostEditor blocksDB={blocks} setBlocksDB={setBlocks} />
+          <PostEditor blocksDB={blocksDB} dispatchBlocksDB={dispatchBlocksDB} />
         </PostEditorContainer>
 
         <RenderBlocksContainer>
@@ -143,8 +145,8 @@ export const PostEditorTrial = () => {
             <RenderBlocksJSON
               obj={
                 dataRendered === 'blocks'
-                  ? { blocks: blocks.blocks }
-                  : { chains: blocks.chains }
+                  ? { blocks: blocksDB.blocks }
+                  : { chains: blocksDB.chains }
               }
             />
           </RenderBlockJSONContainer>

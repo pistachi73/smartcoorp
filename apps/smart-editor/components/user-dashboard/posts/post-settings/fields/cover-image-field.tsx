@@ -44,7 +44,7 @@ export const CoverImageField = ({ coverImageUrl }: CoverImageFieldProps) => {
   });
 
   const { handleSingleFileUpload } = useSingleFileUpload({
-    folder: `${session?.data?.id}/${postId}}`,
+    folder: `${session?.data?.id}/${postId}`,
     initialFile: coverImageUrl,
   });
 
@@ -60,8 +60,6 @@ export const CoverImageField = ({ coverImageUrl }: CoverImageFieldProps) => {
 
   const onSubmit = handleSubmit(async (data: CoverImageFieldForm) => {
     const newCoverImageUrl = await handleSingleFileUpload(data.coverImageUrl);
-
-    console.log({ newCoverImageUrl });
 
     await updateCoverImage({
       postId,
@@ -85,6 +83,7 @@ export const CoverImageField = ({ coverImageUrl }: CoverImageFieldProps) => {
             control={control}
             name="coverImageUrl"
             singleFilePreview={true}
+            maxSize={250000}
             acceptedFileTypes={{
               'image/jpeg': [],
               'image/jpg': [],

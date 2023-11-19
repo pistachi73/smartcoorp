@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useCallback, useEffect, useMemo, useReducer } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 import { useRefsContext } from '../refs-context';
 import { useUtilsUpdaterContext } from '../util-context/util-context';
 
 import type {
   AddBlocks,
-  BlocksDB,
   BuildFocusFieldAction,
   BuildModifyFieldInnerHTMLAction,
   BuildModifyListInnerHTMLAction,
@@ -21,18 +20,14 @@ import type {
   SetLinkData,
   SplitTextField,
 } from './blocks-context.types';
-import type { BlocksDBReducerState } from './blocks-reducer';
+import type { BlocksDBAction, BlocksDBReducerState } from './blocks-reducer';
 import { ReducerTypes } from './blocks-reducer';
-import { blocksDBReducer } from './blocks-reducer/blocks-reducer';
-import { ImageWithUrl, ImagesToHandle, getImagesFromBlocks } from './helpers';
 import { UndoRedoTypes } from './undo-redo-reducer';
 
 type BlockDataDBContextProps = {
   children: React.ReactNode;
-  blocksDB: BlocksDB;
-  setBlocksDB: any;
-  currentUploadedImages?: ImageWithUrl[];
-  setImagesToHandle?: (imagesToHandle: ImagesToHandle) => void;
+  blocksDB: BlocksDBReducerState;
+  dispatchBlocksDB: React.Dispatch<BlocksDBAction>;
 };
 
 const BlocksDBConsumerContext = React.createContext<BlocksDBReducerState>({
@@ -63,38 +58,24 @@ const BlocksDBUpdaterContext = React.createContext<
 
 export const BlocksDBProvider = ({
   children,
-  blocksDB: initialBlocksDB,
-  setBlocksDB,
-  currentUploadedImages,
-  setImagesToHandle,
+  blocksDB,
+  dispatchBlocksDB,
 }: BlockDataDBContextProps) => {
-  const [blocksDB, dispatchBlocksDB] = useReducer(blocksDBReducer, {
-    ...initialBlocksDB,
-    canRedo: false,
-    canUndo: false,
-  });
-
   const { setHasMaxImages } = useUtilsUpdaterContext();
 
   useEffect(() => {
-    if (currentUploadedImages && setImagesToHandle) {
-      setImagesToHandle(
-        getImagesFromBlocks({
-          blocks: blocksDB.blocks,
-          currentUploadedImages,
-          setHasMaxImages,
-        })
-      );
+    if (blocksDB?.chains?.main) {
+      setHasMaxImages(({ maxImages }) => {
+        const blocks = Object.values(blocksDB.blocks);
+        const images = blocks.filter((block) => block.type === 'image');
+        const hasMaxImages = images.length >= 5;
+        return {
+          maxImages,
+          hasMaxImages,
+        };
+      });
     }
-
-    setBlocksDB({ blocks: blocksDB.blocks, chains: blocksDB.chains });
-  }, [
-    blocksDB,
-    currentUploadedImages,
-    setBlocksDB,
-    setImagesToHandle,
-    setHasMaxImages,
-  ]);
+  }, [blocksDB, setHasMaxImages]);
 
   const setFieldValue: SetFieldValue = ({
     blockId,

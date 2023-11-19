@@ -168,7 +168,6 @@ export const PostCard = ({
         isDeleteDialogOpen={isDeleteDialogOpen}
         setIsDeleteDialogOpen={setIsDeleteDialogOpen}
         postId={id}
-        coverImageUrl={coverImageUrl}
         onSuccess={() => {
           queryClient.invalidateQueries({ queryKey: ['getPosts'] });
           setIsDeleteDialogOpen(false);

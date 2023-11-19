@@ -48,11 +48,11 @@ export const dropdownItems: {
     items: {
       'two-column': {
         label: '2 columns',
-        snippet: 'hello this is a test text',
+        snippet: 'Display the content in 2 columns',
       },
       'three-column': {
         label: '3 columns',
-        snippet: 'hello this is a test text',
+        snippet: 'Display the content in 3 columns',
       },
     },
   },

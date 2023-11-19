@@ -4,9 +4,6 @@ import {
   screen,
   waitFor,
 } from '@smart-editor/utils/testing/test-utils';
-import { toast } from 'sonner';
-
-import { useRouter } from 'next/navigation';
 
 import { ForgotPassword } from '../forgot-password';
 import { useSendForgotPasswordEmail } from '../forgot-password.hooks';

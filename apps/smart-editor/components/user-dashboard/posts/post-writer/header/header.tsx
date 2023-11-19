@@ -8,6 +8,9 @@ import { useParams } from 'next/navigation';
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
 import { Headline } from '@smartcoorp/ui/headline';
+import { Tooltip } from '@smartcoorp/ui/tooltip';
+
+import { type SavingStatus } from '../post-writer';
 
 import {
   AccountContainer,
@@ -20,13 +23,18 @@ import {
 } from './header.styles';
 
 type HeaderProps = {
-  isSaving: boolean;
+  saving: SavingStatus;
+  title?: string | null;
+  content?: any;
 };
 
-export const Header = ({ isSaving }: HeaderProps) => {
+export const Header = ({ saving, title, content }: HeaderProps) => {
   const session = useSession();
   const { postId } = useParams();
-  //   const session = await getServerSession(nextAuthConfig);
+
+  const savingText =
+    saving === 'saving' ? 'Saving...' : saving === 'saved' ? 'Saved' : '';
+
   return (
     <HeaderContainer>
       <StyledWidthLimiter>
@@ -51,9 +59,16 @@ export const Header = ({ isSaving }: HeaderProps) => {
               <Headline size="large" as="p" noMargin>
                 {session.data.user.name}
               </Headline>
-              <Body size="small" variant="neutral" noMargin>
-                {isSaving ? 'Saving...' : 'All changes saved'}
-              </Body>
+              {savingText && (
+                <Body
+                  data-testid="saving-text"
+                  size="small"
+                  variant="neutral"
+                  noMargin
+                >
+                  {savingText}
+                </Body>
+              )}
             </AccountContainer>
           )}
         </LeftContainer>
@@ -64,18 +79,28 @@ export const Header = ({ isSaving }: HeaderProps) => {
             </Body>
           </Link>
 
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={() =>
-              fromContentToJSON({
-                title: 'title',
-                content: 'content',
-              })
+          <Tooltip
+            content={
+              <Body size="xsmall" noMargin>
+                Please refresh the page to get the latest changes.
+              </Body>
             }
-          >
-            Export JSON
-          </Button>
+            trigger={
+              <Button
+                variant="secondary"
+                size="small"
+                onClick={() =>
+                  fromContentToJSON({
+                    title,
+                    content,
+                  })
+                }
+              >
+                Export JSON
+              </Button>
+            }
+            triggerAsChild
+          />
 
           <AvatarContainer>
             <Image

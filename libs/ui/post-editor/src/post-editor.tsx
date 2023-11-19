@@ -16,12 +16,10 @@ export type ToolProps = {
 
 export const PostEditor: FC<PostEditorProps> = ({
   blocksDB,
-  setBlocksDB,
+  dispatchBlocksDB,
   getMetaData,
   debounceTime = 300,
   maxImages,
-  currentUploadedImages,
-  setImagesToHandle,
   toolbarTopOffset,
 }) => {
   return (
@@ -31,9 +29,7 @@ export const PostEditor: FC<PostEditorProps> = ({
           <ToolControlProvider>
             <BlocksDBProvider
               blocksDB={blocksDB}
-              setBlocksDB={setBlocksDB}
-              currentUploadedImages={currentUploadedImages}
-              setImagesToHandle={setImagesToHandle}
+              dispatchBlocksDB={dispatchBlocksDB}
             >
               <Blocks
                 getMetaData={getMetaData}
