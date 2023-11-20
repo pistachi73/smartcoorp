@@ -37,7 +37,8 @@ export async function generateMetadata({
 
   return {
     title: `${data?.title} post settings` || 'Post settings',
-    description: 'Edit your post settings',
+    description:
+      'Tailor the details of your blog posts with precision. The Edit Post Settings page in your user panel empowers you to refine titles, descriptions, cover images, and more.',
   };
 }
 
