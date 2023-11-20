@@ -14,7 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const session = await getServerSession(nextAuthConfig);
   return {
     title: `${session?.user.name}'s posts`,
-    description: 'Explore all of your posts',
+    description:
+      'Explore and manage all your written blog posts in one place. The My Blog Posts section of your user panel is where your creative journey unfolds. Easily review, edit, and organize your content as you craft compelling stories with Smarteditor.',
   };
 }
 

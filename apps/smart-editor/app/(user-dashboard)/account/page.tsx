@@ -3,11 +3,18 @@ import { Account } from '@smart-editor/components/user-dashboard/account';
 import { getQueryClient } from '@smart-editor/utils/get-query-client';
 import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
 import { Hydrate, dehydrate } from '@tanstack/react-query';
+import { type Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 
 import { Breadcrumb, type BreadcrumbItem } from '@smartcoorp/ui/breadcrumb';
 import { Headline } from '@smartcoorp/ui/headline';
 import { spaceL, spaceXXL } from '@smartcoorp/ui/tokens';
+
+export const metadata: Metadata = {
+  title: 'Manage account details - Update, secure, and personalize',
+  description:
+    'Effortlessly manage your personal account details. Change your email, update your name, enhance security with a new password, or choose to delete your account. Take control of your Smarteditor experience by customizing your account to suit your evolving needs.',
+};
 
 const AccountPage = async () => {
   const session = await getServerSession(nextAuthConfig);

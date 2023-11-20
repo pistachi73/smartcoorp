@@ -1,4 +1,5 @@
 import { ResetPassword } from '@smart-editor/components/credential-pages/reset-password';
+import { Metadata } from 'next';
 
 import { redirect } from 'next/navigation';
 
@@ -8,6 +9,10 @@ type ResetPasswordPageProps = {
   params: {
     token: string;
   };
+};
+
+export const metadata: Metadata = {
+  title: 'Forgot password? Reset it with SmartEditor - Reset password',
 };
 
 const ResetPasswordPage = async ({

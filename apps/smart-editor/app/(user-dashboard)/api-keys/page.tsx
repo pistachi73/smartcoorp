@@ -3,11 +3,18 @@ import { ApiKeys } from '@smart-editor/components/user-dashboard/api-keys';
 import { getQueryClient } from '@smart-editor/utils/get-query-client';
 import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
 import { Hydrate, dehydrate } from '@tanstack/react-query';
+import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 
 import { Breadcrumb, BreadcrumbItem } from '@smartcoorp/ui/breadcrumb';
 import { Headline } from '@smartcoorp/ui/headline';
 import { space3XL, spaceXL } from '@smartcoorp/ui/tokens';
+
+export const metadata: Metadata = {
+  title: 'Manage API keys - Securely control your integration access',
+  description:
+    "Take control of your integration access with the API Keys control panel. This centralized hub empowers you to create, monitor, and secure API keys for seamless interaction with Smarteditor's API. Elevate your development experience while maintaining the highest standards of security and control.",
+};
 
 const APIKeyPage = async () => {
   const sesssion = await getServerSession(nextAuthConfig);

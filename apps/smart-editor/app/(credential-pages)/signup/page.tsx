@@ -3,7 +3,7 @@ import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
 import { getServerSession } from 'next-auth';
 
 export const metadata = {
-  title: 'SmartEditos Signup',
+  title: 'Sign up for SmartEditor',
   description:
     'Welcome to SmartEditor. Sign up to embark on your content creation journey. Start crafting your stories and articles with ease.',
 };
