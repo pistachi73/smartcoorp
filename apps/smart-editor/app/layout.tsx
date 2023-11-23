@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'SmartEditor - Transition from words to JSON-powered content.',
     description:
-      "Smarteditor is a powerful tool that allows you to effortlessly write and organize content, and then export it as JSON. Enhance your content creation process with Smarteditor's user-friendly interface and robust export capabilities.",
+      'Smarteditor is a powerful tool that allows you to effortlessly write and organize content, and then export it as JSON.',
     url: 'https://smarteditor.app',
     siteName: 'SmartEditor',
     locale: 'en_US',
@@ -46,13 +46,31 @@ export const metadata: Metadata = {
     icon: [
       {
         media: '(prefers-color-scheme: light)',
-        url: '/logo_light.svg',
-        href: '/logo_light.svg',
+        href: '/fav-icons/light-favicon.ico',
+        url: '/fav-icons/light-favicon.ico',
+        rel: 'icon',
+        sizes: 'any',
+      },
+      {
+        media: '(prefers-color-scheme: light)',
+        href: '/fav-icons/light-favicon.svg',
+        url: '/fav-icons/light-favicon.svg',
+        type: 'image/svg+xml',
+        rel: 'icon',
       },
       {
         media: '(prefers-color-scheme: dark)',
-        url: '/logo_dark.svg',
-        href: '/logo_dark.svg',
+        href: '/fav-icons/dark-favicon.ico',
+        url: '/fav-icons/dark-favicon.ico',
+        rel: 'icon',
+        sizes: 'any',
+      },
+      {
+        media: '(prefers-color-scheme: dark)',
+        href: '/fav-icons/dark-favicon.svg',
+        url: '/fav-icons/dark-favicon.svg',
+        type: 'image/svg+xml',
+        rel: 'icon',
       },
     ],
   },
