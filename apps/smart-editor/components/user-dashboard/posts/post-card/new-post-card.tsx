@@ -31,7 +31,7 @@ export const NewPostCard = ({ totalPosts }: NewPostCardProps) => {
 
   const headline = limitReached
     ? "You've reached your post limit"
-    : 'Embark on a New Journey';
+    : 'Embark on a new journey';
   const body = limitReached
     ? 'Upgrade to premium to write more posts'
     : 'Craft, share, and sublish your unique stories – Write a new post today';
