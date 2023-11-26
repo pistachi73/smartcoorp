@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'SmartEditor - Transition from words to JSON-powered content.',
     description:
-      'Smarteditor is a powerful tool that allows you to effortlessly write and organize content, and then export it as JSON.',
+      'SmartEditor is a powerful tool that allows you to effortlessly write and organize content, and then export it as JSON.',
     url: 'https://smarteditor.app',
     siteName: 'SmartEditor',
     locale: 'en_US',

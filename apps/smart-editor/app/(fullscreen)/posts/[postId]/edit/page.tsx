@@ -36,7 +36,7 @@ export async function generateMetadata({
   return {
     title: `${data?.title} post edit` || 'Edit post',
     description:
-      "Craft your narratives with precision on Smarteditor's intuitive editing interface. Seamlessly create and edit post content with a user-friendly design, rich text formatting. Elevate your writing experience as you bring your ideas to life, all within the dynamic and responsive Smarteditor editing interface.",
+      "Craft your narratives with precision on SmartEditor's intuitive editing interface. Seamlessly create and edit post content with a user-friendly design, rich text formatting. Elevate your writing experience as you bring your ideas to life, all within the dynamic and responsive SmartEditor editing interface.",
   };
 }
 
