@@ -20,10 +20,10 @@ describe('<NewPostCard />', () => {
     const totalPosts = 2;
     render(<NewPostCard totalPosts={totalPosts} />);
 
-    expect(screen.getByText('Embark on a New Journey')).toBeInTheDocument();
+    expect(screen.getByText(/Embark on a New Journey/i)).toBeInTheDocument();
     expect(
       screen.getByText(
-        'Craft, Share, and Publish Your Unique Stories – Write a New Post Today'
+        /Craft, share, and sublish your unique stories – Write a new post today/i
       )
     ).toBeInTheDocument();
     expect(screen.getByText(`${totalPosts} / 5`)).toBeInTheDocument();
@@ -39,10 +39,10 @@ describe('<NewPostCard />', () => {
     render(<NewPostCard totalPosts={5} />);
 
     expect(
-      screen.getByText("You've Reached Your Post Limit")
+      screen.getByText(/You've Reached Your Post Limit/i)
     ).toBeInTheDocument();
     expect(
-      screen.getByText('Upgrade to Premium to Write More Posts')
+      screen.getByText(/Upgrade to Premium to Write More Posts/i)
     ).toBeInTheDocument();
 
     expect(screen.getByText('5 / 5')).toBeInTheDocument();

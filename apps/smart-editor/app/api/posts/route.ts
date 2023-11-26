@@ -1,3 +1,4 @@
+import { EPostStatus } from '@prisma/client';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 
@@ -10,6 +11,10 @@ const ratelimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(200, '1 s'),
 });
 
+const isValidStatus = (status: any): status is EPostStatus => {
+  return EPostStatus[status as keyof typeof EPostStatus] !== undefined;
+};
+
 export async function GET(request: NextRequest) {
   const headers = request.headers;
 
@@ -17,6 +22,7 @@ export async function GET(request: NextRequest) {
   const title = searchParams.get('title');
   const wordcountgt = searchParams.get('wordcountgt');
   const wordcountlt = searchParams.get('wordcountlt');
+  const status = searchParams.get('status');
 
   const auhtorization = headers.get('Authorization');
 
@@ -57,16 +63,34 @@ export async function GET(request: NextRequest) {
 
     const postsData = await prisma.ePost.findMany({
       where: {
-        userId: apiKeyData.userId,
-        OR: [
-          title ? { title: { contains: title } } : {},
-          wordcountgt && !isNaN(Number(wordcountgt))
-            ? { wordCount: { gte: Number(wordcountgt) } }
-            : {},
-          wordcountlt && !isNaN(Number(wordcountlt))
-            ? { wordCount: { lte: Number(wordcountlt) } }
-            : {},
+        AND: [
+          {
+            userId: apiKeyData.userId,
+          },
+          {
+            OR: [
+              title ? { title: { contains: title } } : {},
+              wordcountgt && !isNaN(Number(wordcountgt))
+                ? { wordCount: { gte: Number(wordcountgt) } }
+                : {},
+              wordcountlt && !isNaN(Number(wordcountlt))
+                ? { wordCount: { lte: Number(wordcountlt) } }
+                : {},
+              isValidStatus(status) ? { status: { equals: status } } : {},
+            ],
+          },
         ],
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        wordCount: true,
+        createdAt: true,
+        updatedAt: true,
+        content: true,
+        coverImageUrl: true,
+        status: true,
       },
     });
 
@@ -76,7 +100,10 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    return NextResponse.json({ data: postsData }, { status: 200 });
+    return NextResponse.json(
+      { data: postsData, count: postsData.length },
+      { status: 200 }
+    );
   } catch (e) {
     return NextResponse.json(
       { error: 'Internal server error. Please try again later!' },

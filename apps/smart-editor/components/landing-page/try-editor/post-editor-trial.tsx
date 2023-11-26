@@ -1,5 +1,6 @@
 'use client';
 
+import { getMetadata } from '@smart-editor/actions/get-metadata';
 import { useReducer, useState } from 'react';
 
 import { Button } from '@smartcoorp/ui/button';
@@ -121,7 +122,12 @@ export const PostEditorTrial = () => {
     <>
       <PostEditorAndRenderContainer>
         <PostEditorContainer>
-          <PostEditor blocksDB={blocksDB} dispatchBlocksDB={dispatchBlocksDB} />
+          <PostEditor
+            blocksDB={blocksDB}
+            dispatchBlocksDB={dispatchBlocksDB}
+            getMetaData={getMetadata}
+            maxImages={2}
+          />
         </PostEditorContainer>
 
         <RenderBlocksContainer>
