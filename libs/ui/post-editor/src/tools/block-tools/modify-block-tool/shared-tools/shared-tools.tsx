@@ -24,6 +24,7 @@ export const SharedTools = memo<ModifyBlockToolProps>(
       onMoveUp,
       isMoveUpDisabled,
       isMoveDownDisabled,
+      isDuplicateDisabled,
     } = useSharedTools({
       blockIndex,
       blockId,
@@ -42,7 +43,8 @@ export const SharedTools = memo<ModifyBlockToolProps>(
           ([key, { icon, label, command }]) => {
             const disabled =
               (key === 'up' && isMoveUpDisabled) ||
-              (key === 'down' && isMoveDownDisabled);
+              (key === 'down' && isMoveDownDisabled) ||
+              (key === 'duplicate' && isDuplicateDisabled);
             return (
               <CommandItem
                 key={key}

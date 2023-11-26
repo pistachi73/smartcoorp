@@ -13,7 +13,7 @@ import { spaceL, spaceXXL } from '@smartcoorp/ui/tokens';
 export const metadata: Metadata = {
   title: 'Manage account details - Update, secure, and personalize',
   description:
-    'Effortlessly manage your personal account details. Change your email, update your name, enhance security with a new password, or choose to delete your account. Take control of your Smarteditor experience by customizing your account to suit your evolving needs.',
+    'Effortlessly manage your personal account details. Change your email, update your name, enhance security with a new password, or choose to delete your account. Take control of your SmartEditor experience by customizing your account to suit your evolving needs.',
 };
 
 const AccountPage = async () => {

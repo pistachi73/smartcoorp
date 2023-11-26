@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic';
 export const metadata: Metadata = {
   title: 'SmartEditor - Transition from words to JSON-powered content.',
   description:
-    "Smarteditor is a powerful tool that allows you to effortlessly write and organize content, and then export it as JSON. Enhance your content creation process with Smarteditor's user-friendly interface and robust export capabilities.",
+    "SmartEditor is a powerful tool that allows you to effortlessly write and organize content, and then export it as JSON. Enhance your content creation process with SmartEditor's user-friendly interface and robust export capabilities.",
 };
 
 const DynamicTryEditor = dynamic(

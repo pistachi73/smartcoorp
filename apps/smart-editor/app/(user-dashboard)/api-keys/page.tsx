@@ -13,7 +13,7 @@ import { space3XL, spaceXL } from '@smartcoorp/ui/tokens';
 export const metadata: Metadata = {
   title: 'Manage API keys - Securely control your integration access',
   description:
-    "Take control of your integration access with the API Keys control panel. This centralized hub empowers you to create, monitor, and secure API keys for seamless interaction with Smarteditor's API. Elevate your development experience while maintaining the highest standards of security and control.",
+    "Take control of your integration access with the API Keys control panel. This centralized hub empowers you to create, monitor, and secure API keys for seamless interaction with SmartEditor's API. Elevate your development experience while maintaining the highest standards of security and control.",
 };
 
 const APIKeyPage = async () => {

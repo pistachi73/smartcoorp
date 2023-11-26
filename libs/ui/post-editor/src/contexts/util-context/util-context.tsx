@@ -5,14 +5,16 @@ export const UtilContext = React.createContext<{
   viewBlocks?: boolean;
   hasMaxImages: {
     hasMaxImages: boolean;
-    maxImages: number | undefined;
+    maxImages: number;
+    numberOfImageBlocks: number;
   };
 }>({
   debounceTime: 300,
   viewBlocks: false,
   hasMaxImages: {
     hasMaxImages: false,
-    maxImages: undefined,
+    maxImages: 5,
+    numberOfImageBlocks: 0,
   },
 });
 
@@ -22,7 +24,8 @@ const UtilsUpdaterContext = React.createContext<
       setHasMaxImages: React.Dispatch<
         React.SetStateAction<{
           hasMaxImages: boolean;
-          maxImages: number | undefined;
+          maxImages: number;
+          numberOfImageBlocks: number;
         }>
       >;
     }
@@ -41,7 +44,8 @@ export const UtilProvider = ({
   const [viewBlocks, setViewBlocks] = React.useState(false);
   const [hasMaxImages, setHasMaxImages] = React.useState({
     hasMaxImages: false,
-    maxImages,
+    maxImages: maxImages ?? 5,
+    numberOfImageBlocks: 0,
   });
 
   const value = React.useMemo(

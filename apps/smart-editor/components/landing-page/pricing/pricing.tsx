@@ -35,7 +35,7 @@ export const pricingSnippets: PricingSnippet[] = [
     icon: <BsPen size={20} />,
   },
   {
-    title: '5 Iimages per blog post',
+    title: '5 Images per blog post',
     description: 'Add up to 5 images to each blog post.',
     icon: <BsImages size={20} />,
   },

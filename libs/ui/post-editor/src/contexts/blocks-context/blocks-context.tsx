@@ -68,10 +68,11 @@ export const BlocksDBProvider = ({
       setHasMaxImages(({ maxImages }) => {
         const blocks = Object.values(blocksDB.blocks);
         const images = blocks.filter((block) => block.type === 'image');
-        const hasMaxImages = images.length >= 5;
+
         return {
           maxImages,
-          hasMaxImages,
+          hasMaxImages: images.length >= maxImages,
+          numberOfImageBlocks: images.length ?? 0,
         };
       });
     }

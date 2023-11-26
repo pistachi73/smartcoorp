@@ -46,39 +46,60 @@ export const ApiReference = () => {
           <Headline size="large" as="h2">
             1. Get all posts
           </Headline>
-          <Body noMargin>Retrieve a List of Posts</Body>
+          <Body noMargin>Retrieve a list of posts</Body>
           <CodeBlock code={codeSnippets.fetchAllPosts} />
 
           <Headline size="medium" as="h3">
             Available query parameters:
           </Headline>
+          <Body noMargin>
+            The following query parameters are available for filtering posts.
+            The query parameters can be combined to create more complex filters.
+          </Body>
 
           <ul>
             <li>
               <Body lineHeight="increased">
-                <code>title (string, optional)</code> - Filter posts by title.
+                <code>title</code> (<b>string</b>, optional) - Filter posts by
+                title.
               </Body>
             </li>
             <li>
               <Body lineHeight="increased">
-                <code>wordcountgt (number, optional)</code> - Filter posts with
-                a word count greater than the specified value.
+                <code>status</code> (<b>STATUS</b>, optional) - Filter posts by
+                status.
               </Body>
             </li>
             <li>
               <Body lineHeight="increased">
-                <code>wordcountlt (number, optional)</code> - Filter posts with
-                a word count less than the specified value.
+                <code>wordcountgt</code> (<b>number</b>, optional) - Filter
+                posts with a word count greater than the specified value.
+              </Body>
+            </li>
+            <li>
+              <Body lineHeight="increased">
+                <code>wordcountlt</code> (<b>number</b>, optional) - Filter
+                posts with a word count less than the specified value.
               </Body>
             </li>
           </ul>
+
+          <Headline size="medium" as="h3">
+            Example:
+          </Headline>
+          <Body noMargin>
+            The following example retrieves all posts with a title containing
+            the word &apos;<b>integrating</b>&apos; or a status of{' '}
+            <b>PUBLISHED</b>.
+          </Body>
+          <CodeBlock code={codeSnippets.fetchPostsWithQuery} />
         </section>
         <section id="get-a-post-by-id">
           <Headline size="large" as="h2">
             2. Get post by ID
           </Headline>
 
-          <Body noMargin>Retrieve a Specific Blog Post by Its Unique ID</Body>
+          <Body noMargin>Retrieve a specific blog post by its unique ID</Body>
 
           <CodeBlock code={codeSnippets.fetchPostById} />
         </section>

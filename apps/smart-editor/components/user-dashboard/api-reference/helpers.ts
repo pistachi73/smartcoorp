@@ -6,7 +6,6 @@ export const codeSnippets = {
   fetch('https://www.smarteditor.app/api/posts', {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
         Authorization: 'Bearer {api-key}',
       },
     }).then((response) => response.json())
@@ -17,7 +16,6 @@ export const codeSnippets = {
   fetch('https://www.smarteditor.app/api/posts/{post-id}', {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
       Authorization: 'Bearer {api-key}',
     },
   }).then((response) => response.json())
@@ -28,6 +26,17 @@ export const codeSnippets = {
   const Test = (a:string) => {
     return <div>Hello</div>;
   };
+  ~~~`,
+  fetchPostsWithQuery: `
+  ~~~js
+  fetch(
+    'https://www.smarteditor.app/api/posts?title=integrating&status=PUBLISHED',
+    {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer {api-key}',
+      },
+    }
   ~~~`,
 };
 

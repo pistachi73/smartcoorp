@@ -24,7 +24,7 @@ describe('<EditPostLink />', () => {
 
     expect(
       screen.getByText(
-        'Edit the content of your blog post. This link will open the editor in a new tab.'
+        'The changes will be saved automatically every 5 seconds. Please wait until the saving is finished before closing the tab.'
       )
     ).toBeInTheDocument();
   });

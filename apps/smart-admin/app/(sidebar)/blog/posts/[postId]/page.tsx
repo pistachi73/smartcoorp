@@ -255,13 +255,14 @@ const EditPost = ({ params }: EditPostProps) => {
             id: 'post-editor',
             label: 'Post Editor',
             content: (
-              <PostEditor
-                blocksDB={postBlocks}
-                setBlocksDB={setPostBlocks}
-                getMetaData={getMetaDataMutate}
-                currentUploadedImages={currentUploadedImages}
-                setImagesToHandle={setImagesToHandle}
-              />
+              <div>PostEditor</div>
+              // <PostEditor
+              //   blocksDB={postBlocks}
+              //   setBlocksDB={setPostBlocks}
+              //   getMetaData={getMetaDataMutate}
+              //   currentUploadedImages={currentUploadedImages}
+              //   setImagesToHandle={setImagesToHandle}
+              // />
             ),
           },
         ]}

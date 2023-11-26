@@ -1,3 +1,4 @@
+import { useUtilContext } from 'libs/ui/post-editor/src/contexts/util-context';
 import { useEffect, useState } from 'react';
 
 import { useBlockSelectionUpdaterContext } from '../../../../contexts/block-selection-context';
@@ -27,13 +28,19 @@ export const useSharedTools = ({
   const { setIsModifyBlockMenuOpened } = useToolControlUpdaterContext();
   const { setSelectedBlocks } = useBlockSelectionUpdaterContext();
 
-  const [{ chainBlockIndex, chainId }, setBlockProps] = useState(
+  const [{ chainBlockIndex, chainId, blockType }, setBlockProps] = useState(
     getBlockContainerAttributes(blockRefs.current[blockIndex])
   );
 
-  const [{ isMoveUpDisabled, isMoveDownDisabled }, setDisabled] = useState({
+  const { hasMaxImages } = useUtilContext();
+
+  const [
+    { isMoveUpDisabled, isMoveDownDisabled, isDuplicateDisabled },
+    setDisabled,
+  ] = useState({
     isMoveUpDisabled: false,
     isMoveDownDisabled: false,
+    isDuplicateDisabled: false,
   });
 
   useEffect(() => {
@@ -46,8 +53,10 @@ export const useSharedTools = ({
       isMoveUpDisabled: blockProps.chainBlockIndex === 0,
       isMoveDownDisabled:
         blockProps.chainBlockIndex === blockProps.chainLength - 1,
+      isDuplicateDisabled:
+        hasMaxImages.hasMaxImages && blockProps.blockType === 'image',
     });
-  }, [blockIndex, blockRefs]);
+  }, [blockIndex, blockRefs, hasMaxImages]);
 
   const getBlockId = (index: number): string => {
     const { blockId } = getBlockContainerAttributes(blockRefs.current[index]);
@@ -187,5 +196,6 @@ export const useSharedTools = ({
     handleSharedToolsKeyDown,
     isMoveUpDisabled,
     isMoveDownDisabled,
+    isDuplicateDisabled,
   };
 };

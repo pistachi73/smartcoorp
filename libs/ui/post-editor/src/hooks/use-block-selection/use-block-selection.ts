@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import {
   useBlockSelectionConsumerContext,
@@ -12,6 +13,7 @@ import {
   useToolBlockIndexUpdaterContext,
   useToolControlUpdaterContext,
 } from '../../contexts/tool-control-context/tool-control-context';
+import { useUtilContext } from '../../contexts/util-context';
 import {
   buildParagraphBlock,
   getBlockContainerAttributes,
@@ -32,6 +34,10 @@ export const useBlockSelection = () => {
     useBlockSelectionConsumerContext();
   const { setClipboardBlocks, setPivotSelectedBlock, setSelectedBlocks } =
     useBlockSelectionUpdaterContext();
+
+  const {
+    hasMaxImages: { numberOfImageBlocks, maxImages },
+  } = useUtilContext();
 
   const handleShiftUp = (e: React.KeyboardEvent, blockIndex: number) => {
     // If some blocks are selected,
@@ -209,6 +215,17 @@ export const useBlockSelection = () => {
     if (!clipboardBlocks) return;
 
     e.preventDefault();
+    // 0: CHECK IF CLIPBOARD HAS IMAGES AND HAS MAX IMAGES
+    const blocks = Object.values(clipboardBlocks);
+    const images = blocks.filter((block) => block.type === 'image');
+    if (numberOfImageBlocks + images.length > maxImages) {
+      try {
+        toast.error(`You can only add ${maxImages} images per post`);
+      } catch (e) {
+        console.log(e);
+      }
+      return;
+    }
 
     // 1: FORMAT BLOCKS TO MODIFY IDS
     const toAddBlocks: ToAddBlock[] = Object.keys(clipboardBlocks).map(

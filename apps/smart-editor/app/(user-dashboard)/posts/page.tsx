@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `${session?.user.name}'s posts`,
     description:
-      'Explore and manage all your written blog posts in one place. The My Blog Posts section of your user panel is where your creative journey unfolds. Easily review, edit, and organize your content as you craft compelling stories with Smarteditor.',
+      'Explore and manage all your written blog posts in one place. The My Blog Posts section of your user panel is where your creative journey unfolds. Easily review, edit, and organize your content as you craft compelling stories with SmartEditor.',
   };
 }
 
