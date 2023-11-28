@@ -21,25 +21,25 @@ export const dropdownItems: {
     groupName: 'Basic Blocks',
     items: {
       paragraph: {
-        label: 'Paragraph',
-        snippet: 'Just start typing here...',
+        label: 'Text',
+        snippet: 'Write something here.',
       },
 
       header: {
-        label: 'Header',
-        snippet: 'Section heading',
+        label: 'Heading',
+        snippet: 'Create a heading.',
       },
       list: {
         label: 'List',
-        snippet: 'Create a simple bulleted list',
+        snippet: 'Create a simple bulleted list.',
       },
       image: {
         label: 'Image',
-        snippet: 'Upload an image',
+        snippet: 'Upload or embed an image.',
       },
       link: {
         label: 'Link',
-        snippet: 'Link to an external website',
+        snippet: 'Link to an external website.',
       },
     },
   },
@@ -48,11 +48,11 @@ export const dropdownItems: {
     items: {
       'two-column': {
         label: '2 columns',
-        snippet: 'Display the content in 2 columns',
+        snippet: 'Display the content in 2 columns.',
       },
       'three-column': {
         label: '3 columns',
-        snippet: 'Display the content in 3 columns',
+        snippet: 'Display the content in 3 columns.',
       },
     },
   },

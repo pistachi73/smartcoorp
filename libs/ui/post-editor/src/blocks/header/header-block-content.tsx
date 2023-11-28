@@ -16,14 +16,25 @@ const HEADLINE_SIZE_LEVELS: Record<
   HeaderBlockProps['data']['level'],
   HeadlineSize
 > = {
-  1: 'xxxlarge',
-  2: 'xxlarge',
-  3: 'xlarge',
-  4: 'large',
-  5: 'medium',
+  1: 'xlarge',
+  2: 'large',
+  3: 'medium',
+  4: 'small',
+  5: 'small',
   6: 'small',
 };
 
+const HEADLINE_SIZE_LEVELS_CONFINED: Record<
+  HeaderBlockProps['data']['level'],
+  HeadlineSize
+> = {
+  1: 'xxxlarge',
+  2: 'xlarge',
+  3: 'large',
+  4: 'medium',
+  5: 'small',
+  6: 'small',
+};
 export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({
   blockIndex,
   chainBlockIndex,
@@ -50,6 +61,11 @@ export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({
 
   const size = useMemo(
     () => HEADLINE_SIZE_LEVELS[block.data.level],
+    [block.data.level]
+  );
+
+  const sizeConfined = useMemo(
+    () => HEADLINE_SIZE_LEVELS_CONFINED[block.data.level],
     [block.data.level]
   );
 
@@ -184,6 +200,7 @@ export const HeaderBlockContent: React.FC<HeaderBlockContentProps> = ({
       variant="header"
       field="text"
       size={size}
+      sizeConfined={sizeConfined}
       forwardedAs={`h${block.data.level}`}
       blockId={block.id}
       blockIndex={blockIndex}

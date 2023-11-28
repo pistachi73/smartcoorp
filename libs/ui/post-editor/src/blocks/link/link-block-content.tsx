@@ -126,13 +126,13 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
       </S.Container>
     ) : (
       <S.MetaDataContainer
-        href={block.data.link}
+        href={`https://${block.data.link}`}
         target={'_blank'}
         ref={addFieldRef(blockIndex, fieldIndex)}
       >
         <Grid>
           <Row noMargin>
-            <Col size={8}>
+            <Col size={12} sizeConfined={8}>
               <Headline size="large" as="p">
                 {block.data.title}
               </Headline>
@@ -143,7 +143,7 @@ export const LinkBlockContent = memo<LinkBlockContentProps>(
                 {block.data.domain}
               </S.MetaDomain>
             </Col>
-            <Col size={4}>
+            <Col size={12} sizeConfined={4}>
               {block.data.imageUrl && (
                 <S.MetaImageContainer>
                   <img

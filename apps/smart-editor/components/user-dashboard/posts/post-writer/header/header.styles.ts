@@ -4,11 +4,13 @@ import styled from 'styled-components';
 
 import {
   gray300,
+  mediaConfined,
   primary,
   scale140,
   scale180,
   spaceL,
   spaceM,
+  spaceS,
 } from '@smartcoorp/ui/tokens';
 import { WidthLimiter } from '@smartcoorp/ui/width-limiter';
 
@@ -41,7 +43,11 @@ export const Separator = styled.div`
   width: 1px;
   height: ${scale140};
   background: ${gray300};
-  margin: 0 ${spaceM};
+  margin: 0 ${spaceS};
+
+  @media ${mediaConfined} {
+    margin: 0 ${spaceM};
+  }
 `;
 
 export const AccountContainer = styled.div`

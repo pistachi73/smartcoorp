@@ -118,4 +118,5 @@ export type PostEditorProps = {
   getMetaData?: Promise<Function> | any;
   debounceTime?: number;
   toolbarTopOffset?: number;
+  withBorder?: boolean;
 };

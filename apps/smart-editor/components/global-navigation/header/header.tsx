@@ -1,3 +1,6 @@
+import { nextAuthConfig } from '@smart-editor/utils/next-auth-config';
+import { getServerSession } from 'next-auth';
+
 import Image from 'next/image';
 
 import { Button } from '@smartcoorp/ui/button';
@@ -8,7 +11,8 @@ import {
   StyledWidthLimiter,
 } from './header.styles';
 
-export const Header = () => {
+export const Header = async () => {
+  const session = await getServerSession(nextAuthConfig);
   return (
     <HeaderContainer>
       <StyledWidthLimiter>
@@ -27,12 +31,20 @@ export const Header = () => {
           />
         </Button>
         <AccountButtonsContainer>
-          <Button variant="text" size="small" to="/login">
-            Log in
-          </Button>
-          <Button size="small" to="/signup">
-            Get Started
-          </Button>
+          {session?.id ? (
+            <Button variant="secondary" size="small" to="/posts">
+              Go to dashboard
+            </Button>
+          ) : (
+            <>
+              <Button variant="text" size="small" to="/login">
+                Log in
+              </Button>
+              <Button size="small" to="/signup">
+                Get Started
+              </Button>
+            </>
+          )}
         </AccountButtonsContainer>
       </StyledWidthLimiter>
     </HeaderContainer>

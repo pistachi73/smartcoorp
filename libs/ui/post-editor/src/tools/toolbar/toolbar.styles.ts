@@ -13,7 +13,7 @@ import {
   motionTimeXS,
   scale060,
   scale130,
-  scale140,
+  scale150,
   scale330,
   scale380,
   spaceS,
@@ -22,17 +22,11 @@ import {
 } from '@smartcoorp/ui/tokens';
 
 export const Container = styled.div<{ $toolbarTopOffset?: number }>`
-  padding: ${spaceXS};
-
-  height: ${scale140};
+  height: ${scale150};
 
   position: sticky;
   top: ${({ $toolbarTopOffset }) => $toolbarTopOffset ?? 0}px;
   z-index: 9999;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 
   background-color: white;
   border-top-left-radius: ${borderRadiusS};
@@ -42,10 +36,20 @@ export const Container = styled.div<{ $toolbarTopOffset?: number }>`
     css`
       border-bottom: 1px solid ${theme.form.placeholderColor};
     `}
+
+  & > div {
+    height: 100%;
+    padding-block: ${spaceXXS};
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 `;
 
 export const IconsContainer = styled.div`
   height: 100%;
+  max-width: 872px;
+
   display: flex;
   align-items: center;
   gap: ${spaceXS};

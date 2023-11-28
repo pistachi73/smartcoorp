@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import {
   motionEasingStandard,
   motionTimeL,
-  motionTimeS,
   spaceM,
 } from '@smartcoorp/ui/tokens';
 

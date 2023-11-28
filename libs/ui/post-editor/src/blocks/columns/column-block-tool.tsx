@@ -15,7 +15,9 @@ import {
 } from '@smartcoorp/ui/dropdown-menu';
 import {
   borderRadiusXXS,
+  mediaConfined,
   scale020,
+  scale060,
   scale180,
   spaceS,
   spaceXXS,
@@ -48,13 +50,17 @@ const ColSeparator = styled.div<{ $isOpen?: boolean }>`
 const ColSeparatorContainer = styled.button`
   display: flex;
   justify-content: center;
-  min-width: 48px;
   margin-inline: ${spaceS};
+  min-width: ${scale060};
 
   outline: none;
 
   &:hover ${ColSeparator} {
     background-color: ${({ theme }) => theme.form.placeholderColor};
+  }
+
+  @media ${mediaConfined} {
+    min-width: 48px;
   }
 `;
 

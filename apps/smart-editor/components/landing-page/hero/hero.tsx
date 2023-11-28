@@ -79,7 +79,7 @@ export const Hero = () => {
                 <Image src={src} alt={title} fill priority />
               </ImgContainer>
               <IllustrationTitle size="medium" forwardedAs={'div'}>
-                <p>{title}</p>
+                {title}
                 {sticks.map((position) => (
                   <IllustrationStick key={position} position={position} />
                 ))}

@@ -105,7 +105,7 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
           triggerAsChild
           trigger={
             <DropdownTrigger>
-              <PlusIcon height={16} width={16} />
+              <PlusIcon height={18} width={18} />
             </DropdownTrigger>
           }
           content={
@@ -147,7 +147,7 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
                     return (
                       <CommandItem
                         key={`${label}_${key}`}
-                        value={key}
+                        value={label}
                         onSelect={(val) => addBlock(val as DropdownItemTypes)}
                         {...props}
                       >

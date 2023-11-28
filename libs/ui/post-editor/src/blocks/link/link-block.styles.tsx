@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { Body } from '@smartcoorp/ui/body';
 import { DotLoading as DotLoadingComponent } from '@smartcoorp/ui/dot-loading';
 import {
-  borderRadiusS,
+  borderRadiusXS,
+  gray300,
   primary,
   spaceL,
   spaceM,
@@ -22,8 +23,8 @@ export const MetaDataContainer = styled.a`
   display: flex;
 
   border: 1px solid;
-  border-color: ${({ theme }) => theme.common.overBackgroundNeutral};
-  border-radius: ${borderRadiusS};
+  border-color: ${gray300};
+  border-radius: ${borderRadiusXS};
   box-shadow: ${({ theme }) => theme.shadow.shadowS};
 
   :focus {

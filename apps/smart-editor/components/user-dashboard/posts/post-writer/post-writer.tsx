@@ -23,21 +23,16 @@ export const PostWriter = () => {
         title={data?.post?.title}
         content={data?.post?.content}
       />
-      <div
-        style={{
-          marginTop: spaceL,
-        }}
-      >
-        {data?.post?.content ? (
-          <Editor
-            initialData={data.post.content}
-            setSaving={setSaving}
-            saving={saving}
-          />
-        ) : (
-          <SkeletonPostEditor />
-        )}
-      </div>
+
+      {data?.post?.content ? (
+        <Editor
+          initialData={data.post.content}
+          setSaving={setSaving}
+          saving={saving}
+        />
+      ) : (
+        <SkeletonPostEditor />
+      )}
     </>
   );
 };
