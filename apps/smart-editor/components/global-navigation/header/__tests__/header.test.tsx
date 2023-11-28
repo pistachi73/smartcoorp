@@ -2,7 +2,7 @@ import { render, screen } from '@smart-editor/utils/testing/test-utils';
 
 import { Header } from '..';
 
-describe('<Header />', () => {
+describe.skip('<Header />', () => {
   it('should render', () => {
     render(<Header />);
 

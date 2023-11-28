@@ -37,7 +37,7 @@ describe('<PostWriterHeader />', () => {
     expect(screen.getByText(mockName)).toBeInTheDocument();
 
     expect(
-      screen.getByRole('link', { name: 'Back to post settings' })
+      screen.getByRole('link', { name: 'Back to settings' })
     ).toHaveAttribute('href', `/posts/${mockPostId}`);
 
     expect(
