@@ -148,7 +148,7 @@ export const AddBlockTool: FC<AddBlockToolProps> = React.memo(
                       <CommandItem
                         key={`${label}_${key}`}
                         value={label}
-                        onSelect={(val) => addBlock(val as DropdownItemTypes)}
+                        onSelect={() => addBlock(key as DropdownItemTypes)}
                         {...props}
                       >
                         <AddBlockItem
