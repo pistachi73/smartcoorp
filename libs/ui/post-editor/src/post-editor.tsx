@@ -21,6 +21,7 @@ export const PostEditor: FC<PostEditorProps> = ({
   debounceTime = 300,
   maxImages,
   toolbarTopOffset,
+  withBorder = true,
 }) => {
   return (
     <UtilProvider debounceTime={debounceTime} maxImages={maxImages}>
@@ -34,6 +35,7 @@ export const PostEditor: FC<PostEditorProps> = ({
               <Blocks
                 getMetaData={getMetaData}
                 toolbarTopOffset={toolbarTopOffset}
+                withBorder={withBorder}
               />
             </BlocksDBProvider>
           </ToolControlProvider>

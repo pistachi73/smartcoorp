@@ -15,6 +15,7 @@ import { MdFormatClear } from 'react-icons/md';
 import { Body } from '@smartcoorp/ui/body';
 import { primary500_RGBA } from '@smartcoorp/ui/tokens';
 import { Tooltip } from '@smartcoorp/ui/tooltip';
+import { WidthLimiter } from '@smartcoorp/ui/width-limiter';
 
 import {
   useBlocksDBConsumerContext,
@@ -184,204 +185,27 @@ export const Toolbar = ({
 
   return (
     <Container $toolbarTopOffset={toolbarTopOffset}>
-      <IconsContainer>
-        <Tooltip
-          sideOffset={0}
-          triggerAsChild
-          trigger={
-            <IconButton
-              variant="text"
-              onClick={onBold}
-              icon={BsTypeBold}
-              iconSize={18}
-              $formatted={selectionFormat.bold}
-              aria-label="Bold"
-            />
-          }
-          content={
-            <Body size="xsmall" noMargin>
-              Bold
-              <TooltipCaption noMargin as={'span'}>
-                &#8984;+B
-              </TooltipCaption>
-            </Body>
-          }
-        />
-        <Tooltip
-          sideOffset={0}
-          triggerAsChild
-          trigger={
-            <IconButton
-              variant="text"
-              onClick={onItalic}
-              icon={BsTypeItalic}
-              iconSize={18}
-              $formatted={selectionFormat.italic}
-              aria-label="Italic"
-            />
-          }
-          content={
-            <Body size="xsmall" noMargin>
-              Italic
-              <TooltipCaption noMargin as={'span'}>
-                &#8984;+I
-              </TooltipCaption>
-            </Body>
-          }
-        />
-        <Tooltip
-          sideOffset={0}
-          triggerAsChild
-          trigger={
-            <IconButton
-              variant="text"
-              onClick={onUnderline}
-              icon={BsTypeUnderline}
-              iconSize={18}
-              $formatted={selectionFormat.underline}
-              aria-label="Underline"
-            />
-          }
-          content={
-            <Body size="xsmall" noMargin>
-              Underline
-              <TooltipCaption noMargin as={'span'}>
-                &#8984;+U
-              </TooltipCaption>
-            </Body>
-          }
-        />
-        <Tooltip
-          sideOffset={0}
-          triggerAsChild
-          trigger={
-            <IconButton
-              variant="text"
-              onClick={onStrikeThrough}
-              icon={BsTypeStrikethrough}
-              iconSize={18}
-              $formatted={selectionFormat.strikeThrough}
-              aria-label="Strike Trough"
-            />
-          }
-          content={
-            <Body size="xsmall" noMargin>
-              Strike Trough
-            </Body>
-          }
-        />
-        <Separator />
-
-        <Tooltip
-          sideOffset={0}
-          triggerAsChild
-          trigger={
-            <IconButton
-              variant="text"
-              onClick={removeFormat}
-              icon={MdFormatClear}
-              iconSize={18}
-              aria-label="Remove format"
-            />
-          }
-          content={
-            <Body size="xsmall" noMargin>
-              Remove format
-            </Body>
-          }
-        />
-        <Separator />
-        <LinkToolContainer>
-          <IconButton
-            variant="text"
-            onClick={handleAddLinkClick}
-            icon={BsLink}
-            iconSize={18}
-            disabled={!selectionFormat.link.enabled}
-            $formatted={selectionFormat.link.formatted}
-            size="small"
-            aria-label="Add link"
-          />
-
-          {linkTool.isOpen && (
-            <LinkInputContainer onBlur={handleBlur}>
-              <LinkInput
-                id="link-input"
-                placeholder="Add or paste a link..."
-                value={linkTool.value}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setLinkTool({ ...linkTool, value: e.target.value })
-                }
-                onKeyDown={handleLinkKeydown}
-              />
-              <LinkInputSaveButton onClick={saveLink}>Save</LinkInputSaveButton>
-            </LinkInputContainer>
-          )}
-        </LinkToolContainer>
-        <Separator />
-      </IconsContainer>
-      <IconsContainer>
-        <Tooltip
-          sideOffset={0}
-          triggerAsChild
-          trigger={
-            <IconButton
-              variant="text"
-              disabled={!canUndo}
-              onClick={() => undo()}
-              icon={BsArrowCounterclockwise}
-              iconSize={14}
-              aria-label="Undo"
-            />
-          }
-          content={
-            <Body size="xsmall" noMargin>
-              Undo
-              <TooltipCaption noMargin as={'span'}>
-                &#8984;+Z
-              </TooltipCaption>
-            </Body>
-          }
-        />
-        <Tooltip
-          sideOffset={0}
-          triggerAsChild
-          trigger={
-            <IconButton
-              variant="text"
-              disabled={!canRedo}
-              onClick={() => redo()}
-              icon={BsArrowClockwise}
-              iconSize={14}
-              aria-label="Redo"
-            />
-          }
-          content={
-            <Body size="xsmall" noMargin>
-              Redo
-              <TooltipCaption noMargin as={'span'}>
-                &#8984;+Shift+Z
-              </TooltipCaption>
-            </Body>
-          }
-        />
-        <UtilityToolsContainer>
-          <Separator />
+      <WidthLimiter>
+        <IconsContainer>
           <Tooltip
             sideOffset={0}
             triggerAsChild
             trigger={
               <IconButton
                 variant="text"
-                onClick={() => console.log(blocks)}
-                icon={BsTerminal}
-                iconSize={14}
-                aria-label="Log blocks data"
+                onClick={onBold}
+                icon={BsTypeBold}
+                iconSize={18}
+                $formatted={selectionFormat.bold}
+                aria-label="Bold"
               />
             }
             content={
               <Body size="xsmall" noMargin>
-                Log blocks data
+                Bold
+                <TooltipCaption noMargin as={'span'}>
+                  &#8984;+B
+                </TooltipCaption>
               </Body>
             }
           />
@@ -391,21 +215,202 @@ export const Toolbar = ({
             trigger={
               <IconButton
                 variant="text"
-                onClick={() => setViewBlocks((viewBlocks) => !viewBlocks)}
-                icon={BsBoundingBox}
-                iconSize={14}
-                $formatted={viewBlocks}
-                aria-label="View Blocks"
+                onClick={onItalic}
+                icon={BsTypeItalic}
+                iconSize={18}
+                $formatted={selectionFormat.italic}
+                aria-label="Italic"
               />
             }
             content={
               <Body size="xsmall" noMargin>
-                View Blocks
+                Italic
+                <TooltipCaption noMargin as={'span'}>
+                  &#8984;+I
+                </TooltipCaption>
               </Body>
             }
           />
-        </UtilityToolsContainer>
-      </IconsContainer>
+          <Tooltip
+            sideOffset={0}
+            triggerAsChild
+            trigger={
+              <IconButton
+                variant="text"
+                onClick={onUnderline}
+                icon={BsTypeUnderline}
+                iconSize={18}
+                $formatted={selectionFormat.underline}
+                aria-label="Underline"
+              />
+            }
+            content={
+              <Body size="xsmall" noMargin>
+                Underline
+                <TooltipCaption noMargin as={'span'}>
+                  &#8984;+U
+                </TooltipCaption>
+              </Body>
+            }
+          />
+          <Tooltip
+            sideOffset={0}
+            triggerAsChild
+            trigger={
+              <IconButton
+                variant="text"
+                onClick={onStrikeThrough}
+                icon={BsTypeStrikethrough}
+                iconSize={18}
+                $formatted={selectionFormat.strikeThrough}
+                aria-label="Strike Trough"
+              />
+            }
+            content={
+              <Body size="xsmall" noMargin>
+                Strike Trough
+              </Body>
+            }
+          />
+          {/* <Separator /> */}
+
+          <Tooltip
+            sideOffset={0}
+            triggerAsChild
+            trigger={
+              <IconButton
+                variant="text"
+                onClick={removeFormat}
+                icon={MdFormatClear}
+                iconSize={18}
+                aria-label="Remove format"
+              />
+            }
+            content={
+              <Body size="xsmall" noMargin>
+                Remove format
+              </Body>
+            }
+          />
+          {/* <Separator /> */}
+          <LinkToolContainer>
+            <IconButton
+              variant="text"
+              onClick={handleAddLinkClick}
+              icon={BsLink}
+              iconSize={18}
+              disabled={!selectionFormat.link.enabled}
+              $formatted={selectionFormat.link.formatted}
+              size="small"
+              aria-label="Add link"
+            />
+
+            {linkTool.isOpen && (
+              <LinkInputContainer onBlur={handleBlur}>
+                <LinkInput
+                  id="link-input"
+                  placeholder="Add or paste a link..."
+                  value={linkTool.value}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setLinkTool({ ...linkTool, value: e.target.value })
+                  }
+                  onKeyDown={handleLinkKeydown}
+                />
+                <LinkInputSaveButton onClick={saveLink}>
+                  Save
+                </LinkInputSaveButton>
+              </LinkInputContainer>
+            )}
+          </LinkToolContainer>
+          {/* <Separator /> */}
+        </IconsContainer>
+        <IconsContainer>
+          <Tooltip
+            sideOffset={0}
+            triggerAsChild
+            trigger={
+              <IconButton
+                variant="text"
+                disabled={!canUndo}
+                onClick={() => undo()}
+                icon={BsArrowCounterclockwise}
+                iconSize={14}
+                aria-label="Undo"
+              />
+            }
+            content={
+              <Body size="xsmall" noMargin>
+                Undo
+                <TooltipCaption noMargin as={'span'}>
+                  &#8984;+Z
+                </TooltipCaption>
+              </Body>
+            }
+          />
+          <Tooltip
+            sideOffset={0}
+            triggerAsChild
+            trigger={
+              <IconButton
+                variant="text"
+                disabled={!canRedo}
+                onClick={() => redo()}
+                icon={BsArrowClockwise}
+                iconSize={14}
+                aria-label="Redo"
+              />
+            }
+            content={
+              <Body size="xsmall" noMargin>
+                Redo
+                <TooltipCaption noMargin as={'span'}>
+                  &#8984;+Shift+Z
+                </TooltipCaption>
+              </Body>
+            }
+          />
+          <UtilityToolsContainer>
+            {/* <Separator /> */}
+            <Tooltip
+              sideOffset={0}
+              triggerAsChild
+              trigger={
+                <IconButton
+                  variant="text"
+                  onClick={() => console.log(blocks)}
+                  icon={BsTerminal}
+                  iconSize={14}
+                  aria-label="Log blocks data"
+                />
+              }
+              content={
+                <Body size="xsmall" noMargin>
+                  Log blocks data
+                </Body>
+              }
+            />
+            <Tooltip
+              sideOffset={0}
+              triggerAsChild
+              trigger={
+                <IconButton
+                  variant="text"
+                  onClick={() => setViewBlocks((viewBlocks) => !viewBlocks)}
+                  icon={BsBoundingBox}
+                  iconSize={14}
+                  $formatted={viewBlocks}
+                  aria-label="View Blocks"
+                />
+              }
+              content={
+                <Body size="xsmall" noMargin>
+                  View Blocks
+                </Body>
+              }
+            />
+          </UtilityToolsContainer>
+        </IconsContainer>
+      </WidthLimiter>
     </Container>
   );
 };

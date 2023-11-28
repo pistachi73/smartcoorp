@@ -6,16 +6,16 @@ import {
   borderRadiusXS,
   borderRadiusXXS,
   gray100,
-  gray700_RGBA,
   gray900_RGBA,
+  mediaConfined,
   motionEasingStandard,
   motionTimeS,
   scale030,
-  scale050,
   space4XL,
   spaceL,
   spaceM,
   spaceS,
+  spaceXL,
   spaceXS,
   spaceXXL,
   spaceXXS,
@@ -63,26 +63,34 @@ export const InputBox = styled(Body).attrs(() => ({ noMargin: true }))<{
   }
 `;
 
-export const PostEditorContainer = styled.div`
+export const PostEditorContainer = styled.div<{ $withBorder: boolean }>`
   background-color: ${({ theme }) => theme.color.invertedNeutral};
-  border: 1px solid ${({ theme }) => theme.form.placeholderColor};
-  border-radius: ${borderRadiusS};
+
   position: relative;
-  max-width: 872px;
   width: 100%;
-  /* min-width: 768px; */
   min-height: 100vh;
   margin: 0 auto;
   -webkit-backface-visibility: hidden !important;
   backface-visibility: hidden !important;
-  /* overflow: hidden; */
 
-  box-shadow: ${({ theme }) => theme.shadow.shadowM};
   z-index: 1;
+
+  ${({ $withBorder }) =>
+    $withBorder &&
+    css`
+      border: 1px solid ${({ theme }) => theme.form.placeholderColor};
+      border-radius: ${borderRadiusS};
+      box-shadow: ${({ theme }) => theme.shadow.shadowM};
+    `}
 `;
 
 export const BlockChainContainer = styled.div`
-  padding: ${spaceXXL} ${space4XL};
+  padding: ${spaceXL} ${spaceXL};
+  max-width: 872px;
+  margin: 0 auto;
+  @media ${mediaConfined} {
+    padding: ${spaceXXL} ${space4XL};
+  }
 `;
 
 export const ViewIdTag = styled.span<{ $position: 'left' | 'right' }>`

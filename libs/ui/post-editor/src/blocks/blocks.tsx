@@ -19,9 +19,11 @@ const pasteEvent = (e: any) => {
 export const Blocks = ({
   getMetaData,
   toolbarTopOffset,
+  withBorder = true,
 }: {
   getMetaData: any;
   toolbarTopOffset?: number;
+  withBorder?: boolean;
 }) => {
   const { DragSelection } = useDragSelection();
   const { handleSharedClickDown, handleSharedKeyDown } = useSharedEvents();
@@ -39,6 +41,7 @@ export const Blocks = ({
       id="post-editor"
       onMouseDown={handleSharedClickDown}
       onKeyDown={handleSharedKeyDown}
+      $withBorder={withBorder}
     >
       <DragSelection />
       <BlockTools />

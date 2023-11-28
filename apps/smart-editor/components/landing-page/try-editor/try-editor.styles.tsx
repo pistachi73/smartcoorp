@@ -7,7 +7,7 @@ import {
   gray300,
   gray900,
   mediaWide,
-  scale140,
+  scale150,
   space4XL,
   spaceL,
   spaceM,
@@ -47,7 +47,6 @@ export const RenderBlocksContainer = styled.div`
   width: 100%;
   min-height: 100%;
   width: 100%;
-  max-width: 872px;
   flex-basis: auto;
   margin-block: 60px;
   margin: 0 auto;
@@ -76,7 +75,7 @@ export const PostEditorContainer = styled.div`
 export const RenderBlocksToolbarContainer = styled.div`
   padding: ${spaceXS};
 
-  height: ${scale140};
+  height: ${scale150};
 
   position: sticky;
   top: 0;

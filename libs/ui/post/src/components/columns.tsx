@@ -1,17 +1,7 @@
 import React from 'react';
 import { styled } from 'styled-components';
 
-import {
-  mediaConfined,
-  mediaWide,
-  scale220,
-  scale240,
-  scale260,
-  space3XL,
-  space6XL,
-  spaceXL,
-  spaceXXL,
-} from '@smartcoorp/ui/tokens';
+import { mediaConfined, mediaWide, space3XL } from '@smartcoorp/ui/tokens';
 
 const Col = styled.div<{ $cols?: number }>`
   display: flex;

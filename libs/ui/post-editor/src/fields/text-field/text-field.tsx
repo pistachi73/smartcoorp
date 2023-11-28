@@ -36,7 +36,14 @@ export const TextField = memo(
     if (variant === 'header') {
       return <S.StyledHeadline {...commonProps} {...props} />;
     } else if (variant === 'paragraph') {
-      return <S.StyledBody {...commonProps} {...props} />;
+      return (
+        <S.StyledBody
+          {...commonProps}
+          {...props}
+          size="small"
+          sizeConfined="medium"
+        />
+      );
     }
 
     return null;

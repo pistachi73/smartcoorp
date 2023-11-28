@@ -40,7 +40,9 @@ export const Footer = () => {
             marginBlock: spaceXL,
           }}
         >
-          <Headline size="small">Contact</Headline>
+          <Headline size="small" as="p">
+            Contact
+          </Headline>
           <ContactsContainer>
             {/* <ContactContainer
               href="https://api.whatsapp.com/send?phone=655996255"

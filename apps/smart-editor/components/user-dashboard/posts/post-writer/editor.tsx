@@ -39,6 +39,7 @@ export const Editor = memo(
         getMetaData={getMetadata}
         maxImages={5}
         toolbarTopOffset={60}
+        withBorder={false}
       />
     );
   }

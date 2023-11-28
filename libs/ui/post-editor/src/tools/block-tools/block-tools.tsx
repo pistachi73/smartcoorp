@@ -36,16 +36,20 @@ export const BlockTools = () => {
     damping: 20,
     stiffness: 300,
   };
+
+  const top = blockRefs.current[toolBlockIndex].offsetTop;
+  const left = blockRefs.current[toolBlockIndex].offsetLeft;
+  const bottom = blockRefs.current[toolBlockIndex].offsetHeight;
+
   return (
     <AnimatePresence key={toolBlockIndex}>
       <ToolsContainer
-        style={{
-          top: blockRefs.current[toolBlockIndex].offsetTop + 8,
-          left: blockRefs.current[toolBlockIndex].offsetLeft - 44,
-        }}
         animate={{ opacity: 1 }}
         initial={{ opacity: 0 }}
         transition={transition}
+        $top={top}
+        $left={left}
+        $height={bottom}
       >
         <AddBlockTool
           chainId={blockProps.chainId}

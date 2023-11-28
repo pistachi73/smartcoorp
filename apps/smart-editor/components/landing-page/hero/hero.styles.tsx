@@ -78,7 +78,7 @@ export const IllustrationsContainer = styled.div`
   margin-top: ${space4XL};
 
   display: flex;
-  gap: ${spaceL};
+  gap: ${spaceXL};
   flex-direction: column;
   align-items: stretch;
   justify-content: space-around;

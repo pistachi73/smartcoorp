@@ -64,7 +64,7 @@ const EditPostPage = async ({ params }: EditPostPageProps) => {
 
   return (
     <Hydrate state={dehydratedState}>
-      <PostWriter />;
+      <PostWriter />
     </Hydrate>
   );
 };

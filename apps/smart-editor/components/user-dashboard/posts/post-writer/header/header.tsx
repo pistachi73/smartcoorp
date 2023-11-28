@@ -1,5 +1,6 @@
 import { fromContentToJSON } from '@smart-editor/utils/from-content-to-json';
 import { useSession } from 'next-auth/react';
+import { BsCloudDownload } from 'react-icons/bs';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,6 +8,7 @@ import { useParams } from 'next/navigation';
 
 import { Body } from '@smartcoorp/ui/body';
 import { Button } from '@smartcoorp/ui/button';
+import { DeviceOnly, useDeviceType } from '@smartcoorp/ui/device-only';
 import { Headline } from '@smartcoorp/ui/headline';
 import { Tooltip } from '@smartcoorp/ui/tooltip';
 
@@ -31,7 +33,7 @@ type HeaderProps = {
 export const Header = ({ saving, title, content }: HeaderProps) => {
   const session = useSession();
   const { postId } = useParams();
-
+  const { deviceType } = useDeviceType();
   const savingText =
     saving === 'saving' ? 'Saving...' : saving === 'saved' ? 'Saved' : '';
 
@@ -40,7 +42,7 @@ export const Header = ({ saving, title, content }: HeaderProps) => {
       <StyledWidthLimiter>
         <LeftContainer>
           <Button
-            to="/"
+            to="/posts"
             variant="text"
             style={{
               padding: '0px',
@@ -56,9 +58,12 @@ export const Header = ({ saving, title, content }: HeaderProps) => {
           <Separator />
           {session.status === 'authenticated' && (
             <AccountContainer>
-              <Headline size="large" as="p" noMargin>
-                {session.data.user.name}
-              </Headline>
+              <DeviceOnly allowedDevices={['desktop', 'tablet']}>
+                <Headline size="large" as="p" noMargin>
+                  {session.data.user.name}
+                </Headline>
+              </DeviceOnly>
+
               {savingText && (
                 <Body
                   data-testid="saving-text"
@@ -75,7 +80,7 @@ export const Header = ({ saving, title, content }: HeaderProps) => {
         <RightContainer>
           <Link href={`/posts/${postId}`}>
             <Body size="small" variant="neutral" noMargin>
-              Back to post settings
+              Back to settings
             </Body>
           </Link>
 
@@ -95,8 +100,11 @@ export const Header = ({ saving, title, content }: HeaderProps) => {
                     content,
                   })
                 }
+                {...(deviceType === 'mobile' && {
+                  icon: BsCloudDownload,
+                })}
               >
-                Export JSON
+                {deviceType !== 'mobile' && 'Export JSON'}
               </Button>
             }
             triggerAsChild
