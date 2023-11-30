@@ -23,9 +23,10 @@ import type {
 export const usePostEditor = ({
   postId,
   userId,
-  initialBlocksDb,
   setSaving,
   saving,
+  initialBlocksDb,
+  saveInterval = 3000,
 }: UsePostEditorInput): UsePostEditorOutput => {
   const [currentUploadedImages, setCurrentUploadedImages] = useState<
     ImageWithUrl[]
@@ -118,7 +119,7 @@ export const usePostEditor = ({
     setSaving('saved');
   };
 
-  useAutosave({ data: blocksDB, onSave, interval: 5000 });
+  useAutosave({ data: blocksDB, onSave, interval: saveInterval });
 
   return {
     blocksDB,

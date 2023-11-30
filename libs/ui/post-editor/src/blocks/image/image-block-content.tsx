@@ -32,7 +32,7 @@ export const ImageBlockContent = memo<ImageBlockContentProps>(
 
         if (!file) return;
 
-        if (file.size > 250000) {
+        if (file.size > 500000) {
           setError(true);
           return;
         }
