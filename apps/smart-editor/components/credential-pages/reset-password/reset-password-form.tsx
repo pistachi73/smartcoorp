@@ -26,7 +26,7 @@ export const ResetPasswordForm = () => {
     await resetPassword({
       password: data.password,
       confirmPassword: data.confirmPassword,
-      token: params.token,
+      token: params.token as string,
     });
   };
   return (

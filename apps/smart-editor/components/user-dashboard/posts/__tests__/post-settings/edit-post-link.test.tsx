@@ -24,7 +24,7 @@ describe('<EditPostLink />', () => {
 
     expect(
       screen.getByText(
-        'The changes will be saved automatically every 5 seconds. Please wait until the saving is finished before closing the tab.'
+        'The changes will be saved automatically every 2 seconds. Please wait until the saving is finished before closing the tab.'
       )
     ).toBeInTheDocument();
   });

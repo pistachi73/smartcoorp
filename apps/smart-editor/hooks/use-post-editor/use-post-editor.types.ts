@@ -34,9 +34,10 @@ export type GetInitialUploadedImagesInput = {
 export type UsePostEditorInput = {
   postId: string;
   userId: string;
-  initialBlocksDb?: any;
   saving: SavingStatus;
   setSaving: (saving: SavingStatus) => void;
+  saveInterval?: number;
+  initialBlocksDb?: any;
 };
 
 export type UsePostEditorOutput = {

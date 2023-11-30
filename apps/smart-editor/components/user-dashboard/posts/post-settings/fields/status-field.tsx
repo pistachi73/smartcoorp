@@ -53,7 +53,7 @@ export const StatusField = ({ status }: StatusFieldProps) => {
 
   const onSubmit = handleSubmit(async (data: StatusFieldForm) => {
     await updateStatus({
-      postId,
+      postId: postId as string,
       data,
     });
 

@@ -57,7 +57,7 @@ export const FileField: React.FC<FileFieldProps> = ({
       </S.UploadFileButton>
       {error && (
         <Body size="xsmall" noMargin variant="error">
-          File size too large. Max size: 250kb
+          File size too large. Max size: 500kb
         </Body>
       )}
     </>

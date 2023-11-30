@@ -63,7 +63,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.7.0",
     "nanoid": "^4.0.1",
-    "next": "13.4.1",
+    "next": "13.5",
     "next-auth": "^4.22.1",
     "next-mdx-remote": "^4.4.1",
     "open-graph-scraper": "^6.2.2",

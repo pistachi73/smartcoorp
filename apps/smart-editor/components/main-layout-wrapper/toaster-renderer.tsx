@@ -8,7 +8,7 @@ export const ToasterRenderer = () => {
       position="top-center"
       toastOptions={{
         style: {
-          fontFamily: "'__Inter_a64ecd', '__Inter_Fallback_a64ecd'",
+          fontFamily: "'__Inter_e66fe9', '__Inter_Fallback_e66fe9'",
           fontSize: '14px',
         },
       }}

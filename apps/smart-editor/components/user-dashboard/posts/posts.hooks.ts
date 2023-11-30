@@ -1,3 +1,4 @@
+import { EPost } from '@prisma/client';
 import { deleteFolder } from '@smart-editor/actions/delete-file';
 import {
   createPost,
@@ -12,15 +13,20 @@ import { toast } from 'sonner';
 
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
-export const useGetPost = () => {
+export const useGetPost = (props: { initialPost?: EPost } = {}) => {
   const session = useSession({ required: true });
   const { postId } = useParams();
 
   return useQuery({
     queryKey: ['getPost', postId],
-    queryFn: () => getPost({ postId, userId: session?.data?.id as string }),
+    queryFn: () =>
+      getPost({
+        postId: postId as string,
+        userId: session?.data?.id as string,
+      }),
     refetchOnWindowFocus: false,
     enabled: session.status === 'authenticated',
+    initialData: { post: props?.initialPost ?? null },
   });
 };
 

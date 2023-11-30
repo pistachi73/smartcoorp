@@ -42,7 +42,7 @@ export const DeletePostField = () => {
         <DeletePostDialog
           isDeleteDialogOpen={isDeleteDialogOpen}
           setIsDeleteDialogOpen={setIsDeleteDialogOpen}
-          postId={postId}
+          postId={postId as string}
           onSuccess={() => router.push('/posts')}
         />
       </FieldFooter>

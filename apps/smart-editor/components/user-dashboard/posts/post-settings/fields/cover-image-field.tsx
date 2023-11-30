@@ -62,7 +62,7 @@ export const CoverImageField = ({ coverImageUrl }: CoverImageFieldProps) => {
     const newCoverImageUrl = await handleSingleFileUpload(data.coverImageUrl);
 
     await updateCoverImage({
-      postId,
+      postId: postId as string,
       data: {
         coverImageUrl: newCoverImageUrl,
       },
@@ -83,7 +83,7 @@ export const CoverImageField = ({ coverImageUrl }: CoverImageFieldProps) => {
             control={control}
             name="coverImageUrl"
             singleFilePreview={true}
-            maxSize={250000}
+            maxSize={500000}
             acceptedFileTypes={{
               'image/jpeg': [],
               'image/jpg': [],

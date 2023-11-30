@@ -14,7 +14,6 @@ const nextConfig = {
   experimental: {
     forceSwcTransforms: true,
     externalDir: true,
-    appDir: true,
     serverActions: true,
     outputFileTracingExcludes: {
       '*': [

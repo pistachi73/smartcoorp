@@ -54,10 +54,10 @@ describe('<CoverImageField />', () => {
     ).toBeInTheDocument();
   });
 
-  it('should throw error if file size is bigger than 250kb', async () => {
+  it('should throw error if file size is bigger than 500kb', async () => {
     render(<CoverImageField coverImageUrl={mockCoverImageUrl} />);
 
-    const file = getFile(1024 * 1024 + 1);
+    const file = getFile(500001);
 
     const input = screen.getByTestId('upload-file-input');
     fireEvent.change(input, { target: { files: [file] } });
@@ -65,7 +65,7 @@ describe('<CoverImageField />', () => {
     await waitFor(() => {
       expect(screen.getByText('darthvader.png')).toBeInTheDocument();
       expect(
-        screen.getByText('File is larger than 250000 bytes')
+        screen.getByText('File is larger than 500000 bytes')
       ).toBeInTheDocument();
     });
   });

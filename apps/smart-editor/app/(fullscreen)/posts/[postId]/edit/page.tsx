@@ -44,29 +44,17 @@ const EditPostPage = async ({ params }: EditPostPageProps) => {
   const { postId } = params;
 
   const session = await getServerSession(nextAuthConfig);
-  const queryClient = getQueryClient();
-  const dehydratedState = dehydrate(queryClient);
 
-  await queryClient.prefetchQuery({
-    queryKey: ['getPost', postId],
-    queryFn: () =>
-      getPost({
-        userId: session?.id as string,
-        postId,
-      }),
+  const { post } = await getPost({
+    userId: session?.id as string,
+    postId,
   });
 
-  const data = queryClient.getQueryData(['getPost', postId]) as unknown as any;
-  if (!data?.post) {
-    console.log(queryClient.getQueryData(['getPost', postId]));
+  if (!post) {
     redirect('/posts');
   }
 
-  return (
-    <Hydrate state={dehydratedState}>
-      <PostWriter />
-    </Hydrate>
-  );
+  return <PostWriter post={post} />;
 };
 
 export default EditPostPage;

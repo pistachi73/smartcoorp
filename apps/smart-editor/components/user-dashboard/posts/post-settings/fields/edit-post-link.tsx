@@ -46,7 +46,7 @@ export const EditPostLink = () => {
       <FieldContent>
         <Headline size="large">Edit blog post content</Headline>
         <Body size="small">
-          The changes will be saved automatically every 5 seconds. Please wait
+          The changes will be saved automatically every 2 seconds. Please wait
           until the saving is finished before closing the tab.
         </Body>
         <WarningSign size="small" noMargin>

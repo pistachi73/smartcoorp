@@ -56,7 +56,7 @@ export const ProseField = ({ title, description }: ProseFieldProps) => {
 
   const onSubmit = handleSubmit(async (data: ProseFieldForm) => {
     await updateProse({
-      postId,
+      postId: postId as string,
       data,
     });
     reset({}, { keepValues: true });
